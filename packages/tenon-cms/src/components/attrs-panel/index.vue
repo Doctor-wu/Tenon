@@ -1,6 +1,6 @@
 <template>
   <section class="wrapper">
-    <a-empty v-if="!store.getters['component-tree/getTree']">
+    <a-empty v-if="!store.getters['component-tree/getActiveComponent']">
       未选中组件
     </a-empty>
     <section v-else>todo</section>
