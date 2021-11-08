@@ -1,10 +1,9 @@
 {
-  "name": "dt-lowcode",
+  "name": "tenon",
   "version": "1.0.0",
   "description": "personal lowCode platform",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:cms": "ts-node scripts/dev-cms.ts"
   },
   "keywords": [
     "lowCode",
@@ -13,8 +12,12 @@
   "author": "doctorwu",
   "license": "MIT",
   "dependencies": {
+    "@types/execa": "^2.0.0",
     "@types/inquirer": "^8.1.3",
+    "execa": "^5.1.1",
     "inquirer": "^8.2.0",
     "tslint": "^6.1.3"
+  },
+  "devDependencies": {
   }
 }
