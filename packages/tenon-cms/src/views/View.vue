@@ -6,6 +6,6 @@ import { useStore } from '../store';
 
 const store = useStore();
 </script>
-<style lang="sass" scoped>
+<style lang="scss" scoped>
   
 </style>

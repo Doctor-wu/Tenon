@@ -1,9 +1,25 @@
 <template>
-  <section>attrs-panel</section>
+  <section class="wrapper">
+    <a-empty v-if="!store.getters['component-tree/getTree']">
+      未选中组件
+    </a-empty>
+    <section v-else>todo</section>
+  </section>
 </template>
 <script setup lang="ts">
-</script>
-<style lang="sass" scoped>
+import { useStore } from 'vuex';
 
+const store = useStore();
+console.log(store);
+
+</script>
+<style lang="scss" scoped>
+.wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
 </style>
 
