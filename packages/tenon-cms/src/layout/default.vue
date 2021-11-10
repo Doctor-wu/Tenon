@@ -32,9 +32,14 @@ import AttrsPanel from '../components/attrs-panel/index.vue';
 
 .layout-container .header-container {
   height: 60px;
+  width: 100vw;
   background-color: #fff;
   border-bottom: 1px solid #e5e5e5;
   display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 .layout-container .layout-body {
@@ -45,6 +50,9 @@ import AttrsPanel from '../components/attrs-panel/index.vue';
   justify-content: space-between;
   align-items: stretch;
   align-content: stretch;
+  padding-top: 60px;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 .layout-body .operation-container {

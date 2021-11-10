@@ -1,9 +1,11 @@
 import { Module } from 'vuex';
 import { IRootState } from '..';
+import { IMaterial } from './materials';
 
-export interface IComponentTreeState {
+export interface IViewerState {
   tree?: ComponentTreeNode;
   activeComponent?: ComponentTreeNode;
+  draggingComponent?: IMaterial;
 }
 
 export interface ComponentTreeNode {
@@ -34,12 +36,12 @@ export default {
     },
   },
   getters: {
-    getTree(state: IComponentTreeState, getters: any, rootState: IRootState, rootGetters: any) {
+    getTree(state: IViewerState, getters: any, rootState: IRootState, rootGetters: any) {
       return state.tree;
     },
-    getActiveComponent(state: IComponentTreeState, getters: any, rootState: IRootState, rootGetters: any) {
+    getActiveComponent(state: IViewerState, getters: any, rootState: IRootState, rootGetters: any) {
       return state.activeComponent;
     },
   },
   namespaced: true,
-} as Module<IComponentTreeState, IRootState>;
+} as Module<IViewerState, IRootState>;
