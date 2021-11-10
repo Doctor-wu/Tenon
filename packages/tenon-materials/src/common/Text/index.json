@@ -1,0 +1,10 @@
+{
+  "name": "Text",
+  "type": "common",
+  "id": "text",
+  "platforms": [
+    "web"
+  ],
+  "attrs": {
+  }
+}

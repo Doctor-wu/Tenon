@@ -10,7 +10,6 @@
 import { useStore } from 'vuex';
 
 const store = useStore();
-console.log(store);
 
 </script>
 <style lang="scss" scoped>

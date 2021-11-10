@@ -1,15 +1,15 @@
 {
-  "name": "@tenon/engine",
+  "name": "@tenon/materials",
   "version": "1.0.0",
-  "description": "",
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Doctor wu",
   "license": "MIT",
-  "devDependencies": {
-    "@tenon/materials": "workspace:*",
-    "@tenon/shared": "workspace:*"
-  }
+  "devDependencies": {},
+  "dependencies": {
+    "vue": "^3.2.16"
+  },
+  "description": ""
 }

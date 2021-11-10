@@ -17,6 +17,7 @@
     "@arco-design/web-vue": "^2.1.0",
     "@tenon/bff": "workspace:*",
     "@tenon/engine": "workspace:*",
+    "@tenon/materials": "workspace:*",
     "@tenon/shared": "workspace:*",
     "@vitejs/plugin-vue": "^1.9.3",
     "sass": "^1.43.4",

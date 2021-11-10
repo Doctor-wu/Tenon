@@ -32,6 +32,7 @@ importers:
       '@arco-design/web-vue': ^2.1.0
       '@tenon/bff': workspace:*
       '@tenon/engine': workspace:*
+      '@tenon/materials': workspace:*
       '@tenon/shared': workspace:*
       '@vitejs/plugin-vue': ^1.9.3
       sass: ^1.43.4
@@ -49,6 +50,7 @@ importers:
       '@arco-design/web-vue': 2.1.0_vue@3.2.20
       '@tenon/bff': link:../tenon-bff
       '@tenon/engine': link:../tenon-engine
+      '@tenon/materials': link:../tenon-materials
       '@tenon/shared': link:../shared
       '@vitejs/plugin-vue': 1.9.4_vite@2.6.13
       sass: 1.43.4
@@ -58,9 +60,17 @@ importers:
 
   packages/tenon-engine:
     specifiers:
+      '@tenon/materials': workspace:*
       '@tenon/shared': workspace:*
     devDependencies:
+      '@tenon/materials': link:../tenon-materials
       '@tenon/shared': link:../shared
+
+  packages/tenon-materials:
+    specifiers:
+      vue: ^3.2.16
+    dependencies:
+      vue: 3.2.20
 
 packages:
 
