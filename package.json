@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "personal lowCode platform",
   "scripts": {
-    "dev:cms": "ts-node scripts/dev-cms.ts"
+    "dev:cms": "ts-node scripts/dev-cms.ts",
+    "dev:mtr": "ts-node scripts/build-materials.ts",
+    "create-base-web-component": "ts-node scripts/create-web-component.ts"
   },
   "keywords": [
     "lowCode",
@@ -18,6 +20,5 @@
     "inquirer": "^8.2.0",
     "tslint": "^6.1.3"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

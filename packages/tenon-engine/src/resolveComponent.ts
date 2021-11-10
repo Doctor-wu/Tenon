@@ -3,8 +3,6 @@ import path from 'path';
 import { resolveWebComponent } from './resolveWebComponent';
 
 export const resolveComponent = (compName: string, compPath: string) => {
-  console.log(compName);
-  console.log(fs.readdirSync(compPath));
   const compJson = JSON.parse(fs.readFileSync(path.join(compPath, 'index.json')).toString());
   const compScript = fs.readFileSync(path.join(compPath, 'index.ts')).toString();
   const compStyle = fs.readFileSync(path.join(compPath, 'index.scss')).toString();

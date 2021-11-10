@@ -1,0 +1,5 @@
+{
+  "name": "Block",
+  "icon": "code-sandbox",
+  "description": ["Block 是一个<基础组件>，Block是最小的组件嵌套单位"]
+}

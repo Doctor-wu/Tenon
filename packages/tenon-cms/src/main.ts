@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import ArcoVue from '@arco-design/web-vue';
+import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import App from './App.vue';
 import '@arco-design/web-vue/dist/arco.css';
 import { setupRouter } from './router';
@@ -12,6 +13,7 @@ app.use(ArcoVue, {
   // 用于改变使用组件时的前缀名称
   componentPrefix: 'a'
 });
+app.use(ArcoVueIcon);
 
 // 初始化路由
 setupRouter(app);

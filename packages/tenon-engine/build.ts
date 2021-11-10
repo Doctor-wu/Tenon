@@ -1,11 +1,13 @@
 import path from 'path';
 import fs from 'fs';
 import { resolveComponent } from './src/resolveComponent';
+import { resolveBaseComponent } from './src/resolveBaseComponent';
 
 const rootPath = __dirname;
 const materialsPath = path.resolve(rootPath, '../tenon-materials');
 const materialsSourcePath = path.join(materialsPath, 'src');
 
+resolveBaseComponent();
 scanFiles(materialsSourcePath, '', {}, resolveComponent);
 
 

@@ -10,9 +10,11 @@
       <a-menu-item style="height: 30px;" key="materials">物料库</a-menu-item>
       <a-menu-item key="component-tree">组件树</a-menu-item>
     </a-menu>
+    <Materials></Materials>
   </section>
 </template>
 <script setup lang="ts">
+import Materials from './Materials.vue';
 
 </script>
 <style lang="scss" scoped>

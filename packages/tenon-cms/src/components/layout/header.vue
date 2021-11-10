@@ -9,13 +9,13 @@
         <router-link to="/">定制物料</router-link>
       </li>
       <li class="nav-item">
-        <router-link to="/docs">文档</router-link>
+        <router-link to="/">文档</router-link>
       </li>
       <li class="nav-item">
-        <router-link to="/components">组件</router-link>
+        <router-link to="/">组件</router-link>
       </li>
       <li class="nav-item">
-        <router-link to="/about">关于</router-link>
+        <router-link to="/">关于</router-link>
       </li>
     </ul>
   </section>
