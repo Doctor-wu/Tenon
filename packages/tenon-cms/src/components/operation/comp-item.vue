@@ -1,24 +1,38 @@
 <template>
-  <a-menu-item class="comp-item">
+  <a-menu-item
+    class="comp-item"
+    draggable="true"
+    @dragstart="(e) => handleMaterialDragStart(e, ctx)"
+    @dragend="(e) => handleMaterialDragEnd(e, ctx)"
+  >
     <section class="comp-item-container">
       <section>
-        <component v-if="comp.config.icon" :is="'icon-' + comp.config.icon" />
-        {{ comp.name }}
+        <component v-if="component.config.icon" :is="'icon-' + component.config.icon" />
+        {{ component.name }}
       </section>
-      <section v-if="comp.config.description" class="comp-description">
+      <section v-if="component.config.description" class="comp-description">
         <a-divider style="margin: 0 0 10px 0;"></a-divider>
-        <p class="description" v-for="text in comp.config.description">{{ text }}</p>
+        <p class="description" v-for="text in component.config.description">{{ text }}</p>
       </section>
     </section>
   </a-menu-item>
 </template>
 <script lang="ts" setup>
+import { handleMaterialDragStart, handleMaterialDragEnd } from '../../logic/viewer-drag';
+import { getCurrentInstance, ComponentInternalInstance } from 'vue';
+const instance = getCurrentInstance() as ComponentInternalInstance & {
+  ctx: any;
+};
+const ctx = instance.ctx;
+
+
 const props = defineProps({
   comp: {
-    type: Object,
+    type: Function,
     required: true,
   },
 });
+const component = props.comp();
 
 </script>
 <style lang="scss" scoped>
@@ -40,5 +54,6 @@ const props = defineProps({
   cursor: pointer;
   transition: all 0.3s;
   border: 1px solid #ccccccaa;
+  user-select: none;
 }
 </style>

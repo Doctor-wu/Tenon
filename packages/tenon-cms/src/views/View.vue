@@ -1,7 +1,7 @@
 <template>
   <section class="viewer-container">
     <component
-      :is="toRaw(store.getters['viewer/getTree'].component)"
+      :is="toRaw(map.get('Compose-View')().component)"
       :config="store.getters['viewer/getTree']"
     ></component>
   </section>
@@ -13,13 +13,9 @@ import { useStore } from '../store';
 const store = useStore();
 const map = store.getters['materials/getMaterialsMap'];
 store.dispatch('viewer/setTree', {
-  ...map.get('Compose-View'),
-  children: [
-    { ...map.get('Text') },
-    { ...map.get('Block') },
-    { ...map.get('Picture') },
-    { ...map.get('Compose-View') }
-  ],
+  name: 'Compose-View',
+  id: 0,
+  children: [],
 })
 </script>
 <style lang="scss" scoped>

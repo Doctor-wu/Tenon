@@ -1,6 +1,5 @@
 {
   "name": "{%Name%}",
   "icon": "file",
-  "description": [],
-  "nestable": false
+  "description": []
 }
