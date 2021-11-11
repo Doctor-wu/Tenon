@@ -1,24 +1,27 @@
 <template>
   <section class="compose-view-container">
     <template v-if="config?.children?.length">
-      <component v-for="comp in config.children" :is="comp.component"></component>
+      <Wrapper v-for="comp in config.children" :config="comp">
+        <component :is="toRaw(comp.component)" :config="comp"></component>
+      </Wrapper>
     </template>
-    <slot v-else>
-      <section class="default-tip">拖入物料以生成组件</section>
-    </slot>
+    <section v-else class="default-tip">拖入物料以生成组件</section>
   </section>
 </template>
 <script lang="ts" setup>
 import { useStore } from '../../store';
-import { effect } from 'vue';
+import { effect, toRaw } from 'vue';
+import Wrapper from './wrapper.vue';
 const store = useStore();
 
-defineProps({
+const props = defineProps({
   config: {
     type: Object,
-    default: () => { }
+    default: () => []
   },
 });
+console.log(props);
+
 
 effect(() => {
 
@@ -26,6 +29,8 @@ effect(() => {
 
 </script>
 <style lang="scss" scoped>
+.compose-view-container {
+}
 .default-tip {
   text-align: center;
   padding: 20px;

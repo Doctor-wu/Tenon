@@ -1,5 +1,6 @@
 {
   "name": "Block",
-  "icon": "code-sandbox",
-  "description": ["Block 是一个<基础组件>，Block是最小的组件嵌套单位"]
+  "icon": "dice",
+  "description": ["Block 是一个<基础组件>，Block提供块级组件能力"],
+  "nestable": true
 }

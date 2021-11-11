@@ -6,7 +6,7 @@
         {{ comp.name }}
       </section>
       <section v-if="comp.config.description" class="comp-description">
-        <a-divider style="margin: 0;"></a-divider>
+        <a-divider style="margin: 0 0 10px 0;"></a-divider>
         <p class="description" v-for="text in comp.config.description">{{ text }}</p>
       </section>
     </section>
@@ -19,7 +19,6 @@ const props = defineProps({
     required: true,
   },
 });
-console.log(props.comp);
 
 </script>
 <style lang="scss" scoped>
@@ -27,8 +26,11 @@ console.log(props.comp);
   margin: 0;
   font-size: 13px;
   color: #999;
+  white-space: pre-wrap;
+  line-height: 1.5;
 }
 .comp-item-container {
+  padding-bottom: 10px;
 }
 .comp-item {
   display: flex;

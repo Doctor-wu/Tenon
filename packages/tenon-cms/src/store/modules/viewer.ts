@@ -3,14 +3,12 @@ import { IRootState } from '..';
 import { IMaterial } from './materials';
 
 export interface IViewerState {
-  tree?: ComponentTreeNode;
+  tree?: ComponentTreeNode[];
   activeComponent?: ComponentTreeNode;
   draggingComponent?: IMaterial;
 }
 
-export interface ComponentTreeNode {
-  children?: ComponentTreeNode[];
-}
+export type ComponentTreeNode = ComponentTreeNode[] | IMaterial;
 
 export default {
   state() {

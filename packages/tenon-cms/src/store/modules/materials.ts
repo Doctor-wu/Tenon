@@ -1,5 +1,6 @@
 import { Module } from 'vuex';
 import { IRootState } from '..';
+import composeViewComp from '../../components/viewer/compose-view.vue';
 
 
 const materialsRaw = import.meta.globEager('../../materials/**/*.vue');
@@ -10,7 +11,6 @@ Object.keys(materialsRaw).forEach(key => {
   const m = key.replace('../../materials/', '');
   const configPath = key.replace('.vue', '.config.json');
   const config = configRaw[configPath].default;
-  console.log(config);
 
   const category = m.split('/')[0];
   if (!materials.get(category)) {
@@ -24,6 +24,21 @@ Object.keys(materialsRaw).forEach(key => {
   materials.get(category)!.push(comp);
   materialsMap.set(m.split('/')[1], comp);
 });
+const composeView = {
+  name: 'Compose-View',
+  component: composeViewComp,
+  config: {
+    name: 'Compose-View',
+    description: [
+      "Compose-View 是一个<基础组件>，Compose-View提供拖拽, 提示，以及组件的嵌套功能, Compose-View是最小的嵌套单位"
+      + "部分编辑功能仅在编辑模式生效"
+    ],
+    icon: 'code-sandbox',
+    nestable: true,
+  }
+};
+materials.get('base')?.unshift(composeView);
+materialsMap.set('Compose-View', composeView);
 
 export interface IMaterial {
   name: string;

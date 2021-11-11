@@ -14,7 +14,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import Materials from './Materials.vue';
+import Materials from './materials.vue';
 
 </script>
 <style lang="scss" scoped>

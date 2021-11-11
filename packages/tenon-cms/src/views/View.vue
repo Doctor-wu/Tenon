@@ -1,13 +1,26 @@
 <template>
   <section class="viewer-container">
-    <ComposeView :config="store.getters['viewer/getTree']"></ComposeView>
+    <component
+      :is="toRaw(store.getters['viewer/getTree'].component)"
+      :config="store.getters['viewer/getTree']"
+    ></component>
   </section>
 </template>
 <script setup lang="ts">
+import { toRaw } from 'vue';
 import { useStore } from '../store';
-import ComposeView from '../components/viewer/ComposeView.vue';
 
 const store = useStore();
+const map = store.getters['materials/getMaterialsMap'];
+store.dispatch('viewer/setTree', {
+  ...map.get('Compose-View'),
+  children: [
+    { ...map.get('Text') },
+    { ...map.get('Block') },
+    { ...map.get('Picture') },
+    { ...map.get('Compose-View') }
+  ],
+})
 </script>
 <style lang="scss" scoped>
 .viewer-container {

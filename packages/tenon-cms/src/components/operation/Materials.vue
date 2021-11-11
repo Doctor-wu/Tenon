@@ -17,7 +17,7 @@
 </template>
 <script setup lang="ts">
 import { useStore } from 'vuex';
-import CompItem from './CompItem.vue';
+import CompItem from './comp-item.vue';
 const store = useStore();
 console.log(store.getters);
 
