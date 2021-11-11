@@ -3,10 +3,11 @@
     <a-tree
       blockNode
       :fieldNames="{
-        key: 'id',
+        key: 'textID',
         title: 'name',
         children: 'children'
       }"
+      :default-expand-all="true"
       :show-line="true"
       :data="[store.getters['viewer/getTree']]"
     />

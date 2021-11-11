@@ -6,7 +6,6 @@
 </template>
 <script setup lang="ts">
 
-
 const props = defineProps({
   config: {
     type: Object,

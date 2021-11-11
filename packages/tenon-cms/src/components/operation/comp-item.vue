@@ -1,7 +1,7 @@
 <template>
   <a-menu-item
     class="comp-item"
-    draggable="true"
+    :draggable="editMode"
     @dragstart="(e) => handleMaterialDragStart(e, ctx)"
     @dragend="(e) => handleMaterialDragEnd(e, ctx)"
   >
@@ -20,6 +20,7 @@
 <script lang="ts" setup>
 import { handleMaterialDragStart, handleMaterialDragEnd } from '../../logic/viewer-drag';
 import { getCurrentInstance, ComponentInternalInstance } from 'vue';
+import { editMode } from '../../logic/viewer-status';
 const instance = getCurrentInstance() as ComponentInternalInstance & {
   ctx: any;
 };
