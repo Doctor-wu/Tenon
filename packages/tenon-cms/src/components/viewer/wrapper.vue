@@ -2,16 +2,16 @@
   <section
     class="wrapper-container"
     :class="{
-      hovering: dragging && hovering === ctx.comp.id,
+      hovering: dragging && hovering === ctx.config.id,
       editable: editMode,
-      choosing: !dragging && choosingWrapper === ctx.comp.id && !store?.getters['viewer/getActiveComponent']
+      choosing: !dragging && choosingWrapper === ctx.config.id && !store?.getters['viewer/getActiveComponent']
     }"
     @dragstart.capture="(e) => handleMaterialDragStart(e, ctx, false)"
     @dragend="(e) => handleMaterialDragEnd(e, ctx)"
     @dragover.prevent="() => { }"
-    @dragenter.prevent="() => { hovering = ctx.comp.id }"
+    @dragenter.prevent="() => { hovering = ctx.config.id }"
     @drop="(e) => handleWrapperDrop(e, ctx)"
-    @mouseenter="() => choosingWrapper = comp.id"
+    @mouseenter="() => choosingWrapper = config.id"
     @mouseleave="() => choosingWrapper = -1"
     :draggable="editMode"
   >
@@ -31,7 +31,7 @@ const instance = getCurrentInstance() as ComponentInternalInstance & {
 const ctx = instance.ctx;
 
 const props = defineProps({
-  comp: {
+  config: {
     type: Object,
     required: true,
   },

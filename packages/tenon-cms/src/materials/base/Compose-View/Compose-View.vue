@@ -7,8 +7,11 @@
     @drop="(e) => handleContainerDrop(e, ctx)"
   >
     <template v-if="config?.children?.length">
-      <Wrapper :comp="comp" v-for="comp in config.children">
-        <component :is="toRaw(store?.getters['materials/getMaterialsMap'].get(comp.name)().component)" :config="comp"></component>
+      <Wrapper :config="subConfig" v-for="subConfig in config.children">
+        <component
+          :is="toRaw(store?.getters['materials/getMaterialsMap'].get(subConfig.name)().component)"
+          :config="subConfig"
+        ></component>
       </Wrapper>
     </template>
     <section v-else-if="editMode" class="default-tip">拖入物料以生成组件</section>

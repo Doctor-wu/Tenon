@@ -28,12 +28,12 @@ const ctx = instance.ctx;
 
 
 const props = defineProps({
-  comp: {
+  config: {
     type: Function,
     required: true,
   },
 });
-const component = props.comp();
+const component = props.config();
 
 </script>
 <style lang="scss" scoped>

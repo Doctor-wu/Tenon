@@ -3,18 +3,20 @@ import { extractChild, insertChild } from "./tree-operation";
 import { ref } from 'vue';
 export const dragging = ref(false);
 export const hovering = ref(-1);
+export const draggingMaterial = ref(false);
 
 export const handleMaterialDragStart = (ev: DragEvent, ctx, isMaterial = true) => {
   // event.preventDefault();
   dragging.value = true;
+  draggingMaterial.value = isMaterial;
   ev.dataTransfer!.effectAllowed = 'move';
   ev.dataTransfer!.dropEffect = 'move';
   ev.dataTransfer?.setDragImage(ev.target as HTMLElement, 0, 0);
   const store = useStore();
-  if (!ctx.comp.parent) {
-    store.dispatch('viewer/setDraggingComponent', ctx.comp());
+  if (!ctx.config.parent) {
+    store.dispatch('viewer/setDraggingComponent', ctx.config());
   } else {
-    store.dispatch('viewer/setDraggingComponent', ctx.comp);
+    store.dispatch('viewer/setDraggingComponent', ctx.config);
   }
 }
 
@@ -39,15 +41,15 @@ export const handleWrapperDrop = async (ev: DragEvent, ctx) => {
   const store = useStore();
   const draggingComponent = store.getters['viewer/getDraggingComponent'];
   if (!draggingComponent.parent) {
-    await insertNewComponent(draggingComponent, ctx.comp.parent, ctx.comp);
+    await insertNewComponent(draggingComponent, ctx.config.parent, ctx.config);
     return;
   }
 
   extractChild(draggingComponent.parent, draggingComponent);
 
-  insertChild(ctx.comp.parent, draggingComponent, ctx.comp);
+  insertChild(ctx.config.parent, draggingComponent, ctx.config);
 
-  draggingComponent.parent = ctx.comp.parent;
+  draggingComponent.parent = ctx.config.parent;
 }
 
 export const handleContainerDrop = async (ev: DragEvent, ctx, relative?: any) => {
@@ -79,4 +81,15 @@ async function insertNewComponent(beInsert, parent, relative) {
     expressedComponent.children = [];
   }
   insertChild(parent, expressedComponent, relative);
+}
+
+
+export const deleteDraggingComponent = (ev: DragEvent) => {
+  ev.preventDefault();
+  ev.stopPropagation();
+  const store = useStore();
+  let draggingComponent: any = store.getters['viewer/getDraggingComponent'];
+  if (draggingComponent.parent) {
+    extractChild(draggingComponent.parent, draggingComponent);
+  }
 }
