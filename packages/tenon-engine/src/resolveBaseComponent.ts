@@ -6,18 +6,18 @@ const baseWebPath = path.resolve(__dirname, './base/web');
 const webComponentDist = config.path.webComponentDist;
 
 export const resolveBaseComponent = () => {
-  if (fs.existsSync(webComponentDist)) {
-    fs.rmdirSync(webComponentDist, { recursive: true });
-  }
-  fs.mkdirSync(webComponentDist);
+  // if (fs.existsSync(webComponentDist)) {
+  //   fs.rmdirSync(webComponentDist, { recursive: true });
+  // }
+  // fs.mkdirSync(webComponentDist);
   resolveBaseWebComponent();
   resolveBaseMpComponent();
 }
 
 function resolveBaseWebComponent() {
-  const webBaseComponentPath = path.resolve(webComponentDist, './base');
-  fs.mkdirSync(webBaseComponentPath);
-  copyDirectory(baseWebPath, webBaseComponentPath);
+  // const webBaseComponentPath = path.resolve(webComponentDist, './base');
+  // fs.mkdirSync(webBaseComponentPath);
+  // copyDirectory(baseWebPath, webBaseComponentPath);
 }
 
 function resolveBaseMpComponent() { }

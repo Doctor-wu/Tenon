@@ -10,14 +10,21 @@ export interface IViewerState {
   compId: number;
 }
 
-export interface ComponentTreeNode extends IMaterial {
+export interface ComponentTreeNode {
+  name: string;
+  id: number;
+  textID?: string;
   children: ComponentTreeNode[];
 }
 
 export default {
   state() {
     return {
-      tree: null,
+      tree: {
+        name: 'Compose-View',
+        id: 0,
+        children: [],
+      },
       activeComponent: null,
       hoveringComponent: null,
       draggingComponent: null,

@@ -1,4 +1,5 @@
 import { createStore, Store } from 'vuex'
+import { setupMaterials } from '../logic/setup-materials';
 
 export interface IRootState {
   author: string;
@@ -29,6 +30,8 @@ export const setupStore = (app) => {
 
   // 将 store 实例作为插件安装
   app.use(store);
+
+  setupMaterials(store);
 };
 
 export const useStore = () => store;

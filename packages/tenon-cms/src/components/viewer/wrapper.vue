@@ -1,12 +1,18 @@
 <template>
   <section
     class="wrapper-container"
-    :class="{ hovring: dragging && hovering === ctx.comp.id }"
+    :class="{
+      hovering: dragging && hovering === ctx.comp.id,
+      editable: editMode,
+      choosing: !dragging && choosingWrapper === ctx.comp.id && !store?.getters['viewer/getActiveComponent']
+    }"
     @dragstart.capture="(e) => handleMaterialDragStart(e, ctx, false)"
     @dragend="(e) => handleMaterialDragEnd(e, ctx)"
     @dragover.prevent="() => { }"
     @dragenter.prevent="() => { hovering = ctx.comp.id }"
     @drop="(e) => handleWrapperDrop(e, ctx)"
+    @mouseenter="() => choosingWrapper = comp.id"
+    @mouseleave="() => choosingWrapper = -1"
     :draggable="editMode"
   >
     <slot></slot>
@@ -14,8 +20,11 @@
 </template>
 <script lang="ts" setup>
 import { handleMaterialDragStart, handleMaterialDragEnd, handleWrapperDrop, dragging, hovering } from '../../logic/viewer-drag';
-import { getCurrentInstance, ComponentInternalInstance, computed } from 'vue';
+import { getCurrentInstance, ComponentInternalInstance, ref } from 'vue';
 import { editMode } from '../../logic/viewer-status';
+import { useStore } from '../../store';
+import { choosingWrapper } from '../../logic/viewer-select';
+const store = useStore();
 const instance = getCurrentInstance() as ComponentInternalInstance & {
   ctx: any;
 };
@@ -28,20 +37,23 @@ const props = defineProps({
   },
 });
 
-const distance = computed(() => {
-  return editMode.value ? '5px' : '0px';
-});
-const bgc = computed(() => {
-  return editMode.value ? '#eee' : '#fff';
-});
+const choosing = ref(false);
 
 </script>
 <style lang="scss" scoped>
-.wrapper-container.hovring {
+.wrapper-container.editable.hovering {
   border-bottom: 2px solid #1693ef;
 }
+.wrapper-container.editable {
+  padding: 10px;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.wrapper-container.editable.choosing {
+  outline: 2px solid #1693ef;
+}
 .wrapper-container {
-  padding: v-bind("distance");
-  background-color: v-bind("bgc");
+  background-color: #fff;
 }
 </style>

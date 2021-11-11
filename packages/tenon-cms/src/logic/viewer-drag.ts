@@ -46,8 +46,7 @@ export const handleWrapperDrop = async (ev: DragEvent, ctx) => {
   extractChild(draggingComponent.parent, draggingComponent);
 
   insertChild(ctx.comp.parent, draggingComponent, ctx.comp);
-  console.log(11);
-  
+
   draggingComponent.parent = ctx.comp.parent;
 }
 
@@ -75,6 +74,7 @@ async function insertNewComponent(beInsert, parent, relative) {
     id,
     textID: String(id),
   };
+
   if (beInsert.children) {
     expressedComponent.children = [];
   }

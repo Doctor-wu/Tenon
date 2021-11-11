@@ -70,6 +70,7 @@ import AttrsPanel from '../components/attrs-panel/index.vue';
   display: flex;
   justify-content: center;
   align-items: center;
+  transform: translate(0, 0);
 }
 
 .layout-body .attrsPanel-container {

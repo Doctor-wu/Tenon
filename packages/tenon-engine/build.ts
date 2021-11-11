@@ -7,7 +7,7 @@ const rootPath = __dirname;
 const materialsPath = path.resolve(rootPath, '../tenon-materials');
 const materialsSourcePath = path.join(materialsPath, 'src');
 
-resolveBaseComponent();
+// resolveBaseComponent();
 scanFiles(materialsSourcePath, '', {}, resolveComponent);
 
 

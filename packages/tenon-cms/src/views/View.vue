@@ -5,7 +5,7 @@
     </section>
     <section class="viewer-panel">
       <component
-        :is="toRaw(map.get('Compose-View')().component)"
+        :is="toRaw(store.getters['materials/getMaterialsMap']?.get('Compose-View')?.().component)"
         :config="store.getters['viewer/getTree']"
       ></component>
     </section>
@@ -17,12 +17,8 @@ import { useStore } from '../store';
 import ViewerNav from '../components/viewer/viewer-nav.vue';
 
 const store = useStore();
-const map = store.getters['materials/getMaterialsMap'];
-store.dispatch('viewer/setTree', {
-  name: 'Compose-View',
-  id: 0,
-  children: [],
-})
+
+
 </script>
 <style lang="scss" scoped>
 .viewer-container {
@@ -32,7 +28,6 @@ store.dispatch('viewer/setTree', {
   padding: 0;
   box-sizing: border-box;
   position: relative;
-  transform: translate(0, 0);
 }
 
 .viewer-panel {
