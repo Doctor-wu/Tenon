@@ -7,7 +7,7 @@
         </template>
         <Materials></Materials>
       </a-tab-pane>
-      <a-tab-pane key="component-tree">
+      <a-tab-pane key="component-tree" style="margin-left: 20px;">
         <template #title>
           <icon-ordered-list />&nbsp;组件树
         </template>
@@ -33,6 +33,7 @@ import ComponentTree from './component-tree.vue';
   border-bottom: 1px solid #e8e8e8;
   height: 100%;
   box-sizing: border-box;
+  overflow: auto;
 }
 
 ::v-deep .arco-tabs-nav-tab {

@@ -51,6 +51,7 @@ const props = defineProps({
 
 .wrapper-container.editable.choosing {
   outline: 2px solid #1693ef;
+  position: relative;
 }
 .wrapper-container {
   background-color: #fff;

@@ -2,7 +2,7 @@
   <section class="wrapper">
     <h2>
       Tenon
-      <span class="sub-title">低代码平台</span>
+      <span class="sub-title">一站式低代码平台</span>
     </h2>
     <ul class="nav-list">
       <li class="nav-item">
