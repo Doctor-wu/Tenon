@@ -42,6 +42,7 @@ const props = defineProps({
 <style lang="scss" scoped>
 .compose-view-container {
   position: relative;
+  width: 100%;
 }
 .compose-view-container.editable {
   min-height: 40px;

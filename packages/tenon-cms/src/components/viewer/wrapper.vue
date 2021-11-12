@@ -37,7 +37,6 @@ const props = defineProps({
   },
 });
 
-const choosing = ref(false);
 
 </script>
 <style lang="scss" scoped>

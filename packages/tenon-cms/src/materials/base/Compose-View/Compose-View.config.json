@@ -4,5 +4,8 @@
     "Compose-View 是一个<基础组件>，Compose-View提供拖拽, 提示，以及组件的嵌套功能, Compose-View是最小的嵌套单位部分编辑功能仅在编辑模式生效"
   ],
   "icon": "code-sandbox",
-  "nestable": true
+  "nestable": true,
+  "platform": [
+    "web"
+  ]
 }

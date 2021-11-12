@@ -1,5 +1,8 @@
 {
   "name": "Text",
   "icon": "italic",
-  "description": ["Text 是一个<基础组件>, Text可以提供文本相关的能力"]
+  "description": ["Text 是一个<基础组件>, Text可以提供文本相关的能力"],
+  "platform": [
+    "web"
+  ]
 }

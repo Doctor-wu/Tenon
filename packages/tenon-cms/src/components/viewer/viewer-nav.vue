@@ -1,7 +1,7 @@
 <template>
   <section class="nav-wrapper">
     <section class="edit-status">
-      <b>编辑模式:</b>
+      <b>编辑模式:&nbsp;</b>
       <a-switch v-model="editMode" @change="toggleEditMode"></a-switch>
     </section>
     <section

@@ -1,18 +1,19 @@
 import { useStore } from "../store";
-import { extractChild, insertChild } from "./tree-operation";
+import { extractChild, insertChild, isAncestor } from "./tree-operation";
 import { ref } from 'vue';
+import { Notification } from "@arco-design/web-vue";
 export const dragging = ref(false);
 export const hovering = ref(-1);
 export const draggingMaterial = ref(false);
 
 export const handleMaterialDragStart = (ev: DragEvent, ctx, isMaterial = true) => {
-  // event.preventDefault();
   dragging.value = true;
   draggingMaterial.value = isMaterial;
   ev.dataTransfer!.effectAllowed = 'move';
   ev.dataTransfer!.dropEffect = 'move';
   ev.dataTransfer?.setDragImage(ev.target as HTMLElement, 0, 0);
   const store = useStore();
+
   if (!ctx.config.parent) {
     store.dispatch('viewer/setDraggingComponent', ctx.config());
   } else {
@@ -22,8 +23,8 @@ export const handleMaterialDragStart = (ev: DragEvent, ctx, isMaterial = true) =
 
 export const handleMaterialDragEnd = (ev: DragEvent, ctx) => {
   const store = useStore();
-  store.dispatch('viewer/setDraggingComponent', null);
-  store.dispatch('viewer/setHoveringComponent', null);
+  store?.dispatch('viewer/setDraggingComponent', null);
+  store?.dispatch('viewer/setHoveringComponent', null);
   dragging.value = false;
   hovering.value = -1;
 }
@@ -57,7 +58,13 @@ export const handleContainerDrop = async (ev: DragEvent, ctx, relative?: any) =>
   ev.stopPropagation();
   const store = useStore();
   let draggingComponent: any = store.getters['viewer/getDraggingComponent'];
-  if (draggingComponent === ctx.config) return;
+  if (isAncestor(draggingComponent, ctx.config)) {
+    Notification.warning({
+      title: '拖拽错误',
+      content: '不能将容器拖拽到自己或自己的子容器中',
+    })
+    return;
+  }
   if (!draggingComponent.parent) {
     await insertNewComponent(draggingComponent, ctx.config, relative);
   } else {

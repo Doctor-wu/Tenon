@@ -6,9 +6,14 @@
     @dragend="(e) => handleMaterialDragEnd(e, ctx)"
   >
     <section class="comp-item-container">
-      <section>
-        <component v-if="component.config.icon" :is="'icon-' + component.config.icon" />
-        {{ component.name }}
+      <section class="comp-item-header">
+        <section class="comp-info">
+          <component v-if="component.config.icon" :is="'icon-' + component.config.icon" />
+          {{ component.name }}
+        </section>
+        <section class="comp-platform">
+          <a-tag color="arcoblue" v-for="item in component.config.platform || []">{{ item }}</a-tag>
+        </section>
       </section>
       <section v-if="component.config.description" class="comp-description">
         <a-divider style="margin: 0 0 10px 0;"></a-divider>
@@ -56,5 +61,11 @@ const component = props.config();
   transition: all 0.3s;
   border: 1px solid #ccccccaa;
   user-select: none;
+}
+
+.comp-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 </style>

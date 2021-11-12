@@ -4,17 +4,17 @@
       <ViewerNav></ViewerNav>
     </section>
     <section class="viewer-panel">
-      <component
-        :is="toRaw(store.getters['materials/getMaterialsMap']?.get('Compose-View')?.().component)"
+      <ComposeView 
         :config="store.getters['viewer/getTree']"
-      ></component>
+      ></ComposeView>
     </section>
   </section>
 </template>
 <script setup lang="ts">
-import { toRaw } from 'vue';
+import {  } from 'vue';
 import { useStore } from '../store';
 import ViewerNav from '../components/viewer/viewer-nav.vue';
+import ComposeView from '../materials/base/Compose-View/compose-view.vue';
 
 const store = useStore();
 

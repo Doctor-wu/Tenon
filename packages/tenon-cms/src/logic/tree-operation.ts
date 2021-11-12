@@ -17,3 +17,13 @@ export const extractChild = (parent, child) => {
   }
   parent.children.splice(index, 1);
 }
+
+export const isAncestor = (parent, child) => {
+  if (parent === child) {
+    return true;
+  }
+  if (child.parent === undefined) {
+    return false;
+  }
+  return isAncestor(parent, child.parent);
+}

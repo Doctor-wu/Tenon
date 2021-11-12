@@ -2,7 +2,7 @@ import inquirer from "inquirer";
 import fs from "fs";
 import path from "path";
 
-const webBasePath = path.resolve(__dirname, '../packages/tenon-engine/src/base/web');
+const webBasePath = path.resolve(__dirname, '../packages/tenon-cms/src/materials/base');
 
 const promptList = [
   {
