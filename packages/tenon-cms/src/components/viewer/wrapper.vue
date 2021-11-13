@@ -4,7 +4,10 @@
     :class="{
       hovering: dragging && hovering === ctx.config.id,
       editable: editMode,
-      choosing: !dragging && choosingWrapper === ctx.config.id && !store?.getters['viewer/getActiveComponent']
+      choosing: editMode
+        && !dragging
+        && choosingWrapper === ctx.config.id
+        && !store?.getters['viewer/getDraggingComponent']
     }"
     @dragstart.capture="(e) => handleMaterialDragStart(e, ctx, false)"
     @dragend="(e) => handleMaterialDragEnd(e, ctx)"
@@ -13,6 +16,7 @@
     @drop="(e) => handleWrapperDrop(e, ctx)"
     @mouseenter="() => choosingWrapper = config.id"
     @mouseleave="() => choosingWrapper = -1"
+    @click="(e) => handleSelectComponent(e, ctx)"
     :draggable="editMode"
   >
     <slot></slot>
@@ -23,7 +27,7 @@ import { handleMaterialDragStart, handleMaterialDragEnd, handleWrapperDrop, drag
 import { getCurrentInstance, ComponentInternalInstance, ref } from 'vue';
 import { editMode } from '../../logic/viewer-status';
 import { useStore } from '../../store';
-import { choosingWrapper } from '../../logic/viewer-select';
+import { choosingWrapper, handleSelectComponent } from '../../logic/viewer-select';
 const store = useStore();
 const instance = getCurrentInstance() as ComponentInternalInstance & {
   ctx: any;

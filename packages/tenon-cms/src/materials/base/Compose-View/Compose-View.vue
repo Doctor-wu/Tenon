@@ -7,7 +7,7 @@
     @drop="(e) => handleContainerDrop(e, ctx)"
   >
     <template v-if="config?.children?.length">
-      <Wrapper :config="subConfig" v-for="subConfig in config.children">
+      <Wrapper :config="subConfig" v-for="subConfig in config.children" :key="subConfig.id">
         <component
           :is="toRaw(store?.getters['materials/getMaterialsMap'].get(subConfig.name)().component)"
           :config="subConfig"

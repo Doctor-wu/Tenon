@@ -58,7 +58,7 @@ export const handleContainerDrop = async (ev: DragEvent, ctx, relative?: any) =>
   ev.stopPropagation();
   const store = useStore();
   let draggingComponent: any = store.getters['viewer/getDraggingComponent'];
-  if (isAncestor(draggingComponent, ctx.config)) {
+  if (isAncestor(draggingComponent, ctx.config) || draggingComponent === ctx.config) {
     Notification.warning({
       title: '拖拽错误',
       content: '不能将容器拖拽到自己或自己的子容器中',
