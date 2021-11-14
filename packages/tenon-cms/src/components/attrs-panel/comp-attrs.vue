@@ -1,7 +1,7 @@
 <template>
   <section class="attrs-wrapper">
     <section class="header">
-      <b>{{ activeComponent.name }}</b>
+      attr
     </section>
   </section>
 </template>

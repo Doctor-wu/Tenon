@@ -6,10 +6,10 @@
     @dragover.prevent="() => { }"
     @drop="(e) => handleContainerDrop(e, ctx)"
   >
-    <template v-if="config?.children?.length">
+    <template v-if="config.children?.length">
       <Wrapper :config="subConfig" v-for="subConfig in config.children" :key="subConfig.id">
         <component
-          :is="toRaw(store?.getters['materials/getMaterialsMap'].get(subConfig.name)().component)"
+          :is="toRaw(store.getters['materials/getMaterialsMap'].get(subConfig.name)().component)"
           :config="subConfig"
         ></component>
       </Wrapper>
@@ -36,6 +36,8 @@ const props = defineProps({
     default: () => []
   },
 });
+console.log(props.config);
+
 
 
 </script>

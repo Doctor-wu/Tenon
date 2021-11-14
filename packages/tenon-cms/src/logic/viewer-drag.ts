@@ -1,5 +1,5 @@
 import { useStore } from "../store";
-import { extractChild, insertChild, isAncestor } from "./tree-operation";
+import { extractChild, insertChild, insertNewComponent, isAncestor } from "./tree-operation";
 import { ref } from 'vue';
 import { Notification } from "@arco-design/web-vue";
 export const dragging = ref(false);
@@ -73,24 +73,6 @@ export const handleContainerDrop = async (ev: DragEvent, ctx, relative?: any) =>
     draggingComponent.parent = ctx.config;
   }
 }
-
-async function insertNewComponent(beInsert, parent, relative) {
-  const store = useStore();
-  const id = await store.dispatch('viewer/setCompId');
-  const expressedComponent: any = {
-    name: beInsert.name,
-    parent,
-    material: beInsert,
-    id,
-    textID: String(id),
-  };
-
-  if (beInsert.children) {
-    expressedComponent.children = [];
-  }
-  insertChild(parent, expressedComponent, relative);
-}
-
 
 export const deleteDraggingComponent = (ev: DragEvent) => {
   ev.preventDefault();

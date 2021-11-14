@@ -1,11 +1,12 @@
 import { Module } from 'vuex';
-import { IRootState, useStore } from '..';
+import { IRootState } from '..';
 
 
 export interface IMaterial {
   name: string;
   component: any;
   config: any;
+  children?: IMaterial[];
 }
 
 export interface IMaterialsState {

@@ -14,6 +14,7 @@ export interface ComponentTreeNode {
   name: string;
   id: number;
   textID?: string;
+  material?: IMaterial;
   children: ComponentTreeNode[];
 }
 

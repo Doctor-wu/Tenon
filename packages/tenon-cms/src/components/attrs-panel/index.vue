@@ -22,19 +22,20 @@ import { useStore } from '../../store';
 import { computed, effect, ref, toRaw } from 'vue';
 import { editMode } from '../../logic/viewer-status';
 import CompAttrs from './comp-attrs.vue';
+import BaseInfo from './base-info.vue';
 
 const store = useStore();
-const activeComponent = computed(() => store.getters['viewer/getActiveComponent']);
-const map = computed(() => store.getters['materials/getMaterialsMap']);
+const activeComponent = computed(() => store?.getters['viewer/getActiveComponent']);
+const map = computed(() => store?.getters['materials/getMaterialsMap']);
 const attrs = ref([
   {
     title: '基础',
     icon: 'icon-info-circle',
-    component: CompAttrs,
+    component: BaseInfo,
   },
   {
-    title: '基础2',
-    icon: 'icon-apps',
+    title: '拷贝',
+    icon: 'icon-copy',
     component: CompAttrs,
   },
 ]);
@@ -63,7 +64,7 @@ effect(() => {
 }
 
 .attr-menus {
-  width: 100%;
+  width: 100%;;
 }
 ::v-deep .arco-tabs-nav-tab {
   padding: 10px 20px;
