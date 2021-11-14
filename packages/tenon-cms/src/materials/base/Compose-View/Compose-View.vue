@@ -36,7 +36,7 @@ const props = defineProps({
     default: () => []
   },
 });
-console.log(props.config);
+// console.log(props.config);
 
 
 

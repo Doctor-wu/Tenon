@@ -40,12 +40,12 @@ const attrs = ref([
   },
 ]);
 
-effect(() => {
-  console.log(
-    map.value.get(activeComponent?.value?.name)?.().config,
-    activeComponent.value
-  )
-});
+// effect(() => {
+//   console.log(
+//     map.value.get(activeComponent?.value?.name)?.().config,
+//     activeComponent.value
+//   )
+// });
 </script>
 
 <style lang="scss" scoped>

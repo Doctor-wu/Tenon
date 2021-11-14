@@ -49,8 +49,9 @@ defineEmits(['click']);
   cursor: pointer;
   transition: all 0.3s;
   font-size: 21px;
-  font-weight: bolder;
-  font-family: "Courier New", Courier, monospace;
+  // font-weight: 700;
+  font-family: "pomo", Courier, monospace;
+  // font-family: "pixelBlack";
   user-select: none;
 
   &:hover {

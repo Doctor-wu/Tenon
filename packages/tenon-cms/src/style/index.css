@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "pixelBlack";
+  src: url("../assets/DotGothic16-Regular.ttf") format("truetype");
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "pomo";
+  src: url("../assets//pomo.ttf") format("truetype");
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
+}
