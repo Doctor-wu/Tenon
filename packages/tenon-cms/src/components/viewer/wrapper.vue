@@ -7,14 +7,15 @@
       choosing: editMode
         && !dragging
         && choosingWrapper === ctx.config.id
-        && !store?.getters['viewer/getDraggingComponent']
+        && !store?.getters['viewer/getDraggingComponent'],
+      active: editMode && !dragging && store?.getters['viewer/getActiveComponent'] === ctx.config
     }"
     @dragstart.capture="(e) => handleMaterialDragStart(e, ctx, false)"
     @dragend="(e) => handleMaterialDragEnd(e, ctx)"
     @dragover.prevent="() => { }"
     @dragenter.prevent="() => { hovering = ctx.config.id }"
     @drop="(e) => handleWrapperDrop(e, ctx)"
-    @mouseenter="() => choosingWrapper = config.id"
+    @mouseover.capture="() => choosingWrapper = config.id"
     @mouseleave="() => choosingWrapper = -1"
     @click="(e) => handleSelectComponent(e, ctx)"
     :draggable="editMode"
@@ -45,7 +46,7 @@ const props = defineProps({
 </script>
 <style lang="scss" scoped>
 .wrapper-container.editable.hovering {
-  border-bottom: 2px solid #1693ef;
+  border-bottom: 2px solid #00b42a;
 }
 .wrapper-container.editable {
   padding: 10px;
@@ -56,6 +57,10 @@ const props = defineProps({
 .wrapper-container.editable.choosing {
   outline: 2px solid #1693ef;
   position: relative;
+}
+
+.wrapper-container.active {
+  outline: 2px dotted #9316ef;
 }
 .wrapper-container {
   background-color: #fff;

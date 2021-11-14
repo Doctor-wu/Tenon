@@ -9,7 +9,7 @@
       </a-tab-pane>
       <a-tab-pane key="component-tree" style="margin-left: 20px;">
         <template #title>
-          <icon-ordered-list />&nbsp;组件树
+          <icon-branch />&nbsp;组件树
         </template>
         <ComponentTree></ComponentTree>
       </a-tab-pane>

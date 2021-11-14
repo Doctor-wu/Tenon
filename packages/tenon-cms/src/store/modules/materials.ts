@@ -20,7 +20,7 @@ export default {
   state() {
     return {
       materials: [],
-      materialsMap: new Map,
+      materialsMap: new Map(),
     };
   },
   mutations: {

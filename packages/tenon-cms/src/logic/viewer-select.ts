@@ -10,3 +10,11 @@ export const handleSelectComponent = (e: MouseEvent, ctx) => {
   const store = useStore();
   store.dispatch("viewer/setActiveComponent", ctx.config);
 }
+
+export const handleClickOuterPanel = (e: MouseEvent, panel?: HTMLElement) => {
+  if (!panel) return;
+  if (!panel.contains(e.target as Node)) {
+    const store = useStore();
+    store.dispatch("viewer/setActiveComponent", null);
+  }
+}

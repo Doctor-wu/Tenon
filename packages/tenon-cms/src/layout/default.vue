@@ -71,6 +71,9 @@ import AttrsPanel from '../components/attrs-panel/index.vue';
   justify-content: center;
   align-items: center;
   transform: translate(0, 0);
+  padding-top: 64px;
+  padding-bottom: 40px;
+  box-sizing: border-box;
 }
 
 .layout-body .attrsPanel-container {

@@ -6,6 +6,7 @@
   "icon": "code-sandbox",
   "nestable": true,
   "platform": [
-    "web"
+    "web",
+    "mp"
   ]
 }

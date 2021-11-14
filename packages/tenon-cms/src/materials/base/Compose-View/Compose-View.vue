@@ -49,7 +49,7 @@ const props = defineProps({
   border: 1px dashed #ccc;
 }
 .compose-view-container.editable.dropable {
-  border: 1px dashed red;
+  outline: 1px dashed red;
 }
 .default-tip {
   position: absolute;

@@ -80,6 +80,7 @@ async function insertNewComponent(beInsert, parent, relative) {
   const expressedComponent: any = {
     name: beInsert.name,
     parent,
+    material: beInsert,
     id,
     textID: String(id),
   };
