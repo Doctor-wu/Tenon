@@ -10,46 +10,39 @@
         </template>
       </a-descriptions>
       <a-divider></a-divider>
-      <a-button-group style="text-align: center;display: block;">
-        <a-button
-          type="primary"
-          status="success"
-          @click="() => extractActiveComponentFromParent(activeComponent)"
+      <section style="text-align: center;">
+        <TextButton
+          info="提升到父级"
           :disabled="!activeComponent.parent.parent"
+          @click="() => extractActiveComponentFromParent(activeComponent)"
         >
-          <icon-double-up />移出父级
-        </a-button>
-        <a-button
-          type="primary"
+          父
+          <template name="info">提升到父级</template>
+        </TextButton>
+        <TextButton
+          info="向上移动"
           :disabled="!canUpMove"
           @click="() => upMoveActiveComponent(activeComponent)"
         >
-          <icon-arrow-up />上移
-        </a-button>
-        <a-button
-          type="primary"
+          上
+          <template name="info">提升到父级</template>
+        </TextButton>
+        <TextButton
+          info="向下移动"
           :disabled="!canDownMove"
           @click="() => downMoveActiveComponent(activeComponent)"
-        >
-          <icon-arrow-down />下移
-        </a-button>
-      </a-button-group>
-      <a-button-group style="text-align: center;display: block;margin-top: 20px;">
-        <a-button
-          type="primary"
-          status="success"
+        >下</TextButton>
+        <TextButton
+          info="复制元素"
           @click="() => copyActiveComponent(activeComponent, activeComponent.parent)"
-        >
-          <icon-copy />复制
-        </a-button>
-        <a-button
-          type="primary"
-          status="danger"
+          color="#00b42a"
+        >复</TextButton>
+        <TextButton
+          info="删除元素"
           @click="() => deleteActiveComponent(activeComponent)"
-        >
-          <icon-delete />删除
-        </a-button>
-      </a-button-group>
+          color="#f53f3f"
+        >删</TextButton>
+      </section>
     </section>
   </section>
 </template>
@@ -60,6 +53,7 @@ import {
   deleteActiveComponent, upMoveActiveComponent,
   downMoveActiveComponent, extractActiveComponentFromParent, copyActiveComponent
 } from '../../logic/viewer-select';
+import TextButton from '../custom/text-button.vue';
 
 const store = useStore();
 const activeComponent = computed(() => store?.getters['viewer/getActiveComponent']);
