@@ -6,7 +6,7 @@
           <b>{{ activeComponent.name }}</b>
         </template>
         <template v-slot:value="{ value }">
-          <pre class="pre-text">{{ value }}</pre>
+          <component :is="value"></component>
         </template>
       </a-descriptions>
       <a-divider></a-divider>
@@ -15,18 +15,12 @@
           info="提升到父级"
           :disabled="!activeComponent.parent.parent"
           @click="() => extractActiveComponentFromParent(activeComponent)"
-        >
-          父
-          <template name="info">提升到父级</template>
-        </TextButton>
+        >父</TextButton>
         <TextButton
           info="向上移动"
           :disabled="!canUpMove"
           @click="() => upMoveActiveComponent(activeComponent)"
-        >
-          上
-          <template name="info">提升到父级</template>
-        </TextButton>
+        >上</TextButton>
         <TextButton
           info="向下移动"
           :disabled="!canDownMove"
@@ -48,7 +42,9 @@
 </template>
 <script lang="ts" setup>
 import { useStore } from '../../store';
-import { computed } from 'vue';
+import {
+  computed, h,
+} from 'vue';
 import {
   deleteActiveComponent, upMoveActiveComponent,
   downMoveActiveComponent, extractActiveComponentFromParent, copyActiveComponent
@@ -77,35 +73,38 @@ const compDescriptions = computed(() => {
   const descriptions: any[] = [
     {
       label: 'ID: ',
-      value: comp.id,
+      value: h('span', comp.id),
     },
     {
       label: '组件名称: ',
-      value: comp.name,
+      value: h('span', comp.name),
     },
     {
-      label: 'description: ',
-      value: compRaw.config.description.toString(),
+      label: '组件描述: ',
+      value: h('p', compRaw.config.description.toString()),
     },
     {
-      label: 'config: ',
-      value: JSON.stringify(compRaw.config, null, 2),
-    }
+      label: '支持的平台: ',
+      value: h('section', null, compRaw.config.platform.map(item => h('span', {
+        style: {
+          display: 'inline-block',
+          margin: '0 5px',
+          padding: '0 8px',
+          lineHeight: '22px',
+          backgroundColor: '#E8F3FF',
+          color: "#165DFF",
+          fontSize: '12px'
+        },
+      }, item))),
+    },
   ];
   return descriptions;
 });
-
 </script>
+
 <style lang="scss" scoped>
-.attrs-info {
-}
 .attrs-wrapper {
   width: 100%;
   overflow: auto;
-}
-
-.pre-text {
-  white-space: pre-wrap;
-  word-break: break-all;
 }
 </style>

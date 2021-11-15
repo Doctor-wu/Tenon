@@ -1,6 +1,7 @@
 <template>
-  <a-popover v-if="info && !disabled">
+  <a-popover v-if="info && !disabled" :position="infoPosition">
     <section
+      v-bind="$attrs"
       class="text-button-container"
       @click="(...args) => !disabled && $emit('click', ...args)"
       :class="{ disabledStyle: disabled }"
@@ -35,6 +36,10 @@ const props = defineProps({
   info: {
     type: String,
     default: '',
+  },
+  infoPosition: {
+    type: String,
+    default: 'bottom'
   }
 });
 

@@ -1,9 +1,15 @@
 <template>
   <section class="nav-wrapper">
-    <section class="edit-status">
-      <b>编辑模式:&nbsp;</b>
-      <a-switch v-model="editMode" @change="toggleEditMode"></a-switch>
-    </section>
+    <TextToggle
+      :value="editMode"
+      @change="toggleEditMode"
+      :info="editMode ? '编辑模式' : '预览模式'"
+      :color="editMode ? '#1693ef' : '#00b42a'"
+    >
+      <icon-edit v-if="editMode" style="font-size: 18px;" />
+      <icon-eye v-else style="font-size: 18px;" />
+      <span>{{ editMode ? '编辑' : '预览' }}</span>
+    </TextToggle>
     <section
       v-if="dragging && !draggingMaterial"
       @dragover.prevent="() => { }"
@@ -19,6 +25,7 @@
 <script setup lang="ts">
 import { dragging, draggingMaterial, deleteDraggingComponent } from '../../logic/viewer-drag';
 import { editMode, toggleEditMode } from '../../logic/viewer-status';
+import TextToggle from '../custom/text-toggle.vue';
 </script>
 <style lang="scss" scoped>
 .nav-wrapper {
@@ -27,6 +34,7 @@ import { editMode, toggleEditMode } from '../../logic/viewer-status';
   align-items: center;
   padding: 5px 20px;
   box-sizing: border-box;
+  justify-content: flex-start;
 }
 .delete-comp {
   margin-right: 20px;

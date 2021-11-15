@@ -2,7 +2,7 @@
   <section class="wrapper">
     <a-empty v-if="!activeComponent || !editMode" style="margin: auto;">未选中组件</a-empty>
     <section v-else class="attr-menus">
-      <a-tabs class="menu" :default-active-key="attrs[0].title" animation size="large">
+      <a-tabs class="attr-menus-wrapper" :default-active-key="attrs[0].title" animation size="large">
         <a-tab-pane :key="type.title" v-for="type in attrs">
           <template #title>
             <component :is="toRaw(type.icon)" />
@@ -69,5 +69,18 @@ const attrs = ref([
 ::v-deep .arco-tabs-nav-tab {
   padding: 10px 20px;
   height: 44px;
+}
+
+::v-deep .arco-tabs-nav{
+  min-height: 64px;
+}
+::v-deep .arco-tabs-content {
+  flex: 1;
+  overflow: auto;
+}
+.attr-menus-wrapper{
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 </style>

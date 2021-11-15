@@ -57,7 +57,7 @@
     color: #333;
     transition: all ease 0.3s;
     &:hover {
-      color: #1693ef;
+      color: #165dff;
     }
   }
 }
