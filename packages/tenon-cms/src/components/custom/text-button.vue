@@ -4,10 +4,11 @@
       <section
         v-bind="$attrs"
         class="text-button-container"
+        :style="{ fontSize: size || '21px' }"
         @click="handleClick"
         :class="{ disabledStyle: disabled }"
       >
-        <slot></slot>
+        <slot>按钮</slot>
       </section>
     </Animate>
     <template #content>{{ info }}</template>
@@ -16,20 +17,17 @@
     <section
       class="text-button-container"
       @click="handleClick"
+      :style="{ fontSize: size || '21px' }"
       :class="{ disabledStyle: disabled }"
     >
-      <slot></slot>
+      <slot>按钮</slot>
     </section>
   </Animate>
 </template>
 <script lang="ts" setup>
 import Animate from './animate.vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 const props = defineProps({
-  text: {
-    type: String,
-    default: '按钮'
-  },
   color: {
     type: String,
     default: '#165dff'
@@ -45,7 +43,11 @@ const props = defineProps({
   infoPosition: {
     type: String,
     default: 'bottom'
-  }
+  },
+  size: {
+    type: String,
+    default: '21px'
+  },
 });
 
 const emit = defineEmits(['click']);
@@ -67,7 +69,6 @@ function handleClick(...args) {
   color: #333;
   cursor: pointer;
   transition: all 0.3s;
-  font-size: 21px;
   font-family: "pomo", Courier, monospace;
   user-select: none;
 
