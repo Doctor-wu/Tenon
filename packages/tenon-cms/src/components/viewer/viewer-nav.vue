@@ -45,6 +45,16 @@ const store = useStore();
 
 function saveTree() {
   const tree = store.getters['viewer/getTree'];
+  const run = () => {
+    const config = toRaw(tree2config(tree));
+
+    treeModel.set({
+      config,
+      lastID: store.getters['viewer/getCompId'],
+    }).then(() => {
+      Message.success('保存页面配置成功');
+    });
+  }
   if (tree.children.length === 0) {
     Modal.confirm({
       title: '提示',
@@ -57,18 +67,11 @@ function saveTree() {
       }, '当前页面没有组件，是否清空页面配置？'),
       okText: '确认清空',
       cancelText: '取消',
-      onOk: () => {
-        const config = toRaw(tree2config(tree));
-
-        treeModel.set({
-          config,
-          lastID: store.getters['viewer/getCompId'],
-        }).then(() => {
-          Message.success('保存页面配置成功');
-        });
-      }
+      onOk: run,
     });
     return;
+  } else {
+    run();
   }
 }
 
