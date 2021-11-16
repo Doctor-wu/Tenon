@@ -51,7 +51,6 @@ const props = defineProps({
 .wrapper-container.editable {
   padding: 10px;
   background-color: #eee;
-  cursor: pointer;
 }
 
 .wrapper-container.editable.choosing {

@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import ArcoVue from '@arco-design/web-vue';
 import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import App from './App.vue';
-import './style/index.css';
+import './style/index.scss';
 import '@arco-design/web-vue/dist/arco.css';
 import { setupRouter } from './router';
 import { setupStore } from './store';

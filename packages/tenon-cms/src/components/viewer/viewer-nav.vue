@@ -6,10 +6,13 @@
       :info="editMode ? '编辑模式' : '预览模式'"
       :color="editMode ? '#1693ef' : '#00b42a'"
     >
-      <icon-edit v-if="editMode" style="font-size: 18px;" />
-      <icon-eye v-else style="font-size: 18px;" />
-      <span>{{ editMode ? '编辑' : '预览' }}</span>
+      <icon-edit v-if="editMode" class="nav-item-icon" />
+      <icon-eye v-else class="nav-item-icon" />
+      <span>{{ editMode ? '编辑模式' : '预览模式' }}</span>
     </TextToggle>
+    <TextButton info="保存页面">
+      <icon-download class="nav-item-icon" />存
+    </TextButton>
     <section
       v-if="dragging && !draggingMaterial"
       @dragover.prevent="() => { }"
@@ -26,6 +29,7 @@
 import { dragging, draggingMaterial, deleteDraggingComponent } from '../../logic/viewer-drag';
 import { editMode, toggleEditMode } from '../../logic/viewer-status';
 import TextToggle from '../custom/text-toggle.vue';
+import TextButton from '../custom/text-button.vue';
 </script>
 <style lang="scss" scoped>
 .nav-wrapper {
@@ -34,7 +38,7 @@ import TextToggle from '../custom/text-toggle.vue';
   align-items: center;
   padding: 5px 20px;
   box-sizing: border-box;
-  justify-content: flex-start;
+  justify-content: start;
 }
 .delete-comp {
   margin-right: 20px;
@@ -43,5 +47,9 @@ import TextToggle from '../custom/text-toggle.vue';
   height: 100%;
   display: flex;
   align-items: center;
+}
+
+.nav-item-icon {
+  font-size: 16px;
 }
 </style>

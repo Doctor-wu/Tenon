@@ -1,13 +1,14 @@
 <template>
-  <section class="text-toggle-container" :class="{ animation: animate }">
+  <Animate ref="animator" animate-name="rotateY" :duration="300">
     <TextButton :info="info" @click="handleToggle" v-bind="$attrs">
       <slot>开</slot>
     </TextButton>
-  </section>
+  </Animate>
 </template>
 <script setup lang="ts">
 import TextButton from './text-button.vue';
 import { ref, watch, defineEmits } from 'vue';
+import Animate from './animate.vue';
 
 const props = defineProps({
   value: {
@@ -21,37 +22,21 @@ const props = defineProps({
 });
 
 const emit = defineEmits(['change']);
-const animate = ref(false);
-let lastValue: boolean | null = null;
-
+const animator = ref();
 const handleToggle = () => {
   emit('change', !props.value);
 };
 
 watch(props, (props) => {
-  if (props.value !== lastValue) {
-    animate.value = true;
-    setTimeout(() => {
-      animate.value = false;
-    }, 300);
-  }
-})
+  animator.value.run();
+});
 
 </script>
 <style lang="scss" scoped>
 .text-toggle-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  @keyframes rotateY {
-    from {
-      transform: rotateY(0deg);
-    }
-    to {
-      transform: rotateY(360deg);
-    }
-  }
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
 
   &.animation {
     animation: rotateY 0.3s ease-in-out;
