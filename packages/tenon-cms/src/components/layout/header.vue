@@ -7,14 +7,14 @@
     <ul class="nav-list">
       <li class="nav-item">
         <a href="https://github.com/Doctor-wu/Tenon" target="_blank" class="icon-router">
-          <TextButton>
+          <TextButton size="28px">
             <icon-github />
           </TextButton>
         </a>
       </li>
       <li class="nav-item" v-for="item in routerNavs">
         <router-link :to="item.path">
-          <TextButton size="18px">{{ item.name }}</TextButton>
+          <TextButton size="20px">{{ item.name }}</TextButton>
         </router-link>
       </li>
     </ul>
@@ -67,10 +67,13 @@ const routerNavs = [
   margin-right: 10px;
   display: flex;
   align-items: center;
+  & a {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .icon-router {
-  font-size: 24px;
 }
 </style>
 

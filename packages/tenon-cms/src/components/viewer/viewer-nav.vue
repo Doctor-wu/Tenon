@@ -10,7 +10,7 @@
       <icon-eye v-else class="nav-item-icon" />
       <span>{{ editMode ? '编辑模式' : '预览模式' }}</span>
     </TextToggle>
-    <TextButton info="保存页面">
+    <TextButton info="保存页面" @click="saveTree">
       <icon-download class="nav-item-icon" />存
     </TextButton>
     <section
@@ -30,6 +30,17 @@ import { dragging, draggingMaterial, deleteDraggingComponent } from '../../logic
 import { editMode, toggleEditMode } from '../../logic/viewer-status';
 import TextToggle from '../custom/text-toggle.vue';
 import TextButton from '../custom/text-button.vue';
+import { getTreeModel } from '../../local-db';
+import { useStore } from '../../store';
+
+const tree = getTreeModel();
+const store = useStore();
+
+function saveTree() {
+  tree.set({
+    hello: 'world',
+  });
+}
 </script>
 <style lang="scss" scoped>
 .nav-wrapper {

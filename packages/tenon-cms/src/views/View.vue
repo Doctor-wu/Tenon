@@ -16,21 +16,11 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from '../store';
 import ViewerNav from '../components/viewer/viewer-nav.vue';
 import ComposeView from '../materials/base/Compose-View/Compose-View.vue';
-import { handleClickOuterPanel } from '../logic/viewer-select';
 import ViewerNotice from '../components/viewer/viewer-notice.vue';
+import { getTreeModel } from '../local-db';
 
 const store = useStore();
 const panel = ref<HTMLElement>();
-
-// const docClickHelper = (e) => {
-//   handleClickOuterPanel(e, panel.value);
-// };
-// onMounted(() => {
-//   document.addEventListener('click', docClickHelper);
-// });
-// onBeforeUnmount(() => {
-//   document.removeEventListener('click', docClickHelper);
-// });
 
 </script>
 <style lang="scss" scoped>
@@ -59,7 +49,7 @@ const panel = ref<HTMLElement>();
   background-color: #fff;
 }
 
-.viewer-notice{
+.viewer-notice {
   position: fixed;
   z-index: 1;
   bottom: 0;
