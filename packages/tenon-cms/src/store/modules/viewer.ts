@@ -45,8 +45,10 @@ export default {
     SET_HOVERING_COMPONENT(state, component: IMaterial | null) {
       state.hoveringComponent = component;
     },
-    SET_COMP_ID(state) {
-      state.compId++;
+    SET_COMP_ID(state, id?: number) {
+      if (id === undefined)
+        state.compId++;
+      else state.compId = id;
     }
   },
   actions: {
@@ -62,8 +64,8 @@ export default {
     setHoveringComponent(context, component: IMaterial | null) {
       context.commit('SET_HOVERING_COMPONENT', component);
     },
-    setCompId(context) {
-      context.commit('SET_COMP_ID');
+    setCompId(context, id?: number) {
+      context.commit('SET_COMP_ID', id);
       return context.state.compId;
     }
   },
@@ -80,6 +82,9 @@ export default {
     getHoveringComponent(state: IViewerState, getters: any, rootState: IRootState, rootGetters: any) {
       return state.hoveringComponent;
     },
+    getCompId(state: IViewerState, getters: any, rootState: IRootState, rootGetters: any) {
+      return state.compId;
+    }
   },
   namespaced: true,
 } as Module<IViewerState, IRootState>;

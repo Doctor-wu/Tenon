@@ -30,9 +30,7 @@ export default class TreeController {
         .objectStore('tree')
         .get('TREE');
       request.onsuccess = (event: any) => {
-        console.log(event, request);
-
-        resolve(request.result);
+        resolve(event.target.result);
       }
       request.onerror = (event: any) => {
         reject(event);

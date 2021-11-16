@@ -16,14 +16,13 @@ export const setupMaterials = (store: any) => {
     }
     const comp: () => IMaterial = () => {
 
-      const base: any = {
+      const base: IMaterial = {
         name: m.split('/')[1],
         component: materialsRaw[key].default,
         config: {
           ...config,
         },
       };
-      if (config.nestable) base.children = [];
       return base;
     };
 

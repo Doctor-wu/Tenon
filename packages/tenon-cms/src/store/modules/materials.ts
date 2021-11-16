@@ -6,7 +6,6 @@ export interface IMaterial {
   name: string;
   component: any;
   config: any;
-  children?: IMaterial[];
 }
 
 export interface IMaterialsState {
