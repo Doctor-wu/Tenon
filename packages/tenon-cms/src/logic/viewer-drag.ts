@@ -1,5 +1,5 @@
 import { useStore } from "../store";
-import { extractChild, insertChild, insertNewComponent, isAncestor } from "./tree-operation";
+import { createComponentByMaterial, extractChild, insertChild, insertNewComponent, isAncestor } from "./tree-operation";
 import { ref } from 'vue';
 import { Notification } from "@arco-design/web-vue";
 export const dragging = ref(false);
@@ -15,7 +15,11 @@ export const handleMaterialDragStart = (ev: DragEvent, ctx, isMaterial = true) =
   const store = useStore();
 
   if (!ctx.config.parent) {
-    store.dispatch('viewer/setDraggingComponent', ctx.config());
+    const material = ctx.config();
+    // const comp = createComponentByMaterial(material);
+    // console.log(material, comp);
+
+    store.dispatch('viewer/setDraggingComponent', material);
   } else {
     store.dispatch('viewer/setDraggingComponent', ctx.config);
   }
@@ -62,7 +66,7 @@ export const handleContainerDrop = async (ev: DragEvent, ctx, relative?: any) =>
     Notification.warning({
       title: '拖拽错误',
       content: '不能将容器拖拽到自己或自己的子容器中',
-    })
+    });
     return;
   }
   if (!draggingComponent.parent) {

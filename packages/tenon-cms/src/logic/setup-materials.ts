@@ -19,9 +19,7 @@ export const setupMaterials = (store: any) => {
       const base: IMaterial = {
         name: m.split('/')[1],
         component: materialsRaw[key].default,
-        config: {
-          ...config,
-        },
+        config,
       };
       return base;
     };

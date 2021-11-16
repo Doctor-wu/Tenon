@@ -22,9 +22,9 @@ export const tree2config = (config: any) => {
   return newConfig;
 };
 
-export const config2tree = (config: any, parent?: any) => {
-  if (parent) {
-    config.parent = parent;
+export const config2tree = (config: any, sup?: any) => {
+  if (sup) {
+    config.parent = sup;
   }
   config.material = materialsMap.get(config.name)();
   if (config.children) {
