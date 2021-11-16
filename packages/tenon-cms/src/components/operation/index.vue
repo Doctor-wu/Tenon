@@ -36,7 +36,7 @@ import ComponentTree from './component-tree.vue';
   overflow: auto;
 }
 
-::v-deep .arco-tabs-nav-tab {
+:deep(.arco-tabs-nav-tab) {
   padding: 10px 20px;
   height: 44px;
 }

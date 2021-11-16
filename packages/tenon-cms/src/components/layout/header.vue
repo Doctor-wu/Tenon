@@ -14,7 +14,7 @@
       </li>
       <li class="nav-item" v-for="item in routerNavs">
         <router-link :to="item.path">
-          <TextButton size="20px">{{ item.name }}</TextButton>
+          <AnimateButton size="20px">{{ item.name }}</AnimateButton>
         </router-link>
       </li>
     </ul>
@@ -22,6 +22,7 @@
 </template>
 <script setup lang="ts">
 import TextButton from '../custom/text-button.vue';
+import AnimateButton from '../custom/animate-button.vue';
 const routerNavs = [
   {
     name: '定制物料',

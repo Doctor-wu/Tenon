@@ -1,25 +1,25 @@
 <template>
-  <TextButton
+  <AnimateButton
     info="提升到父级"
     :disabled="!activeComponent.parent.parent"
     @click="() => extractActiveComponentFromParent(activeComponent)"
-  >父</TextButton>
-  <TextButton
+  >父</AnimateButton>
+  <AnimateButton
     info="向上移动"
     :disabled="!canUpMove"
     @click="() => upMoveActiveComponent(activeComponent)"
-  >上</TextButton>
-  <TextButton
+  >上</AnimateButton>
+  <AnimateButton
     info="向下移动"
     :disabled="!canDownMove"
     @click="() => downMoveActiveComponent(activeComponent)"
-  >下</TextButton>
-  <TextButton
+  >下</AnimateButton>
+  <AnimateButton
     info="复制元素"
     @click="() => copyActiveComponent(activeComponent, activeComponent.parent)"
     color="#00b42a"
-  >复</TextButton>
-  <TextButton info="删除元素" @click="() => deleteActiveComponent(activeComponent)" color="#f53f3f">删</TextButton>
+  >复</AnimateButton>
+  <AnimateButton info="删除元素" @click="() => deleteActiveComponent(activeComponent)" color="#f53f3f">删</AnimateButton>
 </template>
 <script setup lang="ts">
 import {
@@ -29,6 +29,7 @@ import {
 import { useStore } from '../../store';
 import TextButton from '../custom/text-button.vue';
 import { computed } from 'vue';
+import AnimateButton from '../custom/animate-button.vue';
 
 const store = useStore();
 const activeComponent = computed(() => store?.getters['viewer/getActiveComponent']);

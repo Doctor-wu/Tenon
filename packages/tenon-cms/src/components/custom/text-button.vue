@@ -1,31 +1,27 @@
 <template>
   <a-popover v-if="info && !disabled" :position="infoPosition">
-    <Animate ref="animator" animate-name="button-debounce" :duration="300">
-      <section
-        v-bind="$attrs"
-        class="text-button-container"
-        :style="{ fontSize: size || '21px' }"
-        @click="handleClick"
-        :class="{ disabledStyle: disabled }"
-      >
-        <slot>按钮</slot>
-      </section>
-    </Animate>
-    <template #content>{{ info }}</template>
-  </a-popover>
-  <Animate v-else ref="animator" animate-name="button-debounce" :duration="300">
     <section
+      v-bind="$attrs"
       class="text-button-container"
-      @click="handleClick"
       :style="{ fontSize: size || '21px' }"
+      @click="handleClick"
       :class="{ disabledStyle: disabled }"
     >
       <slot>按钮</slot>
     </section>
-  </Animate>
+    <template #content>{{ info }}</template>
+  </a-popover>
+  <section
+    v-else
+    class="text-button-container"
+    @click="handleClick"
+    :style="{ fontSize: size || '21px' }"
+    :class="{ disabledStyle: disabled }"
+  >
+    <slot>按钮</slot>
+  </section>
 </template>
 <script lang="ts" setup>
-import Animate from './animate.vue';
 import { ref, computed } from 'vue';
 const props = defineProps({
   color: {
@@ -52,11 +48,8 @@ const props = defineProps({
 
 const emit = defineEmits(['click']);
 
-const animator = ref();
-
 function handleClick(...args) {
   if (props.disabled) return;
-  animator.value.run();
   emit('click', ...args);
 }
 
