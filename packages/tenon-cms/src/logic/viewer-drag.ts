@@ -36,14 +36,14 @@ export const handleContainerDropEnter = (ev: DragEvent, ctx) => {
   store.dispatch('viewer/setHoveringComponent', ctx.config);
 }
 
-export const handleWrapperDrop = async (ev: DragEvent, ctx) => {
+export const handleWrapperDrop = (ev: DragEvent, ctx) => {
   ev.preventDefault();
   ev.stopPropagation();
   const store = useStore();
   const draggingComponent = store.getters['viewer/getDraggingComponent'];
   if (!draggingComponent.parent) {
-    await insertNewComponent(draggingComponent, ctx.config.parent, ctx.config);
-    return;
+
+    return insertNewComponent(draggingComponent, ctx.config.parent, ctx.config);
   }
 
   extractChild(draggingComponent.parent, draggingComponent);
@@ -66,6 +66,7 @@ export const handleContainerDrop = async (ev: DragEvent, ctx, relative?: any) =>
     return;
   }
   if (!draggingComponent.parent) {
+    // 物料拖拽
     await insertNewComponent(draggingComponent, ctx.config, relative);
   } else {
     extractChild(draggingComponent.parent, draggingComponent);

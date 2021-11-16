@@ -37,21 +37,10 @@ export const isAncestor = (parent, child) => {
 
 
 
-export async function insertNewComponent(beInsert, parent, relative, insertFromFront = false) {
-  const store = useStore();
-  const id = await store.dispatch('viewer/setCompId');
-  const expressedComponent: any = reactive({
-    name: beInsert.name,
-    parent,
-    material: beInsert,
-    id,
-    textID: String(id),
-  });
+export async function insertNewComponent(beInsert, sup, relative, insertFromFront = false) {
+  const expressedComponent = await createComponentByMaterial(beInsert, sup);
 
-  if (beInsert.children) {
-    expressedComponent.children = [];
-  }
-  insertChild(parent, expressedComponent, relative, insertFromFront);
+  insertChild(sup, expressedComponent, relative, insertFromFront);
   return expressedComponent;
 }
 
@@ -63,6 +52,23 @@ export const recursiveInsertNewComponent = async (comp, parent, relative, insert
     comp.children.forEach(async (child) => {
       await recursiveInsertNewComponent(child, expressedComponent, relative, insertFromFront);
     });
+  }
+  return expressedComponent;
+}
+
+export const createComponentByMaterial = async (material, sup) => {
+  const store = useStore();
+  const id = await store.dispatch('viewer/setCompId');
+  const expressedComponent: any = reactive({
+    name: material.name,
+    parent: sup,
+    material,
+    id,
+    textID: String(id),
+  });
+
+  if (material.config.nestable) {
+    expressedComponent.children = [];
   }
   return expressedComponent;
 }
