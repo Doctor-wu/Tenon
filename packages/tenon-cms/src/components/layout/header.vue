@@ -1,9 +1,11 @@
 <template>
   <section class="wrapper">
-    <h2>
-      Tenon
+    <section>
+      <AnimateButton size="24px">
+        <span style="vertical-align: -3px;">Tenon</span>
+      </AnimateButton>
       <span class="sub-title">一站式低代码平台</span>
-    </h2>
+    </section>
     <ul class="nav-list">
       <li class="nav-item">
         <a href="https://github.com/Doctor-wu/Tenon" target="_blank" class="icon-router">
@@ -48,7 +50,7 @@ const routerNavs = [
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  padding: 15px 20px 10px;
   box-sizing: border-box;
   justify-content: space-between;
 }
@@ -57,6 +59,7 @@ const routerNavs = [
   font-size: 13px;
   color: #999;
   font-weight: 500;
+  font-family: "pomo", Courier, monospace;
 }
 
 .nav-list {

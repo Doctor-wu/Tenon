@@ -7,7 +7,7 @@
 </template>
 <script setup lang="ts">
 import TextButton from './text-button.vue';
-import { ref, watch, defineEmits } from 'vue';
+import { ref, watch } from 'vue';
 import Animate from './animate.vue';
 
 const props = defineProps({

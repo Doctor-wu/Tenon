@@ -1,10 +1,8 @@
 <template>
-  <section
-    class="animation-wrapper"
-    :class="[animate ? 'animate' : '']"
-    :style="animate ? animationObj : undefined"
-  >
-    <slot></slot>
+  <section class="animation-wrapper">
+    <section :class="[animate ? 'animate' : '']" :style="animate ? animationObj : undefined">
+      <slot></slot>
+    </section>
   </section>
 </template>
 <script setup lang="ts">
@@ -40,7 +38,7 @@ const animationObj = computed(() => {
 
 <style lang="scss" scoped>
 .animation-wrapper {
-  display: inline-block;
+  display: inline-flex;
   overflow: hidden;
   &.animate {
     position: relative;
