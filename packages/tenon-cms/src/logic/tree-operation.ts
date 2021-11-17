@@ -88,10 +88,12 @@ export const uploadTree = (tree: ComponentTreeNode) => {
 
 export const downloadTree = async (): Promise<ComponentTreeNode> => {
   const store = useStore();
+  const tree = await treeModel.get() as any;
+  if (!tree) return tree;
   const {
     lastID,
     config,
-  } = await treeModel.get() as any;
+  } = tree;
   store.dispatch('viewer/setCompId', lastID);
   config2tree(config);
   store.dispatch('viewer/setTree', config);

@@ -1,1 +1,1 @@
-export { getTreeModel } from "./services/tree";
+export { getTreeModel } from "./controller/tree";

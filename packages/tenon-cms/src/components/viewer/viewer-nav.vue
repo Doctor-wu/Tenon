@@ -58,7 +58,7 @@ function saveTree() {
       fontSize: '16px',
       color: '#666'
     }
-  }, tree.children.length > 0 ? '已存在页面配置，是否要覆盖已有缓存?' : '当前页面没有组件，是否清空页面配置？');
+  }, tree.children.length > 0 ? '已存在页面配置，是否要覆盖已有缓存?' : '当前页面没有组件，是否清空页面缓存配置？');
   Modal.confirm({
     title: '提示',
     content,
@@ -72,6 +72,10 @@ async function loadConfig() {
   const currentTree = store.getters['viewer/getTree'];
   const run = async () => {
     const config = await downloadTree();
+    if (!config) {
+      Message.warning('读取失败, 未发现页面缓存');
+      return;
+    }
     Message.success('读取页面配置成功');
     console.log(config);
   }
