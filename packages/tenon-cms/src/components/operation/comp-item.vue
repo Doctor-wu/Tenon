@@ -2,8 +2,8 @@
   <a-menu-item
     class="comp-item"
     :draggable="editMode"
-    @dragstart="(e) => handleMaterialDragStart(e, ctx)"
-    @dragend="(e) => handleMaterialDragEnd(e, ctx)"
+    @dragstart="(e) => handleMaterialDragStart(e, config)"
+    @dragend="(e) => handleMaterialDragEnd(e, config)"
   >
     <section class="comp-item-container">
       <section class="comp-item-header">
@@ -12,7 +12,11 @@
           {{ component.name }}
         </section>
         <section class="comp-platform">
-          <a-tag color="arcoblue" style="margin-right: 5px;" v-for="item in component.config.platform || []">{{ item }}</a-tag>
+          <a-tag
+            color="arcoblue"
+            style="margin-right: 5px;"
+            v-for="item in component.config.platform || []"
+          >{{ item }}</a-tag>
         </section>
       </section>
       <section v-if="component.config.description" class="comp-description">

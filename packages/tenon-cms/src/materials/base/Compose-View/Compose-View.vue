@@ -2,9 +2,9 @@
   <section
     class="compose-view-container"
     :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === config, editable: editMode }"
-    @dragenter="(e) => handleContainerDropEnter(e, ctx)"
+    @dragenter="(e) => handleContainerDropEnter(e, config)"
     @dragover.prevent="() => { }"
-    @drop="(e) => handleContainerDrop(e, ctx)"
+    @drop="(e) => handleContainerDrop(e, config)"
   >
     <template v-if="config.children?.length">
       <Wrapper :config="subConfig" v-for="subConfig in config.children" :key="subConfig.id">
@@ -24,10 +24,6 @@ import Wrapper from '../../../components/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '../../../logic/viewer-drag';
 import { editMode } from '../../../logic/viewer-status';
 
-const instance = getCurrentInstance() as ComponentInternalInstance & {
-  ctx: any;
-};
-const ctx = instance.ctx;
 const store = useStore();
 
 const props = defineProps({

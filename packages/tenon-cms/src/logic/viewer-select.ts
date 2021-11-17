@@ -5,11 +5,11 @@ import { editMode } from "./viewer-status";
 
 export let choosingWrapper = ref(-1);
 
-export const handleSelectComponent = (e: MouseEvent, ctx) => {
+export const handleSelectComponent = (e: MouseEvent, config) => {
   e.stopPropagation();
   if (!editMode) return;
   const store = useStore();
-  store.dispatch("viewer/setActiveComponent", ctx.config);
+  store.dispatch("viewer/setActiveComponent", config);
 }
 
 export const handleClickOuterPanel = (e: MouseEvent, panel?: HTMLElement) => {

@@ -2,22 +2,22 @@
   <section
     class="wrapper-container"
     :class="{
-      hovering: dragging && hovering === ctx.config.id,
+      hovering: dragging && hovering === config.id,
       editable: editMode,
       choosing: editMode
         && !dragging
-        && choosingWrapper === ctx.config.id
+        && choosingWrapper === config.id
         && !store?.getters['viewer/getDraggingComponent'],
-      active: editMode && !dragging && store?.getters['viewer/getActiveComponent'] === ctx.config
+      active: editMode && !dragging && store?.getters['viewer/getActiveComponent'] === config
     }"
-    @dragstart.capture="(e) => handleMaterialDragStart(e, ctx, false)"
-    @dragend="(e) => handleMaterialDragEnd(e, ctx)"
+    @dragstart.capture="(e) => handleMaterialDragStart(e, config, false)"
+    @dragend="(e) => handleMaterialDragEnd(e, config)"
     @dragover.prevent="() => { }"
-    @dragenter.prevent="() => { hovering = ctx.config.id }"
-    @drop="(e) => handleWrapperDrop(e, ctx)"
+    @dragenter.prevent="() => { hovering = config.id }"
+    @drop="(e) => handleWrapperDrop(e, config)"
     @mouseover.capture="() => choosingWrapper = config.id"
     @mouseleave="() => choosingWrapper = -1"
-    @click="(e) => handleSelectComponent(e, ctx)"
+    @click="(e) => handleSelectComponent(e, config)"
     :draggable="editMode"
   >
     <slot></slot>
@@ -30,10 +30,6 @@ import { editMode } from '../../logic/viewer-status';
 import { useStore } from '../../store';
 import { choosingWrapper, handleSelectComponent } from '../../logic/viewer-select';
 const store = useStore();
-const instance = getCurrentInstance() as ComponentInternalInstance & {
-  ctx: any;
-};
-const ctx = instance.ctx;
 
 const props = defineProps({
   config: {
