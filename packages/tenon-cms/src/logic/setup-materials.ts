@@ -1,5 +1,5 @@
 import { Image } from "@arco-design/web-vue";
-import { defineComponent, h } from "vue";
+import { createTextVNode, defineComponent, h } from "vue";
 import { IMaterial } from "../store/modules/materials";
 const materials = new Map<string, (() => IMaterial)[]>();
 const materialsMap = new Map<string, () => IMaterial>();
@@ -86,16 +86,19 @@ function parseConfig2View(this: any, config) {
 
   if (isText) {
     if (isExpression) {
-      return this[value];
+      return () => createTextVNode(this[value]);
     }
-    return config.value;
+    return () => createTextVNode(config.value);
   }
+
+  if (dependencies[el]) el = dependencies[el];
 
   if (materialsMap.has(el)) {
     el = materialsMap.get(el)?.().component;
   }
-  if (dependencies[el]) el = dependencies[el];
-  return function (this: any, ...args) {
-    return h(el, props, children.map(child => parseConfig2View.call(this, child)));
+  return function _custom_render(this: any, ...args) {
+    return h(el, props, {
+      default: () => children.map(child => parseConfig2View.call(this, child)()),
+    });
   };
 }
