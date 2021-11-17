@@ -1,0 +1,14 @@
+{
+  "el": "span",
+  "children": [
+    {
+      "isText": true,
+      "value": "Text"
+    },
+    {
+      "isText": true,
+      "isExpression": true,
+      "value": "author"
+    }
+  ]
+}

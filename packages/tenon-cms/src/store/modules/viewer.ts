@@ -16,6 +16,7 @@ export interface ComponentTreeNode {
   textID?: string;
   material?: IMaterial;
   children: ComponentTreeNode[];
+  wrapperStyles?: Object;
 }
 
 export default {

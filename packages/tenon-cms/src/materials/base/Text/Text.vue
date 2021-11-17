@@ -1,5 +1,5 @@
 <template>
-  <span>Text</span>
+  <span>Text{{ author }}</span>
 </template>
 <script setup lang="ts">
 </script>

@@ -1,10 +1,7 @@
 {
   "name": "Picture",
   "icon": "file-image",
-  "description": [
-    "Picture 是一个<基础组件>，Picture提供基础的图片能力"
-  ],
-  "platform": [
-    "web"
-  ]
+  "description": ["Picture 是一个<基础组件>，Picture提供基础的图片能力"],
+  "dependencies": [["Image", "@arco-design", "@arco-design/web-vue"]],
+  "platform": ["web"]
 }
