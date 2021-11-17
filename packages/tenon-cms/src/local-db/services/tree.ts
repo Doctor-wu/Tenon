@@ -1,15 +1,19 @@
+import { ComponentTreeNode } from "../../store/modules/viewer";
 import { TenonIndexedDBInstance } from "../indexedDB";
 import { TenonService } from "../service";
 
-
+export interface TreeStruct {
+  lastID: number;
+  config: ComponentTreeNode;
+}
 export default class TreeController {
   public service: TenonService;
   constructor(service: TenonService) {
     this.service = service;
   }
 
-  add(tree: any, key: string = 'TREE') {
-    return new Promise((resolve, reject) => {
+  add(tree: TreeStruct, key: string = 'TREE') {
+    return new Promise<Event>((resolve, reject) => {
       const request = this.service
         .createTransaction(['tree'], 'readwrite')
         .objectStore('tree')
@@ -24,7 +28,7 @@ export default class TreeController {
   }
 
   get() {
-    return new Promise((resolve, reject) => {
+    return new Promise<TreeStruct>((resolve, reject) => {
       const request = this.service
         .createTransaction(['tree'], 'readonly')
         .objectStore('tree')
@@ -38,19 +42,19 @@ export default class TreeController {
     })
   }
 
-  async set(tree: any) {
+  async set(tree: TreeStruct) {
     if (!await this.get()) {
       return await this.add(tree);
     } else {
-      return new Promise((resolve, reject) => {
+      return new Promise<Event>((resolve, reject) => {
         const request = this.service
           .createTransaction(['tree'], 'readwrite')
           .objectStore('tree')
           .put(tree, 'TREE');
-        request.onsuccess = (event: any) => {
+        request.onsuccess = (event: Event) => {
           resolve(event);
         }
-        request.onerror = (event: any) => {
+        request.onerror = (event: Event) => {
           reject(event);
         }
       });

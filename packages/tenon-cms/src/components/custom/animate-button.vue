@@ -7,7 +7,7 @@
 </template>
 <script lang="ts" setup>
 import Animate from './animate.vue';
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 import TextButton from './text-button.vue';
 const props = defineProps({
   duration: {

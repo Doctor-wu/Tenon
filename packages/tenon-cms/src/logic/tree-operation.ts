@@ -1,4 +1,9 @@
-import { reactive } from "vue";
+import { reactive, toRaw } from "vue";
+import { getTreeModel } from "../local-db";
+import { IMaterial } from "../store/modules/materials";
+import { ComponentTreeNode } from "../store/modules/viewer";
+import { config2tree, tree2config } from "./config-transform";
+const treeModel = getTreeModel();
 import { useStore } from "../store";
 
 export const insertChild = (parent, child, relative, insertFromFront = false) => {
@@ -35,8 +40,6 @@ export const isAncestor = (parent, child) => {
   return isAncestor(parent, child.parent);
 }
 
-
-
 export async function insertNewComponent(beInsert, sup, relative, insertFromFront = false) {
   const expressedComponent = await createComponentByMaterial(beInsert, sup);
 
@@ -56,7 +59,7 @@ export const recursiveInsertNewComponent = async (comp, parent, relative, insert
   return expressedComponent;
 }
 
-export const createComponentByMaterial = async (material, sup) => {
+export const createComponentByMaterial = async (material: IMaterial, sup?: ComponentTreeNode): Promise<ComponentTreeNode> => {
   const store = useStore();
   const id = await store.dispatch('viewer/setCompId');
   const expressedComponent: any = reactive({
@@ -71,4 +74,27 @@ export const createComponentByMaterial = async (material, sup) => {
     expressedComponent.children = [];
   }
   return expressedComponent;
+}
+
+export const uploadTree = (tree: ComponentTreeNode) => {
+  const store = useStore();
+  const config = toRaw<ComponentTreeNode>(tree2config(tree));
+
+  return treeModel.set({
+    config,
+    lastID: store.getters['viewer/getCompId'],
+  });
+}
+
+export const downloadTree = async (): Promise<ComponentTreeNode> => {
+  const store = useStore();
+  const {
+    lastID,
+    config,
+  } = await treeModel.get() as any;
+  store.dispatch('viewer/setCompId', lastID);
+  config2tree(config);
+  store.dispatch('viewer/setTree', config);
+  store.dispatch('viewer/setActiveComponent', null);
+  return config;
 }

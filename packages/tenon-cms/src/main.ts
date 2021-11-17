@@ -4,8 +4,8 @@ import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import App from './App.vue';
 import './style/index.scss';
 import '@arco-design/web-vue/dist/arco.css';
-import { setupRouter } from './router';
 import { setupStore } from './store';
+import { setupRouter } from './router';
 
 const app = createApp(App);
 
@@ -16,10 +16,10 @@ app.use(ArcoVue, {
 });
 app.use(ArcoVueIcon);
 
-// 初始化路由
-setupRouter(app);
 // 初始化Store
 setupStore(app);
+// 初始化路由
+setupRouter(app);
 
 // 将app挂载到页面上
 app.mount('#app');

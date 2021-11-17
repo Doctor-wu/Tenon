@@ -67,6 +67,14 @@ export default {
     setCompId(context, id?: number) {
       context.commit('SET_COMP_ID', id);
       return context.state.compId;
+    },
+    clearTree(context) {
+      context.commit('SET_TREE', {
+        name: 'Compose-View',
+        id: 0,
+        children: [],
+      });
+      context.commit('SET_COMP_ID', 0);
     }
   },
   getters: {

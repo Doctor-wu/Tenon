@@ -1,9 +1,7 @@
+import { ComponentTreeNode } from "../store/modules/viewer";
 import { useStore } from "../store";
 
-const store = useStore();
-const materialsMap = store.getters["materials/getMaterialsMap"];
-
-export const tree2config = (config: any) => {
+export const tree2config = (config: ComponentTreeNode) => {
   let newConfig: any = {};
   const extractKey = [
     'parent',
@@ -22,7 +20,9 @@ export const tree2config = (config: any) => {
   return newConfig;
 };
 
-export const config2tree = (config: any, sup?: any) => {
+export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
+  const store = useStore();
+  const materialsMap = store.getters["materials/getMaterialsMap"];
   if (sup) {
     config.parent = sup;
   }
