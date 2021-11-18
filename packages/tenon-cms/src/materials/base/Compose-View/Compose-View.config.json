@@ -7,5 +7,6 @@
   "icon": "code-sandbox",
   "setup": "native",
   "nestable": true,
-  "platform": ["web", "mp"]
+  "platform": ["web", "mp"],
+  "schemas":[]
 }

@@ -25,7 +25,6 @@
 </template>
 <script lang="ts" setup>
 import { handleMaterialDragStart, handleMaterialDragEnd, handleWrapperDrop, dragging, hovering } from '../../logic/viewer-drag';
-import { getCurrentInstance, ComponentInternalInstance, ref } from 'vue';
 import { editMode } from '../../logic/viewer-status';
 import { useStore } from '../../store';
 import { choosingWrapper, handleSelectComponent } from '../../logic/viewer-select';

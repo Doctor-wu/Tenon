@@ -1,14 +1,15 @@
 {
-  "el": "span",
+  "el": "section",
+  "props": {
+    "style": "containerStyle"
+  },
   "children": [
     {
-      "isText": true,
-      "value": "Text"
-    },
-    {
-      "isText": true,
-      "isExpression": true,
-      "value": "author"
+      "el": "span",
+      "props": {
+        "style": "textStyle"
+      },
+      "children": ["{{textValue.value}}"]
     }
   ]
 }

@@ -1,14 +1,4 @@
 {
   "el": "span",
-  "children": [
-    {
-      "isText": true,
-      "value": "Block "
-    },
-    {
-      "isText": true,
-      "isExpression": true,
-      "value": "author"
-    }
-  ]
+  "children": ["Block", "{{author}}"]
 }

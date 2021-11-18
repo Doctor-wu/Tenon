@@ -14,8 +14,10 @@ export interface ComponentTreeNode {
   name: string;
   id: number;
   textID?: string;
+  parent: ComponentTreeNode | null;
   material?: IMaterial;
-  children: ComponentTreeNode[];
+  props?: any;
+  children?: ComponentTreeNode[];
   wrapperStyles?: Object;
 }
 
@@ -26,6 +28,7 @@ export default {
         name: 'Compose-View',
         id: 0,
         children: [],
+        parent: null,
       },
       activeComponent: null,
       hoveringComponent: null,
@@ -75,6 +78,7 @@ export default {
         id: 0,
         children: [],
       });
+      context.commit('SET_ACTIVE_COMPONENT', null);
       context.commit('SET_COMP_ID', 0);
     }
   },

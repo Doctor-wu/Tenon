@@ -1,12 +1,12 @@
 import { Module } from 'vuex';
 import { IRootState } from '..';
-import { Schema } from '../../logic/schema';
+import { ISchema } from '../../logic/schema';
 
 export interface IMaterial {
   name: string;
   component: any;
   config: any;
-  schema?: Schema[];
+  schemas?: ISchema[];
 }
 
 

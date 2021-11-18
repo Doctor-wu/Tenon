@@ -4,7 +4,7 @@
     <section v-else class="attr-menus">
       <a-tabs
         class="attr-menus-wrapper"
-        :default-active-key="attrs[0].title"
+        :default-active-key="attrs[1].title"
         animation
         size="large"
       >
@@ -39,18 +39,11 @@ const attrs = ref([
     component: BaseInfo,
   },
   {
-    title: '拷贝',
+    title: '属性',
     icon: 'icon-copy',
     component: CompAttrs,
   },
 ]);
-
-// effect(() => {
-//   console.log(
-//     map.value.get(activeComponent?.value?.name)?.().config,
-//     activeComponent.value
-//   )
-// });
 </script>
 
 <style lang="scss" scoped>

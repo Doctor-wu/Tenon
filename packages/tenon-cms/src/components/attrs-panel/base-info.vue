@@ -25,11 +25,12 @@ import ActiveComponentController from './active-component-controller.vue';
 
 const store = useStore();
 const activeComponent = computed(() => store?.getters['viewer/getActiveComponent']);
-const map = computed(() => store?.getters['materials/getMaterialsMap']);
 
 const compDescriptions = computed(() => {
   const comp = activeComponent.value;
-  const compRaw = map.value.get(comp.name)();
+  console.log(comp);
+
+  const compRaw = comp.material;
   const descriptions: any[] = [
     {
       label: 'ID: ',

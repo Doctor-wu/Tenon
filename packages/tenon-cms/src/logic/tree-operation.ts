@@ -5,6 +5,7 @@ import { ComponentTreeNode } from "../store/modules/viewer";
 import { config2tree, tree2config } from "./config-transform";
 const treeModel = getTreeModel();
 import { useStore } from "../store";
+import { createPropsBySchemas } from "./schema";
 
 export const insertChild = (parent, child, relative, insertFromFront = false) => {
   if (!relative) {
@@ -31,6 +32,7 @@ export const extractChild = (parent, child) => {
 }
 
 export const isAncestor = (parent, child) => {
+  if (!child) return false;
   if (parent === child) {
     return true;
   }
@@ -59,13 +61,14 @@ export const recursiveInsertNewComponent = async (comp, parent, relative, insert
   return expressedComponent;
 }
 
-export const createComponentByMaterial = async (material: IMaterial, sup?: ComponentTreeNode): Promise<ComponentTreeNode> => {
+export const createComponentByMaterial = async (material: IMaterial, sup: ComponentTreeNode | null = null): Promise<ComponentTreeNode> => {
   const store = useStore();
   const id = await store.dispatch('viewer/setCompId');
-  const expressedComponent: any = reactive({
+  const expressedComponent: any = reactive<ComponentTreeNode>({
     name: material.name,
     parent: sup,
     material,
+    props: createPropsBySchemas(material.schemas!),
     id,
     textID: String(id),
   });

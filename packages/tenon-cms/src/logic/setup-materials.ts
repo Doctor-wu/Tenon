@@ -1,15 +1,20 @@
 import { Image } from "@arco-design/web-vue";
-import { createTextVNode, defineComponent, h } from "vue";
+import {
+  createTextVNode,
+  defineComponent, h,
+  onMounted, onUpdated,
+  onBeforeUnmount, onBeforeMount,
+  reactive
+} from "vue";
 import { IMaterial } from "../store/modules/materials";
+import { containerSchema, parseSchemas2Props } from "./schema";
+
 const materials = new Map<string, (() => IMaterial)[]>();
 const materialsMap = new Map<string, () => IMaterial>();
-
 const componentMap = new Map<string, any>();
-
 const dependencies = {
   Image,
 }
-
 
 export const setupMaterials = (store: any) => {
   const vueRaw = import.meta.globEager('../materials/**/*.vue');
@@ -37,21 +42,21 @@ export const setupMaterials = (store: any) => {
     if (!materials.get(categoryKey)) {
       materials.set(categoryKey, []);
     }
-    const comp: () => IMaterial = () => {
 
+    config.schemas?.unshift(containerSchema);
+    const comp: () => IMaterial = () => {
       const base: IMaterial = {
         name: compName,
         component: config.setup === 'native'
           ? vueConfig
           : componentMap.has(config.name)
             ? componentMap.get(config.name)
-            : setupComponent(viewConfig, logicConfig, config),
+            : createComponent(viewConfig, logicConfig, config),
         config,
+        schemas: config.schemas,
       };
-
       return base;
     };
-    console.log(comp);
 
     materials.get(categoryKey)!.push(comp);
     materialsMap.set(compName, comp);
@@ -62,47 +67,79 @@ export const setupMaterials = (store: any) => {
 }
 
 
-function setupComponent(view, logic, config) {
-  console.log(view, logic, config);
+function createComponent(viewConfig, logic, config) {
   const comp = defineComponent({
     name: config.name,
-    render: parseConfig2View(view),
-    setup() {
-      return {
-        author: 'Doctorwu',
-      }
-    }
+    render: function (this: any) {
+      return parseConfig2View.call(this, viewConfig).call(this);
+    },
+    props: parseSchemas2Props(config.schemas),
+    setup: function (props, ctx) { return setupComponent(props, ctx, logic, config) },
   });
 
   componentMap.set(config.name, comp);
   return comp;
 }
 
+function setupComponent(props, ctx, logic, config) {
+  const state = logic?.({
+    onMounted, onUpdated, onBeforeUnmount, onBeforeMount
+  }, props, ctx) || {};
+
+  return reactive(state);
+}
+
 function parseConfig2View(this: any, config) {
+  if (typeof config === 'string') {
+    config = config.trim();
+    if (config.startsWith('{{') && config.endsWith('}}')) {
+      return () => createTextVNode(recursiveGetValue(this, config.slice(2, -2)));
+    }
+    return () => createTextVNode(config);
+  }
+
   let {
     el,
-    isText = false,
-    isExpression = false,
-    value = '',
-    props = null,
+    props = {},
     children = []
   } = config;
-
-  if (isText) {
-    if (isExpression) {
-      return () => createTextVNode(this[value]);
-    }
-    return () => createTextVNode(config.value);
-  }
 
   if (dependencies[el]) el = dependencies[el];
 
   if (materialsMap.has(el)) {
-    el = materialsMap.get(el)?.().component;
+    const compFactory = materialsMap.get(el);
+    const material = compFactory?.();
+    el = material?.component;
   }
-  return function _custom_render(this: any, ...args) {
-    return h(el, props, {
-      default: () => children.map(child => parseConfig2View.call(this, child)()),
+
+  const processedProps = setupProps.call(this, props);
+  return function _custom_render(this: any) {
+    return h(el, processedProps, {
+      default: () => children.map(child => parseConfig2View.call(this, child).call(this)),
     });
   };
+}
+
+function recursiveGetValue(obj: any, path: string) {
+  if (path.includes('.')) {
+    const [key, ...rest] = path.split('.');
+    return recursiveGetValue(obj[key], rest.join('.'));
+  }
+  return obj[path];
+}
+
+function setupProps(this: any, props = {}) {
+  const newProps = {};
+  Object.keys(props).forEach(key => {
+    const value = props[key];
+    switch (key) {
+      case 'style':
+        newProps[key] = recursiveGetValue(this, value);
+        break;
+      default:
+        newProps[key] = value;
+        break;
+    }
+  });
+  return newProps;
 }

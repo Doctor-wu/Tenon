@@ -1,6 +1,7 @@
 <template>
   <section
     class="compose-view-container"
+    :style="$attrs.containerStyle"
     :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === config, editable: editMode }"
     @dragenter="(e) => handleContainerDropEnter(e, config)"
     @dragover.prevent="() => { }"
@@ -11,6 +12,7 @@
         <component
           :is="toRaw(store.getters['materials/getMaterialsMap'].get(subConfig.name)().component)"
           :config="subConfig"
+          v-bind="subConfig.props"
         ></component>
       </Wrapper>
     </template>
@@ -19,7 +21,7 @@
 </template>
 <script lang="ts" setup>
 import { useStore } from '../../../store';
-import { toRaw, getCurrentInstance, ComponentInternalInstance } from 'vue';
+import { toRaw } from 'vue';
 import Wrapper from '../../../components/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '../../../logic/viewer-drag';
 import { editMode } from '../../../logic/viewer-status';
@@ -29,7 +31,7 @@ const store = useStore();
 const props = defineProps({
   config: {
     type: Object,
-    default: () => []
+    default: () => { }
   },
 });
 // console.log(props.config);
