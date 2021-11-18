@@ -1,7 +1,7 @@
 <template>
   <section
     class="compose-view-container"
-    :style="$attrs.containerStyle"
+    :style="($attrs as any).containerStyle"
     :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === config, editable: editMode }"
     @dragenter="(e) => handleContainerDropEnter(e, config)"
     @dragover.prevent="() => { }"

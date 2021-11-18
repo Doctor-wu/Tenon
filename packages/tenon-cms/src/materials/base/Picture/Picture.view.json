@@ -1,5 +1,8 @@
 {
   "el": "section",
+  "props": {
+    "style": "containerStyle"
+  },
   "children": [
     {
       "el": "Image",

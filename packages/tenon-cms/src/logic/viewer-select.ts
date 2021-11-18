@@ -12,14 +12,6 @@ export const handleSelectComponent = (e: MouseEvent, config) => {
   store.dispatch("viewer/setActiveComponent", config);
 }
 
-export const handleClickOuterPanel = (e: MouseEvent, panel?: HTMLElement) => {
-  if (!panel) return;
-  if (!panel.contains(e.target as Node)) {
-    const store = useStore();
-    store.dispatch("viewer/setActiveComponent", null);
-  }
-}
-
 export const deleteActiveComponent = (activeComponent) => {
   const store = useStore();
   extractChild(activeComponent.parent, activeComponent);

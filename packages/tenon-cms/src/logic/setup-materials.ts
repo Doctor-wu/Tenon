@@ -43,7 +43,7 @@ export const setupMaterials = (store: any) => {
       materials.set(categoryKey, []);
     }
 
-    config.schemas?.unshift(containerSchema);
+    config.schemas?.push(containerSchema);
     const comp: () => IMaterial = () => {
       const base: IMaterial = {
         name: compName,
@@ -121,6 +121,7 @@ function parseConfig2View(this: any, config) {
 }
 
 function recursiveGetValue(obj: any, path: string) {
+  if (!obj) return;
   if (path.includes('.')) {
     const [key, ...rest] = path.split('.');
     return recursiveGetValue(obj[key], rest.join('.'));

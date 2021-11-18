@@ -47,9 +47,10 @@ export const parseSchemas2Props = (schemas: ISchema[] = []) => {
   return result;
 }
 
-export const createPropsBySchemas = (schemas: ISchema[] = []) => {
-  const props = {
-  };
+export const createPropsBySchemas = (schemas: ISchema[] = [], source?: any) => {
+  console.log(source);
+
+  const props = {};
 
   schemas.forEach(schema => {
     const {
@@ -60,7 +61,7 @@ export const createPropsBySchemas = (schemas: ISchema[] = []) => {
     } = schema;
     const propValue = {};
     Object.keys(properties).forEach(propertyKey => {
-      propValue[propertyKey] = properties[propertyKey].default;
+      propValue[propertyKey] = source?.[fieldName]?.[propertyKey] || properties[propertyKey].default;
     });
     props[fieldName] = propValue;
   });
@@ -95,10 +96,48 @@ export const containerSchema: ISchema =
         "inline-flex": "inline-flex",
       }
     },
+    "align-items": {
+      type: "select",
+      title: "align-items",
+      default: "start",
+      options: {
+        start: "start",
+        center: "center",
+        end: "end",
+      },
+    },
+    "justify-content": {
+      type: "select",
+      title: "justify-content",
+      default: "start",
+      options: {
+        start: "start",
+        center: "center",
+        end: "end",
+        "space-between": "space-between",
+        "space-evenly": "space-evenly",
+        "space-around": "space-around",
+      },
+    },
+    flex: {
+      type: "string",
+      title: "flex",
+      default: ""
+    },
     border: {
       type: "string",
       title: "边框",
       default: "none"
+    },
+    width: {
+      type: "string",
+      title: "宽度",
+      default: "auto"
+    },
+    height: {
+      type: "string",
+      title: "高度",
+      default: "auto"
     }
   }
 }

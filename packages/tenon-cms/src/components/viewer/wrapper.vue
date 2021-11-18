@@ -52,10 +52,12 @@ const props = defineProps({
 .wrapper-container.editable.choosing {
   outline: 2px dashed #1693ef;
   position: relative;
+  z-index: 1;
 }
 
 .wrapper-container.active {
   outline: 2px solid #9316ef;
+  position: relative;
 }
 .wrapper-container {
   background-color: #fff;

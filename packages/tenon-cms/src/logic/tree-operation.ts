@@ -42,17 +42,19 @@ export const isAncestor = (parent, child) => {
   return isAncestor(parent, child.parent);
 }
 
-export async function insertNewComponent(beInsert, sup, relative, insertFromFront = false) {
-  const expressedComponent = await createComponentByMaterial(beInsert, sup);
+export async function insertNewComponent(beInsert, sup, relative, insertFromFront = false, props?: any) {
+  const expressedComponent = await createComponentByMaterial(beInsert, sup, props);
 
   insertChild(sup, expressedComponent, relative, insertFromFront);
   return expressedComponent;
 }
 
 export const recursiveInsertNewComponent = async (comp, parent, relative, insertFromFront = false) => {
+  console.log(comp);
+
   const store = useStore();
   const beInsert = store.getters['materials/getMaterialsMap'].get(comp.name)();
-  const expressedComponent = await insertNewComponent(beInsert, parent, relative, insertFromFront);
+  const expressedComponent = await insertNewComponent(beInsert, parent, relative, insertFromFront, comp.props);
   if (comp.children) {
     comp.children.forEach(async (child) => {
       await recursiveInsertNewComponent(child, expressedComponent, relative, insertFromFront);
@@ -61,14 +63,14 @@ export const recursiveInsertNewComponent = async (comp, parent, relative, insert
   return expressedComponent;
 }
 
-export const createComponentByMaterial = async (material: IMaterial, sup: ComponentTreeNode | null = null): Promise<ComponentTreeNode> => {
+export const createComponentByMaterial = async (material: IMaterial, sup: ComponentTreeNode | null = null, props?: any): Promise<ComponentTreeNode> => {
   const store = useStore();
   const id = await store.dispatch('viewer/setCompId');
   const expressedComponent: any = reactive<ComponentTreeNode>({
     name: material.name,
     parent: sup,
     material,
-    props: createPropsBySchemas(material.schemas!),
+    props: createPropsBySchemas(material.schemas!, props),
     id,
     textID: String(id),
   });
