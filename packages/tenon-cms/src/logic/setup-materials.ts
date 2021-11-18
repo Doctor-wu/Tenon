@@ -12,17 +12,21 @@ const dependencies = {
 
 
 export const setupMaterials = (store: any) => {
-  const materialsRaw = import.meta.globEager('../materials/**/*.vue');
+  const vueRaw = import.meta.globEager('../materials/**/*.vue');
   const configRaw = import.meta.globEager('../materials/**/*.config.json');
   const viewRaw = import.meta.globEager('../materials/**/*.view.json');
   const logicRaw = import.meta.globEager('../materials/**/*.ts');
-  Object.keys(materialsRaw).forEach(key => {
-    const m = key.replace('../materials/', '');
+  Object.keys(configRaw).forEach(key => {
+    const extractPrefixName = key.replace('../materials/', '');
+    const categoryKey = extractPrefixName.split('/')[0];
+    const compName = extractPrefixName.split('/')[1];
+
     const getPath = (placeholder) => {
-      return key.replace('.vue', placeholder);
+      return key.replace('.config.json', placeholder);
     }
-    const configPath = getPath('.config.json');
-    const config = configRaw[configPath].default;
+    const config = configRaw[key];
+    const vuePath = getPath('.vue');
+    const vueConfig = vueRaw?.[vuePath]?.default;
 
     const viewPath = getPath('.view.json');
     const viewConfig = viewRaw[viewPath]?.default;
@@ -30,16 +34,15 @@ export const setupMaterials = (store: any) => {
     const logicPath = getPath('.ts');
     const logicConfig = logicRaw[logicPath]?.default;
 
-    const category = m.split('/')[0];
-    if (!materials.get(category)) {
-      materials.set(category, []);
+    if (!materials.get(categoryKey)) {
+      materials.set(categoryKey, []);
     }
     const comp: () => IMaterial = () => {
 
       const base: IMaterial = {
-        name: m.split('/')[1],
+        name: compName,
         component: config.setup === 'native'
-          ? materialsRaw[key].default
+          ? vueConfig
           : componentMap.has(config.name)
             ? componentMap.get(config.name)
             : setupComponent(viewConfig, logicConfig, config),
@@ -48,9 +51,10 @@ export const setupMaterials = (store: any) => {
 
       return base;
     };
+    console.log(comp);
 
-    materials.get(category)!.push(comp);
-    materialsMap.set(m.split('/')[1], comp);
+    materials.get(categoryKey)!.push(comp);
+    materialsMap.set(compName, comp);
   });
 
   store.dispatch('materials/setMaterials', materials);

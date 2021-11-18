@@ -127,7 +127,7 @@ function deleteConfig() {
   align-items: center;
   padding: 5px 20px;
   box-sizing: border-box;
-  justify-content: center;
+  justify-content: start;
 }
 .delete-comp {
   margin-right: 20px;

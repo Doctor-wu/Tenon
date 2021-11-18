@@ -26,7 +26,9 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
   if (sup) {
     config.parent = sup;
   }
-  config.material = materialsMap.get(config.name)();
+  const compFactory = materialsMap.get(config.name);
+
+  config.material = compFactory();
   if (config.children) {
     config.children.forEach(child => {
       config2tree(child, config);
