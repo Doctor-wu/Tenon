@@ -85,6 +85,22 @@ export const containerSchema: ISchema =
       title: "外边距",
       default: "0px"
     },
+    overflow: {
+      type: "string",
+      title: "overflow",
+      default: ""
+    },
+    "box-sizing": {
+      type: "select",
+      title: "盒模型",
+      default: "unset",
+      options: {
+        "content-box": "content-box",
+        "border-box": "border-box",
+        "unset": "unset",
+        "inherit": "inherit",
+      }
+    },
     display: {
       type: "select",
       title: "布局",
@@ -127,7 +143,7 @@ export const containerSchema: ISchema =
     border: {
       type: "string",
       title: "边框",
-      default: "none"
+      default: ""
     },
     width: {
       type: "string",

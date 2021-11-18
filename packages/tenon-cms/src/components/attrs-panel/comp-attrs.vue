@@ -6,7 +6,7 @@
           :default-open-keys="[schemas?.[0]?.title]"
           :style="{ borderRadius: '4px' }"
           :collapsed="false"
-          :level-indent="0"
+          :level-indent="10"
         >
           <a-sub-menu class="attr-group" v-for="schema in schemas" :key="schema.title">
             <template #title>

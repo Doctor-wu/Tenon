@@ -44,7 +44,7 @@ const props = defineProps({
   border-bottom: 2px solid #00b42a;
 }
 .wrapper-container.editable {
-  padding: 10px;
+  // padding: 10px;
   background-color: #eee;
   border: 1px dashed #ccc;
 }

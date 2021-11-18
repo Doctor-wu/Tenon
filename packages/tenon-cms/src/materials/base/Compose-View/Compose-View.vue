@@ -8,7 +8,12 @@
     @drop="(e) => handleContainerDrop(e, config)"
   >
     <template v-if="config.children?.length">
-      <Wrapper :config="subConfig" v-for="subConfig in config.children" :key="subConfig.id">
+      <Wrapper
+        :style="subConfig.name === 'Compose-View' ? null : (subConfig?.props?.containerStyle || {})"
+        :config="subConfig"
+        v-for="subConfig in config.children"
+        :key="subConfig.id"
+      >
         <component
           :is="toRaw(store.getters['materials/getMaterialsMap'].get(subConfig.name)().component)"
           :config="subConfig"
