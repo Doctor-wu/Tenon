@@ -19,6 +19,7 @@
     <section v-else-if="editMode" class="default-tip">拖入物料以生成组件</section>
   </section>
 </template>
+
 <script lang="ts" setup>
 import { useStore } from '../../../store';
 import { toRaw } from 'vue';
@@ -34,9 +35,6 @@ const props = defineProps({
     default: () => { }
   },
 });
-// console.log(props.config);
-
-
 
 </script>
 <style lang="scss" scoped>
@@ -46,7 +44,6 @@ const props = defineProps({
 }
 .compose-view-container.editable {
   min-height: 40px;
-  border: 1px dashed #ccc;
 }
 .compose-view-container.editable.dropable {
   outline: 1px dashed red;

@@ -36,10 +36,10 @@
           "title": "文本粗细",
           "default": "normal"
         },
-        "fontStyle": {
+        "fontFamily": {
           "type": "string",
-          "title": "文本样式",
-          "default": "normal"
+          "title": "文本字体",
+          "default": ""
         },
         "textAlign": {
           "type": "string",
