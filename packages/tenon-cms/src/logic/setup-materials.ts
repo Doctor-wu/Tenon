@@ -132,10 +132,17 @@ function recursiveGetValue(obj: any, path: string) {
 function setupProps(this: any, props = {}) {
   const newProps = {};
   Object.keys(props).forEach(key => {
+    key = key.trim();
     const value = props[key];
     switch (key) {
       case 'style':
         newProps[key] = recursiveGetValue(this, value);
+        break;
+      case '<BINDING>':
+        const bindings = this[value] || {};
+        Object.keys(bindings).forEach((bindingKey) => {
+          newProps[bindingKey] = bindings[bindingKey];
+        });
         break;
       default:
         newProps[key] = value;

@@ -9,7 +9,7 @@
   >
     <template v-if="config.children?.length">
       <Wrapper
-        :style="subConfig.name === 'Compose-View' ? null : (subConfig?.props?.containerStyle || {})"
+        :style="subConfig?.props?.containerStyle"
         :config="subConfig"
         v-for="subConfig in config.children"
         :key="subConfig.id"

@@ -48,8 +48,6 @@ export const parseSchemas2Props = (schemas: ISchema[] = []) => {
 }
 
 export const createPropsBySchemas = (schemas: ISchema[] = [], source?: any) => {
-  console.log(source);
-
   const props = {};
 
   schemas.forEach(schema => {
@@ -61,7 +59,7 @@ export const createPropsBySchemas = (schemas: ISchema[] = [], source?: any) => {
     } = schema;
     const propValue = {};
     Object.keys(properties).forEach(propertyKey => {
-      propValue[propertyKey] = source?.[fieldName]?.[propertyKey] || properties[propertyKey].default;
+      propValue[propertyKey] = source?.[fieldName]?.[propertyKey] || properties?.[propertyKey]?.default;
     });
     props[fieldName] = propValue;
   });
@@ -78,7 +76,7 @@ export const containerSchema: ISchema =
     padding: {
       type: "string",
       title: "内边距",
-      default: "0px"
+      default: "5px"
     },
     margin: {
       type: "string",
