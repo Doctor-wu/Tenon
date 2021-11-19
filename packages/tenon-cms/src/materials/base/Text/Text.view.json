@@ -1,12 +1,7 @@
 {
-  "el": "section",
-  "children": [
-    {
-      "el": "span",
-      "props": {
-        "style": "textStyle"
-      },
-      "children": ["{{textValue.value}}"]
-    }
-  ]
-}
+  "el": "span",
+  "props": {
+    "style": "textStyle"
+  },
+  "children": ["{{textValue.value}}"]
+}  

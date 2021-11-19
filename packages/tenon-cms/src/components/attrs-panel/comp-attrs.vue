@@ -46,7 +46,7 @@
 import { useStore } from '../../store';
 import { computed, effect } from 'vue';
 import { ComponentTreeNode } from '../../store/modules/viewer';
-import { IMaterial } from '../../store/modules/materials';
+import { IMaterialConfig } from '../../store/modules/materials';
 
 const store = useStore();
 const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);
@@ -54,7 +54,7 @@ console.log(activeComponent.value);
 
 const schemas = computed(() => {
   const {
-    material = {} as IMaterial,
+    material = {} as IMaterialConfig,
   } = activeComponent.value;
 
   const {

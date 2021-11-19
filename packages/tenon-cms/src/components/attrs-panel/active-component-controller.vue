@@ -1,7 +1,7 @@
 <template>
   <AnimateButton
     info="提升到父级"
-    :disabled="!activeComponent.parent.parent"
+    :disabled="!activeComponent?.parent?.parent"
     @click="() => extractActiveComponentFromParent(activeComponent)"
   >父</AnimateButton>
   <AnimateButton
@@ -36,12 +36,14 @@ const activeComponent = computed(() => store?.getters['viewer/getActiveComponent
 
 const canUpMove = computed(() => {
   const { parent } = activeComponent.value;
+  if (!parent) return false;
   const index = parent.children.findIndex(item => item.id === activeComponent.value.id);
   return parent && index > 0;
 });
 
 const canDownMove = computed(() => {
   const { parent } = activeComponent.value;
+  if (!parent) return false;
   const index = parent.children.findIndex(item => item.id === activeComponent.value.id);
   return parent && index < parent.children.length - 1;
 });

@@ -2,7 +2,7 @@ import { Module } from 'vuex';
 import { IRootState } from '..';
 import { ISchema } from '../../logic/schema';
 
-export interface IMaterial {
+export interface IMaterialConfig {
   name: string;
   component: any;
   config: any;
@@ -10,12 +10,12 @@ export interface IMaterial {
 }
 
 
-export interface IMaterialsState {
+export interface IMaterialConfigsState {
   materials: [
     string,
-    (() => IMaterial)[]
+    (() => IMaterialConfig)[]
   ][];
-  materialsMap: Map<string, () => IMaterial>;
+  materialsMap: Map<string, () => IMaterialConfig>;
 }
 
 export default {
@@ -42,12 +42,12 @@ export default {
     }
   },
   getters: {
-    getMaterials(state: IMaterialsState) {
+    getMaterials(state: IMaterialConfigsState) {
       return state.materials;
     },
-    getMaterialsMap(state: IMaterialsState) {
+    getMaterialsMap(state: IMaterialConfigsState) {
       return state.materialsMap;
     },
   },
   namespaced: true,
-} as Module<IMaterialsState, IRootState>;
+} as Module<IMaterialConfigsState, IRootState>;

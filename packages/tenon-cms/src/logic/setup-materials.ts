@@ -6,11 +6,12 @@ import {
   onBeforeUnmount, onBeforeMount,
   reactive
 } from "vue";
-import { IMaterial } from "../store/modules/materials";
-import { containerSchema, parseSchemas2Props } from "./schema";
+import { internalSchema } from "../schemas";
+import { IMaterialConfig } from "../store/modules/materials";
+import { parseSchemas2Props } from "./schema";
 
-const materials = new Map<string, (() => IMaterial)[]>();
-const materialsMap = new Map<string, () => IMaterial>();
+const materials = new Map<string, (() => IMaterialConfig)[]>();
+const materialsMap = new Map<string, () => IMaterialConfig>();
 const componentMap = new Map<string, any>();
 const dependencies = {
   Image,
@@ -43,9 +44,9 @@ export const setupMaterials = (store: any) => {
       materials.set(categoryKey, []);
     }
 
-    config.schemas?.push(containerSchema);
-    const comp: () => IMaterial = () => {
-      const base: IMaterial = {
+    config.schemas?.push(internalSchema.container);
+    const comp: () => IMaterialConfig = () => {
+      const base: IMaterialConfig = {
         name: compName,
         component: config.setup === 'native'
           ? vueConfig

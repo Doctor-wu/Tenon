@@ -28,7 +28,6 @@ const activeComponent = computed(() => store?.getters['viewer/getActiveComponent
 
 const compDescriptions = computed(() => {
   const comp = activeComponent.value;
-  console.log(comp);
 
   const compRaw = comp.material;
   const descriptions: any[] = [

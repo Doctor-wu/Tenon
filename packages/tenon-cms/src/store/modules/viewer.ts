@@ -1,12 +1,12 @@
 import { Module } from 'vuex';
 import { IRootState } from '..';
-import { IMaterial } from './materials';
+import { IMaterialConfig } from './materials';
 
 export interface IViewerState {
   tree: ComponentTreeNode | null;
   activeComponent: ComponentTreeNode | null;
-  hoveringComponent: IMaterial | null;
-  draggingComponent: IMaterial | null;
+  hoveringComponent: IMaterialConfig | null;
+  draggingComponent: IMaterialConfig | null;
   compId: number;
 }
 
@@ -15,7 +15,7 @@ export interface ComponentTreeNode {
   id: number;
   textID?: string;
   parent: ComponentTreeNode | null;
-  material?: IMaterial;
+  material?: IMaterialConfig;
   props?: any;
   children?: ComponentTreeNode[];
   wrapperStyles?: Object;
@@ -29,6 +29,7 @@ export default {
         id: 0,
         children: [],
         parent: null,
+        props: {},
       },
       activeComponent: null,
       hoveringComponent: null,
@@ -43,10 +44,10 @@ export default {
     SET_TREE(state, tree: ComponentTreeNode) {
       state.tree = tree
     },
-    SET_DRAGGING_COMPONENT(state, component: IMaterial | null) {
+    SET_DRAGGING_COMPONENT(state, component: IMaterialConfig | null) {
       state.draggingComponent = component;
     },
-    SET_HOVERING_COMPONENT(state, component: IMaterial | null) {
+    SET_HOVERING_COMPONENT(state, component: IMaterialConfig | null) {
       state.hoveringComponent = component;
     },
     SET_COMP_ID(state, id?: number) {
@@ -62,10 +63,10 @@ export default {
     setTree(context, tree: ComponentTreeNode) {
       context.commit('SET_TREE', tree);
     },
-    setDraggingComponent(context, component: IMaterial | null) {
+    setDraggingComponent(context, component: IMaterialConfig | null) {
       context.commit('SET_DRAGGING_COMPONENT', component);
     },
-    setHoveringComponent(context, component: IMaterial | null) {
+    setHoveringComponent(context, component: IMaterialConfig | null) {
       context.commit('SET_HOVERING_COMPONENT', component);
     },
     setCompId(context, id?: number) {
@@ -77,6 +78,7 @@ export default {
         name: 'Compose-View',
         id: 0,
         children: [],
+        props: {},
       });
       context.commit('SET_ACTIVE_COMPONENT', null);
       context.commit('SET_COMP_ID', 0);

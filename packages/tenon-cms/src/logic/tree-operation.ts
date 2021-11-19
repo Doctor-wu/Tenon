@@ -1,6 +1,6 @@
 import { reactive, toRaw } from "vue";
 import { getTreeModel } from "../local-db";
-import { IMaterial } from "../store/modules/materials";
+import { IMaterialConfig } from "../store/modules/materials";
 import { ComponentTreeNode } from "../store/modules/viewer";
 import { config2tree, tree2config } from "./config-transform";
 const treeModel = getTreeModel();
@@ -63,7 +63,7 @@ export const recursiveInsertNewComponent = async (comp, parent, relative, insert
   return expressedComponent;
 }
 
-export const createComponentByMaterial = async (material: IMaterial, sup: ComponentTreeNode | null = null, props?: any): Promise<ComponentTreeNode> => {
+export const createComponentByMaterial = async (material: IMaterialConfig, sup: ComponentTreeNode | null = null, props?: any): Promise<ComponentTreeNode> => {
   const store = useStore();
   const id = await store.dispatch('viewer/setCompId');
   const expressedComponent: any = reactive<ComponentTreeNode>({
