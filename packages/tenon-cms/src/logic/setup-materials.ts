@@ -75,6 +75,7 @@ function createComponent(viewConfig, logic, config) {
     render: function (this: any) {
       return parseConfig2View.call(this, viewConfig).call(this);
     },
+    inheritAttrs: false,
     props: parseSchemas2Props(config.schemas),
     setup: function (props, ctx) { return setupComponent(props, ctx, logic, config) },
   });
