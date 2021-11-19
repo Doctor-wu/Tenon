@@ -1,25 +1,22 @@
 <template>
   <section
     class="compose-view-container"
-    :style="($attrs as any).containerStyle"
+    :style="($attrs as any).composeStyle || {}"
     :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === config, editable: editMode }"
     @dragenter="(e) => handleContainerDropEnter(e, config)"
     @dragover.prevent="() => { }"
     @drop="(e) => handleContainerDrop(e, config)"
   >
     <template v-if="config.children?.length">
-      <Wrapper
-        :style="subConfig?.props?.containerStyle"
-        :config="subConfig"
-        v-for="subConfig in config.children"
-        :key="subConfig.id"
-      >
-        <component
-          :is="toRaw(store.getters['materials/getMaterialsMap'].get(subConfig.name)().component)"
-          :config="subConfig"
-          v-bind="subConfig.props"
-        ></component>
-      </Wrapper>
+      <template v-for="subConfig in config.children" :key="subConfig.id">
+        <Wrapper :style="subConfig?.props?.containerStyle" :config="subConfig">
+          <component
+            :is="toRaw(store.getters['materials/getMaterialsMap'].get(subConfig.name)().component)"
+            :config="subConfig"
+            v-bind="subConfig.props"
+          ></component>
+        </Wrapper>
+      </template>
     </template>
     <section v-else-if="editMode" class="default-tip">拖入物料以生成组件</section>
   </section>
@@ -62,7 +59,6 @@ const props = defineProps({
   margin: auto;
   text-align: center;
   color: #77777799;
-  // border: 1px dashed #196ed7;
   background-color: #ffffff99;
   display: flex;
   justify-content: center;

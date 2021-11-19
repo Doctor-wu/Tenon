@@ -8,7 +8,7 @@ import {
 } from "vue";
 import { internalSchema } from "../schemas";
 import { IMaterialConfig } from "../store/modules/materials";
-import { parseSchemas2Props } from "./schema";
+import { ISchema, parseSchemas2Props } from "./schema";
 
 const materials = new Map<string, (() => IMaterialConfig)[]>();
 const materialsMap = new Map<string, () => IMaterialConfig>();
@@ -30,7 +30,8 @@ export const setupMaterials = (store: any) => {
     const getPath = (placeholder) => {
       return key.replace('.config.json', placeholder);
     }
-    const config = configRaw[key];
+    const config = configRaw[key].default;
+
     const vuePath = getPath('.vue');
     const vueConfig = vueRaw?.[vuePath]?.default;
 
@@ -44,7 +45,7 @@ export const setupMaterials = (store: any) => {
       materials.set(categoryKey, []);
     }
 
-    config.schemas?.push(internalSchema.container);
+    setupConfigSchemas(config);
     const comp: () => IMaterialConfig = () => {
       const base: IMaterialConfig = {
         name: compName,
@@ -151,4 +152,34 @@ function setupProps(this: any, props = {}) {
     }
   });
   return newProps;
+}
+
+function setupConfigSchemas(config) {
+  console.log(config);
+
+  const {
+    schemas = [],
+  } = config;
+  config.schemas = schemas.map((schema: ISchema) => {
+    const {
+      type,
+      key = "",
+      title,
+      fieldName,
+    } = schema;
+    switch (type) {
+      case 'object':
+        return schema;
+      case 'internal':
+        const specSchema = Object.assign({}, internalSchema[key]);
+        if (!specSchema) return schema;
+        specSchema.title = title;
+        specSchema.fieldName = fieldName;
+        return specSchema;
+        break;
+      default:
+        break;
+    }
+  })
+  config.schemas?.push(internalSchema.container);
 }

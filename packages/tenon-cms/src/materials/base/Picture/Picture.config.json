@@ -35,12 +35,12 @@
         "width": {
           "type": "string",
           "title": "图片容器宽度",
-          "default": ""
+          "default": "200px"
         },
         "height": {
           "type": "string",
           "title": "图片容器高度",
-          "default": ""
+          "default": "200px"
         },
         "object-fit": {
           "type": "select",

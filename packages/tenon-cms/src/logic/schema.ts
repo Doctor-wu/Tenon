@@ -1,3 +1,4 @@
+import { internalSchema } from "../schemas";
 
 export type SchemaType = 'string' | 'number' | 'color' | 'select';
 type BaseSchema = {
@@ -18,6 +19,7 @@ export interface ISchema {
   type: string;
   title: string;
   fieldName: string;
+  key?: string;
   properties: {
     [props: string]: SchemaProperty
   };
@@ -54,14 +56,24 @@ export const createPropsBySchemas = (schemas: ISchema[] = [], source?: any) => {
     const {
       type,
       title,
+      key = "",
       fieldName,
       properties = {},
     } = schema;
-    const propValue = {};
-    Object.keys(properties).forEach(propertyKey => {
-      propValue[propertyKey] = source?.[fieldName]?.[propertyKey] || properties?.[propertyKey]?.default;
-    });
-    props[fieldName] = propValue;
+    switch (type) {
+      case 'object':
+        const propValue = {};
+        Object.keys(properties).forEach(propertyKey => {
+          propValue[propertyKey] = source?.[fieldName]?.[propertyKey] || properties?.[propertyKey]?.default;
+        });
+        props[fieldName] = propValue;
+        break;
+      case 'internal':
+        props[fieldName] = internalSchema[key];
+        break;
+      default:
+        break;
+    }
   });
 
   return props;

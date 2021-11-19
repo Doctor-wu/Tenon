@@ -8,5 +8,12 @@
   "setup": "native",
   "nestable": true,
   "platform": ["web", "mp"],
-  "schemas":[]
+  "schemas": [
+    {
+      "type": "internal",
+      "key": "container",
+      "title": "Compose容器样式",
+      "fieldName": "composeStyle"
+    }
+  ]
 }
