@@ -3,7 +3,7 @@
     <section class="viewer-nav">
       <ViewerNav></ViewerNav>
     </section>
-    <section class="viewer-panel" ref="panel">
+    <section class="viewer-panel" :class="[editMode ? 'editMode' : '']" ref="panel">
       <ComposeView :config="store.getters['viewer/getTree']"></ComposeView>
     </section>
     <section class="viewer-notice">
@@ -12,15 +12,19 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useStore } from '../store';
 import ViewerNav from '../components/viewer/viewer-nav.vue';
 import ComposeView from '../materials/base/Compose-View/Compose-View.vue';
 import ViewerNotice from '../components/viewer/viewer-notice.vue';
-import { getTreeModel } from '../local-db';
+import { editMode } from '../logic/viewer-status';
 
 const store = useStore();
 const panel = ref<HTMLElement>();
+
+onMounted(() => {
+  panel.value?.scrollIntoView();
+});
 
 </script>
 <style lang="scss" scoped>
@@ -36,6 +40,11 @@ const panel = ref<HTMLElement>();
 .viewer-panel {
   margin: 20px 20px 20px 20px;
   box-shadow: 0 3px 18px 8px #00000010;
+  height: 1080px;
+  width: 1920px;
+  &.editMode {
+    transform: scale(0.55);
+  }
 }
 .viewer-nav {
   height: 60px;
