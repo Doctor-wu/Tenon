@@ -40,7 +40,7 @@ const attrs = ref([
   },
   {
     title: '属性',
-    icon: 'icon-copy',
+    icon: 'icon-list',
     component: CompAttrs,
   },
 ]);

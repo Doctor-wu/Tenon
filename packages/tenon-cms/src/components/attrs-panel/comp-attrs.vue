@@ -25,6 +25,7 @@
                 :options="[]"
                 v-model="activeComponent.props[schema.fieldName][key]"
                 placeholder="please input..."
+                allow-clear
               >
                 <template
                   v-if="getFormItemBySchemaType(schema.properties[key].type) === 'a-select'"

@@ -16,6 +16,55 @@ export const containerSchema: ISchema =
       title: "外边距",
       default: "0px"
     },
+    width: {
+      type: "string",
+      title: "宽度",
+      default: "auto"
+    },
+    height: {
+      type: "string",
+      title: "高度",
+      default: "auto"
+    },
+    position: {
+      type: "select",
+      title: "定位",
+      options: {
+        absolute: "absolute",
+        relative: "relative",
+        fixed: "fixed",
+        static: "static",
+        inherit: "inherit",
+        initial: "initial",
+        revert: "revert",
+        sticky: "sticky",
+        unset: "unset",
+      }
+    },
+    left: {
+      type: "string",
+      title: "left",
+      default: null
+    },
+    right: {
+      type: "string",
+      title: "right",
+      default: null
+    },
+    top: {
+      type: "string",
+      title: "top",
+      default: null
+    },
+    bottom: {
+      type: "string",
+      title: "bottom",
+      default: null
+    },
+    zIndex: {
+      type: "number",
+      title: "z-index"
+    },
     overflow: {
       type: "string",
       title: "overflow",
@@ -41,6 +90,21 @@ export const containerSchema: ISchema =
         flex: "flex",
         "inline-block": "inline-block",
         "inline-flex": "inline-flex",
+      }
+    },
+    flexDirection: {
+      type: "select",
+      title: "flex方向",
+      options: {
+        row: "row",
+        "row-reverse": "row-reverse",
+        column: "column",
+        "column-reverse": "column-reverse",
+        revert: "revert",
+        inherit: "inherit",
+        initial: "initial",
+        sticky: "sticky",
+        unset: "unset",
       }
     },
     "align-items": {
@@ -89,16 +153,6 @@ export const containerSchema: ISchema =
       type: "string",
       title: "边框",
       default: ""
-    },
-    width: {
-      type: "string",
-      title: "宽度",
-      default: "auto"
-    },
-    height: {
-      type: "string",
-      title: "高度",
-      default: "auto"
     }
   }
 }

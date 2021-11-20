@@ -4,7 +4,7 @@
       <ViewerNav></ViewerNav>
     </section>
     <section class="viewer-panel" :class="[editMode ? 'editMode' : '']" ref="panel">
-      <ComposeView :config="store.getters['viewer/getTree']"></ComposeView>
+      <ComposeView :config="store.getters['viewer/getTree']" class="rootView"></ComposeView>
     </section>
     <section class="viewer-notice">
       <ViewerNotice></ViewerNotice>
@@ -28,6 +28,9 @@ onMounted(() => {
 
 </script>
 <style lang="scss" scoped>
+.rootView {
+  transform: scale(1);
+}
 .viewer-container {
   width: 100%;
   height: 100%;
@@ -42,8 +45,9 @@ onMounted(() => {
   box-shadow: 0 3px 18px 8px #00000010;
   height: 1080px;
   width: 1920px;
+  overflow: auto;
   &.editMode {
-    transform: scale(0.55);
+    transform: scale(0.75);
   }
 }
 .viewer-nav {
