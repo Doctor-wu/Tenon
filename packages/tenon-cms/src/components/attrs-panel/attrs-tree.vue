@@ -4,9 +4,10 @@
       <a-sub-menu class="attrs-group" :title="properties[key].title" :key="properties[key].title">
         <AttrsTree :properties="properties[key].properties" :fieldName="fieldName"></AttrsTree>
       </a-sub-menu>
+      <a-divider style="margin: 10px 0;"></a-divider>
     </template>
     <template v-else>
-      <a-form-item :field="key" :label="properties[key].title">
+      <a-form-item :field="key" :label="properties[key].title" style="margin-left: 30px;">
         <component
           :is="getFormItemBySchemaType(properties[key].type, key)"
           v-bind="getBindingsBySchemaType(properties[key].type, key)"
