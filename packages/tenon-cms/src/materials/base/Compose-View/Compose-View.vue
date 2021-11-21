@@ -33,7 +33,6 @@ import { handleContainerDropEnter, handleContainerDrop } from '../../../logic/vi
 import { editMode } from '../../../logic/viewer-status';
 import { createTenonEditorComponentByMaterial } from '../../../logic/tree-operation';
 import { MaterialComponentContext } from '../../../logic/setup-component-context';
-import { ComponentTreeNode } from '../../../store/modules/viewer';
 
 const store = useStore();
 

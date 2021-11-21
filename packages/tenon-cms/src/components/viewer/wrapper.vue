@@ -60,6 +60,5 @@ const props = defineProps({
   position: relative;
 }
 .wrapper-container {
-  background-color: #fff;
 }
 </style>

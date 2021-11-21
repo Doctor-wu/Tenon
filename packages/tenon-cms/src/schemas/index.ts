@@ -1,4 +1,5 @@
-import { containerBackgroundSchema, containerSchema } from "./container";
+import { containerBackgroundSchema } from "./containerBackground";
+import { containerSchema } from "./containerLayout";
 
 
 export const internalSchema = {
