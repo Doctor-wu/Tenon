@@ -54,6 +54,8 @@ export const copyActiveComponent = (activeComponent, parent) => {
 
 export const clearActiveComponentChildren = (activeComponent) => {
   if (activeComponent?.children?.length) {
-    activeComponent.children.forEach(child => extractChild(activeComponent, child));
+    for (let i = activeComponent.children.length - 1; i >= 0; i--) {
+      extractChild(activeComponent, activeComponent?.children[i]);
+    }
   }
 }

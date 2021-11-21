@@ -14,6 +14,12 @@
       "key": "containerLayout",
       "title": "Compose容器样式",
       "fieldName": "composeLayout"
+    },
+    {
+      "type": "internal",
+      "key": "containerBackground",
+      "title": "Compose容器背景",
+      "fieldName": "composeBackground"
     }
   ]
 }

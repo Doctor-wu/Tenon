@@ -1,8 +1,6 @@
 {
-  "el": "span",
+  "el": "section",
   "children": [
-    "Block",
-    "{{author}}",
     {
       "el": "Compose-View",
       "props": {

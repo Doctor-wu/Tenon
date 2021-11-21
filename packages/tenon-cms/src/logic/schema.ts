@@ -62,8 +62,14 @@ export const createPropsBySchemas = (schemas: ISchema[] = [], source?: any) => {
       properties = {},
     } = schema;
     switch (type) {
+      case 'group':
       case 'object':
         const propValue = {};
+        const sourceKeys = Object.keys(source?.[fieldName] || {});
+        const sourceKeysSet = new Set<string>();
+        sourceKeys.forEach(key => {
+          sourceKeysSet.add(key);
+        })
         Object.keys(properties).forEach(propertyKey => {
           switch (properties?.[propertyKey].type) {
             case 'group':
@@ -75,13 +81,15 @@ export const createPropsBySchemas = (schemas: ISchema[] = [], source?: any) => {
                   properties: properties?.[propertyKey].properties,
                 }
               ], source);
-              console.log(props);
 
-              Object.assign(propValue, { ...(props[fieldName] || {}) });
+              Object.assign(propValue, { ...(props[fieldName] || {}) }, { ...source?.[fieldName] });
               break;
 
             default:
-              propValue[propertyKey] = source?.[fieldName]?.[propertyKey] || properties?.[propertyKey]?.default;
+
+              propValue[propertyKey] = sourceKeysSet.has(propertyKey)
+                ? source?.[fieldName]?.[propertyKey]
+                : properties?.[propertyKey]?.default;
               break;
           }
         });

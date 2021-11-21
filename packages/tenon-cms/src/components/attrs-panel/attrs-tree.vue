@@ -1,7 +1,7 @@
 <template>
   <template v-for="key in Object.keys(properties)" :key="key">
     <template v-if="properties[key].type === 'group'">
-      <a-sub-menu class="attrs-group" :title="properties[key].title" :key="properties[key].title">
+      <a-sub-menu class="attrs-group" :title="properties[key].title">
         <AttrsTree :properties="properties[key].properties" :fieldName="fieldName"></AttrsTree>
       </a-sub-menu>
       <a-divider style="margin: 10px 0;"></a-divider>

@@ -28,18 +28,11 @@ export const extractChild = (parent, child) => {
   if (index === -1) {
     return;
   }
-  child.parent = null;
   parent.children.splice(index, 1);
 }
 
 export const isAncestor = (parent, child) => {
   if (!child) return false;
-  console.log(child);
-  
-  if (child.isSlot) {
-    console.log(111);
-    
-  }
   if (parent === child) {
     return true;
   }
@@ -49,21 +42,21 @@ export const isAncestor = (parent, child) => {
   return isAncestor(parent, child.parent);
 }
 
-export async function insertNewComponent(beInsert, sup, relative, insertFromFront = false, props?: any) {
+export function insertNewComponent(beInsert, sup, relative, insertFromFront = false, props?: any) {
   const expressedComponent = createTenonEditorComponentByMaterial(beInsert, sup, props);
 
   insertChild(sup, expressedComponent, relative, insertFromFront);
   return expressedComponent;
 }
 
-export const recursiveInsertNewComponent = async (comp, parent, relative, insertFromFront = false) => {
+export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFront = false) => {
 
   const store = useStore();
   const beInsert = store.getters['materials/getMaterialsMap'].get(comp.name)();
-  const expressedComponent = await insertNewComponent(beInsert, parent, relative, insertFromFront, comp.props);
+  const expressedComponent = insertNewComponent(beInsert, parent, relative, insertFromFront, comp.props);
   if (comp.children) {
-    comp.children.forEach(async (child) => {
-      await recursiveInsertNewComponent(child, expressedComponent, relative, insertFromFront);
+    comp.children.forEach((child) => {
+      recursiveInsertNewComponent(child, expressedComponent, relative, insertFromFront);
     });
   }
   return expressedComponent;

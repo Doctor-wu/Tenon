@@ -203,10 +203,11 @@ export const containerBackgroundSchema = {
         },
         backgroundImage: {
           type: "string",
-          title: "背景颜色",
+          title: "背景图片",
+          default: null,
         },
         boxShadow: {
-          type: "color",
+          type: "string",
           title: "背景阴影",
         }
       }
