@@ -5,7 +5,6 @@
         <!-- :default-open-keys="[schemas?.[0]?.title]" -->
         <a-menu :style="{ borderRadius: '4px' }" :collapsed="false">
           <a-sub-menu
-            class="attrs-group"
             v-for="schema in schemas"
             :title="schema.title"
             :key="schema.title"
@@ -37,23 +36,6 @@ const schemas = computed(() => {
   } = material;
   return schemas;
 });
-
-const getFormItemBySchemaType = (type: string) => {
-  switch (type) {
-    case 'string':
-      return 'a-input';
-    case 'number':
-      return 'a-input-number';
-    case 'boolean':
-      return 'a-switch';
-    case 'object':
-      return 'a-input';
-    case 'select':
-      return 'a-select';
-    default:
-      return 'a-input';
-  }
-};
 
 </script>
 <style lang="scss" scoped>

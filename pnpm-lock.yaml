@@ -39,11 +39,13 @@ importers:
       typescript: ^4.4.3
       vite: ^2.6.4
       vue: ^3.2.21
+      vue-color-kit: ^1.0.5
       vue-router: '4'
       vue-tsc: ^0.3.0
       vuex: ^4.0.2
     dependencies:
       vue: 3.2.21
+      vue-color-kit: 1.0.5_vue@3.2.21
       vue-router: 4.0.12_vue@3.2.21
       vuex: 4.0.2_vue@3.2.21
     devDependencies:
@@ -1802,6 +1804,14 @@ packages:
       vscode-pug-languageservice: 0.27.24
       vscode-typescript-languageservice: 0.27.25
     dev: true
+
+  /vue-color-kit/1.0.5_vue@3.2.21:
+    resolution: {integrity: sha512-PUQzqdpI7672YYuoHdTLENHldieVMis0u9g2n7NAxiLGdiaqCD/QaYtbDOvtASpN5oSIfKxQgPV+i45MOlkKnw==}
+    peerDependencies:
+      vue: ^3.0.5
+    dependencies:
+      vue: 3.2.21
+    dev: false
 
   /vue-router/4.0.12_vue@3.2.21:
     resolution: {integrity: sha512-CPXvfqe+mZLB1kBWssssTiWg4EQERyqJZes7USiqfW9B5N2x+nHlnsM1D3b5CaJ6qgCvMmYJnz+G0iWjNCvXrg==}

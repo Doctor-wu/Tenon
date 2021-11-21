@@ -8,13 +8,14 @@
     <template v-else>
       <a-form-item :field="key" :label="properties[key].title">
         <component
-          :is="getFormItemBySchemaType(properties[key].type)"
-          :options="[]"
-          v-model="activeComponent.props[fieldName][key]"
+          :is="getFormItemBySchemaType(properties[key].type, key)"
+          v-bind="getBindingsBySchemaType(properties[key].type, key)"
+          v-on="getListenersBySchemaType(properties[key].type, key)"
+          v-model="activeComponent.props[props.fieldName][key]"
           placeholder="please input..."
           allow-clear
         >
-          <template v-if="getFormItemBySchemaType(properties[key].type) === 'a-select'">
+          <template v-if="properties[key].type === 'select'">
             <a-option
               v-for="optionsKey in Object.keys(properties[key].options)"
               :value="optionsKey"
@@ -29,8 +30,9 @@
 import { useStore } from '../../store';
 import { computed } from 'vue';
 import { ComponentTreeNode } from '../../store/modules/viewer';
+import { ColorPicker } from 'vue-color-kit';
 
-defineProps({
+const props = defineProps({
   properties: {
     type: Object,
     required: true,
@@ -43,7 +45,7 @@ defineProps({
 const store = useStore();
 const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);
 
-const getFormItemBySchemaType = (type: string) => {
+const getFormItemBySchemaType = (type: string, key) => {
   switch (type) {
     case 'string':
       return 'a-input';
@@ -55,10 +57,47 @@ const getFormItemBySchemaType = (type: string) => {
       return 'a-input';
     case 'select':
       return 'a-select';
+    case 'color':
+      return ColorPicker;
     default:
       return 'a-input';
   }
 };
+
+const getBindingsBySchemaType = (type: string, key) => {
+  switch (type) {
+    case 'color':
+      return {
+        color: activeComponent.value.props[props.fieldName][key]
+      }
+    case 'string':
+    case 'boolean':
+    case 'object':
+    case 'number':
+    case 'select':
+    default:
+      return {
+        modelValue: activeComponent.value.props[props.fieldName][key],
+      }
+  }
+}
+
+const getListenersBySchemaType = (type: string, key) => {
+  switch (type) {
+    case 'color':
+      return {
+        changeColor: (value) => {
+          activeComponent.value.props[props.fieldName][key] = value.hex;
+        },
+      }
+    case 'string':
+    case 'number':
+    case 'boolean':
+    case 'object':
+    default:
+      return {};
+  }
+}
 </script>
 <style lang="scss" scoped>
 </style>

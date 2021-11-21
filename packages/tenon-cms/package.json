@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "vue": "^3.2.21",
+    "vue-color-kit": "^1.0.5",
     "vue-router": "4",
     "vuex": "^4.0.2"
   },
