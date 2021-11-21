@@ -51,3 +51,9 @@ export const copyActiveComponent = (activeComponent, parent) => {
   if (!parent) return;
   recursiveInsertNewComponent(activeComponent, parent, activeComponent);
 }
+
+export const clearActiveComponentChildren = (activeComponent) => {
+  if (activeComponent?.children?.length) {
+    activeComponent.children.forEach(child => extractChild(activeComponent, child));
+  }
+}

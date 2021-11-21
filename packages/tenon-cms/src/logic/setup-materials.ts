@@ -186,5 +186,6 @@ function setupConfigSchemas(config) {
         break;
     }
   })
-  config.schemas?.push(internalSchema.container);
+  config.schemas?.push(internalSchema.containerLayout);
+  config.schemas?.push(internalSchema.containerBackground);
 }

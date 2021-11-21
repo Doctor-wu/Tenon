@@ -11,9 +11,9 @@
   "schemas": [
     {
       "type": "internal",
-      "key": "container",
+      "key": "containerLayout",
       "title": "Compose容器样式",
-      "fieldName": "composeStyle"
+      "fieldName": "composeLayout"
     }
   ]
 }

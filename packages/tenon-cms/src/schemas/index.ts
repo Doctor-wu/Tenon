@@ -1,6 +1,7 @@
-import { containerSchema } from "./container";
+import { containerBackgroundSchema, containerSchema } from "./container";
 
 
 export const internalSchema = {
-  container: containerSchema,
+  containerLayout: containerSchema,
+  containerBackground: containerBackgroundSchema,
 };

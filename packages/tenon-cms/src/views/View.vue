@@ -46,8 +46,8 @@ onMounted(() => {
 
 .viewer-panel {
   box-shadow: 0 3px 18px 8px #00000010;
-  height: 1080px;
-  width: 1920px;
+  height: 812px;
+  width: 375px;
   overflow: auto;
   margin: 20px;
   display: inline-block;

@@ -20,14 +20,21 @@
     color="#00b42a"
   >复</AnimateButton>
   <AnimateButton info="删除元素" @click="() => deleteActiveComponent(activeComponent)" color="#f53f3f">删</AnimateButton>
+  <AnimateButton
+    v-if="activeComponent.children"
+    info="清空子元素"
+    :disabled="!activeComponent.children?.length"
+    @click="() => clearActiveComponentChildren(activeComponent)"
+    color="#f53f3f"
+  >清</AnimateButton>
 </template>
 <script setup lang="ts">
 import {
   deleteActiveComponent, upMoveActiveComponent,
-  downMoveActiveComponent, extractActiveComponentFromParent, copyActiveComponent
+  downMoveActiveComponent, extractActiveComponentFromParent,
+  copyActiveComponent, clearActiveComponentChildren
 } from '../../logic/viewer-select';
 import { useStore } from '../../store';
-import TextButton from '../custom/text-button.vue';
 import { computed } from 'vue';
 import AnimateButton from '../custom/animate-button.vue';
 

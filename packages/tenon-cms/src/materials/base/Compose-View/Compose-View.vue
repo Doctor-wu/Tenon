@@ -1,7 +1,7 @@
 <template>
   <section
     class="compose-view-container"
-    :style="($attrs as any).composeStyle || {}"
+    :style="[($attrs as any).composeLayout || {}, ($attrs as any).composeBackground || {}]"
     :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === propsConfig, editable: editMode }"
     @dragenter="(e) => handleContainerDropEnter(e, propsConfig)"
     @dragover.prevent="() => { }"
@@ -9,7 +9,10 @@
   >
     <template v-if="propsConfig.children?.length">
       <template v-for="subConfig in propsConfig.children" :key="subConfig.id">
-        <Wrapper :style="subConfig?.props?.containerStyle" :config="subConfig">
+        <Wrapper
+          :style="[subConfig?.props?.containerStyle, subConfig?.props?.containerBackground]"
+          :config="subConfig"
+        >
           <component
             :is="toRaw(subConfig.material.component)"
             :config="subConfig"
@@ -30,6 +33,7 @@ import { handleContainerDropEnter, handleContainerDrop } from '../../../logic/vi
 import { editMode } from '../../../logic/viewer-status';
 import { createTenonEditorComponentByMaterial } from '../../../logic/tree-operation';
 import { MaterialComponentContext } from '../../../logic/setup-component-context';
+import { ComponentTreeNode } from '../../../store/modules/viewer';
 
 const store = useStore();
 
@@ -49,23 +53,24 @@ const props = defineProps({
 });
 let propsConfig: any = computed(() => {
   let result: any = props.config;
+  if (props.isSlot) {
+    const rootComp = MaterialComponentContext.value.$attrs.config;
+    const rootSlots = rootComp.slots;
+    if (rootSlots[props.slotKey]) {
+      result = rootSlots[props.slotKey];
+    } else {
+      const materialsMap = store.getters['materials/getMaterialsMap'];
+      const materialFactory = materialsMap.get("Compose-View");
+      const material = materialFactory();
+      const comp = createTenonEditorComponentByMaterial(material, rootComp);
+      comp.isSlot = true;
+      result = comp;
+      rootSlots[props.slotKey] = comp;
+    }
+  }
   return result;
 });
 
-if (props.isSlot) {
-  const rootSlots = MaterialComponentContext.value.$attrs.config.slots;
-  if (rootSlots[props.slotKey]) {
-    propsConfig = rootSlots[props.slotKey];
-  } else {
-    console.log(MaterialComponentContext);
-    const materialsMap = store.getters['materials/getMaterialsMap'];
-    const materialFactory = materialsMap.get("Compose-View");
-    const material = materialFactory();
-    const comp = createTenonEditorComponentByMaterial(material, null);
-    propsConfig = comp;
-    rootSlots[props.slotKey] = comp;
-  }
-}
 </script>
 <style lang="scss" scoped>
 .compose-view-container {

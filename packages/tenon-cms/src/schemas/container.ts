@@ -3,28 +3,34 @@ import { ISchema } from "../logic/schema";
 export const containerSchema: ISchema =
 {
   type: "object",
-  title: "元素容器样式",
+  title: "元素容器布局",
   fieldName: "containerStyle",
   properties: {
-    padding: {
-      type: "string",
-      title: "内边距",
-      default: "5px"
-    },
-    margin: {
-      type: "string",
-      title: "外边距",
-      default: "0px"
-    },
-    width: {
-      type: "string",
-      title: "宽度",
-      default: "auto"
-    },
-    height: {
-      type: "string",
-      title: "高度",
-      default: "auto"
+    size: {
+      type: "group",
+      title: "尺寸和边距",
+      properties: {
+        padding: {
+          type: "string",
+          title: "内边距",
+          default: "5px"
+        },
+        margin: {
+          type: "string",
+          title: "外边距",
+          default: "0px"
+        },
+        width: {
+          type: "string",
+          title: "宽度",
+          default: "auto"
+        },
+        height: {
+          type: "string",
+          title: "高度",
+          default: "auto"
+        },
+      }
     },
     position: {
       type: "select",
@@ -149,10 +155,44 @@ export const containerSchema: ISchema =
         "wrap-reverse": "wrap-reverse",
       },
     },
+  }
+}
+
+export const containerBackgroundSchema = {
+  type: "object",
+  title: "元素容器背景及边框",
+  fieldName: "containerBackground",
+  properties: {
     border: {
-      type: "string",
+      type: "group",
       title: "边框",
-      default: ""
+      properties: {
+        border: {
+          type: "string",
+          title: "边框",
+          default: ""
+        },
+        borderTop: {
+          type: "string",
+          title: "上边框",
+          default: ""
+        },
+        borderBottom: {
+          type: "string",
+          title: "下边框",
+          default: ""
+        },
+        borderLeft: {
+          type: "string",
+          title: "左边框",
+          default: ""
+        },
+        borderRight: {
+          type: "string",
+          title: "右边框",
+          default: ""
+        },
+      }
     }
   }
 }

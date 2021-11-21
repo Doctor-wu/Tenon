@@ -28,11 +28,18 @@ export const extractChild = (parent, child) => {
   if (index === -1) {
     return;
   }
+  child.parent = null;
   parent.children.splice(index, 1);
 }
 
 export const isAncestor = (parent, child) => {
   if (!child) return false;
+  console.log(child);
+  
+  if (child.isSlot) {
+    console.log(111);
+    
+  }
   if (parent === child) {
     return true;
   }

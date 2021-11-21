@@ -55,6 +55,7 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
     let newSlots = {};
     Object.keys(config.slots).forEach(key => {
       newSlots[key] = config2tree(config.slots[key]);
+      newSlots[key].parent = sup;
     });
     config.slots = newSlots;
   }

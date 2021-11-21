@@ -1,11 +1,12 @@
 import { internalSchema } from "../schemas";
 
-export type SchemaType = 'string' | 'number' | 'color' | 'select';
+export type SchemaType = 'string' | 'number' | 'color' | 'select' | 'group';
 type BaseSchema = {
   type: SchemaType;
   title: string;
   default?: any;
   options?: any;
+  properties?: any;
 }
 type NeedBaseSchemaProp<K extends keyof BaseSchema> = {
   [P in K]: BaseSchema[P];
@@ -64,7 +65,25 @@ export const createPropsBySchemas = (schemas: ISchema[] = [], source?: any) => {
       case 'object':
         const propValue = {};
         Object.keys(properties).forEach(propertyKey => {
-          propValue[propertyKey] = source?.[fieldName]?.[propertyKey] || properties?.[propertyKey]?.default;
+          switch (properties?.[propertyKey].type) {
+            case 'group':
+              const props = createPropsBySchemas([
+                {
+                  type: "object",
+                  title: properties?.[propertyKey].title,
+                  fieldName,
+                  properties: properties?.[propertyKey].properties,
+                }
+              ], source);
+              console.log(props);
+
+              Object.assign(propValue, { ...(props[fieldName] || {}) });
+              break;
+
+            default:
+              propValue[propertyKey] = source?.[fieldName]?.[propertyKey] || properties?.[propertyKey]?.default;
+              break;
+          }
         });
         props[fieldName] = propValue;
         break;
