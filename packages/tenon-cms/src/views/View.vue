@@ -30,6 +30,9 @@ onMounted(() => {
 <style lang="scss" scoped>
 .rootView {
   transform: scale(1);
+  height: 100%;
+  // 劫持编辑器继承样式
+  text-align: left;
 }
 .viewer-container {
   width: 100%;
@@ -38,16 +41,18 @@ onMounted(() => {
   padding: 0;
   box-sizing: border-box;
   position: relative;
+  text-align: center;
 }
 
 .viewer-panel {
-  margin: 20px 20px 20px 20px;
   box-shadow: 0 3px 18px 8px #00000010;
   height: 1080px;
   width: 1920px;
   overflow: auto;
+  margin: 20px;
+  display: inline-block;
   &.editMode {
-    transform: scale(0.7);
+    // transform: scale(0.7);
     padding: 5px;
   }
 }
