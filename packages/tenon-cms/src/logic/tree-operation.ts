@@ -42,36 +42,90 @@ export const isAncestor = (parent, child) => {
   return isAncestor(parent, child.parent);
 }
 
-export function insertNewComponent(beInsert, sup, relative, insertFromFront = false, props?: any) {
-  const expressedComponent = createTenonEditorComponentByMaterial(beInsert, sup, props);
+export function insertNewComponent(beInsert, sup, relative, insertFromFront = false, options: any = {}) {
 
+  const expressedComponent = createTenonEditorComponentByMaterial(beInsert, sup, options);
+
+  if (options.isSlot) {
+    sup[relative] = expressedComponent;
+    return expressedComponent;
+  }
   insertChild(sup, expressedComponent, relative, insertFromFront);
   return expressedComponent;
 }
 
-export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFront = false) => {
-
+export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFront = false, isSlot = false) => {
   const store = useStore();
   const beInsert = store.getters['materials/getMaterialsMap'].get(comp.name)();
-  const expressedComponent = insertNewComponent(beInsert, parent, relative, insertFromFront, comp.props);
+  const expressedComponent = insertNewComponent(beInsert, parent, relative, insertFromFront, {
+    props: comp.props,
+    slots: comp.slots,
+    isSlot: isSlot,
+  });
   if (comp.children) {
     comp.children.forEach((child) => {
       recursiveInsertNewComponent(child, expressedComponent, relative, insertFromFront);
     });
   }
+  if (comp.slots) {
+    Object.keys(comp.slots).forEach(slotKey => {
+      expressedComponent.slots[slotKey];
+      recursiveInsertNewComponent(comp.slots[slotKey], expressedComponent.slots, slotKey, false, true)
+    })
+  }
   return expressedComponent;
 }
 
-export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, sup: ComponentTreeNode | null = null, props?: any): ComponentTreeNode => {
+// export const copySlots = (slots: { [props: string]: ComponentTreeNode }) => {
+//   const newSlots = {};
+//   Object.keys(slots).forEach(key => {
+//     newSlots[key] = copyComponentTreeNode(slots[key]);
+//   });
+//   return newSlots;
+// }
+
+// export const copyComponentTreeNode = (tree: ComponentTreeNode): ComponentTreeNode => {
+//   const newComp = config2tree(tree2config(tree));
+//   console.log(newComp);
+
+//   addTreeID(newComp);
+//   return newComp;
+// }
+
+function addTreeID(tree: ComponentTreeNode) {
+  if (!tree) return;
+  const store = useStore();
+  store.dispatch('viewer/setCompId');
+  const id = store.getters['viewer/getCompId'];
+  tree.id = id;
+  tree.textID = id.toString();
+  if (tree?.children?.length) {
+    tree.children.forEach(child => {
+      addTreeID(child);
+    });
+  }
+  if (tree.slots) {
+    Object.keys(tree.slots).forEach(slotKey => {
+      addTreeID(tree.slots![slotKey]);
+    });
+  }
+}
+
+export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, sup: ComponentTreeNode | null = null, options: any = {}): ComponentTreeNode => {
+  const {
+    props,
+    slots,
+    isSlot,
+  } = options;
   const store = useStore();
   store.dispatch('viewer/setCompId');
   const id = store.getters['viewer/getCompId'];
 
   const expressedComponent: any = reactive<ComponentTreeNode>({
     name: material.name,
-    parent: sup,
+    parent: isSlot ? null : sup,
     material,
-    props: createPropsBySchemas(material.schemas!, props),
+    props: createPropsBySchemas(material.schemas!, isSlot ? null : props),
     id,
     textID: String(id),
     slots: {},

@@ -18,7 +18,7 @@ export interface ComponentTreeNode {
   material?: IMaterialConfig;
   props?: any;
   children?: ComponentTreeNode[];
-  slots?: Object;
+  slots: Object;
   isSlot?: boolean;
 }
 
@@ -31,6 +31,7 @@ export default {
         children: [],
         parent: null,
         props: {},
+        slots: {},
       },
       activeComponent: null,
       hoveringComponent: null,

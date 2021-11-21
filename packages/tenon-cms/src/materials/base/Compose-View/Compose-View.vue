@@ -61,7 +61,7 @@ let propsConfig: any = computed(() => {
       const materialsMap = store.getters['materials/getMaterialsMap'];
       const materialFactory = materialsMap.get("Compose-View");
       const material = materialFactory();
-      const comp = createTenonEditorComponentByMaterial(material, rootComp);
+      const comp = createTenonEditorComponentByMaterial(material, null);
       comp.isSlot = true;
       result = comp;
       rootSlots[props.slotKey] = comp;

@@ -204,7 +204,7 @@ export const containerBackgroundSchema = {
         backgroundImage: {
           type: "string",
           title: "背景图片",
-          default: null,
+          default: "null",
         },
         boxShadow: {
           type: "string",

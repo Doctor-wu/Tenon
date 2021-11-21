@@ -49,6 +49,10 @@ export const extractActiveComponentFromParent = (activeComponent) => {
 
 export const copyActiveComponent = (activeComponent, parent) => {
   if (!parent) return;
+  // const newComp = copyComponentTreeNode(activeComponent);
+  // console.log(newComp, activeComponent, newComp.props === activeComponent.props);
+
+  // insertChild(parent, newComp, activeComponent);
   recursiveInsertNewComponent(activeComponent, parent, activeComponent);
 }
 
