@@ -78,7 +78,6 @@ const getBindingsBySchemaType = (type: string, key) => {
     case 'select':
     default:
       return {
-        modelValue: activeComponent.value.props[props.fieldName][key],
       }
   }
 }

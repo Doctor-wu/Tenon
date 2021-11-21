@@ -167,30 +167,184 @@ export const containerBackgroundSchema = {
       type: "group",
       title: "边框",
       properties: {
-        border: {
+        borderWidth: {
           type: "string",
-          title: "边框",
-          default: ""
+          title: "边框粗细",
+          default: "null",
         },
-        borderTop: {
-          type: "string",
+        borderStyle: {
+          type: "select",
+          title: "边框样式",
+          default: "null",
+          options: {
+            solid: "solid",
+            dashed: "dashed",
+            dotted: "dotted",
+            doubled: "dashed",
+            groove: "groove",
+            hidden: "hidden",
+            inherit: "inherit",
+            initial: "initial",
+            inset: "inset",
+            none: "none",
+            outset: "outset",
+            revert: "revert",
+            ridge: "ridge",
+            unset: "unset",
+          }
+        },
+        borderColor: {
+          type: "color",
+          title: "边框颜色",
+          default: "null",
+        },
+        t: {
+          type: "group",
           title: "上边框",
-          default: ""
+          properties: {
+            borderTopWidth: {
+              type: "string",
+              title: "边框粗细",
+              default: "null",
+            },
+            borderTopStyle: {
+              type: "select",
+              title: "边框样式",
+              default: "null",
+              options: {
+                solid: "solid",
+                dashed: "dashed",
+                dotted: "dotted",
+                doubled: "dashed",
+                groove: "groove",
+                hidden: "hidden",
+                inherit: "inherit",
+                initial: "initial",
+                inset: "inset",
+                none: "none",
+                outset: "outset",
+                revert: "revert",
+                ridge: "ridge",
+                unset: "unset",
+              }
+            },
+            borderTopColor: {
+              type: "color",
+              title: "边框颜色",
+              default: "null",
+            },
+          }
         },
-        borderBottom: {
-          type: "string",
+        b: {
+          type: "group",
           title: "下边框",
-          default: ""
+          properties: {
+            borderBottomWidth: {
+              type: "string",
+              title: "边框粗细",
+              default: "null",
+            },
+            borderBottomStyle: {
+              type: "select",
+              title: "边框样式",
+              default: "null",
+              options: {
+                solid: "solid",
+                dashed: "dashed",
+                dotted: "dotted",
+                doubled: "dashed",
+                groove: "groove",
+                hidden: "hidden",
+                inherit: "inherit",
+                initial: "initial",
+                inset: "inset",
+                none: "none",
+                outset: "outset",
+                revert: "revert",
+                ridge: "ridge",
+                unset: "unset",
+              }
+            },
+            borderBottomColor: {
+              type: "color",
+              title: "边框颜色",
+              default: "null",
+            },
+          }
         },
-        borderLeft: {
-          type: "string",
+        l: {
+          type: "group",
           title: "左边框",
-          default: ""
+          properties: {
+            borderLeftWidth: {
+              type: "string",
+              title: "边框粗细",
+              default: "null",
+            },
+            borderLeftStyle: {
+              type: "select",
+              title: "边框样式",
+              default: "null",
+              options: {
+                solid: "solid",
+                dashed: "dashed",
+                dotted: "dotted",
+                doubled: "dashed",
+                groove: "groove",
+                hidden: "hidden",
+                inherit: "inherit",
+                initial: "initial",
+                inset: "inset",
+                none: "none",
+                outset: "outset",
+                revert: "revert",
+                ridge: "ridge",
+                unset: "unset",
+              }
+            },
+            borderLeftColor: {
+              type: "color",
+              title: "边框颜色",
+              default: "null",
+            },
+          }
         },
-        borderRight: {
-          type: "string",
+        r: {
+          type: "group",
           title: "右边框",
-          default: ""
+          properties: {
+            borderRightWidth: {
+              type: "string",
+              title: "边框粗细",
+              default: "null",
+            },
+            borderRightStyle: {
+              type: "select",
+              title: "边框样式",
+              default: "null",
+              options: {
+                solid: "solid",
+                dashed: "dashed",
+                dotted: "dotted",
+                doubled: "dashed",
+                groove: "groove",
+                hidden: "hidden",
+                inherit: "inherit",
+                initial: "initial",
+                inset: "inset",
+                none: "none",
+                outset: "outset",
+                revert: "revert",
+                ridge: "ridge",
+                unset: "unset",
+              }
+            },
+            borderRightColor: {
+              type: "color",
+              title: "边框颜色",
+              default: "null",
+            },
+          }
         },
       }
     }
