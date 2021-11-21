@@ -43,14 +43,13 @@ export const isAncestor = (parent, child) => {
 }
 
 export async function insertNewComponent(beInsert, sup, relative, insertFromFront = false, props?: any) {
-  const expressedComponent = await createComponentByMaterial(beInsert, sup, props);
+  const expressedComponent = createTenonEditorComponentByMaterial(beInsert, sup, props);
 
   insertChild(sup, expressedComponent, relative, insertFromFront);
   return expressedComponent;
 }
 
 export const recursiveInsertNewComponent = async (comp, parent, relative, insertFromFront = false) => {
-  console.log(comp);
 
   const store = useStore();
   const beInsert = store.getters['materials/getMaterialsMap'].get(comp.name)();
@@ -63,9 +62,11 @@ export const recursiveInsertNewComponent = async (comp, parent, relative, insert
   return expressedComponent;
 }
 
-export const createComponentByMaterial = async (material: IMaterialConfig, sup: ComponentTreeNode | null = null, props?: any): Promise<ComponentTreeNode> => {
+export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, sup: ComponentTreeNode | null = null, props?: any): ComponentTreeNode => {
   const store = useStore();
-  const id = await store.dispatch('viewer/setCompId');
+  store.dispatch('viewer/setCompId');
+  const id = store.getters['viewer/getCompId'];
+
   const expressedComponent: any = reactive<ComponentTreeNode>({
     name: material.name,
     parent: sup,
@@ -73,11 +74,14 @@ export const createComponentByMaterial = async (material: IMaterialConfig, sup: 
     props: createPropsBySchemas(material.schemas!, props),
     id,
     textID: String(id),
+    slots: {},
   });
 
   if (material.config.nestable) {
-    expressedComponent.children = [];
+    expressedComponent.children = material.children || [];
   }
+
+  material.tenonComp = expressedComponent;
   return expressedComponent;
 }
 

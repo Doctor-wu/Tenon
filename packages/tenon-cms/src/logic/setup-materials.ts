@@ -4,11 +4,13 @@ import {
   defineComponent, h,
   onMounted, onUpdated,
   onBeforeUnmount, onBeforeMount,
-  reactive
+  reactive,
 } from "vue";
 import { internalSchema } from "../schemas";
 import { IMaterialConfig } from "../store/modules/materials";
 import { ISchema, parseSchemas2Props } from "./schema";
+import { MaterialComponentContext } from "./setup-component-context";
+import { createTenonEditorComponentByMaterial } from "./tree-operation";
 
 const materials = new Map<string, (() => IMaterialConfig)[]>();
 const materialsMap = new Map<string, () => IMaterialConfig>();
@@ -49,14 +51,15 @@ export const setupMaterials = (store: any) => {
     const comp: () => IMaterialConfig = () => {
       const base: IMaterialConfig = {
         name: compName,
-        component: config.setup === 'native'
-          ? vueConfig
-          : componentMap.has(config.name)
-            ? componentMap.get(config.name)
-            : createComponent(viewConfig, logicConfig, config),
         config,
         schemas: config.schemas,
+        component: {},
       };
+      base.component = config.setup === 'native'
+        ? vueConfig
+        : componentMap.has(config.name)
+          ? componentMap.get(config.name)
+          : createComponent(viewConfig, logicConfig, config);
       return base;
     };
 
@@ -73,7 +76,8 @@ function createComponent(viewConfig, logic, config) {
   const comp = defineComponent({
     name: config.name,
     render: function (this: any) {
-      return parseConfig2View.call(this, viewConfig).call(this);
+      MaterialComponentContext.value = this;
+      return parseConfig2RenderFn.call(this, viewConfig).call(this);
     },
     inheritAttrs: false,
     props: parseSchemas2Props(config.schemas),
@@ -92,7 +96,7 @@ function setupComponent(props, ctx, logic, config) {
   return reactive(state);
 }
 
-function parseConfig2View(this: any, config) {
+function parseConfig2RenderFn(this: any, config) {
   if (typeof config === 'string') {
     config = config.trim();
     if (config.startsWith('{{') && config.endsWith('}}')) {
@@ -103,6 +107,7 @@ function parseConfig2View(this: any, config) {
 
   let {
     el,
+    slotKey = "",
     props = {},
     children = []
   } = config;
@@ -115,10 +120,11 @@ function parseConfig2View(this: any, config) {
     el = material?.component;
   }
 
-  const processedProps = setupProps.call(this, props);
+  const processedProps: any = setupProps.call(this, props) || {};
+
   return function _custom_render(this: any) {
     return h(el, processedProps, {
-      default: () => children.map(child => parseConfig2View.call(this, child).call(this)),
+      default: () => children.map(child => parseConfig2RenderFn.call(this, child).call(this)),
     });
   };
 }
@@ -156,8 +162,6 @@ function setupProps(this: any, props = {}) {
 }
 
 function setupConfigSchemas(config) {
-  console.log(config);
-
   const {
     schemas = [],
   } = config;

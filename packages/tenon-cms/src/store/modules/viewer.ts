@@ -18,7 +18,8 @@ export interface ComponentTreeNode {
   material?: IMaterialConfig;
   props?: any;
   children?: ComponentTreeNode[];
-  wrapperStyles?: Object;
+  slots?: Object;
+  isSlot?: boolean;
 }
 
 export default {

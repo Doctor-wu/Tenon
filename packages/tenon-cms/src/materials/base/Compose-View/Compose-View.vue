@@ -2,16 +2,16 @@
   <section
     class="compose-view-container"
     :style="($attrs as any).composeStyle || {}"
-    :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === config, editable: editMode }"
-    @dragenter="(e) => handleContainerDropEnter(e, config)"
+    :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === propsConfig, editable: editMode }"
+    @dragenter="(e) => handleContainerDropEnter(e, propsConfig)"
     @dragover.prevent="() => { }"
-    @drop="(e) => handleContainerDrop(e, config)"
+    @drop="(e) => handleContainerDrop(e, propsConfig)"
   >
-    <template v-if="config.children?.length">
-      <template v-for="subConfig in config.children" :key="subConfig.id">
+    <template v-if="propsConfig.children?.length">
+      <template v-for="subConfig in propsConfig.children" :key="subConfig.id">
         <Wrapper :style="subConfig?.props?.containerStyle" :config="subConfig">
           <component
-            :is="toRaw(store.getters['materials/getMaterialsMap'].get(subConfig.name)().component)"
+            :is="toRaw(subConfig.material.component)"
             :config="subConfig"
             v-bind="subConfig.props"
           ></component>
@@ -24,20 +24,48 @@
 
 <script lang="ts" setup>
 import { useStore } from '../../../store';
-import { toRaw } from 'vue';
+import { toRaw, computed, onMounted } from 'vue';
 import Wrapper from '../../../components/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '../../../logic/viewer-drag';
 import { editMode } from '../../../logic/viewer-status';
+import { createTenonEditorComponentByMaterial } from '../../../logic/tree-operation';
+import { MaterialComponentContext } from '../../../logic/setup-component-context';
 
 const store = useStore();
 
 const props = defineProps({
   config: {
-    type: Object,
+    type: [Object, Function],
     default: () => { }
   },
+  isSlot: {
+    type: Boolean,
+    default: false,
+  },
+  slotKey: {
+    type: String,
+    default: ""
+  }
+});
+let propsConfig: any = computed(() => {
+  let result: any = props.config;
+  return result;
 });
 
+if (props.isSlot) {
+  const rootSlots = MaterialComponentContext.value.$attrs.config.slots;
+  if (rootSlots[props.slotKey]) {
+    propsConfig = rootSlots[props.slotKey];
+  } else {
+    console.log(MaterialComponentContext);
+    const materialsMap = store.getters['materials/getMaterialsMap'];
+    const materialFactory = materialsMap.get("Compose-View");
+    const material = materialFactory();
+    const comp = createTenonEditorComponentByMaterial(material, null);
+    propsConfig = comp;
+    rootSlots[props.slotKey] = comp;
+  }
+}
 </script>
 <style lang="scss" scoped>
 .compose-view-container {

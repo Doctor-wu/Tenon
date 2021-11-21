@@ -47,7 +47,8 @@ onMounted(() => {
   width: 1920px;
   overflow: auto;
   &.editMode {
-    transform: scale(0.75);
+    transform: scale(0.7);
+    padding: 5px;
   }
 }
 .viewer-nav {

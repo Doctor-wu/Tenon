@@ -1,4 +1,14 @@
 {
   "el": "span",
-  "children": ["Block", "{{author}}"]
+  "children": [
+    "Block",
+    "{{author}}",
+    {
+      "el": "Compose-View",
+      "props": {
+        "isSlot": true,
+        "slotKey": "default"
+      }
+    }
+  ]
 }

@@ -1,12 +1,15 @@
 import { Module } from 'vuex';
 import { IRootState } from '..';
 import { ISchema } from '../../logic/schema';
+import { ComponentTreeNode } from './viewer';
 
 export interface IMaterialConfig {
   name: string;
   component: any;
   config: any;
   schemas?: ISchema[];
+  children?: IMaterialConfig[];
+  tenonComp?: ComponentTreeNode;
 }
 
 

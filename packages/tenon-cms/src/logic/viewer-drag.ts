@@ -1,6 +1,6 @@
 import { useStore } from "../store";
-import { createComponentByMaterial, extractChild, insertChild, insertNewComponent, isAncestor } from "./tree-operation";
-import { ref } from 'vue';
+import { createTenonEditorComponentByMaterial, extractChild, insertChild, insertNewComponent, isAncestor } from "./tree-operation";
+import { markRaw, ref } from 'vue';
 import { Notification } from "@arco-design/web-vue";
 export const dragging = ref(false);
 export const hovering = ref(-1);
@@ -16,7 +16,7 @@ export const handleMaterialDragStart = (ev: DragEvent, config, isMaterial = true
 
   if (!config.parent) {
     const material = config();
-    // const comp = createComponentByMaterial(material);
+    // const comp = createTenonEditorComponentByMaterial(material);
     // console.log(material, comp);
 
     store.dispatch('viewer/setDraggingComponent', material);
@@ -46,7 +46,6 @@ export const handleWrapperDrop = (ev: DragEvent, config) => {
   const store = useStore();
   const draggingComponent = store.getters['viewer/getDraggingComponent'];
   if (!draggingComponent.parent) {
-
     return insertNewComponent(draggingComponent, config.parent, config);
   }
 
@@ -62,7 +61,7 @@ export const handleContainerDrop = async (ev: DragEvent, config, relative?: any)
   ev.stopPropagation();
   const store = useStore();
   let draggingComponent: any = store.getters['viewer/getDraggingComponent'];
-  
+
   if (draggingComponent === config || isAncestor(draggingComponent, config)) {
     Notification.warning({
       title: '拖拽错误',

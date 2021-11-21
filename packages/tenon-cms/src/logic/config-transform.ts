@@ -9,6 +9,7 @@ export const tree2config = (config: ComponentTreeNode) => {
     'children',
     'material',
     'props',
+    'slots'
   ]
   for (let key in config) {
     if (extractKey.includes(key)) continue;
@@ -22,6 +23,14 @@ export const tree2config = (config: ComponentTreeNode) => {
       return tree2config(child);
     });
   }
+  if (config.slots) {
+    newConfig.slots = {};
+    Object.keys(config.slots).forEach(key => {
+      newConfig.slots[key] = tree2config(config.slots?.[key] || {});
+    });
+  }
+  console.log(newConfig);
+
   return newConfig;
 };
 
@@ -41,6 +50,13 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
     config.children.forEach(child => {
       config2tree(child, config);
     });
+  }
+  if (config.slots) {
+    let newSlots = {};
+    Object.keys(config.slots).forEach(key => {
+      newSlots[key] = config2tree(config.slots[key]);
+    });
+    config.slots = newSlots;
   }
   return config;
 }
