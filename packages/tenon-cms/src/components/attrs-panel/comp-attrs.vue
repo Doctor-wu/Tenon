@@ -3,8 +3,13 @@
     <section>
       <a-form :model="activeComponent.props" layout="vertical">
         <!-- :default-open-keys="[schemas?.[0]?.title]" -->
-        <a-menu :style="{ borderRadius: '4px' }" theme="vertical" :collapsed="false" :level-indent="0">
-          <template v-for="(schema, index) in schemas" :key="schema.title">
+        <a-menu
+          :style="{ borderRadius: '4px' }"
+          theme="vertical"
+          :collapsed="false"
+          :level-indent="0"
+        >
+          <template v-for="(schema, index) in schemas" :key="schema.fieldName + schema.title">
             <a-sub-menu :title="schema.title">
               <AttrsTrree :properties="schema.properties" :fieldName="schema.fieldName"></AttrsTrree>
             </a-sub-menu>

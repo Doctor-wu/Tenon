@@ -188,4 +188,5 @@ function setupConfigSchemas(config) {
   });
   config.schemas?.push(internalSchema.containerLayout);
   config.schemas?.push(internalSchema.containerBackground);
+  // config.schemas?.push(internalSchema.textStyle);
 }

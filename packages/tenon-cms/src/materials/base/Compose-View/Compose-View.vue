@@ -1,7 +1,11 @@
 <template>
   <section
     class="compose-view-container"
-    :style="[($attrs as any).composeLayout || {}, ($attrs as any).composeBackground || {}]"
+    :style="[
+      ($attrs as any).composeLayout || {},
+      ($attrs as any).composeBackground || {},
+      ($attrs as any).composeTextStyle || {}
+    ]"
     :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === propsConfig, editable: editMode }"
     @dragenter="(e) => handleContainerDropEnter(e, propsConfig)"
     @dragover.prevent="() => { }"
@@ -27,7 +31,7 @@
 
 <script lang="ts" setup>
 import { useStore } from '../../../store';
-import { toRaw, computed, onMounted } from 'vue';
+import { toRaw, computed } from 'vue';
 import Wrapper from '../../../components/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '../../../logic/viewer-drag';
 import { editMode } from '../../../logic/viewer-status';

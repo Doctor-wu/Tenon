@@ -1,6 +1,7 @@
 import { ComponentTreeNode } from "../store/modules/viewer";
 import { useStore } from "../store";
 import { reactive, toRaw } from "vue";
+import { createPropsBySchemas } from "./schema";
 
 export const tree2config = (config: ComponentTreeNode) => {
   let newConfig: any = {};
@@ -16,7 +17,7 @@ export const tree2config = (config: ComponentTreeNode) => {
     newConfig[key] = config[key];
   }
   if (config.props) {
-    newConfig.props = { ...config.props };
+    newConfig.props = { ...toRaw(config.props) };
   }
   if (config.children) {
     newConfig.children = config.children.map(child => {
@@ -24,14 +25,12 @@ export const tree2config = (config: ComponentTreeNode) => {
     });
   }
   if (config.slots) {
-    const oldSlots = config.slots;
+    const oldSlots = toRaw(config.slots);
     newConfig.slots = {};
     Object.keys(oldSlots).forEach(key => {
       newConfig.slots[key] = tree2config(oldSlots?.[key] || {});
     });
   }
-
-
   return newConfig;
 };
 
@@ -45,6 +44,10 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
 
   config.material = compFactory();
   if (config.props) {
+    const materialProps = createPropsBySchemas(materialsMap.get(config.name)?.().schemas);
+    Object.keys(materialProps).forEach(key => {
+      if (!config.props[key]) config.props[key] = materialProps[key];
+    })
     config.props = reactive(config.props);
   }
   if (config.children) {

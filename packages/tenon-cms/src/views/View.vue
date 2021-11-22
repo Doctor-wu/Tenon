@@ -33,12 +33,13 @@ onMounted(() => {
   height: 100%;
   // 劫持编辑器继承样式
   text-align: left;
+  flex: 1;
 }
 .viewer-container {
   width: 100%;
   height: 100%;
   overflow: auto;
-  padding: 0;
+  padding: 20px;
   box-sizing: border-box;
   position: relative;
   text-align: center;
@@ -46,11 +47,14 @@ onMounted(() => {
 
 .viewer-panel {
   box-shadow: 0 3px 18px 8px #00000010;
-  height: 812px;
-  width: 375px;
-  overflow: auto;
+  min-height: 812px;
+  width: 360px;
+  // overflow: auto;
   margin: 20px;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: auto;
   &.editMode {
     // transform: scale(0.7);
     padding: 5px;

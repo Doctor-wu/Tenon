@@ -1,5 +1,5 @@
 <template>
-  <template v-for="key in Object.keys(properties)" :key="key">
+  <template v-for="key in Object.keys(properties)" :key="fieldName + key">
     <template v-if="properties[key].type === 'group'">
       <a-sub-menu class="attrs-group" :title="properties[key].title">
         <AttrsTree :properties="properties[key].properties" :fieldName="fieldName"></AttrsTree>
@@ -69,7 +69,7 @@ const getBindingsBySchemaType = (type: string, key) => {
   switch (type) {
     case 'color':
       return {
-        color: activeComponent.value.props[props.fieldName][key]
+        color: activeComponent.value?.props?.[props.fieldName]?.[key]
       }
     case 'string':
     case 'boolean':

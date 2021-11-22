@@ -20,6 +20,12 @@
       "key": "containerBackground",
       "title": "Compose容器背景",
       "fieldName": "composeBackground"
+    },
+    {
+      "type": "internal",
+      "key": "textStyle",
+      "title": "Compose文本样式",
+      "fieldName": "composeTextStyle"
     }
   ]
 }
