@@ -17,11 +17,11 @@
   </section>
 </template>
 <script lang="ts" setup>
-import { useStore } from '../../store';
+import { useStore } from '../../../store';
 import {
   computed, h,
 } from 'vue';
-import ActiveComponentController from './active-component-controller.vue';
+import ActiveComponentController from '../active-component-controller.vue';
 
 const store = useStore();
 const activeComponent = computed(() => store?.getters['viewer/getActiveComponent']);

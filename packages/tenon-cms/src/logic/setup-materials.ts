@@ -5,6 +5,7 @@ import {
   onMounted, onUpdated,
   onBeforeUnmount, onBeforeMount,
   reactive,
+  getCurrentInstance,
 } from "vue";
 import { internalSchema } from "../schemas";
 import { IMaterialConfig } from "../store/modules/materials";
@@ -55,11 +56,11 @@ export const setupMaterials = (store: any) => {
         schemas: config.schemas,
         component: {},
       };
+
       base.component = config.setup === 'native'
         ? vueConfig
-        : componentMap.has(config.name)
-          ? componentMap.get(config.name)
-          : createComponent(viewConfig, logicConfig, config);
+        : createComponent(viewConfig, logicConfig, base);
+
       return base;
     };
 
@@ -72,28 +73,38 @@ export const setupMaterials = (store: any) => {
 }
 
 
-function createComponent(viewConfig, logic, config) {
+function createComponent(viewConfig, logic, material: IMaterialConfig) {
+  if (componentMap.has(material.config.name)) {
+    const comp = { ...componentMap.get(material.config.name) };
+    comp.__material = material;
+
+    return comp;
+  }
   const comp = defineComponent({
-    name: config.name,
+    name: material.config.name,
     render: function (this: any) {
       MaterialComponentContext.value = this;
       return parseConfig2RenderFn.call(this, viewConfig).call(this);
     },
     inheritAttrs: false,
-    props: parseSchemas2Props(config.schemas),
-    setup: function (props, ctx) { return setupComponent(props, ctx, logic, config) },
+    props: parseSchemas2Props(material.config.schemas),
+    setup: function (props, ctx) { return setupComponent(props, ctx, logic) },
   });
 
-  componentMap.set(config.name, comp);
+  componentMap.set(material.config.name, comp);
   return comp;
 }
 
-function setupComponent(props, ctx, logic, config) {
-  const state = logic?.({
-    onMounted, onUpdated, onBeforeUnmount, onBeforeMount
-  }, props, ctx) || {};
+function setupComponent(props, ctx, logic) {
+  const instance = getCurrentInstance();
 
-  return reactive(state);
+  const states = reactive(logic?.({
+    onMounted, onUpdated, onBeforeUnmount, onBeforeMount
+  }, props, ctx) || {});
+  const material = (instance as any)?.ctx.$options.__material;
+  material.tenonComp.states = states;
+
+  return states;
 }
 
 function parseConfig2RenderFn(this: any, config) {

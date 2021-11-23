@@ -1,10 +1,10 @@
 <template>
   <section class="wrapper">
     <a-empty v-if="!activeComponent || !editMode" style="margin: auto;">未选中组件</a-empty>
-    <section v-else class="attr-menus">
+    <section v-else class="attr-menus" :key="activeComponent.id">
       <a-tabs
         class="attr-menus-wrapper"
-        :default-active-key="attrs[1].title"
+        :default-active-key="attrs[2].title"
         animation
         size="large"
       >
@@ -26,8 +26,9 @@
 import { useStore } from '../../store';
 import { computed, effect, ref, toRaw } from 'vue';
 import { editMode } from '../../logic/viewer-status';
-import CompAttrs from './comp-attrs.vue';
-import BaseInfo from './base-info.vue';
+import CompAttrs from './comp-attrs/comp-attrs.vue';
+import BaseInfo from './base-attrs/base-info.vue';
+import compInstance from './comp-instance/comp-instance.vue';
 
 const store = useStore();
 const activeComponent = computed(() => store?.getters['viewer/getActiveComponent']);
@@ -43,6 +44,11 @@ const attrs = ref([
     icon: 'icon-list',
     component: CompAttrs,
   },
+  {
+    title: '实例',
+    icon: 'icon-common',
+    component: compInstance,
+  }
 ]);
 </script>
 

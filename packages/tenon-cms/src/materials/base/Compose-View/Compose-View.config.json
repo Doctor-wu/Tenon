@@ -2,12 +2,12 @@
   "name": "Compose-View",
   "description": [
     "Compose-View 是一个<基础组件>，Compose-View提供拖拽, 提示，以及组件的嵌套功能, Compose-View是最小的嵌套单位,部分编辑功能仅在编辑模式生效",
-    "\nCompose-View 是一个内部组件容器，您无法编辑它的相关属性"
+    "\nCompose-View 是一个内部组件容器，它没有可以操作的状态"
   ],
   "icon": "code-sandbox",
   "setup": "native",
   "nestable": true,
-  "platform": ["web", "mp"],
+  "platform": ["web"],
   "schemas": [
     {
       "type": "internal",

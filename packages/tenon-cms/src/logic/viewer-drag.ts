@@ -16,8 +16,6 @@ export const handleMaterialDragStart = (ev: DragEvent, config, isMaterial = true
 
   if (!config.parent) {
     const material = config();
-    // const comp = createTenonEditorComponentByMaterial(material);
-    // console.log(material, comp);
 
     store.dispatch('viewer/setDraggingComponent', material);
   } else {
@@ -71,7 +69,7 @@ export const handleContainerDrop = async (ev: DragEvent, config, relative?: any)
   }
   if (!draggingComponent.parent) {
     // 物料拖拽
-    await insertNewComponent(draggingComponent, config, relative);
+    insertNewComponent(draggingComponent, config, relative);
   } else {
     extractChild(draggingComponent.parent, draggingComponent);
     insertChild(config, draggingComponent, relative);

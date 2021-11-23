@@ -21,10 +21,10 @@
   </section>
 </template>
 <script lang="ts" setup>
-import { useStore } from '../../store';
+import { useStore } from '../../../store';
 import { computed, effect } from 'vue';
-import { ComponentTreeNode } from '../../store/modules/viewer';
-import { IMaterialConfig } from '../../store/modules/materials';
+import { ComponentTreeNode } from '../../../store/modules/viewer';
+import { IMaterialConfig } from '../../../store/modules/materials';
 import AttrsTrree from './attrs-tree.vue';
 
 const store = useStore();

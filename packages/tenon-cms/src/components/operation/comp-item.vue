@@ -30,11 +30,6 @@
 import { handleMaterialDragStart, handleMaterialDragEnd } from '../../logic/viewer-drag';
 import { getCurrentInstance, ComponentInternalInstance } from 'vue';
 import { editMode } from '../../logic/viewer-status';
-const instance = getCurrentInstance() as ComponentInternalInstance & {
-  ctx: any;
-};
-const ctx = instance.ctx;
-
 
 const props = defineProps({
   config: {

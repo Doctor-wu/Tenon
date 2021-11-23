@@ -2,6 +2,7 @@ import { ComponentTreeNode } from "../store/modules/viewer";
 import { useStore } from "../store";
 import { reactive, toRaw } from "vue";
 import { createPropsBySchemas } from "./schema";
+import { createTenonEditorComponentByMaterial } from "./tree-operation";
 
 export const tree2config = (config: ComponentTreeNode) => {
   let newConfig: any = {};
@@ -43,6 +44,8 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
   const compFactory = materialsMap.get(config.name);
 
   config.material = compFactory();
+  config.material.tenonComp = config;
+
   if (config.props) {
     const materialProps = createPropsBySchemas(materialsMap.get(config.name)?.().schemas);
     Object.keys(materialProps).forEach(key => {
@@ -62,5 +65,6 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
     });
     config.slots = newSlots;
   }
+
   return config;
 }

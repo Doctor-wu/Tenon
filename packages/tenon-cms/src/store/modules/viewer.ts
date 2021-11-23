@@ -17,6 +17,7 @@ export interface ComponentTreeNode {
   parent: ComponentTreeNode | null;
   material?: IMaterialConfig;
   props?: any;
+  states?: any;
   children?: ComponentTreeNode[];
   slots: Object;
   isSlot?: boolean;
