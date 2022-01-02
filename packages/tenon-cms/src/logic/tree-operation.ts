@@ -42,15 +42,16 @@ export const isAncestor = (parent, child) => {
   return isAncestor(parent, child.parent);
 }
 
-export function insertNewComponent(beInsert, sup, relative, insertFromFront = false, options: any = {}) {
+export function insertNewComponent(beInsert, parent, relative, insertFromFront = false, options: any = {}) {
 
-  const expressedComponent = createTenonEditorComponentByMaterial(beInsert, sup, options);
+  debugger;
+  const expressedComponent = createTenonEditorComponentByMaterial(beInsert, parent, options);
 
   if (options.isSlot) {
-    sup[relative] = expressedComponent;
+    parent[relative] = expressedComponent;
     return expressedComponent;
   }
-  insertChild(sup, expressedComponent, relative, insertFromFront);
+  insertChild(parent, expressedComponent, relative, insertFromFront);
   return expressedComponent;
 }
 
@@ -69,7 +70,6 @@ export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFr
   }
   if (comp.slots) {
     Object.keys(comp.slots).forEach(slotKey => {
-      expressedComponent.slots[slotKey];
       recursiveInsertNewComponent(comp.slots[slotKey], expressedComponent.slots, slotKey, false, true)
     })
   }
@@ -94,7 +94,7 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
     props: createPropsBySchemas(material.schemas!, isSlot ? null : props),
     id,
     textID: String(id),
-    slots: slots || {},
+    slots: {},
   });
 
   if (material.config.nestable) {

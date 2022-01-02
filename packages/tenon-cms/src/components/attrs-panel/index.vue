@@ -4,7 +4,7 @@
     <section v-else class="attr-menus" :key="activeComponent.id">
       <a-tabs
         class="attr-menus-wrapper"
-        :default-active-key="attrs[2].title"
+        :default-active-key="attrs[1].title"
         animation
         size="large"
       >

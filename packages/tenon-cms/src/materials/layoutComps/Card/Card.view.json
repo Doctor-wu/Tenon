@@ -1,0 +1,24 @@
+{
+  "el": "Card",
+  "props":{
+    "<BINDING>": "cardProps"
+  },
+  "children": [
+    {
+      "el": "Compose-View",
+      "props": {
+        "isSlot": true,
+        "slotKey": "default"
+      },
+      "slotKey": "default"
+    },
+    {
+      "el": "Compose-View",
+      "props": {
+        "isSlot": true,
+        "slotKey": "extra"
+      },
+      "slotKey": "title"
+    }
+  ]
+}

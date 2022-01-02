@@ -1,4 +1,4 @@
-import { Image } from "@arco-design/web-vue";
+import { Image, Card } from "@arco-design/web-vue";
 import {
   createTextVNode,
   defineComponent, h,
@@ -18,6 +18,7 @@ const materialsMap = new Map<string, () => IMaterialConfig>();
 const componentMap = new Map<string, any>();
 const dependencies = {
   Image,
+  Card,
 }
 
 export const setupMaterials = (store: any) => {
@@ -118,7 +119,7 @@ function parseConfig2RenderFn(this: any, config) {
 
   let {
     el,
-    slotKey = "",
+    slotKey = "default",
     props = {},
     children = []
   } = config;
@@ -134,9 +135,20 @@ function parseConfig2RenderFn(this: any, config) {
   const processedProps: any = setupProps.call(this, props) || {};
 
   return function _custom_render(this: any) {
-    return h(el, processedProps, {
-      default: () => children.map(child => parseConfig2RenderFn.call(this, child).call(this)),
+    const defaultArray:any[] = [];
+    const injectChildren:any = {
+      default: () => defaultArray,
+    };
+
+    children.forEach(child => {
+      if (!child.slotKey) {
+        defaultArray.push(parseConfig2RenderFn.call(this, child).call(this));
+      } else {
+        injectChildren[child.slotKey]= () => parseConfig2RenderFn.call(this, child).call(this);
+      }
     });
+
+    return h(el, processedProps, injectChildren);
   };
 }
 

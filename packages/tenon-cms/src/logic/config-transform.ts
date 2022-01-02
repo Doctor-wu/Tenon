@@ -11,7 +11,8 @@ export const tree2config = (config: ComponentTreeNode) => {
     'children',
     'material',
     'props',
-    'slots'
+    'slots',
+    'states',
   ]
   for (let key in config) {
     if (extractKey.includes(key)) continue;
@@ -31,6 +32,9 @@ export const tree2config = (config: ComponentTreeNode) => {
     Object.keys(oldSlots).forEach(key => {
       newConfig.slots[key] = tree2config(oldSlots?.[key] || {});
     });
+  }
+  if (config.states) {
+    newConfig.states = toRaw(config.states);
   }
   return newConfig;
 };
@@ -64,6 +68,9 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
       newSlots[key] = config2tree(config.slots[key]);
     });
     config.slots = newSlots;
+  }
+  if (config.states) {
+    config.states = reactive(config.states);
   }
 
   return config;

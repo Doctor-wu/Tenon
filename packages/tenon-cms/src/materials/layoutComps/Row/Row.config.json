@@ -1,7 +1,7 @@
 {
-  "name": "{%Name%}",
+  "name": "Row",
   "icon": "file",
-  "description": ["{%Name%}组件"],
+  "description": ["Row组件"],
   "platform": [
     "web"
   ],
