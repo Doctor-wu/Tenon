@@ -43,8 +43,6 @@ export const isAncestor = (parent, child) => {
 }
 
 export function insertNewComponent(beInsert, parent, relative, insertFromFront = false, options: any = {}) {
-
-  debugger;
   const expressedComponent = createTenonEditorComponentByMaterial(beInsert, parent, options);
 
   if (options.isSlot) {
@@ -71,7 +69,29 @@ export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFr
   if (comp.slots) {
     Object.keys(comp.slots).forEach(slotKey => {
       recursiveInsertNewComponent(comp.slots[slotKey], expressedComponent.slots, slotKey, false, true)
-    })
+    });
+  }
+  return expressedComponent;
+}
+
+export const copyComponentTreeNode = (comp: ComponentTreeNode, options: any = {}): ComponentTreeNode => {
+  const store = useStore();
+  const beInsert = store.getters['materials/getMaterialsMap'].get(comp.name)();
+  const expressedComponent = createTenonEditorComponentByMaterial(beInsert, options.parent, {
+    props: comp.props,
+    slots: comp.slots,
+    isSlot: options.isSlot,
+  });
+  // debugger;
+  if (comp.children) {
+    comp.children.forEach((child) => {
+      expressedComponent.children?.push(copyComponentTreeNode(child, { parent: expressedComponent }));
+    });
+  }
+  if (comp.slots) {
+    Object.keys(comp.slots).forEach(slotKey => {
+      expressedComponent.slots[slotKey] = (copyComponentTreeNode(comp.slots[slotKey], { isSlot: true }));
+    });
   }
   return expressedComponent;
 }
@@ -84,17 +104,22 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
     isSlot,
   } = options;
   const store = useStore();
-  store.dispatch('viewer/setCompId');
   const id = store.getters['viewer/getCompId'];
 
   const expressedComponent: any = reactive<ComponentTreeNode>({
     name: material.name,
     parent: isSlot ? null : sup,
     material,
-    props: createPropsBySchemas(material.schemas!, isSlot ? null : props),
+    props: createPropsBySchemas(
+      material.schemas!
+      , isSlot
+        ? material.config.tenonProps || null
+        : (props || material.config.tenonProps)
+    ),
     id,
     textID: String(id),
     slots: {},
+    isSlot,
   });
 
   if (material.config.nestable) {

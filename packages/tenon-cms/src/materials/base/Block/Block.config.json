@@ -1,8 +1,0 @@
-{
-  "name": "Block",
-  "icon": "dice",
-  "description": ["Block 是一个<基础组件>，Block提供块级组件能力"],
-  "platform": ["web"],
-  "schemas": [
-  ]
-}

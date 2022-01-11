@@ -1,7 +1,8 @@
 {
-  "name": "Row",
+  "name": "Tenon-Slot",
   "icon": "file",
-  "description": ["Row组件"],
+  "description": ["Tenon-Slot组件"],
+  "setup": "native",
   "dependencies": [],
   "platform": [
     "web"

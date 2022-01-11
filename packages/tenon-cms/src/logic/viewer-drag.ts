@@ -6,20 +6,19 @@ export const dragging = ref(false);
 export const hovering = ref(-1);
 export const draggingMaterial = ref(false);
 
-export const handleMaterialDragStart = (ev: DragEvent, config, isMaterial = true) => {
+export const handleMaterialDragStart = (ev: DragEvent, configOrFactory, isAMaterial = true) => {
   dragging.value = true;
-  draggingMaterial.value = isMaterial;
+  draggingMaterial.value = isAMaterial;
   ev.dataTransfer!.effectAllowed = 'move';
   ev.dataTransfer!.dropEffect = 'move';
   ev.dataTransfer?.setDragImage(ev.target as HTMLElement, 0, 0);
   const store = useStore();
-
-  if (!config.parent) {
-    const material = config();
+  if (isMaterial(configOrFactory) && configOrFactory instanceof Function) {
+    const material = configOrFactory();
 
     store.dispatch('viewer/setDraggingComponent', material);
   } else {
-    store.dispatch('viewer/setDraggingComponent', config);
+    store.dispatch('viewer/setDraggingComponent', configOrFactory);
   }
 }
 
@@ -43,7 +42,7 @@ export const handleWrapperDrop = (ev: DragEvent, config) => {
   ev.stopPropagation();
   const store = useStore();
   const draggingComponent = store.getters['viewer/getDraggingComponent'];
-  if (!draggingComponent.parent) {
+  if (isMaterial(draggingComponent)) {
     return insertNewComponent(draggingComponent, config.parent, config);
   }
 
@@ -52,6 +51,7 @@ export const handleWrapperDrop = (ev: DragEvent, config) => {
   insertChild(config.parent, draggingComponent, config);
 
   draggingComponent.parent = config.parent;
+  console.log(store.state);
 }
 
 export const handleContainerDrop = async (ev: DragEvent, config, relative?: any) => {
@@ -67,7 +67,7 @@ export const handleContainerDrop = async (ev: DragEvent, config, relative?: any)
     });
     return;
   }
-  if (!draggingComponent.parent) {
+  if (isMaterial(draggingComponent)) {
     // 物料拖拽
     insertNewComponent(draggingComponent, config, relative);
   } else {
@@ -75,6 +75,7 @@ export const handleContainerDrop = async (ev: DragEvent, config, relative?: any)
     insertChild(config, draggingComponent, relative);
     draggingComponent.parent = config;
   }
+  console.log(store.state);
 }
 
 export const deleteDraggingComponent = (ev: DragEvent) => {
@@ -85,4 +86,8 @@ export const deleteDraggingComponent = (ev: DragEvent) => {
   if (draggingComponent.parent) {
     extractChild(draggingComponent.parent, draggingComponent);
   }
+}
+
+export const isMaterial = (config):boolean => {
+  return !config.parent && !config.isSlot;
 }

@@ -1,4 +1,16 @@
 {
-  "el": "a-row",
-  "children": ["Row"]
+  "el": "section",
+  "children": [
+    {
+      "el": "Compose-View",
+      "props": {
+        "isSlot": true,
+        "slotKey": "default",
+        "composeLayout": {
+          "display": "flex",
+          "flex-wrap": "wrap"
+        }
+      }
+    }
+  ]
 }

@@ -2,6 +2,7 @@
   "name": "{%Name%}",
   "icon": "file",
   "description": ["{%Name%}组件"],
+  "dependencies": [],
   "platform": [
     "web"
   ],

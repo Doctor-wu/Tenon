@@ -1,0 +1,7 @@
+{
+  "el": "Button",
+  "props": {
+    "<BINDING>": "buttonProps"
+  },
+  "children": ["{{buttonText.value}}"]
+}

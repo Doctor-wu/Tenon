@@ -1,7 +1,9 @@
 {
   "name": "Card",
   "icon": "file",
-  "dependencies": [["Card", "@arco-design", "@arco-design/web-vue"]],
+  "dependencies": [
+    ["Card", "@arco-design", "@arco-design/web-vue"]
+  ],
   "description": ["Card是一个展示型组件"],
   "platform": ["web"],
   "schemas": [
@@ -33,6 +35,16 @@
             "small": "小"
           },
           "default": "medium"
+        },
+        "customTitle": {
+          "type": "boolean",
+          "title": "是否自定义标题",
+          "default": true
+        },
+        "title": {
+          "type": "string",
+          "title": "标题文字(优先)",
+          "when": "!this.cardProps.customTitle"
         }
       }
     }

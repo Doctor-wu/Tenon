@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { useStore } from "../store";
-import { extractChild, insertChild, insertNewComponent, recursiveInsertNewComponent } from "./tree-operation";
+import { copyComponentTreeNode, extractChild, insertChild, insertNewComponent, recursiveInsertNewComponent } from "./tree-operation";
 import { editMode } from "./viewer-status";
 
 export let choosingWrapper = ref(-1);
@@ -49,11 +49,8 @@ export const extractActiveComponentFromParent = (activeComponent) => {
 
 export const copyActiveComponent = (activeComponent, parent) => {
   if (!parent) return;
-  // const newComp = copyComponentTreeNode(activeComponent);
-  // console.log(newComp, activeComponent, newComp.props === activeComponent.props);
-
-  // insertChild(parent, newComp, activeComponent);
-  recursiveInsertNewComponent(activeComponent, parent, activeComponent);
+  const expressedComponent = copyComponentTreeNode(activeComponent, { parent });
+  insertChild(parent, expressedComponent, activeComponent);
 }
 
 export const clearActiveComponentChildren = (activeComponent) => {

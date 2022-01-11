@@ -20,5 +20,8 @@
     "inquirer": "^8.2.0",
     "tslint": "^6.1.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/lodash": "^4.14.178",
+    "lodash": "^4.17.21"
+  }
 }

@@ -1,0 +1,34 @@
+{
+  "name": "Col",
+  "icon": "file",
+  "description": ["Col组件"],
+  "dependencies": [
+  ],
+  "platform": [
+    "web"
+  ],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "组件属性",
+      "fieldName": "compProps",
+      "properties": {
+        "span": {
+          "type": "number",
+          "title": "Col列数(最大12)",
+          "default": 6
+        },
+        "offset": {
+          "type": "number",
+          "title": "Col位移列数(最大12)",
+          "default": 0
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "box-sizing": "border-box"
+    }
+  }
+}

@@ -3,22 +3,23 @@
   "props":{
     "<BINDING>": "cardProps"
   },
-  "children": [
-    {
+  "slots": {
+    "title": {
       "el": "Compose-View",
       "props": {
         "isSlot": true,
-        "slotKey": "default"
+        "slotKey": "title",
+        "placeholder": "拖入组件生成卡片头部"
       },
-      "slotKey": "default"
+      "<IF>": "this.cardProps.customTitle"
     },
-    {
+    "default": {
       "el": "Compose-View",
       "props": {
         "isSlot": true,
-        "slotKey": "extra"
-      },
-      "slotKey": "title"
+        "slotKey": "default",
+        "placeholder": "拖入组件生成卡片内容"
+      }
     }
-  ]
+  }
 }

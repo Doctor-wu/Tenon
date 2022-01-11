@@ -53,10 +53,8 @@ export default {
     SET_HOVERING_COMPONENT(state, component: IMaterialConfig | null) {
       state.hoveringComponent = component;
     },
-    SET_COMP_ID(state, id?: number) {
-      if (id === undefined)
-        state.compId++;
-      else state.compId = id;
+    SET_COMP_ID(state, id: number) {
+      state.compId = id;
     }
   },
   actions: {
@@ -101,7 +99,9 @@ export default {
       return state.hoveringComponent;
     },
     getCompId(state: IViewerState, getters: any, rootState: IRootState, rootGetters: any) {
-      return state.compId;
+      const id = state.compId;
+      state.compId++;
+      return id;
     }
   },
   namespaced: true,

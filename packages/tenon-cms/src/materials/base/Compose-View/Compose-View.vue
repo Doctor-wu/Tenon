@@ -11,7 +11,7 @@
     @dragover.prevent="() => { }"
     @drop="(e) => handleContainerDrop(e, propsConfig)"
   >
-    <template v-if="propsConfig.children?.length">
+    <template v-if="propsConfig?.children?.length">
       <template v-for="subConfig in propsConfig.children" :key="subConfig.id">
         <Wrapper
           :style="[subConfig?.props?.containerStyle, subConfig?.props?.containerBackground]"
@@ -25,13 +25,13 @@
         </Wrapper>
       </template>
     </template>
-    <section v-else-if="editMode" class="default-tip">拖入物料以生成组件</section>
+    <section v-else-if="editMode" class="default-tip">{{ placeholder }}</section>
   </section>
 </template>
 
 <script lang="ts" setup>
 import { useStore } from '../../../store';
-import { toRaw, computed } from 'vue';
+import { toRaw, computed, getCurrentInstance } from 'vue';
 import Wrapper from '../../../components/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '../../../logic/viewer-drag';
 import { editMode } from '../../../logic/viewer-status';
@@ -52,12 +52,18 @@ const props = defineProps({
   slotKey: {
     type: String,
     default: ""
+  },
+  placeholder: {
+    type: String,
+    default: "拖入物料以生成组件"
   }
 });
+const instance: any = getCurrentInstance();
+let currentRootComp;
 let propsConfig: any = computed(() => {
   let result: any = props.config;
   if (props.isSlot) {
-    const rootComp = MaterialComponentContext.value.$attrs.config;
+    const rootComp = currentRootComp || (currentRootComp = MaterialComponentContext.value.$attrs.config);
     const rootSlots = rootComp.slots;
     if (rootSlots[props.slotKey]) {
       result = rootSlots[props.slotKey];
@@ -70,6 +76,9 @@ let propsConfig: any = computed(() => {
       result = comp;
       rootSlots[props.slotKey] = comp;
     }
+    setTimeout(() => {
+      instance.ctx.$forceUpdate();
+    },10);
   }
   return result;
 });
@@ -92,6 +101,7 @@ let propsConfig: any = computed(() => {
   right: 0;
   top: 0;
   bottom: 0;
+  height: 40px;
   margin: auto;
   text-align: center;
   color: #77777799;

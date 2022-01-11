@@ -1,0 +1,69 @@
+{
+  "name": "Button",
+  "icon": "file",
+  "description": ["Button组件"],
+  "dependencies": [],
+  "platform": [
+    "web"
+  ],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "按钮文字",
+      "fieldName": "buttonText",
+      "properties": {
+        "value": {
+          "type": "string",
+          "title": "文本内容",
+          "default": "按钮"
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "按钮属性",
+      "fieldName": "buttonProps",
+      "properties": {
+        "type": {
+          "type": "select",
+          "title": "按钮类型",
+          "options": {
+            "primary": "primary",
+            "secondary": "secondary",
+            "dashed": "dashed",
+            "outline": "outline",
+            "text": "text"
+          },
+          "default": "primary"
+        },
+        "shape": {
+          "type": "select",
+          "title": "按钮形状",
+          "options": {
+            "square": "square",
+            "round": "round",
+            "circle": "circle"
+          },
+          "default": "square"
+        },
+        "status": {
+          "type": "select",
+          "title": "按钮状态",
+          "options": {
+            "normal": "normal",
+            "warning": "warning",
+            "success": "success",
+            "danger": "danger"
+          },
+          "default": "normal"
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "box-sizing": "border-box",
+      "display": "inline-block"
+    }
+  }
+}

@@ -32,6 +32,7 @@ import { useStore } from '../../../store';
 import { computed } from 'vue';
 import { ComponentTreeNode } from '../../../store/modules/viewer';
 import { ColorPicker } from 'vue-color-kit';
+import { getValueByInjectContext } from '@tenon/shared';
 
 const props = defineProps({
   properties: {
@@ -97,6 +98,13 @@ const getListenersBySchemaType = (type: string, key) => {
     default:
       return {};
   }
+}
+
+const shouldRenderItem = (properties: any, key) => {
+  if(properties.when === undefined) return true;
+  const result =  getValueByInjectContext(activeComponent.value.props, properties.when);
+          activeComponent.value.props[props.fieldName][key] = undefined;
+  return result;
 }
 </script>
 <style lang="scss" scoped>

@@ -8,5 +8,6 @@ export default (lifeCycle, props, ctx) => {
 
   return {
     author: 'Doctorwu',
+    name: 'Card',
   }
 }

@@ -1,4 +1,4 @@
-import { Image, Card } from "@arco-design/web-vue";
+import { Image, Card, Grid, Button } from "@arco-design/web-vue";
 import {
   createTextVNode,
   defineComponent, h,
@@ -6,12 +6,18 @@ import {
   onBeforeUnmount, onBeforeMount,
   reactive,
   getCurrentInstance,
+  computed,
+  ref,
+  watchEffect
 } from "vue";
 import { internalSchema } from "../schemas";
 import { IMaterialConfig } from "../store/modules/materials";
 import { ISchema, parseSchemas2Props } from "./schema";
 import { MaterialComponentContext } from "./setup-component-context";
+import { getValueByInjectContext } from "@tenon/shared"
 import { createTenonEditorComponentByMaterial } from "./tree-operation";
+import TenonCompContainer from "../components/tenon-comp-container.vue";
+import _ from "lodash";
 
 const materials = new Map<string, (() => IMaterialConfig)[]>();
 const materialsMap = new Map<string, () => IMaterialConfig>();
@@ -19,6 +25,9 @@ const componentMap = new Map<string, any>();
 const dependencies = {
   Image,
   Card,
+  GridCol: Grid.Col,
+  GridRow: Grid.Row,
+  Button,
 }
 
 export const setupMaterials = (store: any) => {
@@ -50,7 +59,7 @@ export const setupMaterials = (store: any) => {
     }
 
     setupConfigSchemas(config);
-    const comp: () => IMaterialConfig = () => {
+    const compFactory: () => IMaterialConfig = () => {
       const base: IMaterialConfig = {
         name: compName,
         config,
@@ -65,8 +74,8 @@ export const setupMaterials = (store: any) => {
       return base;
     };
 
-    materials.get(categoryKey)!.push(comp);
-    materialsMap.set(compName, comp);
+    materials.get(categoryKey)!.push(compFactory);
+    materialsMap.set(compName, compFactory);
   });
 
   store.dispatch('materials/setMaterials', materials);
@@ -84,13 +93,18 @@ function createComponent(viewConfig, logic, material: IMaterialConfig) {
   const comp = defineComponent({
     name: material.config.name,
     render: function (this: any) {
-      MaterialComponentContext.value = this;
+      // MaterialComponentContext.value = this;
       return parseConfig2RenderFn.call(this, viewConfig).call(this);
     },
     inheritAttrs: false,
     props: parseSchemas2Props(material.config.schemas),
-    setup: function (props, ctx) { return setupComponent(props, ctx, logic) },
+    setup: function (props, ctx) { 
+      const instance = getCurrentInstance();
+      MaterialComponentContext.value = (instance as any)?.ctx;
+      return setupComponent(props, ctx, logic);
+    },
   });
+  comp.__material = material;
 
   componentMap.set(material.config.name, comp);
   return comp;
@@ -100,16 +114,20 @@ function setupComponent(props, ctx, logic) {
   const instance = getCurrentInstance();
 
   const states = reactive(logic?.({
-    onMounted, onUpdated, onBeforeUnmount, onBeforeMount
-  }, props, ctx) || {});
+    onMounted, onUpdated, onBeforeUnmount, onBeforeMount,
+    watch: watchEffect,
+  }, props, ctx, instance) || {});
   const material = (instance as any)?.ctx.$options.__material;
-  material.tenonComp.states = states;
+  if (material.tenonComp) {
+    material.tenonComp.states = states;
+  }
 
   return states;
 }
 
 function parseConfig2RenderFn(this: any, config) {
-  if (typeof config === 'string') {
+  if (typeof config === "string" || typeof config === "number") {
+    config = String(config);
     config = config.trim();
     if (config.startsWith('{{') && config.endsWith('}}')) {
       return () => createTextVNode(recursiveGetValue(this, config.slice(2, -2)));
@@ -119,34 +137,60 @@ function parseConfig2RenderFn(this: any, config) {
 
   let {
     el,
-    slotKey = "default",
     props = {},
-    children = []
+    children = [],
+    slots = {},
   } = config;
+
+  let processedProps: any = setupProps.call(this, props) || {};
 
   if (dependencies[el]) el = dependencies[el];
 
   if (materialsMap.has(el)) {
     const compFactory = materialsMap.get(el);
-    const material = compFactory?.();
-    el = material?.component;
+    if (compFactory) {
+      // if (el === 'Compose-View') {
+      //   const material = compFactory();
+      //   el = material.component;
+      // } else {
+      //   const material = compFactory();
+      //   const comp = createTenonEditorComponentByMaterial(material, null, { props: processedProps });
+      //   comp.props = processedProps;
+      //   processedProps = { config: comp };
+      //   // el = TenonCompContainer;
+      //   el = material.component
+      // }
+      const material = compFactory();
+      el = material.component;
+    }
   }
 
-  const processedProps: any = setupProps.call(this, props) || {};
-
   return function _custom_render(this: any) {
-    const defaultArray:any[] = [];
-    const injectChildren:any = {
+    const defaultArray: any[] = [];
+    const injectChildren: any = {
       default: () => defaultArray,
     };
 
     children.forEach(child => {
-      if (!child.slotKey) {
-        defaultArray.push(parseConfig2RenderFn.call(this, child).call(this));
-      } else {
-        injectChildren[child.slotKey]= () => parseConfig2RenderFn.call(this, child).call(this);
+      let renderCondition = ref(true);
+      if (child["<IF>"]) {
+        renderCondition = computed(() => getValueByInjectContext(this, child["<IF>"]));
       }
+      defaultArray.push(renderCondition.value ? parseConfig2RenderFn.call(this, child).call(this) : null);
     });
+
+    Object.keys(slots).forEach(slotKey => {
+      const slotConfig = slots[slotKey];
+      let renderCondition = ref(true);
+      if (slotConfig["<IF>"]) {
+        renderCondition = computed(() => getValueByInjectContext(this, slotConfig["<IF>"]));
+      }
+      if (slotKey === "default") {
+        defaultArray.push(renderCondition.value ? parseConfig2RenderFn.call(this, slotConfig).call(this) : undefined);
+      } else {
+        (injectChildren[slotKey] = () => renderCondition.value ? parseConfig2RenderFn.call(this, slotConfig).call(this) : undefined);
+      }
+    })
 
     return h(el, processedProps, injectChildren);
   };
@@ -165,25 +209,24 @@ function setupProps(this: any, props = {}) {
   const newProps = {};
   Object.keys(props).forEach(key => {
     key = key.trim();
-    const value = props[key];
+    let value = props[key];
     switch (key) {
-      case 'style':
+      case "style":
         newProps[key] = recursiveGetValue(this, value);
         break;
-      case '<BINDING>':
-        const bindings = this[value] || {};
+      case "<BINDING>":
+        const bindings = props[value] || this[value] ||{};
         Object.keys(bindings).forEach((bindingKey) => {
           newProps[bindingKey] = bindings[bindingKey];
         });
         break;
       default:
-        newProps[key] = value;
+        newProps[key] =  value;
         break;
     }
   });
   return newProps;
 }
-
 function setupConfigSchemas(config) {
   const {
     schemas = [],
@@ -204,7 +247,6 @@ function setupConfigSchemas(config) {
         specSchema.title = title;
         specSchema.fieldName = fieldName;
         return specSchema;
-        break;
       default:
         break;
     }
