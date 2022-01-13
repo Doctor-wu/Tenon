@@ -1,0 +1,31 @@
+{
+  "el": "a-carousel",
+  "props": {
+    "style": "carouselStyle",
+    "<BINDING>": "carouselConfig"
+  },
+  "children": [
+    {
+      "el": "a-carousel-item",
+      "props":{
+        "style": {
+          "width": "60%"
+        }
+      },
+      "children": [
+        {
+          "el": "img",
+          "props": {
+            "src": "{{this.item}}",
+            "style": {
+              "height": "100%",
+              "width": "100%",
+              "object-fit": "cover"
+            }
+          }
+        }
+      ],
+      "<FOR>": "this.items"
+    }
+  ]
+}

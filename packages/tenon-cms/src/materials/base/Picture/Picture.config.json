@@ -24,6 +24,11 @@
           "type": "string",
           "title": "图片高度",
           "default": ""
+        },
+        "preview": {
+          "type": "boolean",
+          "title": "是否开启预览",
+          "default": false
         }
       }
     },

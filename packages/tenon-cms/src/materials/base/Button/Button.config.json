@@ -56,14 +56,49 @@
             "danger": "danger"
           },
           "default": "normal"
+        },
+        "size": {
+          "type": "select",
+          "title": "按钮大小",
+          "options": {
+            "mini": "mini",
+            "small": "small",
+            "medium": "medium",
+            "large": "large"
+          },
+          "default": "medium"
+        },
+        "long": {
+          "type": "boolean",
+          "title": "按钮的宽度是否随容器自适应",
+          "default": true
+        },
+        "loading": {
+          "type": "boolean",
+          "title": "按钮是否为加载中状态",
+          "default": false
+        },
+        "disabled": {
+          "type": "boolean",
+          "title": "按钮是否禁用",
+          "default": false
+        },
+        "html-type": {
+          "type": "string",
+          "title": "button的原生type属性",
+          "default": "button"
+        },
+        "href": {
+          "type": "string",
+          "title": "跳转链接",
+          "default": null
         }
       }
     }
   ],
   "tenonProps": {
     "containerStyle": {
-      "box-sizing": "border-box",
-      "display": "inline-block"
+      "box-sizing": "border-box"
     }
   }
 }

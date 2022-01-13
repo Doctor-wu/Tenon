@@ -6,6 +6,7 @@ import { config2tree, tree2config } from "./config-transform";
 const treeModel = getTreeModel();
 import { useStore } from "../store";
 import { createPropsBySchemas } from "./schema";
+import { getID, setID } from "./viewer-id";
 
 export const insertChild = (parent, child, relative, insertFromFront = false) => {
   if (!relative) {
@@ -103,8 +104,9 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
     slots,
     isSlot,
   } = options;
-  const store = useStore();
-  const id = store.getters['viewer/getCompId'];
+  // const store = useStore();
+  // const id = store.getters['viewer/getCompId'];
+  const id = getID();
 
   const expressedComponent: any = reactive<ComponentTreeNode>({
     name: material.name,
@@ -117,9 +119,10 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
         : (props || material.config.tenonProps)
     ),
     id,
+    subComponents: {},
     textID: String(id),
     slots: {},
-    isSlot,
+    isSlot: !!isSlot,
   });
 
   if (material.config.nestable) {
@@ -136,7 +139,7 @@ export const uploadTree = (tree: ComponentTreeNode) => {
 
   return treeModel.set({
     config,
-    lastID: store.getters['viewer/getCompId'],
+    lastID: getID(),
   });
 }
 
@@ -148,7 +151,8 @@ export const downloadTree = async (): Promise<ComponentTreeNode> => {
     lastID,
     config,
   } = tree;
-  store.dispatch('viewer/setCompId', lastID);
+  // store.dispatch('viewer/setCompId', lastID);
+  setID(lastID);
   config2tree(config);
   store.dispatch('viewer/setTree', config);
   store.dispatch('viewer/setActiveComponent', null);

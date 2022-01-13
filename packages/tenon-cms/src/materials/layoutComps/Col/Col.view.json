@@ -2,6 +2,9 @@
   "el": "Compose-View",
   "props": {
     "isSlot": true,
-    "slotKey": "default"
+    "slotKey": "default",
+    "composeLayout": {
+      "box-sizing": "border-box"
+    }
   }
 }

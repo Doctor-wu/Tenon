@@ -4,7 +4,7 @@
       <ViewerNav></ViewerNav>
     </section>
     <section class="viewer-panel" :class="[editMode ? 'editMode' : '']" ref="panel">
-      <ComposeView :config="store.getters['viewer/getTree']" class="rootView"></ComposeView>
+      <ComposeView :tenonComp="store.getters['viewer/getTree']" class="rootView"></ComposeView>
     </section>
     <section class="viewer-notice">
       <ViewerNotice></ViewerNotice>

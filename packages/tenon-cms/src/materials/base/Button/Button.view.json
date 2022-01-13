@@ -1,5 +1,5 @@
 {
-  "el": "Button",
+  "el": "a-button",
   "props": {
     "<BINDING>": "buttonProps"
   },

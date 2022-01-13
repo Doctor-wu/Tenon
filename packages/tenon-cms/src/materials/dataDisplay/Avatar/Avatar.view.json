@@ -1,0 +1,19 @@
+{
+  "el": "a-avatar",
+  "props": {
+    "<BINDING>": "avatarConfig",
+    "style": "avatarStyle"
+  },
+  "children": [
+    "{{author}}",
+    {
+      "el": "DynamicComponent",
+      "props": {
+        "is": "{{this.icon}}"
+      },
+      "isSlot": true,
+      "slotKey": "trigger-icon",
+      "<IF>": "this.avatarConfig.withIcon"
+    }
+  ]
+}

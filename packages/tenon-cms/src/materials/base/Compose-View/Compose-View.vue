@@ -15,11 +15,11 @@
       <template v-for="subConfig in propsConfig.children" :key="subConfig.id">
         <Wrapper
           :style="[subConfig?.props?.containerStyle, subConfig?.props?.containerBackground]"
-          :config="subConfig"
+          :tenonComp="subConfig"
         >
           <component
             :is="toRaw(subConfig.material.component)"
-            :config="subConfig"
+            :tenonComp="subConfig"
             v-bind="subConfig.props"
           ></component>
         </Wrapper>
@@ -31,20 +31,22 @@
 
 <script lang="ts" setup>
 import { useStore } from '../../../store';
-import { toRaw, computed, getCurrentInstance } from 'vue';
+import { toRaw, computed, getCurrentInstance, onBeforeMount, useSlots } from 'vue';
 import Wrapper from '../../../components/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '../../../logic/viewer-drag';
 import { editMode } from '../../../logic/viewer-status';
 import { createTenonEditorComponentByMaterial } from '../../../logic/tree-operation';
 import { MaterialComponentContext } from '../../../logic/setup-component-context';
+import { ComponentTreeNode } from '../../../store/modules/viewer';
+import { findParentTenonComp } from '../../../logic/setup-materials';
 
 const store = useStore();
 
 const props = defineProps({
-  config: {
+  tenonComp: {
     type: [Object, Function],
     default: () => { }
-  },
+  } as any,
   isSlot: {
     type: Boolean,
     default: false,
@@ -56,14 +58,21 @@ const props = defineProps({
   placeholder: {
     type: String,
     default: "拖入物料以生成组件"
+  },
+  tenonProps: {
+    type: Object
   }
 });
-const instance: any = getCurrentInstance();
+
+// props.tenonComp.material.tenonComp = props.tenonComp.material.tenonComp || props.tenonComp;
 let currentRootComp;
 let propsConfig: any = computed(() => {
-  let result: any = props.config;
-  if (props.isSlot) {
-    const rootComp = currentRootComp || (currentRootComp = MaterialComponentContext.value.$attrs.config);
+  let result: any = props.tenonComp;
+  const instance: any = getCurrentInstance();
+  if (props.isSlot) { 
+    const rootComp = findParentTenonComp(instance)!;
+    // currentRootComp
+    // || (currentRootComp = (MaterialComponentContext.value).tenonComp || MaterialComponentContext.value.$attrs.tenonComp);
     const rootSlots = rootComp.slots;
     if (rootSlots[props.slotKey]) {
       result = rootSlots[props.slotKey];
@@ -76,10 +85,9 @@ let propsConfig: any = computed(() => {
       result = comp;
       rootSlots[props.slotKey] = comp;
     }
-    setTimeout(() => {
-      instance.ctx.$forceUpdate();
-    },10);
+    // rootComp.subComponents[`${result.name}_${result.id}`] = rootComp.subComponents[`${result.name}_${result.id}`] || result;
   }
+  result.ctx = result.ctx || instance.ctx;
   return result;
 });
 

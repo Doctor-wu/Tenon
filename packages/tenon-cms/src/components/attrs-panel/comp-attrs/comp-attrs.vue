@@ -11,7 +11,8 @@
         >
           <template v-for="(schema, index) in schemas" :key="schema.fieldName + schema.title">
             <a-sub-menu :title="schema.title">
-              <AttrsTree :properties="schema.properties" :fieldName="schema.fieldName"></AttrsTree>
+              <CustomAttrs v-if="schema.type === 'custom'" :schema="schema"></CustomAttrs>
+              <AttrsTree v-else :properties="schema.properties" :fieldName="schema.fieldName"></AttrsTree>
             </a-sub-menu>
             <a-divider v-if="index !== schemas.length - 1" style="margin: 10px 0;"></a-divider>
           </template>
@@ -26,6 +27,7 @@ import { computed, effect } from 'vue';
 import { ComponentTreeNode } from '../../../store/modules/viewer';
 import { IMaterialConfig } from '../../../store/modules/materials';
 import AttrsTree from './attrs-tree.vue';
+import CustomAttrs from './custom-attrs.vue';
 
 const store = useStore();
 const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);

@@ -63,6 +63,7 @@ export const createPropsBySchemas = (schemas: ISchema[] = [], source?: any) => {
     } = schema;
     switch (type) {
       case 'group':
+      case 'custom':
       case 'object':
         const propValue = {};
         const sourceKeys = Object.keys(source?.[fieldName] || {});
@@ -84,9 +85,7 @@ export const createPropsBySchemas = (schemas: ISchema[] = [], source?: any) => {
 
               Object.assign(propValue, { ...(props[fieldName] || {}) }, { ...source?.[fieldName] });
               break;
-
             default:
-
               propValue[propertyKey] = sourceKeysSet.has(propertyKey)
                 ? source?.[fieldName]?.[propertyKey]
                 : properties?.[propertyKey]?.default;

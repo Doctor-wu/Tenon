@@ -1,0 +1,60 @@
+{
+  "name": "Avatar",
+  "icon": "file",
+  "description": ["Avatar组件"],
+  "dependencies": [],
+  "platform": [
+    "web"
+  ],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "头像组件配置",
+      "fieldName": "avatarConfig",
+      "properties": {
+        "size": {
+          "type": "number",
+          "title": "头像大小",
+          "default": 60
+        },
+        "shape": {
+          "type": "select",
+          "title": "头像形状",
+          "default": "circle",
+          "options": {
+            "circle": "circle",
+            "square": "square"
+          }
+        },
+        "withIcon": {
+          "type": "boolean",
+          "title": "展示图标",
+          "default": true
+        }
+      }
+    },
+    {
+      "type": "custom",
+      "title": "头像元素样式",
+      "fieldName": "avatarStyle",
+      "properties": {
+        "width": {
+          "type": "string",
+          "title": "宽度",
+          "default": "60px"
+        },
+        "height": {
+          "type": "string",
+          "title": "高度",
+          "default": "60px"
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "box-sizing": "border-box",
+      "display": "inline-block"
+    }
+  }
+}

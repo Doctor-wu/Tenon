@@ -13,6 +13,8 @@ export const tree2config = (config: ComponentTreeNode) => {
     'props',
     'slots',
     'states',
+    'ctx',
+    'subComponents'
   ]
   for (let key in config) {
     if (extractKey.includes(key)) continue;
@@ -72,6 +74,8 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
   if (config.states) {
     config.states = reactive(config.states);
   }
+
+  config.subComponents = {};
 
   return config;
 }

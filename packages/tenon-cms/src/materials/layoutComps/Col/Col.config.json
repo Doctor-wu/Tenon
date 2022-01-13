@@ -24,6 +24,18 @@
           "default": 0
         }
       }
+    },
+    {
+      "type": "internal",
+      "key": "containerLayout",
+      "title": "Col容器样式",
+      "fieldName": "composeLayout"
+    },
+    {
+      "type": "internal",
+      "key": "containerBackground",
+      "title": "Col容器背景",
+      "fieldName": "composeBackground"
     }
   ],
   "tenonProps": {

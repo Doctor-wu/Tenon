@@ -1,8 +1,18 @@
 {
-  "el": "Card",
+  "el": "a-card",
   "props":{
     "<BINDING>": "cardProps"
   },
+  "children":[
+    {
+      "el": "Compose-View",
+      "props": {
+        "isSlot": true,
+        "slotKey": "default",
+        "placeholder": "拖入组件生成卡片内容"
+      }
+    }
+  ],
   "slots": {
     "title": {
       "el": "Compose-View",
@@ -11,15 +21,7 @@
         "slotKey": "title",
         "placeholder": "拖入组件生成卡片头部"
       },
-      "<IF>": "this.cardProps.customTitle"
-    },
-    "default": {
-      "el": "Compose-View",
-      "props": {
-        "isSlot": true,
-        "slotKey": "default",
-        "placeholder": "拖入组件生成卡片内容"
-      }
+      "<IF>": "cardProps.customTitle"
     }
   }
 }

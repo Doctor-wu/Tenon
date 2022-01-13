@@ -2,22 +2,22 @@
   <section
     class="wrapper-container"
     :class="{
-      hovering: dragging && hovering === config.id,
+      hovering: dragging && hovering === tenonComp.id,
       editable: editMode,
       choosing: editMode
         && !dragging
-        && choosingWrapper === config.id
+        && choosingWrapper === tenonComp.id
         && !store?.getters['viewer/getDraggingComponent'],
-      active: editMode && !dragging && store?.getters['viewer/getActiveComponent'] === config
+      active: editMode && !dragging && store?.getters['viewer/getActiveComponent'] === tenonComp
     }"
-    @dragstart.capture="(e) => handleMaterialDragStart(e, config, false)"
-    @dragend="(e) => handleMaterialDragEnd(e, config)"
+    @dragstart.capture="(e) => handleMaterialDragStart(e, tenonComp, false)"
+    @dragend="(e) => handleMaterialDragEnd(e, tenonComp)"
     @dragover.prevent="() => { }"
-    @dragenter.prevent="() => { hovering = config.id }"
-    @drop="(e) => handleWrapperDrop(e, config)"
-    @mouseover.capture="() => choosingWrapper = config.id"
+    @dragenter.prevent="() => { hovering = tenonComp.id }"
+    @drop="(e) => handleWrapperDrop(e, tenonComp)"
+    @mouseover.capture="() => choosingWrapper = tenonComp.id"
     @mouseleave="() => choosingWrapper = -1"
-    @click="(e) => handleSelectComponent(e, config)"
+    @click="(e) => handleSelectComponent(e, tenonComp)"
     :draggable="editMode"
   >
     <slot></slot>
@@ -31,7 +31,7 @@ import { choosingWrapper, handleSelectComponent } from '../../logic/viewer-selec
 const store = useStore();
 
 const props = defineProps({
-  config: {
+  tenonComp: {
     type: Object,
     required: true,
   },
