@@ -1,6 +1,6 @@
 <template>
   <a-button @click="showModal = !showModal" style="margin-bottom: 10px" type="dashed" long>
-    <icon-plus></icon-plus> 添加属性
+    <icon-plus></icon-plus>添加属性
   </a-button>
   <a-card v-if="showModal" title="添加属性" style="margin-bottom: 20px">
     <template #extra>
@@ -27,7 +27,7 @@
       </a-form-item>
     </a-form>
   </a-card>
-  <AttrsTree :properties="schema.properties" :field-name="schema.fieldName"></AttrsTree>
+  <AttrsTree :schema="schema" :properties="schema.properties" :field-name="schema.fieldName"></AttrsTree>
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
@@ -40,6 +40,9 @@ const props = defineProps({
     required: true,
   }
 });
+const store = useStore();
+
+
 
 const showModal = ref(false);
 const form = reactive({

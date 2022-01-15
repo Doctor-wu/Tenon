@@ -7,6 +7,7 @@ const treeModel = getTreeModel();
 import { useStore } from "../store";
 import { createPropsBySchemas } from "./schema";
 import { getID, setID } from "./viewer-id";
+import _ from "lodash";
 
 export const insertChild = (parent, child, relative, insertFromFront = false) => {
   if (!relative) {
@@ -57,10 +58,12 @@ export function insertNewComponent(beInsert, parent, relative, insertFromFront =
 export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFront = false, isSlot = false) => {
   const store = useStore();
   const beInsert = store.getters['materials/getMaterialsMap'].get(comp.name)();
+  // beInsert
   const expressedComponent = insertNewComponent(beInsert, parent, relative, insertFromFront, {
     props: comp.props,
     slots: comp.slots,
     isSlot: isSlot,
+    schemas: _.cloneDeep(comp.schemas),
   });
   if (comp.children) {
     comp.children.forEach((child) => {
@@ -82,6 +85,7 @@ export const copyComponentTreeNode = (comp: ComponentTreeNode, options: any = {}
     props: comp.props,
     slots: comp.slots,
     isSlot: options.isSlot,
+    schemas: comp.schemas,
   });
   // debugger;
   if (comp.children) {
@@ -103,6 +107,7 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
     props,
     slots,
     isSlot,
+    schemas,
   } = options;
   // const store = useStore();
   // const id = store.getters['viewer/getCompId'];
@@ -113,13 +118,14 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
     parent: isSlot ? null : sup,
     material,
     props: createPropsBySchemas(
-      material.schemas!
+      schemas || material.schemas!
       , isSlot
         ? material.config.tenonProps || null
         : (props || material.config.tenonProps)
     ),
     id,
-    subComponents: {},
+    refs: {},
+    schemas: schemas || material.schemas!,
     textID: String(id),
     slots: {},
     isSlot: !!isSlot,

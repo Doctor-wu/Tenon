@@ -2,7 +2,6 @@ import { ComponentTreeNode } from "../store/modules/viewer";
 import { useStore } from "../store";
 import { reactive, toRaw } from "vue";
 import { createPropsBySchemas } from "./schema";
-import { createTenonEditorComponentByMaterial } from "./tree-operation";
 
 export const tree2config = (config: ComponentTreeNode) => {
   let newConfig: any = {};
@@ -14,7 +13,9 @@ export const tree2config = (config: ComponentTreeNode) => {
     'slots',
     'states',
     'ctx',
-    'subComponents'
+    'subComponents',
+    'refs',
+    'schemas'
   ]
   for (let key in config) {
     if (extractKey.includes(key)) continue;
@@ -22,6 +23,9 @@ export const tree2config = (config: ComponentTreeNode) => {
   }
   if (config.props) {
     newConfig.props = { ...toRaw(config.props) };
+  }
+  if (config.schemas) {
+    newConfig.schemas = toRaw(config.schemas);
   }
   if (config.children) {
     newConfig.children = config.children.map(child => {
@@ -74,8 +78,10 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
   if (config.states) {
     config.states = reactive(config.states);
   }
+  
 
   config.subComponents = {};
+  config.refs = {};
 
   return config;
 }

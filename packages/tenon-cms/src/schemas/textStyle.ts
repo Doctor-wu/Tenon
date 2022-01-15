@@ -62,6 +62,11 @@ export const textStyleSchema = {
       "type": "string",
       "title": "文本阴影",
       "default": "none"
+    },
+    "vertical-align": {
+      "type": "string",
+      "title": "vertical-align",
+      "default": "baseline"
     }
   }
 };

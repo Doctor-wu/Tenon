@@ -5,11 +5,23 @@
     "style": "avatarStyle"
   },
   "children": [
-    "{{author}}",
+    {
+      "el": "Text",
+      "props": {
+        "textValue": {
+          "value": "{{this.author}}"
+        },
+        "textStyle": {
+          "color": "inherit",
+          "vertical-align": "middle"
+        }
+      }
+    },
     {
       "el": "DynamicComponent",
       "props": {
-        "is": "{{this.icon}}"
+        "is": "{{this.icon}}",
+        "style": "avatarIconStyle"
       },
       "isSlot": true,
       "slotKey": "trigger-icon",

@@ -2,7 +2,7 @@ import { ISchema } from "../logic/schema";
 
 export const containerSchema: ISchema =
 {
-  type: "object",
+  type: "custom",
   title: "元素容器布局",
   fieldName: "containerStyle",
   properties: {

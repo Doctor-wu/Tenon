@@ -13,9 +13,13 @@ export interface IViewerState {
 export interface ComponentTreeNode {
   name: string;
   id: number;
-  subComponents: {[pros:string]: IMaterialConfig}
-  textID?: string;
+  schemas: any;
   parent: ComponentTreeNode | null;
+  refs: any;
+  refKey?: string;
+  ctx?: any;
+  textID?: string;
+  parentComponent?: ComponentTreeNode;
   material?: IMaterialConfig;
   props?: any;
   states?: any;
@@ -34,7 +38,8 @@ export default {
         children: [],
         parent: null,
         props: {},
-        subComponents: {},
+        refs:{},
+        schemas: {},
         slots: {},
       },
       activeComponent: null,

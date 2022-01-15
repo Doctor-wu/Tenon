@@ -2,7 +2,6 @@
   <section class="attrs-wrapper">
     <section>
       <a-form :model="activeComponent.props" layout="vertical">
-        <!-- :default-open-keys="[schemas?.[0]?.title]" -->
         <a-menu
           :style="{ borderRadius: '4px' }"
           theme="vertical"
@@ -28,18 +27,15 @@ import { ComponentTreeNode } from '../../../store/modules/viewer';
 import { IMaterialConfig } from '../../../store/modules/materials';
 import AttrsTree from './attrs-tree.vue';
 import CustomAttrs from './custom-attrs.vue';
+const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);
 
 const store = useStore();
-const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);
 
 const schemas = computed(() => {
   const {
-    material = {} as IMaterialConfig,
+    schemas, material = {} as IMaterialConfig,
   } = activeComponent.value;
 
-  const {
-    schemas = [],
-  } = material;
   return schemas;
 });
 

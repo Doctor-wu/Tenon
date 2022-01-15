@@ -1,5 +1,4 @@
 import { Image, Card, Grid, Button, Carousel, Avatar } from "@arco-design/web-vue";
-import { IconAlignCenter } from "@arco-design/web-vue/es/icon";
 import DynamicComponent from "../components/dynamic-component.vue";
 
 export const materialDependency = {

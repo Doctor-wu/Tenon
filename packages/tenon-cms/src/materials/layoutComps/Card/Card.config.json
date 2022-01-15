@@ -36,11 +36,6 @@
           },
           "default": "medium"
         },
-        "customTitle": {
-          "type": "boolean",
-          "title": "是否自定义标题",
-          "default": true
-        },
         "title": {
           "type": "string",
           "title": "标题文字(优先)",

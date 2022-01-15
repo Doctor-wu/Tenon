@@ -11,17 +11,16 @@
         "slotKey": "default",
         "placeholder": "拖入组件生成卡片内容"
       }
-    }
-  ],
-  "slots": {
-    "title": {
+    },
+    {
       "el": "Compose-View",
       "props": {
         "isSlot": true,
         "slotKey": "title",
         "placeholder": "拖入组件生成卡片头部"
       },
-      "<IF>": "cardProps.customTitle"
+      "isSlot": true,
+      "slotKey": "title"
     }
-  }
+  ]
 }

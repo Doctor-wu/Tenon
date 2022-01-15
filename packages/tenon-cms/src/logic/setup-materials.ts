@@ -9,6 +9,7 @@ import {
   watchEffect,
   Fragment,
   resolveDynamicComponent,
+  ref,
 } from "vue";
 import { internalSchema } from "../schemas";
 import { IMaterialConfig } from "../store/modules/materials";
@@ -54,10 +55,11 @@ export const setupMaterials = (store: any) => {
 
     setupConfigSchemas(config);
     const compFactory: () => IMaterialConfig = () => {
+      const bornConfig = _.cloneDeep(config);
       const base: IMaterialConfig = {
         name: compName,
-        config,
-        schemas: config.schemas,
+        config: bornConfig,
+        schemas: bornConfig.schemas,
         component: {},
       };
 
@@ -86,8 +88,7 @@ function createComponent(viewConfig, logic, material: IMaterialConfig) {
   const comp = defineComponent({
     name: material.config.name,
     render: function (this: any) {
-      // MaterialComponentContext.value = this;
-      return parseConfig2RenderFn.call(this, viewConfig).call(this);
+      return parseConfig2RenderFn.call(this, viewConfig, true).call(this);
     },
     inheritAttrs: false,
     props: parseSchemas2Props(material.config.schemas),
@@ -102,12 +103,14 @@ function createComponent(viewConfig, logic, material: IMaterialConfig) {
 
 function setupComponent(props, ctx, logic) {
   const instance = getCurrentInstance();
-  const tenonComp = (instance as any)?.ctx.$attrs.tenonComp;
+  const tenonComp: ComponentTreeNode = (instance as any)?.ctx.$attrs.tenonComp;
   tenonComp.ctx = (instance as any)?.ctx;
   tenonComp.ctx.tenonComp = tenonComp.ctx.tenonComp || tenonComp;
   const parentComp: ComponentTreeNode | null = findParentTenonComp(instance);
-  if (parentComp) {
-    parentComp.subComponents[`${tenonComp.name}_${tenonComp.id}`] = parentComp.subComponents[`${tenonComp.name}_${tenonComp.id}`] || tenonComp;
+  if (parentComp && tenonComp.refKey) {
+    parentComp.refs = parentComp.refs || {};
+    parentComp.refs[tenonComp.refKey] = parentComp.refs[tenonComp.refKey] || tenonComp;
+    // parentComp.subComponents[`${tenonComp.name}_${tenonComp.id}`].parentComponent = parentComp;
   };
   const states = reactive(logic?.({
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount,
@@ -125,7 +128,7 @@ export function findParentTenonComp(instance: any): ComponentTreeNode | null {
   return findParentTenonComp(instance.parent);
 }
 
-function parseConfig2RenderFn(this: any, config) {
+function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
   if (typeof config === "string" || typeof config === "number") {
     config = String(config);
     config = config.trim();
@@ -139,7 +142,6 @@ function parseConfig2RenderFn(this: any, config) {
     el,
     props = {},
     children = [],
-    slots = {},
   } = config;
 
   if (config["<FOR>"] && !config._processedFOR) {
@@ -181,32 +183,24 @@ function parseConfig2RenderFn(this: any, config) {
     const compFactory = materialsMap.get(el);
     if (compFactory) {
       const material = compFactory();
-      if (el !== "Compose-View") {
-        const source = _.cloneDeep(processedProps);
-        const tenonComp = createTenonEditorComponentByMaterial(material, null, {
-          props: source
-        });
+      const source = _.cloneDeep(processedProps);
+      const tenonComp = createTenonEditorComponentByMaterial(material, null, {
+        isSlot: !!source.isSlot,
+        props: source
+      });
+      if (el !== "Compose-View" || !source.isSlot) {
         processedProps = {
           tenonComp,
           ...tenonComp.props
         };
-      } else {
-        const source = _.cloneDeep(processedProps);
-        const tenonComp = createTenonEditorComponentByMaterial(material, null, {
-          isSlot: !!source.isSlot,
-          props: source
-        });
-        if (!source.isSlot) {
-          processedProps = {
-            tenonComp,
-            ...tenonComp.props
-          };
-        }
       }
+      tenonComp.refKey = config.refKey;
       el = material.component;
     }
   }
 
+  const rootRef = ref(null);
+  processedProps["ref"] = rootRef;
 
   return function _custom_render(this: any) {
     const defaultArray: any[] = [];
@@ -224,12 +218,15 @@ function parseConfig2RenderFn(this: any, config) {
           const vNode = parseConfig2RenderFn.call(this, slotConfig).call(this);
           if (vNode) {
             (injectChildren[slotKey] = () => vNode);
+            // this.$slots[slotKey] = () => vNode;
           } else {
-            this.$slots[slotKey] = null;
+            // this.$slots[slotKey] = null;
+            delete injectChildren[slotKey];
           }
         }
       }
-      else defaultArray.push(parseConfig2RenderFn.call(this, child).call(this));
+      else
+        defaultArray.push(parseConfig2RenderFn.call(this, child).call(this));
     });
 
     // Object.keys(slots).forEach(slotKey => {
@@ -237,15 +234,33 @@ function parseConfig2RenderFn(this: any, config) {
     //   if (slotKey === "default") {
     //     defaultArray.push(parseConfig2RenderFn.call(this, slotConfig).call(this));
     //   } else {
-    //     debugger;
     //     const vNode = parseConfig2RenderFn.call(this, slotConfig).call(this);
     //     if (vNode) {
     //       (injectChildren[slotKey] = () => vNode);
     //     }
     //   }
     // });
-
-    return h(el, processedProps, injectChildren);
+    const VNode = h(el, processedProps, injectChildren);
+    if (isRoot) {
+      VNode.props = VNode.props || {};
+      if (VNode.props?.onVnodeMounted) {
+        if (!(VNode.props?.onVnodeMounted instanceof Array)) {
+          VNode.props.onVnodeMounted = [VNode.props?.onVnodeMounted];
+        }
+      } else {
+        VNode.props.onVnodeMounted = [];
+      }
+      const instance = getCurrentInstance();
+      VNode.props?.onVnodeMounted.push(() => {
+        if ((instance as any).ctx.tenonComp && (VNode?.props?.ref as any).value) {
+          (instance as any).ctx.tenonComp.refs['$rootRef'] = (VNode?.props?.ref as any).value;
+        }
+      });
+      if (VNode.props!.tenonComp) {
+        VNode.props!.tenonComp.refs['$rootRef'] = (VNode.props?.ref as any);
+      }
+    }
+    return VNode;
   };
 }
 

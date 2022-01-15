@@ -47,8 +47,19 @@
           "type": "string",
           "title": "高度",
           "default": "60px"
+        },
+        "background-color": {
+          "type": "color",
+          "title": "背景颜色",
+          "default": "#5D61FF"
         }
       }
+    },
+    {
+      "type": "custom",
+      "title": "头像图标样式",
+      "fieldName": "avatarIconStyle",
+      "properties": {}
     }
   ],
   "tenonProps": {

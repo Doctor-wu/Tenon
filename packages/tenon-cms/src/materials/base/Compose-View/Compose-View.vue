@@ -65,7 +65,7 @@ const props = defineProps({
 });
 
 // props.tenonComp.material.tenonComp = props.tenonComp.material.tenonComp || props.tenonComp;
-let currentRootComp;
+// let currentRootComp;
 let propsConfig: any = computed(() => {
   let result: any = props.tenonComp;
   const instance: any = getCurrentInstance();

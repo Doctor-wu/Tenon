@@ -20,7 +20,7 @@
       "height": {
         "type": "string",
         "title": "轮播组件高度",
-        "default": "100px"
+        "default": "120px"
       }
     }
   },
