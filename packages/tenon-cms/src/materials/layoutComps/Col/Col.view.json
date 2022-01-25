@@ -3,8 +3,7 @@
   "props": {
     "isSlot": true,
     "slotKey": "default",
-    "composeLayout": {
-      "box-sizing": "border-box"
-    }
+    "composeLayout": "{{this.composeLayout}}",
+    "composeBackground": "{{this.composeBackground}}"
   }
 }

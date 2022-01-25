@@ -6,6 +6,9 @@
   "platform": [
     "web"
   ],
+  "events": {
+    "onClick": "点击时"
+  },
   "schemas": [
     {
       "type": "object",

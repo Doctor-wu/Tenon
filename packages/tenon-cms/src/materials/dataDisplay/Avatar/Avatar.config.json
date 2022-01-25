@@ -48,7 +48,7 @@
           "title": "高度",
           "default": "60px"
         },
-        "background-color": {
+        "backgroundColor": {
           "type": "color",
           "title": "背景颜色",
           "default": "#5D61FF"

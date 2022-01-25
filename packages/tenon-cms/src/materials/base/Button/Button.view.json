@@ -1,7 +1,8 @@
 {
   "el": "a-button",
   "props": {
-    "<BINDING>": "buttonProps"
+    "<BINDING>": "buttonProps",
+    "onClick": "{{() => this.executeEvents$('onClick')}}"
   },
-  "children": ["{{buttonText.value}}"]
+  "children": ["{{this.buttonText.value}}", "{{this.count.value}}"]
 }

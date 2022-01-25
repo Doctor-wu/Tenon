@@ -27,12 +27,12 @@ export default class TreeController {
     });
   }
 
-  get() {
+  get(key: string = 'TREE') {
     return new Promise<TreeStruct>((resolve, reject) => {
       const request = this.service
         .createTransaction(['tree'], 'readonly')
         .objectStore('tree')
-        .get('TREE');
+        .get(key);
       request.onsuccess = (event: any) => {
         resolve(event.target.result);
       }

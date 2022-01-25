@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import { Module } from 'vuex';
 import { IRootState } from '..';
+import { DEFAULT_EVENTS, IEventsConfig } from '../../logic/events';
 import { IMaterialConfig } from './materials';
 
 export interface IViewerState {
@@ -16,6 +18,8 @@ export interface ComponentTreeNode {
   schemas: any;
   parent: ComponentTreeNode | null;
   refs: any;
+  events: IEventsConfig;
+  handlers: string[];
   refKey?: string;
   ctx?: any;
   textID?: string;
@@ -28,20 +32,23 @@ export interface ComponentTreeNode {
   isSlot?: boolean;
   
 }
+const defaultTree: ComponentTreeNode = {
+  name: 'Compose-View',
+  id: 0,
+  children: [],
+  parent: null,
+  props: {},
+  refs: {},
+  events: _.cloneDeep(DEFAULT_EVENTS),
+  handlers: [],
+  schemas: {},
+  slots: {},
+};
 
 export default {
   state() {
     return {
-      tree: {
-        name: 'Compose-View',
-        id: 0,
-        children: [],
-        parent: null,
-        props: {},
-        refs:{},
-        schemas: {},
-        slots: {},
-      },
+      tree: defaultTree,
       activeComponent: null,
       hoveringComponent: null,
       draggingComponent: null,

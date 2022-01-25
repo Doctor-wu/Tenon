@@ -4,7 +4,7 @@
     <section v-else class="attr-menus" :key="activeComponent.id">
       <a-tabs
         class="attr-menus-wrapper"
-        :default-active-key="attrs[1].title"
+        :default-active-key="attrs[3].title"
         animation
         size="large"
       >
@@ -29,6 +29,7 @@ import { editMode } from '../../logic/viewer-status';
 import CompAttrs from './comp-attrs/comp-attrs.vue';
 import BaseInfo from './base-attrs/base-info.vue';
 import compInstance from './comp-instance/comp-instance.vue';
+import compEvents from './comp-events/comp-events.vue';
 
 const store = useStore();
 const activeComponent = computed(() => store?.getters['viewer/getActiveComponent']);
@@ -48,7 +49,12 @@ const attrs = ref([
     title: '实例',
     icon: 'icon-common',
     component: compInstance,
-  }
+  },
+  {
+    title: '事件',
+    icon: 'icon-command',
+    component: compEvents,
+  },
 ]);
 </script>
 

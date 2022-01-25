@@ -2,19 +2,56 @@
   <section class="comp-instance-attr-container">
     <a-empty v-if="activeComponent?.material?.config.setup === 'native'">该组件为内部组件</a-empty>
     <template v-else>
-      <pre>{{ JSON.stringify(activeComponent.states, null, 2) }}</pre>
+      <a-card title="States">
+        <pre style="overflow: auto;max-height: 250px;">{{ JSON.stringify(activeComponent.states, null, 2) }}</pre>
+      </a-card>
+      <a-list style="margin-top: 12px;">
+        <template #header>Handlers</template>
+        <a-list-item v-for="(item, key) in activeComponent.handlers" :key="key">
+          <section class="instance-handler-item">
+            <b>{{ item.toUpperCase() }}</b>
+            <icon-play-arrow-fill @click="() => simulateTrigger(item)" class="trigger" />
+          </section>
+        </a-list-item>
+        <a-empty
+          style="flex-direction: column;"
+          v-if="!activeComponent.handlers?.length"
+        >该组件暂无Handler</a-empty>
+      </a-list>
     </template>
   </section>
 </template>
 <script setup lang="ts">
 import { useStore } from '../../../store';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { ComponentTreeNode } from '../../../store/modules/viewer';
 
 const store = useStore();
 const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);
 console.log(activeComponent.value);
 
+const simulateTrigger = (item: string) => {
+  activeComponent.value.states[item]?.();
+}
+
 </script>
 <style lang="scss" scoped>
+.instance-handler-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  user-select: none;
+
+  .trigger {
+    font-size: 24px;
+    color: gray;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease-out;
+    &:hover {
+      color: lightgreen;
+    }
+  }
+}
 </style>

@@ -8,6 +8,5 @@ export default (lifeCycle, props, ctx, tenonComp) => {
 
   return {
     author: 'Doctorwu',
-    name: 'Card',
   }
 }

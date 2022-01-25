@@ -1,7 +1,11 @@
 import { useStore } from "../store";
-import { createTenonEditorComponentByMaterial, extractChild, insertChild, insertNewComponent, isAncestor } from "./tree-operation";
-import { markRaw, ref } from 'vue';
+import { extractChild, insertChild, insertNewComponent, isAncestor } from "./tree-operation";
+import { nextTick, ref } from 'vue';
 import { Notification } from "@arco-design/web-vue";
+import { findParentTenonComp } from "./setup-materials";
+
+
+
 export const dragging = ref(false);
 export const hovering = ref(-1);
 export const draggingMaterial = ref(false);
@@ -51,7 +55,9 @@ export const handleWrapperDrop = (ev: DragEvent, config) => {
   insertChild(config.parent, draggingComponent, config);
 
   draggingComponent.parent = config.parent;
-  console.log(store.state);
+  nextTick(() => {
+    draggingComponent.parentComponent = findParentTenonComp(draggingComponent.ctx.$);
+  });
 }
 
 export const handleContainerDrop = async (ev: DragEvent, config, relative?: any) => {
@@ -66,7 +72,7 @@ export const handleContainerDrop = async (ev: DragEvent, config, relative?: any)
       content: '不能将容器拖拽到自己或自己的子容器中',
     });
     return;
-  }
+  };
   if (isMaterial(draggingComponent)) {
     // 物料拖拽
     insertNewComponent(draggingComponent, config, relative);
@@ -74,8 +80,10 @@ export const handleContainerDrop = async (ev: DragEvent, config, relative?: any)
     extractChild(draggingComponent.parent, draggingComponent);
     insertChild(config, draggingComponent, relative);
     draggingComponent.parent = config;
-  }
-  console.log(store.state);
+    nextTick(() => {
+      draggingComponent.parentComponent = findParentTenonComp(draggingComponent.ctx.$);
+    });
+  };
 }
 
 export const deleteDraggingComponent = (ev: DragEvent) => {

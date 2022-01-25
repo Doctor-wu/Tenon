@@ -1,4 +1,5 @@
-let id = 0;
+let id = 1;
+
 export const getID = () => {
   let currId = id;
   id++;

@@ -16,7 +16,12 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     });
   });
 
+  const log = () => {
+    console.log("Col");
+  }
+
   return {
     author: 'Doctorwu',
+    log,
   }
 }

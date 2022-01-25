@@ -1,7 +1,9 @@
 import { ComponentTreeNode } from "../store/modules/viewer";
 import { useStore } from "../store";
-import { reactive, toRaw } from "vue";
+import { reactive, toRaw, unref } from "vue";
 import { createPropsBySchemas } from "./schema";
+import _ from "lodash";
+import { DEFAULT_EVENTS } from "./events";
 
 export const tree2config = (config: ComponentTreeNode) => {
   let newConfig: any = {};
@@ -15,7 +17,10 @@ export const tree2config = (config: ComponentTreeNode) => {
     'ctx',
     'subComponents',
     'refs',
-    'schemas'
+    'schemas',
+    'events',
+    'handlers',
+    'parentComponent',
   ]
   for (let key in config) {
     if (extractKey.includes(key)) continue;
@@ -39,8 +44,11 @@ export const tree2config = (config: ComponentTreeNode) => {
       newConfig.slots[key] = tree2config(oldSlots?.[key] || {});
     });
   }
-  if (config.states) {
-    newConfig.states = toRaw(config.states);
+  // if (config.states) {
+  //   newConfig.states = unref(toRaw(config.states));
+  // }
+  if (config.events) {
+    newConfig.events = toRaw(config.events);
   }
   return newConfig;
 };
@@ -60,7 +68,7 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
     const materialProps = createPropsBySchemas(materialsMap.get(config.name)?.().schemas);
     Object.keys(materialProps).forEach(key => {
       if (!config.props[key]) config.props[key] = materialProps[key];
-    })
+    });
     config.props = reactive(config.props);
   }
   if (config.children) {
@@ -77,11 +85,14 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
   }
   if (config.states) {
     config.states = reactive(config.states);
+  } else {
+    config.states = reactive({});
   }
   
 
   config.subComponents = {};
   config.refs = {};
+  config.events = config.events || _.cloneDeep(DEFAULT_EVENTS);
 
   return config;
 }

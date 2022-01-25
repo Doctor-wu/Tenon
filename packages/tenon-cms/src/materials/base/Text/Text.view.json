@@ -3,5 +3,5 @@
   "props": {
     "style": "textStyle"
   },
-  "children": ["{{textValue.value}}"]
+  "children": ["{{this.textValue.value}}"]
 }  

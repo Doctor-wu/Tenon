@@ -1,6 +1,6 @@
 import { reactive, toRaw } from "vue";
 import { getTreeModel } from "../local-db";
-import { IMaterialConfig } from "../store/modules/materials";
+import materials, { IMaterialConfig } from "../store/modules/materials";
 import { ComponentTreeNode } from "../store/modules/viewer";
 import { config2tree, tree2config } from "./config-transform";
 const treeModel = getTreeModel();
@@ -8,6 +8,7 @@ import { useStore } from "../store";
 import { createPropsBySchemas } from "./schema";
 import { getID, setID } from "./viewer-id";
 import _ from "lodash";
+import { DEFAULT_EVENTS, IEventsConfig } from "./events";
 
 export const insertChild = (parent, child, relative, insertFromFront = false) => {
   if (!relative) {
@@ -109,8 +110,6 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
     isSlot,
     schemas,
   } = options;
-  // const store = useStore();
-  // const id = store.getters['viewer/getCompId'];
   const id = getID();
 
   const expressedComponent: any = reactive<ComponentTreeNode>({
@@ -125,6 +124,8 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
     ),
     id,
     refs: {},
+    events: createTenonEvents(material),
+    handlers: [],
     schemas: schemas || material.schemas!,
     textID: String(id),
     slots: {},
@@ -137,6 +138,19 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
 
   material.tenonComp = expressedComponent;
   return expressedComponent;
+}
+
+function createTenonEvents(material: IMaterialConfig): IEventsConfig {
+  const events: IEventsConfig = _.cloneDeep(DEFAULT_EVENTS);
+  if (material.config.events) {
+    Object.keys(material.config.events).forEach(eventKey => {
+      events[eventKey] = {
+        eventLabel: material.config.events[eventKey],
+        executeQueue: []
+      };
+    });
+  }
+  return events;
 }
 
 export const uploadTree = (tree: ComponentTreeNode) => {
