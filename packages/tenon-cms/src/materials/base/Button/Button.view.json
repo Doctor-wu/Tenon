@@ -2,7 +2,7 @@
   "el": "a-button",
   "props": {
     "<BINDING>": "buttonProps",
-    "onClick": "{{() => this.executeEvents$('onClick')}}"
+    "onClick": "{{(...args) => this.executeTenonEvents$('onClick', ...args)}}"
   },
   "children": ["{{this.buttonText.value}}", "{{this.count.value}}"]
 }

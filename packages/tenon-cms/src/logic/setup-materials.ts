@@ -11,16 +11,18 @@ import {
   resolveDynamicComponent,
   ref,
 } from "vue";
-import { internalSchema } from "../schemas";
-import { IMaterialConfig } from "../store/modules/materials";
-import { ISchema, parseSchemas2Props } from "./schema";
-import { MaterialComponentContext } from "./setup-component-context";
+import { ISchema, parseSchemas2Props, IMaterialConfig } from "@tenon/engine";
+import { internalSchema } from "@tenon/engine";
 import { getValueByHackContext, getValueByInjectContext } from "@tenon/shared";
 import { createTenonEditorComponentByMaterial } from "./tree-operation";
 import _ from "lodash";
-import { ComponentTreeNode } from "../store/modules/viewer";
 import { materialDependency } from "./material-dependency";
-import { eventsMap, IExecuteQueueItem } from "./events";
+import {
+  eventsMap,
+  executeQueueEvents,
+  TenonComponentStates,
+  ComponentTreeNode,
+} from "@tenon/engine";
 
 const materials = new Map<string, (() => IMaterialConfig)[]>();
 const materialsMap = new Map<string, () => IMaterialConfig>();
@@ -116,29 +118,25 @@ function setupComponent(props, ctx, logic) {
       parentComp.refs[tenonComp.refKey] = parentComp.refs[tenonComp.refKey] || tenonComp;
     }
     tenonComp.parentComponent = parentComp;
-    // parentComp.subComponents[`${tenonComp.name}_${tenonComp.id}`].parentComponent = parentComp;
   };
 
   setupComponentEvents(tenonComp);
 
-  const setupStates = reactive(logic?.({
+  const originStates = logic?.({
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount,
     watch: watchEffect
-  }, props, ctx, tenonComp) || {});
+  }, props, ctx, tenonComp) || {};
 
   const handlers = reactive<string[]>([]);
-  Object.keys(setupStates).forEach(key => {
-    if (typeof setupStates[key] === "function") {
+  Object.keys(originStates).forEach(key => {
+    if (typeof originStates[key] === "function") {
       handlers.push(key);
-      eventsMap.set(`${key}_${tenonComp.id}`, setupStates[key]);
+      eventsMap.set(`${key}_${tenonComp.id}`, originStates[key]);
     }
   });
+  const tenonStates = new TenonComponentStates(originStates, tenonComp);
+  const setupStates = reactive(tenonStates);
 
-  setupStates.executeEvents$ = (eventName: string) => {
-    if (!tenonComp.events[eventName]) return;
-    executeQueueEvents(tenonComp.events[eventName].executeQueue);
-  };
-  // debugger;
   tenonComp.states = setupStates;
   tenonComp.handlers = handlers;
   tenonComp.ctx._isTenonComp = true;
@@ -162,13 +160,6 @@ function setupComponentEvents(tenonComp: ComponentTreeNode) {
   }
 }
 
-function executeQueueEvents(executeQueue: IExecuteQueueItem[]) {
-  executeQueue.forEach(item => {
-    const eventIdentifier = `${item.eventName}_${item.tenonCompID}`;
-    const eventEntity = eventsMap.get(eventIdentifier);
-    if (eventEntity) eventEntity();
-  });
-}
 
 export function findParentTenonComp(instance: any): ComponentTreeNode | null {
   if (!instance?.parent) return null;
@@ -196,16 +187,18 @@ function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
     const renderLoop = computed<Array<any>>(() => getValueByHackContext(this, config["<FOR>"]));
 
     return function _custom_for_render(this: any) {
-      return h(Fragment, renderLoop.value.map(
-        (item, index) => {
-          const itemKey = config["<FORItemKey>"] || "item";
-          const indexKey = config["<FORIndexKey>"] || "index";
-          const subConfig = _.cloneDeep(config);
-          subConfig._processedFOR = true;
-          this[itemKey] = item;
-          this[indexKey] = index;
-          return parseConfig2RenderFn.call(this, subConfig).call(this);
-        })
+      return h(
+        Fragment,
+        renderLoop.value.map(
+          (item, index) => {
+            const itemKey = config["<FORItemKey>"] || "item";
+            const indexKey = config["<FORIndexKey>"] || "index";
+            const subConfig = _.cloneDeep(config);
+            subConfig._processedFOR = true;
+            this[itemKey] = item;
+            this[indexKey] = index;
+            return parseConfig2RenderFn.call(this, subConfig).call(this);
+          })
       );
     };
   }
@@ -224,6 +217,10 @@ function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
   const Component = resolveDynamicComponent(el);
   if (typeof Component !== "string") {
     el = Component;
+    if (config.refKey) {
+      props.ref = props.ref || {};
+      props.ref[config.refKey] = ref();
+    }
   }
   else if (materialDependency[el]) el = materialDependency[el];
 
@@ -291,9 +288,22 @@ function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
           (instance as any).ctx.tenonComp.refs['$rootRef'] = (VNode?.props?.ref as any).value;
         }
       });
-      if (VNode.props!.tenonComp) {
-        VNode.props!.tenonComp.refs['$rootRef'] = (VNode.props?.ref as any);
+    } else if (config.refKey) {
+      VNode.props = VNode.props || {};
+      if (VNode.props?.onVnodeMounted) {
+        if (!(VNode.props?.onVnodeMounted instanceof Array)) {
+          VNode.props.onVnodeMounted = [VNode.props?.onVnodeMounted];
+        }
+      } else {
+        VNode.props.onVnodeMounted = [];
       }
+      const instance = getCurrentInstance();
+      VNode.props?.onVnodeMounted.push(() => {
+        if ((instance as any).ctx.tenonComp && (VNode?.props?.ref as any).value) {
+          (instance as any).ctx.tenonComp.refs[config.refKey] = (instance as any).ctx.tenonComp.refs[config.refKey] || [];
+          (instance as any).ctx.tenonComp.refs[config.refKey].push((VNode?.props?.ref as any).value);
+        }
+      });
     }
     return VNode;
   };

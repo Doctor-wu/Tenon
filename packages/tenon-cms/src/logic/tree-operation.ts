@@ -1,14 +1,17 @@
 import { reactive, toRaw } from "vue";
 import { getTreeModel } from "../local-db";
-import materials, { IMaterialConfig } from "../store/modules/materials";
-import { ComponentTreeNode } from "../store/modules/viewer";
 import { config2tree, tree2config } from "./config-transform";
 const treeModel = getTreeModel();
 import { useStore } from "../store";
-import { createPropsBySchemas } from "./schema";
+import {
+  createPropsBySchemas,
+  IMaterialConfig,
+  ComponentTreeNode,
+  DEFAULT_EVENTS,
+  IEventsConfig,
+} from "@tenon/engine";
 import { getID, setID } from "./viewer-id";
 import _ from "lodash";
-import { DEFAULT_EVENTS, IEventsConfig } from "./events";
 
 export const insertChild = (parent, child, relative, insertFromFront = false) => {
   if (!relative) {

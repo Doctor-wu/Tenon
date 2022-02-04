@@ -13,13 +13,12 @@
 <script lang="ts" setup>
 import SelectEventModal from './select-event-modal.vue';
 import AddHandlers from './add-handlers.vue';
-import { getActiveComponentUsefulHandlers } from '../../../logic/events';
+import { getActiveComponentUsefulHandlers } from '@tenon/engine';
 import { computed, ref } from 'vue';
-import { ComponentTreeNode } from '../../../store/modules/viewer';
 import { useStore } from '../../../store';
 
 const store = useStore();
-const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);
+const activeComponent = computed(() => store.getters['viewer/getActiveComponent']);
 
 const eventSelector = ref<any>(null);
 
@@ -33,7 +32,7 @@ let selecting: {
 
 const doSelect = (value: any) => {
   selecting = value;
-  eventSelector.value!.setHandlers(getActiveComponentUsefulHandlers());
+  eventSelector.value!.setHandlers(getActiveComponentUsefulHandlers(useStore));
   eventSelector.value!.openModal();
 }
 </script>

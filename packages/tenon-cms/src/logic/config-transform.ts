@@ -1,9 +1,7 @@
-import { ComponentTreeNode } from "../store/modules/viewer";
 import { useStore } from "../store";
-import { reactive, toRaw, unref } from "vue";
-import { createPropsBySchemas } from "./schema";
+import { reactive, toRaw } from "vue";
 import _ from "lodash";
-import { DEFAULT_EVENTS } from "./events";
+import { DEFAULT_EVENTS, createPropsBySchemas, ComponentTreeNode } from "@tenon/engine";
 
 export const tree2config = (config: ComponentTreeNode) => {
   let newConfig: any = {};
@@ -88,7 +86,7 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
   } else {
     config.states = reactive({});
   }
-  
+
 
   config.subComponents = {};
   config.refs = {};

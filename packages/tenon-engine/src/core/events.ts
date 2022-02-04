@@ -1,5 +1,4 @@
-import { useStore } from "../store";
-import { ComponentTreeNode } from "../store/modules/viewer";
+import { ComponentTreeNode } from "./component";
 
 interface IDefaultEvents {
   onMounted: IEventStruct;
@@ -40,9 +39,9 @@ export interface IHandlerConfig {
   tenonComp: ComponentTreeNode;
 }
 
-export const getActiveComponentUsefulHandlers = () => {
+export const getActiveComponentUsefulHandlers = (storeFactory) => {
   const handlers: IHandlerConfig[] = [];
-  const store = useStore();
+  const store = storeFactory();
   const activeComponent: ComponentTreeNode = store.getters['viewer/getActiveComponent'];
   handlers.push(...activeComponent.handlers.map(eventName => ({
     eventName,
@@ -57,4 +56,13 @@ export const getActiveComponentUsefulHandlers = () => {
     parentComponent = parentComponent.parentComponent;
   }
   return handlers;
+}
+
+
+export function executeQueueEvents(executeQueue: IExecuteQueueItem[], ...args: any[]) {
+  executeQueue.forEach(item => {
+    const eventIdentifier = `${item.eventName}_${item.tenonCompID}`;
+    const eventEntity = eventsMap.get(eventIdentifier);
+    if (eventEntity) eventEntity.apply(null, args);
+  });
 }

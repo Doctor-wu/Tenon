@@ -1,8 +1,7 @@
 import _ from 'lodash';
 import { Module } from 'vuex';
 import { IRootState } from '..';
-import { DEFAULT_EVENTS, IEventsConfig } from '../../logic/events';
-import { IMaterialConfig } from './materials';
+import { ComponentTreeNode, IMaterialConfig, DEFAULT_EVENTS } from "@tenon/engine"
 
 export interface IViewerState {
   tree: ComponentTreeNode | null;
@@ -12,26 +11,6 @@ export interface IViewerState {
   compId: number;
 }
 
-export interface ComponentTreeNode {
-  name: string;
-  id: number;
-  schemas: any;
-  parent: ComponentTreeNode | null;
-  refs: any;
-  events: IEventsConfig;
-  handlers: string[];
-  refKey?: string;
-  ctx?: any;
-  textID?: string;
-  parentComponent?: ComponentTreeNode;
-  material?: IMaterialConfig;
-  props?: any;
-  states?: any;
-  children?: ComponentTreeNode[];
-  slots: Object;
-  isSlot?: boolean;
-  
-}
 const defaultTree: ComponentTreeNode = {
   name: 'Compose-View',
   id: 0,
