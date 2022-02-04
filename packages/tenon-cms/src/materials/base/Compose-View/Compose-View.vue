@@ -36,8 +36,6 @@ import Wrapper from '../../../components/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '../../../logic/viewer-drag';
 import { editMode } from '../../../logic/viewer-status';
 import { createTenonEditorComponentByMaterial } from '../../../logic/tree-operation';
-import { MaterialComponentContext } from '../../../logic/setup-component-context';
-import { ComponentTreeNode } from '../../../store/modules/viewer';
 import { findParentTenonComp } from '../../../logic/setup-materials';
 
 const store = useStore();
@@ -64,15 +62,11 @@ const props = defineProps({
   }
 });
 
-// props.tenonComp.material.tenonComp = props.tenonComp.material.tenonComp || props.tenonComp;
-// let currentRootComp;
 let propsConfig: any = computed(() => {
   let result: any = props.tenonComp;
   const instance: any = getCurrentInstance();
   if (props.isSlot) { 
     const rootComp = findParentTenonComp(instance)!;
-    // currentRootComp
-    // || (currentRootComp = (MaterialComponentContext.value).tenonComp || MaterialComponentContext.value.$attrs.tenonComp);
     const rootSlots = rootComp.slots;
     if (rootSlots[props.slotKey]) {
       result = rootSlots[props.slotKey];
@@ -85,7 +79,6 @@ let propsConfig: any = computed(() => {
       result = comp;
       rootSlots[props.slotKey] = comp;
     }
-    // rootComp.subComponents[`${result.name}_${result.id}`] = rootComp.subComponents[`${result.name}_${result.id}`] || result;
   }
   result.ctx = result.ctx || instance.ctx;
   return result;

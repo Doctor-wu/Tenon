@@ -33,7 +33,7 @@ import {
   deleteActiveComponent, upMoveActiveComponent,
   downMoveActiveComponent, extractActiveComponentFromParent,
   copyActiveComponent, clearActiveComponentChildren
-} from '../../logic/viewer-select';
+} from '../../logic/viewer-active-component';
 import { useStore } from '../../store';
 import { computed } from 'vue';
 import AnimateButton from '../custom/animate-button.vue';

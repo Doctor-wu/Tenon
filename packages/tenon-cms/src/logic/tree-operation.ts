@@ -1,6 +1,5 @@
 import { reactive, toRaw } from "vue";
 import { getTreeModel } from "../local-db";
-import { config2tree, tree2config } from "./config-transform";
 const treeModel = getTreeModel();
 import { useStore } from "../store";
 import {
@@ -9,9 +8,11 @@ import {
   ComponentTreeNode,
   DEFAULT_EVENTS,
   IEventsConfig,
+  config2tree,
+  tree2config,
 } from "@tenon/engine";
 import { getID, setID } from "./viewer-id";
-import _ from "lodash";
+import { cloneDeep } from "lodash";
 
 export const insertChild = (parent, child, relative, insertFromFront = false) => {
   if (!relative) {
@@ -67,7 +68,7 @@ export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFr
     props: comp.props,
     slots: comp.slots,
     isSlot: isSlot,
-    schemas: _.cloneDeep(comp.schemas),
+    schemas: cloneDeep(comp.schemas),
   });
   if (comp.children) {
     comp.children.forEach((child) => {
@@ -144,7 +145,7 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
 }
 
 function createTenonEvents(material: IMaterialConfig): IEventsConfig {
-  const events: IEventsConfig = _.cloneDeep(DEFAULT_EVENTS);
+  const events: IEventsConfig = cloneDeep(DEFAULT_EVENTS);
   if (material.config.events) {
     Object.keys(material.config.events).forEach(eventKey => {
       events[eventKey] = {
@@ -157,8 +158,9 @@ function createTenonEvents(material: IMaterialConfig): IEventsConfig {
 }
 
 export const uploadTree = (tree: ComponentTreeNode) => {
-  const store = useStore();
-  const config = toRaw<ComponentTreeNode>(tree2config(tree));
+  const config = toRaw<ComponentTreeNode>(
+    tree2config({ toRaw, reactive })(tree)
+  );
 
   return treeModel.set({
     config,
@@ -176,7 +178,8 @@ export const downloadTree = async (): Promise<ComponentTreeNode> => {
   } = tree;
   // store.dispatch('viewer/setCompId', lastID);
   setID(lastID);
-  config2tree(config);
+  const materialsMap = store.getters["materials/getMaterialsMap"];
+  config2tree({ reactive, materialsMap })(config);
   store.dispatch('viewer/setTree', config);
   store.dispatch('viewer/setActiveComponent', null);
   return config;

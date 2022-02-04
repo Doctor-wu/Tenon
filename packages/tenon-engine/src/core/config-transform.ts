@@ -1,9 +1,7 @@
-import { useStore } from "../store";
-import { reactive, toRaw } from "vue";
-import _ from "lodash";
+import { cloneDeep } from "lodash";
 import { DEFAULT_EVENTS, createPropsBySchemas, ComponentTreeNode } from "@tenon/engine";
 
-export const tree2config = (config: ComponentTreeNode) => {
+export const tree2config = ({ toRaw, reactive }) => (config: ComponentTreeNode) => {
   let newConfig: any = {};
   const extractKey = [
     'parent',
@@ -32,28 +30,23 @@ export const tree2config = (config: ComponentTreeNode) => {
   }
   if (config.children) {
     newConfig.children = config.children.map(child => {
-      return tree2config(child);
+      return tree2config({ toRaw, reactive })(child);
     });
   }
   if (config.slots) {
     const oldSlots = toRaw(config.slots);
     newConfig.slots = {};
     Object.keys(oldSlots).forEach(key => {
-      newConfig.slots[key] = tree2config(oldSlots?.[key] || {});
+      newConfig.slots[key] = tree2config({ toRaw, reactive })(oldSlots?.[key] || {});
     });
   }
-  // if (config.states) {
-  //   newConfig.states = unref(toRaw(config.states));
-  // }
   if (config.events) {
     newConfig.events = toRaw(config.events);
   }
   return newConfig;
 };
 
-export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
-  const store = useStore();
-  const materialsMap = store.getters["materials/getMaterialsMap"];
+export const config2tree = ({ reactive, materialsMap }) => (config: any, sup?: any): ComponentTreeNode => {
   if (sup) {
     config.parent = sup;
   }
@@ -71,13 +64,13 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
   }
   if (config.children) {
     config.children.forEach(child => {
-      config2tree(child, config);
+      config2tree({ materialsMap, reactive })(child, config);
     });
   }
   if (config.slots) {
     let newSlots = {};
     Object.keys(config.slots).forEach(key => {
-      newSlots[key] = config2tree(config.slots[key]);
+      newSlots[key] = config2tree({ materialsMap, reactive })(config.slots[key]);
     });
     config.slots = newSlots;
   }
@@ -90,7 +83,7 @@ export const config2tree = (config: any, sup?: any): ComponentTreeNode => {
 
   config.subComponents = {};
   config.refs = {};
-  config.events = config.events || _.cloneDeep(DEFAULT_EVENTS);
+  config.events = config.events || cloneDeep(DEFAULT_EVENTS);
 
   return config;
 }
