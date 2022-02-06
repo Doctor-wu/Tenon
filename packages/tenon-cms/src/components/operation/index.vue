@@ -17,7 +17,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import Materials from './materials.vue';
+import Materials from './Materials.vue';
 import ComponentTree from './component-tree.vue';
 
 </script>
