@@ -11,5 +11,9 @@
   "devDependencies": {
     "@tenon/engine": "workspace:*",
     "@tenon/shared": "workspace:*"
+  },
+  "dependencies": {
+    "@types/koa": "^2.13.4",
+    "koa": "^2.13.4"
   }
 }
