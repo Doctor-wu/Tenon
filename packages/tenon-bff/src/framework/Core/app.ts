@@ -1,17 +1,36 @@
-import { IServerConfig } from "./app.interface";
+import { IServerConfig, tenonAppType } from "./app.interface";
 import Koa from "koa";
 import { io } from "./io";
 import { CONSTANT } from "../constant";
+import { initModels } from "../models";
+import { initModules } from "../modules";
+import { initControllers } from "../controller";
+import { initServices } from "../service/services";
 
 export const createServer = (config: IServerConfig) => {
   const { server } = config;
-  const { port, name, options } = server;
+  const { port, name } = server;
+
   // app
-  const app = new Koa(options);
+  const koaApp = new Koa();
+  const tenonApp: tenonAppType = Object.assign(koaApp, { $config: config });
+
+  // models
+  initModels(tenonApp);
+
+  // modules
+  initModules(tenonApp);
+
+  // services
+  initServices(tenonApp);
+
+  // controllers
+  initControllers(tenonApp);
 
   // listen
-  app.listen(port, () => { 
-    io.log(`${name || CONSTANT.defaultServerName} is running at ${port}`);
+  tenonApp.listen(port, () => {
+    io.log(`${name || CONSTANT.defaultServerName} is running at http://localhost:${port}`);
   });
-  return app;
+
+  return tenonApp;
 }

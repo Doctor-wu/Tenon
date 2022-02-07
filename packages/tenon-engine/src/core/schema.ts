@@ -50,7 +50,10 @@ export const parseSchemas2Props = (schemas: ISchema[] = []) => {
   return result;
 }
 
-export const createPropsBySchemas = (schemas: ISchema[] = [], source?: any) => {
+export const createPropsBySchemas = (
+  schemas: ISchema[] = [],
+  source?: any
+) => {
   const props = {};
 
   schemas.forEach(schema => {
