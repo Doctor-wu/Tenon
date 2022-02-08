@@ -1,6 +1,6 @@
 import { tenonAppType } from "../core/app.interface";
 import { bodyParser } from "../middlewares/bodyparser";
-import { BaseModule } from "./base";
+import { BaseModule } from "./baseModule";
 
 export class ConnectionModule extends BaseModule {
 

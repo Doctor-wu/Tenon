@@ -1,5 +1,5 @@
 import { tenonAppType } from "../core/app.interface";
-import { BaseModule } from "./base";
+import { BaseModule } from "./baseModule";
 
 export class LogModule extends BaseModule {
 

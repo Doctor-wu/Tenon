@@ -21,7 +21,7 @@ export const initControllers = (app: tenonAppType) => {
   // 打印路由列表
   app.$router?.routeList.forEach(([requestMethod, handlerDesc, requestPath]) => {
     io.log(
-      compose(io.bold, io.successStyle)(`【${requestMethod.toUpperCase()} ${requestPath}】`),
+      compose(io.bold, io.successStyle)(`【 ${requestMethod.toUpperCase()} ${requestPath} 】`),
       io.logStyle("->"),
       io.logStyle(`${handlerDesc}`),
     );

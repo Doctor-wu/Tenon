@@ -1,9 +1,9 @@
 import Koa from "koa";
 import { BaseController } from "../controller";
-import { AuthModule } from "../modules/auth";
-import { ConnectionModule } from "../modules/connection";
-import { LogModule } from "../modules/logger";
-import { RouterModule } from "../modules/router";
+import { AuthModule } from "../modules/authModule";
+import { ConnectionModule } from "../modules/connectionModule";
+import { LogModule } from "../modules/loggerModule";
+import { RouterModule } from "../modules/routerModule";
 export interface IServerConfig {
   server: {
     port: number;

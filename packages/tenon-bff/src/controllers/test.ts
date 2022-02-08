@@ -35,7 +35,7 @@ class TestController extends BaseController {
     next,
     params,
   ) {
-    // await this.response();
+    await this.response(ctx, next)("<h1>Hello Tenon --Doctorwu</h1>");
   }
 }
 

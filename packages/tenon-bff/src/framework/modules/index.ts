@@ -1,8 +1,8 @@
 import { tenonAppType } from "../core/app.interface";
-import { AuthModule } from "./auth";
-import { ConnectionModule } from "./connection";
-import { LogModule } from "./logger";
-import { RouterModule } from "./router";
+import { AuthModule } from "./authModule";
+import { ConnectionModule } from "./connectionModule";
+import { LogModule } from "./loggerModule";
+import { RouterModule } from "./routerModule";
 
 const modules = [
   new AuthModule,

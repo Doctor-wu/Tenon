@@ -16,7 +16,6 @@ const routeList: routeListType = [];
 
 export const setupRouter: () => [Router<any, {}>, routeListType] = () => {
   router = new Router;
-  io.log('Router init');
   return [router, routeList];
 }
 
