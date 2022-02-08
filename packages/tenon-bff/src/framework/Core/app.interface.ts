@@ -25,3 +25,6 @@ export type tenonAppType = Koa<Koa.DefaultState, Koa.DefaultContext> & {
   $connection?: ConnectionModule;
   $controllers?: { [prop: string]: BaseController }
 }
+
+export type RequestContext = Koa.Context;
+export type Next = Koa.Next;

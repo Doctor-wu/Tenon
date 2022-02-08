@@ -1,12 +1,12 @@
 import { BaseController } from "../controller";
-import { IDecoratedController, IDecoratedControllerExtraFields } from "../controller/controller.interface";
+import { IControllerConfig, IDecoratedController } from "../controller/controller.interface";
 import { controllerRegistry } from "../controller/registry";
 
 /**
  * Controller的装饰器，所有Controller都会被收集起来同时被实例化
  * @param config IControllerConfig
  */
-export function Controller(config: IDecoratedControllerExtraFields) {
+export function Controller(config: IControllerConfig) {
   const {
     prefixPath,
   } = config;
@@ -20,6 +20,7 @@ export function Controller(config: IDecoratedControllerExtraFields) {
         super(args);
         this.prefixPath = prefixPath;
         controllerRegistry.set(Ctor.name, this);
+        this.handlers.forEach(handler => handler(this));
       }
     }
   };

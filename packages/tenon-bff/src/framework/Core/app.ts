@@ -7,6 +7,8 @@ import { initModules } from "../modules";
 import { initControllers } from "../controller";
 import { initServices } from "../service/services";
 
+export * from "./app.interface";
+
 export const createServer = (config: IServerConfig) => {
   const { server } = config;
   const { port, name } = server;

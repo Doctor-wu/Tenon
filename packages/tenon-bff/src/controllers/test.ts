@@ -1,23 +1,42 @@
-import Koa from "koa";
-import { BaseController, Controller } from "../framework";
+import { BaseController, Controller, Get, RequestContext, Next, Post } from "../framework";
 
 @Controller({
   prefixPath: '/',
 })
-class Test extends BaseController {
-  // @Auth(['*'])
-  // @Get('testInfo')
-  // @Post('testInfo')
+class TestController extends BaseController {
+
+  @Get('testInfo', {
+    params: {
+      msg: {
+        defaultValue: "tenonDefault",
+        validator: function (param) {
+          if (!param) return [true];
+          if (param.startsWith("tenon")) return [true];
+          return [false, "msg不是tenon域下的值"];
+        }
+      },
+    }
+  })
+  @Post('testInfo')
   async getTestInfo(
-    ctx: Koa.Context,
-    next: Koa.Next,
+    ctx: RequestContext,
+    next: Next,
+    params: any,
   ) {
-    // console.log(id);
-    // const list = await testService.getList();
-    this.response({
-      data: 123,
+    await this.responseJson(ctx, next)({
+      name: "doctorwu",
+      params,
     });
+  }
+
+  @Get('')
+  async home(
+    ctx,
+    next,
+    params,
+  ) {
+    // await this.response();
   }
 }
 
-export default Test;
+export default TestController;

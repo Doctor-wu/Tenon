@@ -10,3 +10,14 @@ export function getValueByHackContext(context: any, exp: string): any {
 export function inheritObject(sub, sup) {
   Reflect.setPrototypeOf(sub, sup);
 }
+
+export function compose(...args: Function[]) {
+  if (args.length <= 0) return () => {
+    console.error('compose needs args');
+  };
+  return function (...executeArgs: any[]) {
+    return args.reduce((last, curr) => {
+      return curr.call(null, last);
+    }, args[0].apply(null, executeArgs));
+  }
+}
