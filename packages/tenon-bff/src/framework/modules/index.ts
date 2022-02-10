@@ -5,10 +5,10 @@ import { LogModule } from "./loggerModule";
 import { RouterModule } from "./routerModule";
 
 const modules = [
-  new AuthModule,
   new ConnectionModule,
-  new LogModule,
   new RouterModule,
+  new AuthModule,
+  new LogModule,
 ];
 
 export const initModules = (app: tenonAppType) => {

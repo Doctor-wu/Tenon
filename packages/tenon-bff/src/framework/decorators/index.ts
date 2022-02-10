@@ -1,4 +1,2 @@
-export * from './Controller';
-export * from './Service';
-export * from './Get';
-export * from './Post';
+export * from './controller-decorators';
+export * from './service-decorators';

@@ -5,11 +5,12 @@ import { CONSTANT } from "../constant";
 import { initModels } from "../models";
 import { initModules } from "../modules";
 import { initControllers } from "../controller";
-import { initServices } from "../service/services";
+import { initServices } from "../service";
+import { compose } from "@tenon/shared";
 
 export * from "./app.interface";
 
-export const createServer = (config: IServerConfig) => {
+export const createServer = async (config: IServerConfig) => {
   const { server } = config;
   const { port, name } = server;
 
@@ -18,20 +19,27 @@ export const createServer = (config: IServerConfig) => {
   const tenonApp: tenonAppType = Object.assign(koaApp, { $config: config });
 
   // models
-  initModels(tenonApp);
+  await initModels(tenonApp);
 
   // modules
-  initModules(tenonApp);
+  await initModules(tenonApp);
 
   // services
-  initServices(tenonApp);
+  await initServices(tenonApp);
 
   // controllers
-  initControllers(tenonApp);
+  await initControllers(tenonApp);
 
   // listen
   tenonApp.listen(port, () => {
-    io.log(`${name || CONSTANT.defaultServerName} is running at http://localhost:${port}`);
+    io.log(
+      compose(io.bold, io.hex('#e81'))(`${name || CONSTANT.defaultServerName}`),
+      `is running at`,
+      compose(io.bold, io.hex('#1e1'))(`http://localhost:${port}`),
+    );
+    io.log(
+      io.bold.white.bgHex('#494')('Server launch succeeded!'),
+    );
   });
 
   return tenonApp;

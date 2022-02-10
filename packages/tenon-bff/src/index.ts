@@ -1,16 +1,22 @@
-import Test from "./controllers/test";
+import TestController from "./controllers/test";
+import UserController from "./controllers/user";
 import { createServer } from "./framework/core/app";
+import { UserService } from "./services/user";
 
 const server = createServer({
   server: {
     port: 8888,
   },
-  db: {
+  mongodb: {
     username: 'doctorwu',
     password: '123456',
-    address:'mongodb://localhost:27017/tenon',
+    address: 'mongodb://localhost:27017/tenon',
   },
   controllers: [
-    Test,
-  ]
+    TestController,
+    UserController,
+  ],
+  services: [
+    UserService,
+  ],
 });

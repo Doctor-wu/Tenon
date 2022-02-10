@@ -1,20 +1,25 @@
 import { io } from "../core/io";
-import mongoose from "mongoose";
+import mongoose, { mongo, Mongoose } from "mongoose";
 import { IServerConfig } from "../core/app.interface";
+import { CONSTANT } from "../constant";
 
-export const establishDBConnection = (config: IServerConfig) => {
-  // db是数据库名称哦，没有的话会自动创建
-  const DB_ADDRESS = "mongodb://localhost:27017/tenon"
-  mongoose.connect(config.db.address || DB_ADDRESS, {
-    user: config.db.username,
-    pass: config.db.password,
-  }, err => {
-    if (err) {
-      io.error({ msg: '[Mongoose] database connect failed!', err })
-    } else {
-      io.log('[Mongoose] database connect success!')
-    }
+export const establishDBConnection = (config: IServerConfig): Promise<Mongoose> => {
+  return new Promise((resolve, reject) => {
+    const DB_ADDRESS = CONSTANT.defaultServerAddress;
+    mongoose.connect(config.mongodb.address || DB_ADDRESS, {
+      user: config.mongodb.username,
+      pass: config.mongodb.password,
+    }, err => {
+      if (err) {
+        io.error(JSON.stringify({ msg: '[Mongoose] database connect failed!', err }));
+        reject(err);
+      } else {
+        io.log(
+          io.bold.white.bgHex('#494')('[Mongoose] database connect success!')
+        );
+        resolve(mongoose);
+      }
+    });
   });
-  return mongoose;
 }
 

@@ -1,40 +1,51 @@
 import { tenonAppType } from "../core/app.interface";
 import { io } from "../core/io";
-import { IDecoratedControllerExtraFields } from "./controller.interface";
 import Koa from "koa";
 import { createErrorJson, createResponseJson } from "./response";
 import { compose } from "@tenon/shared";
-
-let appInstance: tenonAppType;
+import { IDecoratedControllerExtraFields } from "./controller-core.interface";
 
 export const initControllers = (app: tenonAppType) => {
-  appInstance = app;
   const { controllers } = app.$config;
   app.$controllers = {};
-  // 实例化Controllers
+
+  /** 实例化Controllers */
   controllers.forEach(Controller => {
-    app.$controllers![Controller.name] = new Controller;
+    const instance = new Controller(app);
+    app.$controllers![instance.ControllerName] = instance;
+    io.log(`- ${instance.ControllerName}`);
   });
-  io.log('Controller initd');
-  // 收集完路由后装载路由
-  app.$router?.buildRoutes();
-  // 打印路由列表
+
+  io.log(
+    compose(io.bold, io.hex('#05f'))('Controller initd')
+  );
+
+  /** 打印路由列表 */
   app.$router?.routeList.forEach(([requestMethod, handlerDesc, requestPath]) => {
     io.log(
       compose(io.bold, io.successStyle)(`【 ${requestMethod.toUpperCase()} ${requestPath} 】`),
-      io.logStyle("->"),
       io.logStyle(`${handlerDesc}`),
     );
   });
+
+  /** 收集完路由后装载路由 */
+  app.$router?.buildRoutes();
+
+  io.log(
+    compose(io.bold, io.hex('#05f'))('Router initd')
+  );
 }
 
 export class BaseController implements IDecoratedControllerExtraFields {
-  public app: tenonAppType;
+  protected app: tenonAppType;
+  /** Get/Post 类的请求装饰器会给Controller的原型上添加handlers属性 */
+  protected handlers!: ((instance: BaseController) => void)[];
+  /** Controller装饰器会为子类加上该属性 */
+  public ControllerName!: string;
   public prefixPath!: string;
-  public handlers!: ((instance: BaseController) => void)[]; // Get/Post 类的请求装饰器会给Controller的原型上添加handlers属性
 
-  constructor() {
-    this.app = appInstance;
+  constructor(app: tenonAppType) {
+    this.app = app;
   }
 
   response(
@@ -66,6 +77,8 @@ export class BaseController implements IDecoratedControllerExtraFields {
     return async function (errorCode: number, errorMsg: string) {
       const errorJson = createErrorJson(errorCode, errorMsg);
       ctx.body = errorJson;
+      await next();
+      io.log(errorJson);
     }
   }
 }

@@ -1,6 +1,7 @@
-import { BaseController } from "../controller";
-import { StatusCode } from "../controller/status-code";
-import { addRoute } from "../middlewares/router";
+import { BaseController } from "../../controller";
+import { StatusCode } from "../../controller/status-code";
+import { io } from "../../core/io";
+import { addRoute } from "../../middlewares/router";
 
 export interface IParamsConfig {
   [props: string]: {
@@ -15,30 +16,33 @@ export interface IRequestOptions {
   params?: IParamsConfig;
 }
 
-export const decorateRequest = (target, cb, {
+export const createRequest = (target, cb, {
   requestPath,
   requestMethod,
-  handlerDesc,
+  handlerDesc
 }) => {
   target.handlers = target.handlers || [];
-
   target.handlers.push(
     (instance: BaseController) => {
       addRoute(requestMethod, {
         path: instance.prefixPath + requestPath,
-        cb: (ctx, next) => {
-          cb.call(instance, ctx, next);
+        cb: async (ctx, next) => {
+          try {
+            await cb.call(instance, ctx, next);
+          } catch (e) {
+            io.error(`Controller Error:`, e);
+          }
         },
         handlerDesc,
       });
-    }
-  );
+    });
 }
 
 export const checkParams:
   <T extends Object>(paramsConfig: IParamsConfig, params: T) => [true] | [false, string, number]
   = <T extends Object>(paramsConfig: IParamsConfig, params: T) => {
     const keys = Object.keys(paramsConfig);
+
     for (let i = 0; i < keys.length; i++) {
       const paramKey = keys[i];
       const {

@@ -12,7 +12,6 @@ export class RouterModule extends BaseModule {
     super.init(app);
     app.$router = this;
     [this.router, this.routeList] = setupRouter();
-    io.log('Router initd');
   }
 
   public buildRoutes() {

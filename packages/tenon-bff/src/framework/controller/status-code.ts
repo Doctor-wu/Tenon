@@ -3,6 +3,8 @@ export const StatusCode = {
   LACK_PARAMS: 1001,
   PARAMS_TYPE_ERROR: 1002,
   CUSTOM_ERROR: 1003,
+
+  BUSINESS_ERROR: 1111,
 }
 
 export const CodeText = {
@@ -10,4 +12,5 @@ export const CodeText = {
   [StatusCode.LACK_PARAMS]: "缺少参数",
   [StatusCode.PARAMS_TYPE_ERROR]: "参数类型错误",
   [StatusCode.CUSTOM_ERROR]: "自定义错误",
+  [StatusCode.BUSINESS_ERROR]: "业务错误",
 }
