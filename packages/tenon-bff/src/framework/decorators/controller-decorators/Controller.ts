@@ -1,4 +1,4 @@
-import { BaseController } from "../../controller";
+import { BaseController, createControllerInstance } from "../../controller";
 import { IControllerConfig, IDecoratedController } from "./Controller.interface";
 import { controllerRegistry } from "../../controller/registry";
 
@@ -16,12 +16,17 @@ export function Controller(config: IControllerConfig) {
   ): T & IDecoratedController {
     return class extends Ctor {
       constructor(...args: any[]) {
-        super(args);
+        super(...args);
 
         this.prefixPath = prefixPath;
         this.ControllerName = name || Ctor.name;
         controllerRegistry.set(this.ControllerName, this);
-        this.handlers.forEach(handler => handler(this));
+        if (this.handlers) this.handlers.forEach(handler => handler(this));
+        if (this.subController) {
+          this.subController.forEach(Sub => {
+            createControllerInstance(this.app, Sub);
+          });
+        }
       }
     };
   } as ClassDecorator;

@@ -22,6 +22,7 @@ class BaseIO implements IBaseIO {
   errorStyle = errorStyle;
   successStyle = successStyle;
   bold = chalk.bold;
+  moduleStyle = this.bold.hex("#39f");
   hex = chalk.hex;
   chalk = chalk;
 }

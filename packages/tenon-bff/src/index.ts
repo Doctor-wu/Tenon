@@ -1,5 +1,4 @@
-import TestController from "./controllers/test";
-import UserController from "./controllers/user";
+import { RootController, UserController } from "./controllers";
 import { createServer } from "./framework/core/app";
 import { UserService } from "./services/user";
 
@@ -13,7 +12,7 @@ const server = createServer({
     address: 'mongodb://localhost:27017/tenon',
   },
   controllers: [
-    TestController,
+    RootController,
     UserController,
   ],
   services: [

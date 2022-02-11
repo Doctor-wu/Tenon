@@ -1,8 +1,7 @@
 import Router from "koa-router";
 import { tenonAppType } from "../core/app.interface";
-import { io } from "../core/io";
 
-type requestMethod = 'get' | 'post' | 'put' | 'delete' | 'patch';
+export type requestMethod = 'get' | 'post' | 'put' | 'delete' | 'options';
 interface IRouteOptions {
   path: string;
   cb: Router.IMiddleware;
@@ -10,6 +9,7 @@ interface IRouteOptions {
 }
 
 let router: Router;
+
 
 export type routeListType = [requestMethod, string, string][];
 const routeList: routeListType = [];
@@ -29,9 +29,9 @@ export const addRoute = (
   routeOptions: IRouteOptions,
 ) => {
   const { path, cb, handlerDesc } = routeOptions;
-
+  
   router[requestMethod](path, cb);
   routeList.push([requestMethod, handlerDesc, path]);
 }
 
-export const useRouter = () => router;
+// export const useRouter = () => router;

@@ -7,18 +7,15 @@ import { IDecoratedControllerExtraFields } from "./controller-core.interface";
 
 export const initControllers = (app: tenonAppType) => {
   const { controllers } = app.$config;
+  if (!controllers) return;
   app.$controllers = {};
 
   /** 实例化Controllers */
   controllers.forEach(Controller => {
-    const instance = new Controller(app);
-    app.$controllers![instance.ControllerName] = instance;
-    io.log(`- ${instance.ControllerName}`);
+    createControllerInstance(app, Controller);
   });
 
-  io.log(
-    compose(io.bold, io.hex('#05f'))('Controller initd')
-  );
+  compose(io.moduleStyle, io.log)('Controller initd');
 
   /** 打印路由列表 */
   app.$router?.routeList.forEach(([requestMethod, handlerDesc, requestPath]) => {
@@ -31,21 +28,34 @@ export const initControllers = (app: tenonAppType) => {
   /** 收集完路由后装载路由 */
   app.$router?.buildRoutes();
 
-  io.log(
-    compose(io.bold, io.hex('#05f'))('Router initd')
-  );
+  compose(io.moduleStyle, io.log)('Router initd');
+}
+
+export const createControllerInstance = (app: tenonAppType, Ctor: { new(...args: any[]): BaseController }) => {
+  const instance = new Ctor(app);
+  app.$controllers![instance.ControllerName] = instance;
+  io.log(`- ${instance.ControllerName}`);
 }
 
 export class BaseController implements IDecoratedControllerExtraFields {
-  protected app: tenonAppType;
+  public app: tenonAppType;
   /** Get/Post 类的请求装饰器会给Controller的原型上添加handlers属性 */
   protected handlers!: ((instance: BaseController) => void)[];
   /** Controller装饰器会为子类加上该属性 */
   public ControllerName!: string;
   public prefixPath!: string;
+  public subController?: { new(...args: any[]): BaseController }[];
 
   constructor(app: tenonAppType) {
     this.app = app;
+  }
+
+  getSpecifiedFieldParams(params: any, fields: string[]): any {
+    const result = {};
+    fields.forEach(fieldKey => {
+      if (params[fieldKey]) result[fieldKey] = params[fieldKey];
+    });
+    return result;
   }
 
   response(

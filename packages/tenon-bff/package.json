@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon --watch src -e ts --exec 'xl_close_port -p 8888 & ts-node src/index.ts'",
+    "genSecret": "ts-node src/framework/utils/genSecret.ts"
   },
   "author": "Doctor wu",
   "license": "MIT",
@@ -25,6 +26,8 @@
     "koa-session": "^6.2.0",
     "koa-static": "^5.0.0",
     "mongodb": "^4.3.1",
-    "mongoose": "^6.2.0"
+    "mongoose": "^6.2.0",
+    "nodemon": "^2.0.15",
+    "uuid": "^8.3.2"
   }
 }

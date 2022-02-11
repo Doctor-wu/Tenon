@@ -1,10 +1,11 @@
 import { io } from "../core/io";
-import mongoose, { mongo, Mongoose } from "mongoose";
+import mongoose, { Mongoose } from "mongoose";
 import { IServerConfig } from "../core/app.interface";
 import { CONSTANT } from "../constant";
 
 export const establishDBConnection = (config: IServerConfig): Promise<Mongoose> => {
   return new Promise((resolve, reject) => {
+    if (!config.mongodb) return reject('lack mongodb config');
     const DB_ADDRESS = CONSTANT.defaultServerAddress;
     mongoose.connect(config.mongodb.address || DB_ADDRESS, {
       user: config.mongodb.username,

@@ -19,16 +19,22 @@ export const createServer = async (config: IServerConfig) => {
   const tenonApp: tenonAppType = Object.assign(koaApp, { $config: config });
 
   // models
-  await initModels(tenonApp);
+  if (config.mongodb) {
+    await initModels(tenonApp);
+  }
 
   // modules
   await initModules(tenonApp);
 
   // services
-  await initServices(tenonApp);
+  if (config.services) {
+    await initServices(tenonApp);
+  }
 
   // controllers
-  await initControllers(tenonApp);
+  if (config.controllers) {
+    await initControllers(tenonApp);
+  }
 
   // listen
   tenonApp.listen(port, () => {
@@ -38,7 +44,7 @@ export const createServer = async (config: IServerConfig) => {
       compose(io.bold, io.hex('#1e1'))(`http://localhost:${port}`),
     );
     io.log(
-      io.bold.white.bgHex('#494')('Server launch succeeded!'),
+      io.bold.white.bgHex('#a5f')('Server launch succeeded!'),
     );
   });
 

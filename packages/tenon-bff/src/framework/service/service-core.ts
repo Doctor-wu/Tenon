@@ -5,17 +5,16 @@ import { io } from "../core/io";
 import { IDecoratedServiceExtraFields } from "./service-core.interface";
 
 export const initServices = (app: tenonAppType) => {
-  app.$services = {};
   const { services } = app.$config;
+  if (!services) return;
+  app.$services = {};
   services.forEach((ServiceCtor) => {
     const instance = new ServiceCtor(app);
     app.$services![instance.serviceName] = instance;
     io.log(`- ${instance.serviceName}`);
   });
 
-  io.log(
-    compose(io.bold, io.hex('#05f'))('Service initd')
-  );
+  compose(io.moduleStyle, io.log)('Service initd');
 }
 
 export class BaseService<DocType = unknown> implements IDecoratedServiceExtraFields<DocType>{
@@ -65,6 +64,11 @@ export class BaseService<DocType = unknown> implements IDecoratedServiceExtraFie
     return new this.Model(...args);
   }
 
+  /**
+   * 向数据库中存入一条对应Model的实体数据
+   * @param itemInfo Model中一条数据
+   * @returns 
+   */
   protected addItem(itemInfo: any): Promise<any> {
     const entity = new this.Model(itemInfo);
     return new Promise((resolve, reject) => {
@@ -80,6 +84,16 @@ export class BaseService<DocType = unknown> implements IDecoratedServiceExtraFie
         } as any);
       });
     });
+  }
+
+  protected async errorProtectedHandler(resultGetter: () => Promise<any>) {
+    let err, result;
+    try {
+      result = await resultGetter();
+    } catch (e) {
+      err = e;
+    }
+    return [err, result];
   }
 
   get Model(): Model<DocType> {

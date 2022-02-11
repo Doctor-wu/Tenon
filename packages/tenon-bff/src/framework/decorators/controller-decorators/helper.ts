@@ -1,7 +1,7 @@
 import { BaseController } from "../../controller";
 import { StatusCode } from "../../controller/status-code";
 import { io } from "../../core/io";
-import { addRoute } from "../../middlewares/router";
+import { addRoute, requestMethod } from "../../middlewares/router";
 
 export interface IParamsConfig {
   [props: string]: {
@@ -16,27 +16,31 @@ export interface IRequestOptions {
   params?: IParamsConfig;
 }
 
-export const createRequest = (target, cb, {
+export const createRequest: (
+  target: any,
+  cb: Function,
+  options: { requestPath: string; requestMethod: requestMethod; handlerDesc: any; }
+) => void = (target, cb, {
   requestPath,
   requestMethod,
   handlerDesc
 }) => {
-  target.handlers = target.handlers || [];
-  target.handlers.push(
-    (instance: BaseController) => {
-      addRoute(requestMethod, {
-        path: instance.prefixPath + requestPath,
-        cb: async (ctx, next) => {
-          try {
-            await cb.call(instance, ctx, next);
-          } catch (e) {
-            io.error(`Controller Error:`, e);
-          }
-        },
-        handlerDesc,
+    target.handlers = target.handlers || [];
+    target.handlers.push(
+      (instance: BaseController) => {
+        addRoute(requestMethod, {
+          path: instance.prefixPath + requestPath,
+          cb: async (ctx, next) => {
+            try {
+              await cb.call(instance, ctx, next);
+            } catch (e) {
+              io.error(`${instance.ControllerName} Error:`, e);
+            }
+          },
+          handlerDesc,
+        });
       });
-    });
-}
+  }
 
 export const checkParams:
   <T extends Object>(paramsConfig: IParamsConfig, params: T) => [true] | [false, string, number]
