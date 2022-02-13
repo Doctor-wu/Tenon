@@ -11,19 +11,21 @@ export function Controller(config: IControllerConfig) {
     prefixPath,
     name,
   } = config;
-  return function controllerDecorator<T extends { new(...args: any[]): BaseController }>(
+  return function controllerDecorator<T extends { new(...args: any[]): BaseController, prefixPath: string }>(
     Ctor: T
   ): T & IDecoratedController {
-    return class extends Ctor {
+    return class DecoratedController extends Ctor {
+      static prefixPath: string = prefixPath;
       constructor(...args: any[]) {
         super(...args);
 
-        this.prefixPath = prefixPath;
+        this.prefixPath = DecoratedController.prefixPath; // 不能简单的用传入的prefixPath，因为这个值可以被父级修改
         this.ControllerName = name || Ctor.name;
         controllerRegistry.set(this.ControllerName, this);
         if (this.handlers) this.handlers.forEach(handler => handler(this));
         if (this.subController) {
           this.subController.forEach(Sub => {
+            Sub.prefixPath = this.prefixPath + Sub.prefixPath;
             createControllerInstance(this.app, Sub);
           });
         }

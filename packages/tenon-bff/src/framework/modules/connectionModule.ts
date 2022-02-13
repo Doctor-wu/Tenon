@@ -4,6 +4,7 @@ import { tenonAppType } from "../core/app.interface";
 import { io } from "../core/io";
 import { bodyParser } from "../middlewares/bodyparser";
 import { setupSession } from "../middlewares/session";
+import { setupStatic } from "../middlewares/static";
 import { BaseModule } from "./baseModule";
 
 export class ConnectionModule extends BaseModule {
@@ -12,6 +13,7 @@ export class ConnectionModule extends BaseModule {
     super.init(app);
     this.initBodyParser(app);
     this.initSession(app);
+    this.initStatic(app);
     app.$connection = this;
   }
 
@@ -28,6 +30,12 @@ export class ConnectionModule extends BaseModule {
       compose(io.moduleStyle, io.log)("Session initd");
     } catch (err) {
       io.error("加载session失败", err);
+    }
+  }
+
+  private initStatic(app: tenonAppType) {
+    if (app.$config.static) {
+      setupStatic(app, app.$config.static);
     }
   }
 }

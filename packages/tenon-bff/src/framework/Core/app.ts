@@ -10,13 +10,14 @@ import { compose } from "@tenon/shared";
 
 export * from "./app.interface";
 
-export const createServer = async (config: IServerConfig) => {
+export const createServer = async (config: IServerConfig): Promise<tenonAppType> => {
   const { server } = config;
   const { port, name } = server;
 
   // app
   const koaApp = new Koa();
-  const tenonApp: tenonAppType = Object.assign(koaApp, { $config: config });
+  const tenonApp: tenonAppType = koaApp as tenonAppType;
+  tenonApp.$config = config;
 
   // models
   if (config.mongodb) {
@@ -36,17 +37,19 @@ export const createServer = async (config: IServerConfig) => {
     await initControllers(tenonApp);
   }
 
-  // listen
-  tenonApp.listen(port, () => {
-    io.log(
-      compose(io.bold, io.hex('#e81'))(`${name || CONSTANT.defaultServerName}`),
-      `is running at`,
-      compose(io.bold, io.hex('#1e1'))(`http://localhost:${port}`),
-    );
-    io.log(
-      io.bold.white.bgHex('#a5f')('Server launch succeeded!'),
-    );
-  });
+  tenonApp.start = () => {
+    // listen
+    tenonApp.listen(port, () => {
+      io.log(
+        compose(io.bold, io.hex('#e81'))(`${name || CONSTANT.defaultServerName}`),
+        `is running at`,
+        compose(io.bold, io.hex('#1e1'))(`http://localhost:${port}`),
+      );
+      io.log(
+        io.bold.white.bgHex('#a5f')('Server launch succeeded!'),
+      );
+    });
+  }
 
   return tenonApp;
 }

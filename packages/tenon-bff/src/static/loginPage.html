@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form
+      class="login"
+      report-submit="false"
+      action="/auth/user/signIn"
+      method="post"
+      enctype="application/x-www-form-urlencoded"
+    >
+      <label for="username">用户名: </label>
+      <input type="text" id="username" name="username" required /><br />
+      <label for="password">密码: </label>
+      <input
+        type="text"
+        id="password"
+        name="password"
+        type="password"
+        required
+      /><br />
+      <button type="submit">登陆</button>
+    </form>
+    <p></p>
+    <form
+      class="login"
+      report-submit="false"
+      action="/auth/user/signup"
+      method="post"
+      enctype="application/x-www-form-urlencoded"
+    >
+      <label for="username">用户名: </label>
+      <input type="text" id="username" name="username" required /><br />
+      <label for="password">密码: </label>
+      <input
+        type="text"
+        id="password"
+        name="password"
+        type="password"
+        required
+      /><br />
+      <label for="email">邮箱: </label>
+      <input type="text" id="email" name="email" type="email" /><br />
+      <label for="phone">电话: </label>
+      <input type="text" id="phone" name="phone" type="phone" /><br />
+      <button type="submit">注册</button>
+    </form>
+  </body>
+</html>

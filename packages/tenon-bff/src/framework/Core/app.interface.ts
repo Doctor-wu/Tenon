@@ -38,10 +38,16 @@ export interface IServerConfig {
     signed?: boolean;
     /** cookie快过期时自动重新设置*/
     renew?: boolean;
+  },
+  /** 静态资源配置 */
+  static?: {
+    /** 资源目录 */
+    path: string;
   }
 }
 
 export type tenonAppType = Koa<Koa.DefaultState, Koa.DefaultContext> & {
+  start: () => void;
   $config: IServerConfig;
   $router?: RouterModule;
   $logger?: LogModule;

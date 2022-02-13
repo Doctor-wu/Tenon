@@ -1,5 +1,4 @@
-import { BaseService, Service, tenonAppType } from "../framework";
-import { io } from "../framework/core/io";
+import { BaseService, Service, tenonAppType, io } from "../framework";
 import { SERVICE_NAME } from "./constant";
 import { IUserOptions } from "./user.interface";
 

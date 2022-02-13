@@ -1,11 +1,14 @@
-import { BaseController, Controller, Get, Next, Post, RequestContext, useService } from "../framework";
-import { SERVICE_NAME } from "../services/constant";
-import { UserService } from "../services/user";
+import { Next } from "koa";
+import { BaseController, Controller, Get, Post, RequestContext, useService } from "../../framework";
+import { SERVICE_NAME } from "../../services/constant";
+import { UserService } from "../../services/user";
+import crypto from "crypto"
 
 @Controller({
-  prefixPath: "/auth"
+  prefixPath: "/user"
 })
 class UserController extends BaseController {
+
 
   @useService(SERVICE_NAME.user)
   user!: UserService;
@@ -36,6 +39,12 @@ class UserController extends BaseController {
     next: Next,
     params: any,
   ) {
+    const [_, existed] = await this.user.getUsers({ username: params.username });
+    if (existed?.length) {
+      return this.responseError(ctx, next)(1111, `用户名${params.username}已存在`);
+    }
+
+    params.password = this.confusePwd(params.password);
     const [err, user] = await this.user.addUser(params);
     if (err) {
       await this.responseError(ctx, next)(1111, err.toString());
@@ -44,7 +53,7 @@ class UserController extends BaseController {
     }
   }
 
-  @Get("/signIn", {
+  @Post("/signIn", {
     params: {
       username: {
         type: "string",
@@ -61,6 +70,7 @@ class UserController extends BaseController {
     next: Next,
     params: any,
   ) {
+    params.password = this.confusePwd(params.password);
     const [err, result] = await this.user.validateNameAndPassword(
       this.getSpecifiedFieldParams(params, ["username", "password"]),
     );
@@ -116,6 +126,10 @@ class UserController extends BaseController {
     } else {
       await this.responseJson(ctx, next)(result);
     }
+  }
+
+  private confusePwd(pwd: string) {
+    return crypto.createHash("md5").update(pwd).digest("hex");
   }
 }
 
