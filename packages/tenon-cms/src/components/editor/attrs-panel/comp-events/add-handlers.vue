@@ -13,9 +13,8 @@
   </a-card>
 </template>
 <script setup lang="ts">import { computed } from 'vue';
-import { IEventStruct, IHandlerConfig } from '../../../logic/events';
-import { useStore } from '../../../store';
-import { ComponentTreeNode } from '../../../store/modules/viewer';
+import { useStore } from '@/store';
+import { ComponentTreeNode, IEventStruct, IHandlerConfig } from '@tenon/engine';
 
 const store = useStore();
 const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);

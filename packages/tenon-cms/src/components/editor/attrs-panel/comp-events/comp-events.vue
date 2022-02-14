@@ -15,7 +15,7 @@ import SelectEventModal from './select-event-modal.vue';
 import AddHandlers from './add-handlers.vue';
 import { getActiveComponentUsefulHandlers } from '@tenon/engine';
 import { computed, ref } from 'vue';
-import { useStore } from '../../../store';
+import { useStore } from '@/store';
 
 const store = useStore();
 const activeComponent = computed(() => store.getters['viewer/getActiveComponent']);

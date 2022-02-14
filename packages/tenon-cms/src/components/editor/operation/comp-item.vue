@@ -27,9 +27,9 @@
   </a-menu-item>
 </template>
 <script lang="ts" setup>
-import { handleMaterialDragStart, handleMaterialDragEnd } from '../../logic/viewer-drag';
+import { handleMaterialDragStart, handleMaterialDragEnd } from '../../../logic/viewer-drag';
 import { getCurrentInstance, ComponentInternalInstance } from 'vue';
-import { editMode } from '../../logic/viewer-status';
+import { editMode } from '../../../logic/viewer-status';
 
 const props = defineProps({
   config: {

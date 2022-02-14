@@ -14,7 +14,15 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
-    "isolatedModules": true
+    "isolatedModules": true,
+    "paths": {
+      "@": ["./src"],
+      "@/*": ["./src/*"],
+      "~components": ["./src/components"],
+      "~components/*": ["./src/components/*"],
+      "~logic": ["./src/logic"],
+      "~logic/*": ["./src/logic/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

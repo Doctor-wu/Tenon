@@ -18,7 +18,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { useStore } from '../../store';
+import { useStore } from '../../../store';
 import CompItem from './comp-item.vue';
 const store = useStore();
 

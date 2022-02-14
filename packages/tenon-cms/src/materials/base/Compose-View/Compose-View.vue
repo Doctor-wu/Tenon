@@ -30,13 +30,13 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from '../../../store';
-import { toRaw, computed, getCurrentInstance, onBeforeMount, useSlots } from 'vue';
-import Wrapper from '../../../components/viewer/wrapper.vue';
-import { handleContainerDropEnter, handleContainerDrop } from '../../../logic/viewer-drag';
-import { editMode } from '../../../logic/viewer-status';
-import { createTenonEditorComponentByMaterial } from '../../../logic/tree-operation';
-import { findParentTenonComp } from '../../../logic/setup-materials';
+import { useStore } from '@/store';
+import { toRaw, computed, getCurrentInstance } from 'vue';
+import Wrapper from '~components/editor/viewer/wrapper.vue';
+import { handleContainerDropEnter, handleContainerDrop } from '~logic/viewer-drag';
+import { editMode } from '~logic/viewer-status';
+import { createTenonEditorComponentByMaterial } from '~logic/tree-operation';
+import { findParentTenonComp } from '~logic/setup-materials';
 
 const store = useStore();
 
@@ -74,7 +74,7 @@ let propsConfig: any = computed(() => {
       const materialsMap = store.getters['materials/getMaterialsMap'];
       const materialFactory = materialsMap.get("Compose-View");
       const material = materialFactory();
-      const comp = createTenonEditorComponentByMaterial(material, null);
+      const comp = createTenonEditorComponentByMaterial(material, rootComp);
       comp.isSlot = true;
       result = comp;
       rootSlots[props.slotKey] = comp;

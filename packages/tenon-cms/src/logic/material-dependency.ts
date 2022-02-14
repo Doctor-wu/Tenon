@@ -1,5 +1,5 @@
+import DynamicComponent from "@/components/shared/dynamic-component.vue";
 import { Image, Card, Grid, Button, Carousel, Avatar } from "@arco-design/web-vue";
-import DynamicComponent from "../components/dynamic-component.vue";
 
 export const materialDependency = {
   ArcoImage: Image,

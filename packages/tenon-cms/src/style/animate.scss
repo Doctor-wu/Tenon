@@ -21,3 +21,25 @@
     transform: scale(1);
   }
 }
+
+@keyframes deletor-slide-down {
+  0% {
+    transform: rotate(60deg);
+    transform-origin: top right;
+  }
+  100% {
+    transform: rotate(0deg);
+    transform-origin: top right;
+  }
+}
+
+@keyframes deletor-slide-up {
+  0% {
+    transform: rotate(0deg);
+    transform-origin: top right;
+  }
+  100% {
+    transform: rotate(60deg);
+    transform-origin: top right;
+  }
+}

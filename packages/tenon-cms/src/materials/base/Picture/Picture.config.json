@@ -44,13 +44,11 @@
       "properties": {
         "width": {
           "type": "string",
-          "title": "图片容器宽度",
-          "default": "200px"
+          "title": "图片容器宽度"
         },
         "height": {
           "type": "string",
-          "title": "图片容器高度",
-          "default": "200px"
+          "title": "图片容器高度"
         },
         "display": {
           "type": "select",

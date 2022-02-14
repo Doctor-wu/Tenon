@@ -22,9 +22,9 @@
   </section>
 </template>
 <script setup lang="ts">
-import { useStore } from '../../../store';
+import { useStore } from '@/store';
 import { computed, ref } from 'vue';
-import { ComponentTreeNode } from '../../../store/modules/viewer';
+import { ComponentTreeNode } from '@tenon/engine';
 
 const store = useStore();
 const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);

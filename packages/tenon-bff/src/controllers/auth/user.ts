@@ -1,8 +1,7 @@
-import { Next } from "koa";
-import { BaseController, Controller, Get, Post, RequestContext, useService } from "../../framework";
+import { BaseController, Controller, Get, Post, Next, RequestContext, useService } from "../../framework";
 import { SERVICE_NAME } from "../../services/constant";
 import { UserService } from "../../services/user";
-import crypto from "crypto"
+import crypto from "crypto";
 
 @Controller({
   prefixPath: "/user"

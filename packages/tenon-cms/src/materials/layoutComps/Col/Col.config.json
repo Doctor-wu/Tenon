@@ -40,7 +40,9 @@
   ],
   "tenonProps": {
     "containerStyle": {
-      "box-sizing": "border-box"
+      "box-sizing": "border-box",
+      "padding": "0px",
+      "height": "100%"
     }
   }
 }

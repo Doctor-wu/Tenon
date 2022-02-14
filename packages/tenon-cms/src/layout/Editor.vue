@@ -18,9 +18,9 @@
 </template>
 
 <script setup lang="ts">
-import Header from '../components/layout/header.vue';
-import Operation from '../components/operation/index.vue';
-import AttrsPanel from '../components/attrs-panel/index.vue';
+import Header from '~components/layout-comps/header.vue';
+import Operation from '~components/editor/operation/index.vue';
+import AttrsPanel from '~components/editor/attrs-panel/index.vue';
 </script>
 
 <style lang="scss" scoped>

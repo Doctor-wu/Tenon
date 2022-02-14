@@ -2,7 +2,7 @@
   <section class="nav-wrapper">
     <TextToggle
       :value="editMode"
-      @change="toggleEditMode"
+      @change="(...args: any[]) => toggleEditMode(...args)"
       :info="editMode ? '编辑模式' : '预览模式'"
       :color="editMode ? '#1693ef' : '#00b42a'"
     >
@@ -22,27 +22,18 @@
       <icon-eraser class="nav-item-icon" />
       <span>清</span>
     </AnimateButton>
-    <section
-      v-if="dragging && !draggingMaterial"
-      @dragover.prevent="() => { }"
-      @dragenter.prevent="() => { }"
-      @drop="deleteDraggingComponent"
-      class="delete-comp"
-    >
-      <icon-delete style="font-size: 18px;" />
-      <b>拖到此处删除组件</b>
-    </section>
+    <Deletor></Deletor>
   </section>
 </template>
 <script setup lang="ts">
-import { dragging, draggingMaterial, deleteDraggingComponent } from '../../logic/viewer-drag';
-import { editMode, toggleEditMode } from '../../logic/viewer-status';
-import TextToggle from '../custom/text-toggle.vue';
-import { useStore } from '../../store';
+import { editMode, toggleEditMode } from '~logic/viewer-status';
+import TextToggle from '~components/shared/text-toggle.vue';
+import { useStore } from '@/store';
 import { h } from 'vue';
 import { Message, Modal } from '@arco-design/web-vue';
-import AnimateButton from '../custom/animate-button.vue';
-import { downloadTree, uploadTree } from '../../logic/tree-operation';
+import AnimateButton from '~components/shared/animate-button.vue';
+import { downloadTree, uploadTree } from '~logic/tree-operation';
+import Deletor from './deletor.vue';
 
 const store = useStore();
 
@@ -128,15 +119,6 @@ function deleteConfig() {
   padding: 5px 20px;
   box-sizing: border-box;
   justify-content: start;
-}
-.delete-comp {
-  margin-right: 20px;
-  position: absolute;
-  right: 0;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  color: #f53f3f;
 }
 
 .nav-item-icon {

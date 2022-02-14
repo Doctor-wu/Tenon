@@ -118,7 +118,7 @@ export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, 
 
   const expressedComponent: any = reactive<ComponentTreeNode>({
     name: material.name,
-    parent: isSlot ? null : sup,
+    parent: sup,
     material,
     props: createPropsBySchemas(
       schemas || material.schemas!

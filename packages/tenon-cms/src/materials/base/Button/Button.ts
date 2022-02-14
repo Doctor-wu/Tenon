@@ -10,8 +10,13 @@ export default (lifeCycle, props, ctx, tenonComp) => {
 
   const add = () => {
     tenonComp.states.count.value++;
-    tenonComp.ctx.$forceUpdate();
+    // tenonComp.ctx.$forceUpdate();
     console.log(tenonComp.states.count.value);
+  }
+
+  const subtract = () => {
+    tenonComp.states.count.value--;
+    // tenonComp.ctx.$forceUpdate();
   }
 
   return {
@@ -20,5 +25,6 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     },
     author: 'Doctorwu',
     add,
+    subtract,
   }
 }

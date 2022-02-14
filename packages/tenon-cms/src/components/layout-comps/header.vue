@@ -23,8 +23,8 @@
   </section>
 </template>
 <script setup lang="ts">
-import TextButton from '../custom/text-button.vue';
-import AnimateButton from '../custom/animate-button.vue';
+import TextButton from '~components/shared/text-button.vue';
+import AnimateButton from '~components/shared/animate-button.vue';
 const routerNavs = [
   {
     name: '定制物料',

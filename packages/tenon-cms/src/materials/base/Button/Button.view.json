@@ -4,5 +4,5 @@
     "<BINDING>": "buttonProps",
     "onClick": "{{(...args) => this.executeTenonEvents$('onClick', ...args)}}"
   },
-  "children": ["{{this.buttonText.value}}", "{{this.count.value}}"]
+  "children": ["{{this.buttonText.value}}"]
 }

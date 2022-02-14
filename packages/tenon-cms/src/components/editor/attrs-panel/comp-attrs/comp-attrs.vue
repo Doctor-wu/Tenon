@@ -21,10 +21,9 @@
   </section>
 </template>
 <script lang="ts" setup>
-import { useStore } from '../../../store';
-import { computed, effect } from 'vue';
-import { ComponentTreeNode } from '../../../store/modules/viewer';
-import { IMaterialConfig } from '../../../store/modules/materials';
+import { useStore } from '@/store';
+import { computed } from 'vue';
+import { IMaterialConfig, ComponentTreeNode } from '@tenon/engine';
 import AttrsTree from './attrs-tree.vue';
 import CustomAttrs from './custom-attrs.vue';
 const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);

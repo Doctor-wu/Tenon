@@ -15,7 +15,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { useStore } from '../../store';
+import { useStore } from '../../../store';
 function setActiveComp(selectedKeys: string[], event: any) {
   store.dispatch('viewer/setActiveComponent', event.node);
 }

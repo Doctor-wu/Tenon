@@ -10,6 +10,9 @@ export const setupRouter = (app) => {
         path: '/',
         name: 'home',
         component: () => import('../views/View.vue'),
+        meta: {
+          layout: () => import('@/layout/Editor.vue'),
+        }
       }
     ],
   });

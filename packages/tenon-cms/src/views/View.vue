@@ -13,11 +13,11 @@
 </template>
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useStore } from '../store';
-import ViewerNav from '../components/viewer/viewer-nav.vue';
-import ComposeView from '../materials/base/Compose-View/Compose-View.vue';
-import ViewerNotice from '../components/viewer/viewer-notice.vue';
-import { editMode } from '../logic/viewer-status';
+import { useStore } from '@/store';
+import ViewerNav from '~components/editor/viewer/viewer-nav.vue';
+import ComposeView from '@/materials/base/Compose-View/Compose-View.vue';
+import ViewerNotice from '~components/editor/viewer/viewer-notice.vue';
+import { editMode } from '~logic/viewer-status';
 
 const store = useStore();
 const panel = ref<HTMLElement>();

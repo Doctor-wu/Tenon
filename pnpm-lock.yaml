@@ -69,6 +69,7 @@ importers:
     specifiers:
       '@arco-design/web-vue': ^2.1.0
       '@tenon/bff': workspace:*
+      '@tenon/cms': workspace:*
       '@tenon/engine': workspace:*
       '@tenon/materials': workspace:*
       '@tenon/shared': workspace:*
@@ -89,6 +90,7 @@ importers:
     devDependencies:
       '@arco-design/web-vue': 2.1.0_vue@3.2.21
       '@tenon/bff': link:../tenon-bff
+      '@tenon/cms': 'link:'
       '@tenon/engine': link:../tenon-engine
       '@tenon/materials': link:../tenon-materials
       '@tenon/shared': link:../shared

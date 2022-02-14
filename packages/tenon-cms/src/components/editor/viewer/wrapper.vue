@@ -24,10 +24,10 @@
   </section>
 </template>
 <script lang="ts" setup>
-import { handleMaterialDragStart, handleMaterialDragEnd, handleWrapperDrop, dragging, hovering } from '../../logic/viewer-drag';
-import { editMode } from '../../logic/viewer-status';
-import { useStore } from '../../store';
-import { choosingWrapper, handleSelectComponent } from '../../logic/viewer-active-component';
+import { handleMaterialDragStart, handleMaterialDragEnd, handleWrapperDrop, dragging, hovering } from '../../../logic/viewer-drag';
+import { editMode } from '../../../logic/viewer-status';
+import { useStore } from '../../../store';
+import { choosingWrapper, handleSelectComponent } from '../../../logic/viewer-active-component';
 const store = useStore();
 
 const props = defineProps({

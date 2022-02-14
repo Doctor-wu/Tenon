@@ -31,7 +31,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from 'vue';
-import { useStore } from '../../../store';
+import { useStore } from '@/store';
 import AttrsTree from './attrs-tree.vue';
 
 const props = defineProps({

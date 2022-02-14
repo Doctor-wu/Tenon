@@ -28,9 +28,9 @@
   </template>
 </template>
 <script setup lang="ts">
-import { useStore } from '../../../store';
+import { useStore } from '@/store';
 import { computed } from 'vue';
-import { ComponentTreeNode } from '../../../store/modules/viewer';
+import { ComponentTreeNode } from '@tenon/engine';
 import { ColorPicker } from 'vue-color-kit';
 import { getValueByHackContext } from '@tenon/shared';
 

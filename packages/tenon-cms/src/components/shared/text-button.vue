@@ -64,9 +64,11 @@ function handleClick(...args) {
   transition: all 0.3s;
   font-family: "pomo", Courier, monospace;
   user-select: none;
+  border-radius: 4px;
 
   &:hover {
     color: v-bind(color);
+    background-color: #f5f5f5;
   }
 
   &.disabledStyle {

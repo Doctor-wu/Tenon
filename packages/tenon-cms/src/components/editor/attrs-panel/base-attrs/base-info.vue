@@ -17,7 +17,7 @@
   </section>
 </template>
 <script lang="ts" setup>
-import { useStore } from '../../../store';
+import { useStore } from '../../../../store';
 import {
   computed, h,
 } from 'vue';

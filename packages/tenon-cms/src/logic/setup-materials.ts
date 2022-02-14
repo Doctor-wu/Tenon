@@ -216,6 +216,7 @@ function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
 
   const Component = resolveDynamicComponent(el);
   if (typeof Component !== "string") {
+    
     el = Component;
     if (config.refKey) {
       props.ref = props.ref || {};

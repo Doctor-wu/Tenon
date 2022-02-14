@@ -19,7 +19,11 @@
     @click="() => copyActiveComponent(activeComponent, activeComponent.parent)"
     color="#00b42a"
   >复</AnimateButton>
-  <AnimateButton info="删除元素" @click="() => deleteActiveComponent(activeComponent)" color="#f53f3f">删</AnimateButton>
+  <AnimateButton
+    info="删除元素"
+    @click="() => deleteActiveComponent(activeComponent)"
+    color="#f53f3f"
+  >删</AnimateButton>
   <AnimateButton
     v-if="activeComponent.children"
     info="清空子元素"
@@ -33,10 +37,10 @@ import {
   deleteActiveComponent, upMoveActiveComponent,
   downMoveActiveComponent, extractActiveComponentFromParent,
   copyActiveComponent, clearActiveComponentChildren
-} from '../../logic/viewer-active-component';
-import { useStore } from '../../store';
+} from '~logic/viewer-active-component';
+import { useStore } from '@/store';
 import { computed } from 'vue';
-import AnimateButton from '../custom/animate-button.vue';
+import AnimateButton from '~components/shared/animate-button.vue';
 
 const store = useStore();
 const activeComponent = computed(() => store?.getters['viewer/getActiveComponent']);

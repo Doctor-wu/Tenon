@@ -4,7 +4,7 @@
     <section v-else class="attr-menus" :key="activeComponent.id">
       <a-tabs
         class="attr-menus-wrapper"
-        :default-active-key="attrs[3].title"
+        :default-active-key="attrs[0].title"
         animation
         size="large"
       >
@@ -23,9 +23,9 @@
 </template>
 
 <script setup lang="ts">
-import { useStore } from '../../store';
+import { useStore } from '../../../store';
 import { computed, effect, ref, toRaw } from 'vue';
-import { editMode } from '../../logic/viewer-status';
+import { editMode } from '../../../logic/viewer-status';
 import CompAttrs from './comp-attrs/comp-attrs.vue';
 import BaseInfo from './base-attrs/base-info.vue';
 import compInstance from './comp-instance/comp-instance.vue';
