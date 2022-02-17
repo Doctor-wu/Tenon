@@ -1,0 +1,26 @@
+{
+  "name": "Text",
+  "icon": "italic",
+  "description": ["Text 是一个<基础组件>, Text可以提供文本相关的能力"],
+  "platform": ["web"],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "文本内容",
+      "fieldName": "textValue",
+      "properties": {
+        "value": {
+          "type": "string",
+          "title": "文本内容",
+          "default": "TEXT"
+        }
+      }
+    },
+    {
+      "type": "internal",
+      "key": "textStyle",
+      "title": "文本样式",
+      "fieldName": "textStyle"
+    }
+  ]
+}

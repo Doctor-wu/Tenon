@@ -9,4 +9,7 @@ export const CONSTANT = {
     renew: true,
     /** cookie快过期时自动重新设置*/
   },
+  defaultCorsConfig: {
+    credentials: true,
+  }
 }

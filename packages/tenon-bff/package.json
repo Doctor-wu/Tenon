@@ -4,16 +4,18 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "start": "nodemon --watch src -e ts --exec 'xl_close_port -p 8888 & ts-node src/index.ts'",
+    "start": "nodemon --watch src -e ts --exec 'xl_close_port -p 9999 & ts-node src/index.ts'",
     "genSecret": "ts-node src/framework/utils/genSecret.ts"
   },
   "author": "Doctor wu",
   "license": "MIT",
   "devDependencies": {
     "@tenon/engine": "workspace:*",
+    "@tenon/materials": "workspace:*",
     "@tenon/shared": "workspace:*"
   },
   "dependencies": {
+    "@koa/cors": "^3.1.0",
     "@types/koa": "^2.13.4",
     "@types/koa-router": "^7.4.4",
     "@types/koa-static": "^4.0.2",

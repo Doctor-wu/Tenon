@@ -11,12 +11,18 @@ importers:
       inquirer: ^8.2.0
       lodash: ^4.17.21
       tslint: ^6.1.3
+      vue: ^3.2.21
+      vue-router: '4'
+      vuex: ^4.0.2
     dependencies:
       '@types/execa': 2.0.0
       '@types/inquirer': 8.1.3
       execa: 5.1.1
       inquirer: 8.2.0
       tslint: 6.1.3
+      vue: 3.2.21
+      vue-router: 4.0.12_vue@3.2.21
+      vuex: 4.0.2_vue@3.2.21
     devDependencies:
       '@types/lodash': 4.14.178
       lodash: 4.17.21
@@ -26,7 +32,9 @@ importers:
 
   packages/tenon-bff:
     specifiers:
+      '@koa/cors': ^3.1.0
       '@tenon/engine': workspace:*
+      '@tenon/materials': workspace:*
       '@tenon/shared': workspace:*
       '@types/koa': ^2.13.4
       '@types/koa-router': ^7.4.4
@@ -45,6 +53,7 @@ importers:
       nodemon: ^2.0.15
       uuid: ^8.3.2
     dependencies:
+      '@koa/cors': 3.1.0
       '@types/koa': 2.13.4
       '@types/koa-router': 7.4.4
       '@types/koa-static': 4.0.2
@@ -63,6 +72,7 @@ importers:
       uuid: 8.3.2
     devDependencies:
       '@tenon/engine': link:../tenon-engine
+      '@tenon/materials': link:../tenon-materials
       '@tenon/shared': link:../shared
 
   packages/tenon-cms:
@@ -74,19 +84,15 @@ importers:
       '@tenon/materials': workspace:*
       '@tenon/shared': workspace:*
       '@vitejs/plugin-vue': ^1.9.3
+      axios: ^0.26.0
       sass: ^1.43.4
       typescript: ^4.4.3
       vite: ^2.6.4
-      vue: ^3.2.21
       vue-color-kit: ^1.0.5
-      vue-router: '4'
       vue-tsc: ^0.3.0
-      vuex: ^4.0.2
     dependencies:
-      vue: 3.2.21
+      axios: 0.26.0
       vue-color-kit: 1.0.5_vue@3.2.21
-      vue-router: 4.0.12_vue@3.2.21
-      vuex: 4.0.2_vue@3.2.21
     devDependencies:
       '@arco-design/web-vue': 2.1.0_vue@3.2.21
       '@tenon/bff': link:../tenon-bff
@@ -112,8 +118,10 @@ importers:
 
   packages/tenon-materials:
     specifiers:
+      '@tenon/shared': workspace:*
       vue: ^3.2.16
     dependencies:
+      '@tenon/shared': link:../shared
       vue: 3.2.20
 
 packages:
@@ -188,6 +196,13 @@ packages:
   /@emmetio/scanner/1.0.0:
     resolution: {integrity: sha512-8HqW8EVqjnCmWXVpqAOZf+EGESdkR27odcMMMGefgKXtar00SoYNSryGv//TELI4T3QFsECo78p+0lmalk/CFA==}
     dev: true
+
+  /@koa/cors/3.1.0:
+    resolution: {integrity: sha512-7ulRC1da/rBa6kj6P4g2aJfnET3z8Uf3SWu60cjbtxTA5g8lxRdX/Bd2P92EagGwwAhANeNw8T8if99rJliR6Q==}
+    engines: {node: '>= 8.0.0'}
+    dependencies:
+      vary: 1.1.2
+    dev: false
 
   /@sindresorhus/is/0.14.0:
     resolution: {integrity: sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==}
@@ -667,6 +682,14 @@ packages:
   /assert-never/1.2.1:
     resolution: {integrity: sha512-TaTivMB6pYI1kXwrFlEhLeGfOqoDNdTxjCdwRfFFkEA30Eu+k48W34nlok2EYWJfFFzqaEmichdNM7th6M5HNw==}
     dev: true
+
+  /axios/0.26.0:
+    resolution: {integrity: sha512-lKoGLMYtHvFrPVt3r+RBMp9nh34N0M8zEfCWqdWZx6phynIEhQqAdydpyBAAG211zlhX9Rgu08cOamy6XjE5Og==}
+    dependencies:
+      follow-redirects: 1.14.8
+    transitivePeerDependencies:
+      - debug
+    dev: false
 
   /b-tween/0.3.3:
     resolution: {integrity: sha512-oEHegcRpA7fAuc9KC4nktucuZn2aS8htymCPcP3qkEGPqiBH+GfqtqoG2l7LxHngg6O0HFM7hOeOYExl1Oz4ZA==}
@@ -1383,6 +1406,16 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       to-regex-range: 5.0.1
+
+  /follow-redirects/1.14.8:
+    resolution: {integrity: sha512-1x0S9UVJHsQprFcEC/qnNzBLcIxsjAV905f/UkQxbclCsoTWlacCNOpQa/anodLl2uaEKFhfWOvM2Qg77+15zA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dev: false
 
   /fresh/0.5.2:
     resolution: {integrity: sha1-PYyt2Q2XZWn6g1qx+OSyOhBWBac=}

@@ -1,0 +1,47 @@
+{
+  "name": "Card",
+  "icon": "file",
+  "dependencies": [
+    ["Card", "@arco-design", "@arco-design/web-vue"]
+  ],
+  "description": ["Card是一个展示型组件"],
+  "platform": ["web"],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "卡片属性",
+      "fieldName": "cardProps",
+      "properties": {
+        "bordered": {
+          "type": "boolean",
+          "title": "是否有边框",
+          "default": true
+        },
+        "loading": {
+          "type": "boolean",
+          "title": "是否为加载中",
+          "default": false
+        },
+        "hoverable": {
+          "type": "boolean",
+          "title": "是否可悬浮",
+          "default": false
+        },
+        "size": {
+          "type": "select",
+          "title": "卡片尺寸",
+          "options": {
+            "medium": "中",
+            "small": "小"
+          },
+          "default": "medium"
+        },
+        "title": {
+          "type": "string",
+          "title": "标题文字(优先)",
+          "when": "!this.cardProps.customTitle"
+        }
+      }
+    }
+  ]
+}

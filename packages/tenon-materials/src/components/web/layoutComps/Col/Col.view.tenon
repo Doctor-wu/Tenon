@@ -1,0 +1,7 @@
+<Compose-View
+  slotKey="default" 
+  isSlot="true"
+  composeLayout="{{this.composeLayout}}"
+  composeBackground= "{{this.composeBackground}}"
+>
+</Compose-View>

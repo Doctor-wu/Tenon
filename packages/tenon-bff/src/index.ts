@@ -1,4 +1,4 @@
-import { RootController, AuthController } from "./controllers";
+import { RootController, AuthController, TenonComponentController } from "./controllers";
 import { createServer } from "./framework/core/app";
 import { UserService } from "./services/user";
 import path from "path";
@@ -6,7 +6,7 @@ import path from "path";
 const bootstrap = async () => {
   const server = await createServer({
     server: {
-      port: 8888,
+      port: 9999,
     },
     mongodb: {
       username: 'doctorwu',
@@ -16,6 +16,7 @@ const bootstrap = async () => {
     controllers: [
       RootController,
       AuthController,
+      TenonComponentController,
     ],
     services: [
       UserService,

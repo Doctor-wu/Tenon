@@ -3,6 +3,7 @@ import { CONSTANT } from "../constant";
 import { tenonAppType } from "../core/app.interface";
 import { io } from "../core/io";
 import { bodyParser } from "../middlewares/bodyparser";
+import { setupCors } from "../middlewares/cors";
 import { setupSession } from "../middlewares/session";
 import { setupStatic } from "../middlewares/static";
 import { BaseModule } from "./baseModule";
@@ -11,6 +12,7 @@ export class ConnectionModule extends BaseModule {
 
   public init(app: tenonAppType) {
     super.init(app);
+    this.initCors(app);
     this.initBodyParser(app);
     this.initSession(app);
     this.initStatic(app);
@@ -37,5 +39,9 @@ export class ConnectionModule extends BaseModule {
     if (app.$config.static) {
       setupStatic(app, app.$config.static);
     }
+  }
+
+  private initCors(app: tenonAppType) {
+    setupCors(app);
   }
 }

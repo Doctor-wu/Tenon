@@ -14,7 +14,7 @@
 <script lang="ts" setup>
 import { dragging, draggingMaterial, deleteDraggingComponent } from '~logic/viewer-drag';
 import Animate from '@/components/shared/animate.vue';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { computed, nextTick } from 'vue';
 
 const animator = ref();
@@ -41,7 +41,6 @@ const displayDeletor = computed(() => {
       initd.value = true;
     }, animateTime.value);
   }
-  console.log(1);
 
   return isShow;
 })

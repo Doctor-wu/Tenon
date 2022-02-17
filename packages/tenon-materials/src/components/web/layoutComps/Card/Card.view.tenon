@@ -1,0 +1,15 @@
+<ACard t-bind="cardProps">
+  <Compose-View 
+    slotKey="title" 
+    placeholder="拖入组件生成卡片头部"
+    isSlot="true" 
+    t-slot="title"
+  >
+  </Compose-View>
+  <Compose-View 
+    slotKey="default" 
+    placeholder="拖入组件生成卡片内容"
+    isSlot="true"
+  >
+  </Compose-View>
+</ACard>

@@ -1,7 +1,8 @@
 {
   "name": "@tenon/materials",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -9,7 +10,8 @@
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
-    "vue": "^3.2.16"
+    "vue": "^3.2.16",
+    "@tenon/shared": "workspace:*"
   },
   "description": ""
 }

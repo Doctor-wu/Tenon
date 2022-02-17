@@ -1,0 +1,1 @@
+<span style="textStyle">{{this.textValue.value}}</span>

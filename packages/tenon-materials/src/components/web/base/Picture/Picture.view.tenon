@@ -1,0 +1,1 @@
+<AImage t-bind="imageProps" style="imageStyle"></AImage>

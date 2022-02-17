@@ -1,0 +1,11 @@
+{
+  "name": "Row",
+  "icon": "file",
+  "description": ["Row组件"],
+  "dependencies": [],
+  "platform": [
+    "web"
+  ],
+  "schemas": [
+  ]
+}

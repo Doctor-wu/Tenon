@@ -1,0 +1,9 @@
+<Compose-View
+  slotKey="default" 
+  isSlot="true"
+  composeLayout="{
+    display: 'flex',
+    flexWrap: 'wrap'
+  }"
+>
+</Compose-View>

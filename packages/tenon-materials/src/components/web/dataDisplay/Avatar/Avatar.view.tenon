@@ -1,0 +1,10 @@
+<AAvatar t-bind="avatarConfig" style="avatarStyle">
+  <Text
+    textValue="{value:'{{this.author}}'}"
+    textStyle="{
+      color: 'inherit',
+      verticalAlign: 'middle'
+    }"
+  ></Text>
+  <DynamicComponent is="{{this.icon}}" style="avatarIconStyle" t-slot="trigger-icon"></DynamicComponent>
+</AAvatar>

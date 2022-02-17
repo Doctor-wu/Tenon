@@ -1,6 +1,7 @@
 {
   "name": "@tenon/cms",
-  "main": "index.ts",
+  "main": "src/main.ts",
+  "module": "src/main.ts",
   "version": "1.0.0",
   "scripts": {
     "dev": "vite",
@@ -8,10 +9,8 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.21",
-    "vue-color-kit": "^1.0.5",
-    "vue-router": "4",
-    "vuex": "^4.0.2"
+    "axios": "^0.26.0",
+    "vue-color-kit": "^1.0.5"
   },
   "author": "Doctor wu",
   "devDependencies": {

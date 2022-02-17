@@ -23,6 +23,7 @@ import {
   TenonComponentStates,
   ComponentTreeNode,
 } from "@tenon/engine";
+import { getComponentsApi } from "@/api";
 
 const materials = new Map<string, (() => IMaterialConfig)[]>();
 const materialsMap = new Map<string, () => IMaterialConfig>();
