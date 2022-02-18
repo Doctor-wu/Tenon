@@ -1,5 +1,5 @@
 export default (lifeCycle, props, ctx, tenonComp) => {
-  
+
   const {
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount
   } = lifeCycle;
@@ -10,13 +10,11 @@ export default (lifeCycle, props, ctx, tenonComp) => {
 
   const add = () => {
     tenonComp.states.count.value++;
-    // tenonComp.ctx.$forceUpdate();
     console.log(tenonComp.states.count.value);
   }
 
   const subtract = () => {
     tenonComp.states.count.value--;
-    // tenonComp.ctx.$forceUpdate();
   }
 
   return {

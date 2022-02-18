@@ -1,4 +1,4 @@
-<ACard t-bind="cardProps">
+<ArcoCard t-bind="cardProps">
   <Compose-View 
     slotKey="title" 
     placeholder="拖入组件生成卡片头部"
@@ -12,4 +12,4 @@
     isSlot="true"
   >
   </Compose-View>
-</ACard>
+</ArcoCard>

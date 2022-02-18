@@ -1,18 +1,18 @@
 <template>
   <section class="materials-container">
     <a-menu :auto-open="true" :style="{ borderRadius: '4px' }" :collapsed="false" :level-indent="0">
-      <a-sub-menu v-for="type in store.getters['materials/getMaterials']">
+      <a-sub-menu v-for="[groupName, group] in store.getters['materials/getMaterials'].entries()">
         <template #title>
           <section class="category-header">
             <section>
-              <span style="font-size: 20px;">{{ type[0] }}</span>
+              <span style="font-size: 20px;">{{ groupName }}</span>
               <span class="category-count-wrapper">
-                <span class="category-count">{{ type[1].length }}</span>
+                <span class="category-count">{{ group.length }}</span>
               </span>
             </section>
           </section>
         </template>
-        <CompItem :config="config" v-for="config in type[1]" />
+        <CompItem :config="config" v-for="config in group" />
       </a-sub-menu>
     </a-menu>
   </section>

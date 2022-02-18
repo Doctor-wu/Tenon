@@ -1,5 +1,5 @@
 import { BaseController, Controller, Get, Next, RequestContext } from "../../framework";
-import { loadComponents } from "@tenon/materials";
+import { loadWebComponents } from "@tenon/materials";
 
 @Controller({
   prefixPath: '/components'
@@ -12,7 +12,7 @@ export class TenonComponentController extends BaseController {
     next: Next,
     params: any,
   ) {
-    const components = await loadComponents();
+    const components = await loadWebComponents();
     this.responseJson(ctx, next)(components);
   }
 }

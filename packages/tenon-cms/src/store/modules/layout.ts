@@ -10,7 +10,7 @@ export interface ILayoutState {
 export default {
   state() {
     return {
-      activeLayout: () => import("@/layout/Editor.vue"),
+      activeLayout: () => import("@/layout/EditorLayout.vue"),
     };
   },
   mutations: {
@@ -25,8 +25,6 @@ export default {
   },
   getters: {
     async getActiveLayout(state: ILayoutState) {
-      console.log(state);
-      
       return await state.activeLayout();
     },
   },

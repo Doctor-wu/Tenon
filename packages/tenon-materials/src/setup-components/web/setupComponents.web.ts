@@ -1,90 +1,91 @@
-import {
-  createTextVNode,
-  defineComponent, h,
-  onMounted, onUpdated,
-  onBeforeUnmount, onBeforeMount,
-  reactive,
-  getCurrentInstance,
-  computed,
-  watchEffect,
-  Fragment,
-  resolveDynamicComponent,
-  ref,
-} from "vue";
-import { ISchema, parseSchemas2Props, internalSchema, createTenonEditorComponentByMaterial } from "@tenon/engine";
-import { IMaterialConfig } from "@tenon/materials";
-import { getValueByHackContext, getValueByInjectContext } from "@tenon/shared";
+import { asyncCompose, getValueByHackContext } from "@tenon/shared";
 import { cloneDeep } from "lodash";
-import { materialDependency } from "./material-dependency";
+import { IMaterial, IMaterialConfig, IMaterialMeta } from "../../type";
 import {
-  eventsMap,
-  executeQueueEvents,
-  TenonComponentStates,
+  defineComponent,
+  getCurrentInstance,
+  reactive, computed, ref, watchEffect,
+  createTextVNode, h, Fragment,
+  onMounted, onUpdated, onBeforeUnmount, onBeforeMount,
+  resolveDynamicComponent,
+} from "vue";
+import {
   ComponentTreeNode,
+  createTenonEditorComponentByMaterial,
+  eventsMap, executeQueueEvents, internalSchema,
+  ISchema, parseSchemas2Props, TenonComponentStates
 } from "@tenon/engine";
+import { setupMaterialView } from "./setupMaterialView";
 
+const componentsMap = new Map<string, any>();
+const componentsGroup = new Map<string, any[]>();
+let materialDependency: any;
 
-const materials = new Map<string, (() => IMaterialConfig)[]>();
-const materialsMap = new Map<string, () => IMaterialConfig>();
-const componentMap = new Map<string, any>();
-
-export const setupMaterials = (store: any) => {
-  const vueRaw = import.meta.globEager('../materials/**/*.vue');
-  const configRaw = import.meta.globEager('../materials/**/*.config.json');
-  const viewRaw = import.meta.globEager('../materials/**/*.view.json');
-  const logicRaw = import.meta.globEager('../materials/**/*.ts');
-  Object.keys(configRaw).forEach(key => {
-    const extractPrefixName = key.replace('../materials/', '');
-    const categoryKey = extractPrefixName.split('/')[0];
-    const compName = extractPrefixName.split('/')[1];
-
-    const getPath = (placeholder) => {
-      return key.replace('.config.json', placeholder);
-    }
-    const config = configRaw[key].default;
-
-    const vuePath = getPath('.vue');
-    const vueConfig = vueRaw?.[vuePath]?.default;
-
-    const viewPath = getPath('.view.json');
-    const viewConfig = viewRaw[viewPath]?.default;
-
-    const logicPath = getPath('.ts');
-    const logicConfig = logicRaw[logicPath]?.default;
-
-    if (!materials.get(categoryKey)) {
-      materials.set(categoryKey, []);
-    }
-
-    setupConfigSchemas(config);
-    const compFactory: () => any = () => {
-      const bornConfig = cloneDeep(config);
-      const base: any = {
-        name: compName,
-        config: bornConfig,
-        schemas: bornConfig.schemas,
-        component: {},
-      };
-
-      base.component = config.setup === 'native'
-        ? vueConfig
-        : createComponent(viewConfig, logicConfig, base);
-
-      return base;
-    };
-
-    materials.get(categoryKey)!.push(compFactory);
-    materialsMap.set(compName, compFactory);
-  });
-
-  store.dispatch('materials/setMaterials', materials);
-  store.dispatch('materials/setMaterialsMap', materialsMap);
+export const setupWebComponents = async (materials: IMaterialConfig, dependency: any) => {
+  materialDependency = dependency;
+  const groupNames = Object.keys(materials);
+  await asyncCompose(
+    groupNames.forEach.bind(groupNames),
+  )(processGroup.bind(null, componentsGroup, componentsMap, materials));
+  return { componentsMap, componentsGroup };
 }
 
+const processGroup = async (
+  componentsGroup: Map<string, any[]>,
+  componentsMap: Map<string, any>,
+  materials: IMaterialConfig,
+  groupName: string
+) => {
+  componentsGroup.set(groupName, []);
+  const group = materials[groupName];
+  const compNames = Object.keys(group);
 
-function createComponent(viewConfig, logic, material: any) {
-  if (componentMap.has(material.config.name)) {
-    const comp = { ...componentMap.get(material.config.name) };
+  await asyncCompose(compNames.forEach.bind(compNames))(
+    processComponent.bind(null, groupName, group, componentsGroup, componentsMap)
+  );
+}
+
+const processComponent = async (
+  groupName: string,
+  group: {
+    [props: string]: IMaterialMeta;
+  },
+  componentsGroup: Map<string, any[]>,
+  componentsMap: Map<string, any>,
+  compName: string,
+) => {
+  const materialMeta = group[compName];
+  materialMeta.logic = new Function(`return ${materialMeta.logic}`)();
+  materialMeta.view = setupMaterialView(materialMeta.view.children[0]);
+
+  const {
+    view,
+    logic,
+    doc,
+    config,
+  } = materialMeta;
+  console.log(view);
+
+  setupConfigSchemas(config);
+  const compFactory: () => IMaterial = () => {
+    const bornConfig = cloneDeep(config);
+    const base: IMaterial = {
+      name: compName,
+      config: bornConfig,
+      schemas: bornConfig.schemas,
+      component: createComponent(view, logic, materialMeta),
+    };
+    return base;
+  };
+  componentsMap.set(config.name, compFactory);
+  componentsGroup.get(groupName)?.push(compFactory);
+}
+
+const componentCache = new Map();
+
+function createComponent(viewConfig, logic, material: IMaterialMeta) {
+  if (componentCache.has(material.config.name)) {
+    const comp = { ...componentCache.get(material.config.name) };
 
     return comp;
   }
@@ -100,9 +101,10 @@ function createComponent(viewConfig, logic, material: any) {
     },
   });
 
-  componentMap.set(material.config.name, comp);
+  componentCache.set(material.config.name, comp);
   return comp;
 }
+
 
 function setupComponent(props, ctx, logic) {
   const instance = getCurrentInstance();
@@ -124,7 +126,7 @@ function setupComponent(props, ctx, logic) {
 
   const originStates = logic?.({
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount,
-    watch: watchEffect
+    watch: watchEffect,
   }, props, ctx, tenonComp) || {};
 
   const handlers = reactive<string[]>([]);
@@ -225,8 +227,8 @@ function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
   }
   else if (materialDependency[el]) el = materialDependency[el];
 
-  if (materialsMap.has(el)) {
-    const compFactory = materialsMap.get(el);
+  if (componentsMap.has(el)) {
+    const compFactory = componentsMap.get(el);
     if (compFactory) {
       const material = compFactory();
       const source = cloneDeep(processedProps);
@@ -336,7 +338,7 @@ function setupProps(this: any, props = {}) {
           newProps["style"] = value;
         }
         break;
-      case "<BINDING>":
+      case "t-bind":
         value = value instanceof Array ? value : [value];
         value.forEach(val => {
           const bindings = props[val] || this[val] || {};
@@ -371,6 +373,7 @@ function injectDynamicPropsValue(this: any, value: any, key: string) {
       break;
   }
 }
+
 function setupConfigSchemas(config) {
   const {
     schemas = [],
@@ -398,5 +401,4 @@ function setupConfigSchemas(config) {
   });
   config.schemas?.push(internalSchema.containerLayout);
   config.schemas?.push(internalSchema.containerBackground);
-  // config.schemas?.push(internalSchema.textStyle);
 }

@@ -1,3 +1,5 @@
+import { IMaterial } from "@tenon/materials";
+import { cloneDeep } from "lodash";
 import { ComponentTreeNode } from "./component";
 
 interface IDefaultEvents {
@@ -65,4 +67,17 @@ export function executeQueueEvents(executeQueue: IExecuteQueueItem[], ...args: a
     const eventEntity = eventsMap.get(eventIdentifier);
     if (eventEntity) eventEntity.apply(null, args);
   });
+}
+
+export function createTenonEvents(material: IMaterial): IEventsConfig {
+  const events: IEventsConfig = cloneDeep(DEFAULT_EVENTS);
+  if (material.config.events) {
+    Object.keys(material.config.events).forEach(eventKey => {
+      events[eventKey] = {
+        eventLabel: material.config.events[eventKey],
+        executeQueue: []
+      };
+    });
+  }
+  return events;
 }

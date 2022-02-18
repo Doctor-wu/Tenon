@@ -1,1 +1,2 @@
-export * from './setupMaterial.web';
+export * from './setup-components';
+export * from './type';

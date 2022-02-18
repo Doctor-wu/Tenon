@@ -9,12 +9,10 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "axios": "^0.26.0",
     "vue-color-kit": "^1.0.5"
   },
   "author": "Doctor wu",
   "devDependencies": {
-    "@arco-design/web-vue": "^2.1.0",
     "@tenon/bff": "workspace:*",
     "@tenon/cms": "workspace:*",
     "@tenon/engine": "workspace:*",

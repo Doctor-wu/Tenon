@@ -35,7 +35,7 @@ import { toRaw, computed, getCurrentInstance } from 'vue';
 import Wrapper from '~components/editor/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '~logic/viewer-drag';
 import { editMode } from '~logic/viewer-status';
-import { createTenonEditorComponentByMaterial } from '~logic/tree-operation';
+import { createTenonEditorComponentByMaterial } from '@tenon/engine';
 import { findParentTenonComp } from '~logic/setup-materials';
 
 const store = useStore();

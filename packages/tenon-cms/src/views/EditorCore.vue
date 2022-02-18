@@ -15,7 +15,7 @@
 import { ref, onMounted } from 'vue';
 import { useStore } from '@/store';
 import ViewerNav from '~components/editor/viewer/viewer-nav.vue';
-import ComposeView from '@/materials/base/Compose-View/Compose-View.vue';
+import ComposeView from '~components/editor/viewer/Compose-View/Compose-View.vue';
 import ViewerNotice from '~components/editor/viewer/viewer-notice.vue';
 import { editMode } from '~logic/viewer-status';
 

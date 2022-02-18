@@ -1,5 +1,10 @@
-import { createStore, Store } from 'vuex'
-import { setupMaterials } from '../logic/setup-materials';
+import { getComponentsApi } from '@/api';
+import { materialDependency } from '@/logic/material-dependency';
+import { createStore, Store } from 'vuex';
+import { IMaterial, setupWebComponents } from "@tenon/materials";
+import { cloneDeep } from 'lodash';
+import ComposeViewConfig from "../components/editor/viewer/Compose-View/Compose-View.config.json";
+import ComposeViewVue from '@/components/editor/viewer/Compose-View/Compose-View.vue';
 
 export interface IRootState {
   author: string;
@@ -31,7 +36,33 @@ export const setupStore = (app) => {
   // 将 store 实例作为插件安装
   app.use(store);
 
-  setupMaterials(store);
+  // setupMaterials(store);
+  (async () => {
+    const components = await (await getComponentsApi()).data;
+    const {
+      componentsMap,
+      componentsGroup,
+    } = await setupWebComponents(components, materialDependency);
+    console.log(componentsMap);
+    console.log(componentsGroup);
+
+  
+    const composeView = () => {
+      const bornConfig = cloneDeep(ComposeViewConfig);
+      const base: IMaterial = {
+        name: "Compose-View",
+        config: bornConfig,
+        schemas: bornConfig.schemas,
+        component: ComposeViewVue,
+      };
+      return base;
+    };
+    componentsMap.set("Compose-View", composeView);
+    componentsGroup.get("base")?.unshift(composeView);
+
+  store.dispatch('materials/setMaterials', componentsGroup);
+  store.dispatch('materials/setMaterialsMap', componentsMap);
+  })();
 };
 
 export const useStore = () => store;

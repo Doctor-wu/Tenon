@@ -37,6 +37,7 @@ const props = defineProps({
     required: true,
   },
 });
+
 const component = props.config();
 
 </script>

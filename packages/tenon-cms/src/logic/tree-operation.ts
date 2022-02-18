@@ -1,18 +1,17 @@
 import { reactive, toRaw } from "vue";
 import { getTreeModel } from "../local-db";
-const treeModel = getTreeModel();
 import { useStore } from "../store";
 import {
-  createPropsBySchemas,
-  IMaterialConfig,
-  ComponentTreeNode,
-  DEFAULT_EVENTS,
-  IEventsConfig,
   config2tree,
   tree2config,
+  createTenonEditorComponentByMaterial,
+  getID,
+  setID,
+  ComponentTreeNode,
 } from "@tenon/engine";
-import { getID, setID } from "./viewer-id";
 import { cloneDeep } from "lodash";
+
+const treeModel = getTreeModel();
 
 export const insertChild = (parent, child, relative, insertFromFront = false) => {
   if (!relative) {
@@ -92,7 +91,6 @@ export const copyComponentTreeNode = (comp: ComponentTreeNode, options: any = {}
     isSlot: options.isSlot,
     schemas: comp.schemas,
   });
-  // debugger;
   if (comp.children) {
     comp.children.forEach((child) => {
       expressedComponent.children?.push(copyComponentTreeNode(child, { parent: expressedComponent }));
@@ -106,56 +104,6 @@ export const copyComponentTreeNode = (comp: ComponentTreeNode, options: any = {}
   return expressedComponent;
 }
 
-
-export const createTenonEditorComponentByMaterial = (material: IMaterialConfig, sup: ComponentTreeNode | null = null, options: any = {}): ComponentTreeNode => {
-  const {
-    props,
-    slots,
-    isSlot,
-    schemas,
-  } = options;
-  const id = getID();
-
-  const expressedComponent: any = reactive<ComponentTreeNode>({
-    name: material.name,
-    parent: sup,
-    material,
-    props: createPropsBySchemas(
-      schemas || material.schemas!
-      , isSlot
-        ? material.config.tenonProps || null
-        : (props || material.config.tenonProps)
-    ),
-    id,
-    refs: {},
-    events: createTenonEvents(material),
-    handlers: [],
-    schemas: schemas || material.schemas!,
-    textID: String(id),
-    slots: {},
-    isSlot: !!isSlot,
-  });
-
-  if (material.config.nestable) {
-    expressedComponent.children = material.children || [];
-  }
-
-  material.tenonComp = expressedComponent;
-  return expressedComponent;
-}
-
-function createTenonEvents(material: IMaterialConfig): IEventsConfig {
-  const events: IEventsConfig = cloneDeep(DEFAULT_EVENTS);
-  if (material.config.events) {
-    Object.keys(material.config.events).forEach(eventKey => {
-      events[eventKey] = {
-        eventLabel: material.config.events[eventKey],
-        executeQueue: []
-      };
-    });
-  }
-  return events;
-}
 
 export const uploadTree = (tree: ComponentTreeNode) => {
   const config = toRaw<ComponentTreeNode>(
@@ -176,7 +124,6 @@ export const downloadTree = async (): Promise<ComponentTreeNode> => {
     lastID,
     config,
   } = tree;
-  // store.dispatch('viewer/setCompId', lastID);
   setID(lastID);
   const materialsMap = store.getters["materials/getMaterialsMap"];
   config2tree({ reactive, materialsMap })(config);

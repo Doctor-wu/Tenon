@@ -1,0 +1,31 @@
+import { Transform } from "@compiler/transform";
+
+export const setupMaterialView = (view: Transform.JSXElement) => {
+  if (view.elementType === "Text") return view.value;
+  const tree: any = {};
+  tree.el = view.identifier;
+  tree.props = {};
+  if (view.Attributes.length) {
+    view.Attributes.forEach(({ key, value }) => {
+      if (typeof value === "string") {
+        try {
+          tree.props[key] = new Function(`return ${value}`)();
+        } catch (e) {
+          tree.props[key] = value;
+        }
+      } else {
+        tree.props[key] = value;
+      }
+    });
+  }
+  if (view.children?.length) {
+    tree.children = [];
+    view.children.forEach(child => {
+      tree.children.push(
+        setupMaterialView(child)
+      );
+    });
+  }
+  tree.type = view.elementType;
+  return tree;
+}

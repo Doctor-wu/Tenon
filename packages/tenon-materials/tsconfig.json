@@ -4,7 +4,11 @@
     "jsx": "preserve",
     "composite": true, // 用于帮助 TypeScript 快速确定引用工程的输出文件位置
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "paths": {
+      "@compiler": ["./src/compiler"],
+      "@compiler/*": ["./src/compiler/*"]
+    }
   },
   "include": ["src", "build.ts"]
 }

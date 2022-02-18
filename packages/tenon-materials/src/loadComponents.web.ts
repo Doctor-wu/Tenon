@@ -2,27 +2,16 @@ import path from "path";
 import fs from "fs";
 import { compiler } from "./compiler";
 import { asyncCompose } from "@tenon/shared";
+import { IMaterialConfig, IMaterialMeta } from "./type";
 
-type componentsType = {
-  [props: string]: {
-    [props: string]: componentsMeta;
-  }
-};
 
-type componentsMeta = {
-  view: any;
-  logic: any;
-  config: any;
-  doc: any;
-};
-
-export const loadComponents = async () => {
-  const components: componentsType = {};
+export const loadWebComponents = async () => {
+  const components: IMaterialConfig = {};
   await buildComponents(components);
   return components;
 };
 
-const buildComponents = async (components: componentsType) => {
+const buildComponents = async (components: IMaterialConfig) => {
   const dirs = path.resolve(__dirname, './components/web');
   const compSource = fs.readdirSync(dirs);
   await asyncCompose(
@@ -36,7 +25,7 @@ const buildComponents = async (components: componentsType) => {
       Promise.all.bind(Promise)
     )(async comp => {
       const compDir = path.join(dirs, compGroup, comp);
-      components[compGroup][comp] = {} as componentsMeta;
+      components[compGroup][comp] = {} as IMaterialMeta;
 
       // 组件视图
       components[compGroup][comp].view = compiler.compile(
@@ -46,7 +35,7 @@ const buildComponents = async (components: componentsType) => {
       );
 
       // 组件逻辑
-      components[compGroup][comp].logic = (await import( /* @vite-ignore */ `${path.join(compDir, `${comp}.ts`)}`)).default.toString();
+      components[compGroup][comp].logic = (await import(`${path.join(compDir, `${comp}.ts`)}`)).default.toString();
 
       // 组件文档
       components[compGroup][comp].doc =
@@ -55,10 +44,8 @@ const buildComponents = async (components: componentsType) => {
         ).toString();
 
       // 组件配置
-      components[compGroup][comp].config = await import( /* @vite-ignore */ path.join(compDir, `${comp}.config.json`));
+      components[compGroup][comp].config = await import(path.join(compDir, `${comp}.config.json`));
 
     });
   });
-}
-
-loadComponents()
+};

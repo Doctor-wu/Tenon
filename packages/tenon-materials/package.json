@@ -10,8 +10,8 @@
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
-    "vue": "^3.2.16",
-    "@tenon/shared": "workspace:*"
+    "@tenon/shared": "workspace:*",
+    "@tenon/engine": "workspace:*"
   },
   "description": ""
 }

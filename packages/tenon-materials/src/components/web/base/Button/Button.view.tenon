@@ -1,6 +1,6 @@
-<AButton
+<ArcoButton
   t-bind="buttonProps"
   onClick="{{(...args) => this.executeTenonEvents$('onClick', ...args)}}"
 >
   {{this.buttonText.value}}
-</AButton>
+</ArcoButton>

@@ -1,20 +1,18 @@
 import { Module } from 'vuex';
 import { IRootState } from '..';
-import { ISchema, ComponentTreeNode, IMaterialConfig } from '@tenon/engine';
+import { ISchema, ComponentTreeNode } from '@tenon/engine';
+import { IMaterial } from '@tenon/materials';
 
 
 export interface IMaterialConfigsState {
-  materials: [
-    string,
-    (() => IMaterialConfig)[]
-  ][];
-  materialsMap: Map<string, () => IMaterialConfig>;
+  materials: Map<string, [string, () => IMaterial][]>;
+  materialsMap: Map<string, () => IMaterial>;
 }
 
 export default {
   state() {
     return {
-      materials: [],
+      materials: new Map(),
       materialsMap: new Map(),
     };
   },
