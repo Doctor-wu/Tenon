@@ -1,4 +1,4 @@
 /node_modules/
 .vscode
 **/node_modules/
-**/logFile/
+**/logFiles/
