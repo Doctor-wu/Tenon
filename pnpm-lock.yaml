@@ -44,6 +44,7 @@ importers:
       '@types/koa-router': ^7.4.4
       '@types/koa-static': ^4.0.2
       '@types/mongoose': ^5.11.97
+      ansi-regex: ^6.0.1
       chalk: 4.1.2
       koa: ^2.13.4
       koa-bodyparser: ^4.3.0
@@ -62,6 +63,7 @@ importers:
       '@types/koa-router': 7.4.4
       '@types/koa-static': 4.0.2
       '@types/mongoose': 5.11.97
+      ansi-regex: 6.0.1
       chalk: 4.1.2
       koa: 2.13.4
       koa-bodyparser: 4.3.0
@@ -593,6 +595,11 @@ packages:
   /ansi-regex/5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
+    dev: false
+
+  /ansi-regex/6.0.1:
+    resolution: {integrity: sha512-n5M855fKb2SsfMIiFFoVrABHJC8QtHwVx+mHWP3QcEqBHYienj5dHSgjbxtC0WEZXYt4wcD6zrQElDPhFuZgfA==}
+    engines: {node: '>=12'}
     dev: false
 
   /ansi-styles/3.2.1:

@@ -27,10 +27,6 @@ console.log('>> pnpm install...');
 
 execa.command(`pnpm install`, cmsCommandOptions)
   .then(() => {
-    // 构建物料
-    // return execa.command(`ts-node build.ts`, engineCommandOptions);
-  })
-  .then(() => {
     console.log('>> Running vite...');
     return execa.command(`npx vite`, cmsCommandOptions);
   })

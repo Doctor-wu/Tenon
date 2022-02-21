@@ -10,12 +10,16 @@ class RootController extends BaseController {
     ctx: RequestContext,
     next: Next,
   ) {
-    io.log(
-      `[${ctx.method.toUpperCase()}] ${ctx.path}`
-    );
+    ctx._startTime = Date.now();
     await next();
+    ctx._endTime = Date.now();
+    io.log(
+      `request`,
+      io.bold(`[${ctx.method.toUpperCase()}]${ctx.path}`),
+      `cost ${ctx._endTime - ctx._startTime}ms`
+    );
   }
-  
+
 
   @Get("/")
   async homePage(

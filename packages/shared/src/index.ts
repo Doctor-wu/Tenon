@@ -1,2 +1,6 @@
-export * from './Singleton';
+export * from './pattern';
 export * from './utils';
+export * from './type';
+export * from './array';
+export * from './object';
+export * from './file';

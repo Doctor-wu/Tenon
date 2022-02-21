@@ -3,7 +3,11 @@
   "compilerOptions": {
     "composite": true, // 用于帮助 TypeScript 快速确定引用工程的输出文件位置
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "paths": {
+      "@compiler": ["../tenon-materials/src/compiler"],
+      "@compiler/*": ["../tenon-materials/src/compiler/*"]
+    }
   },
   "include": ["src"]
 }

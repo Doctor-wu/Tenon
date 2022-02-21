@@ -11,6 +11,7 @@ import { compose } from "@tenon/shared";
 export * from "./app.interface";
 
 export const createServer = async (config: IServerConfig): Promise<tenonAppType> => {
+  const startTime = Date.now();
   const { server } = config;
   const { port, name } = server;
 
@@ -47,6 +48,10 @@ export const createServer = async (config: IServerConfig): Promise<tenonAppType>
       );
       io.log(
         io.bold.white.bgHex('#a5f')('Server launch succeeded!'),
+      );
+      const endTime = Date.now();
+      io.log(
+        io.successStyle.bold(`Launch cost ${endTime - startTime}ms`)
       );
     });
   }

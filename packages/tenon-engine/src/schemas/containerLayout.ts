@@ -1,4 +1,4 @@
-import { ISchema } from "../logic/schema";
+import { ISchema } from "../core";
 
 export const containerSchema: ISchema =
 {

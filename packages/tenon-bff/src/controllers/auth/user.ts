@@ -2,6 +2,7 @@ import { BaseController, Controller, Get, Post, Next, RequestContext, useService
 import { SERVICE_NAME } from "../../services/constant";
 import { UserService } from "../../services/user";
 import crypto from "crypto";
+import { arrayType } from "@tenon/shared";
 
 @Controller({
   prefixPath: "/user"
@@ -88,7 +89,7 @@ class UserController extends BaseController {
     next: Next,
     params: any,
   ) {
-    const condition = this.getSpecifiedFieldParams(params, ["username"]);
+    const condition = this.getSpecifiedFieldParams(params, ["username", "password"]);
     const [err, users] = await this.user.getUsers(condition);
     if (err) {
       await this.responseError(ctx, next)(1111, err.toString());
@@ -118,7 +119,7 @@ class UserController extends BaseController {
     next: Next,
     params: any,
   ) {
-    const userInfo = this.getSpecifiedFieldParams(params, ["phone", "password", "gender", "email"]);
+    const userInfo = this.getSpecifiedFieldParams(params, ["username", "phone", "password", "gender", "email"]);
     const [err, result] = await this.user.updateUser(userInfo);
     if (err) {
       await this.responseError(ctx, next)(1111, err.toString());

@@ -5,6 +5,7 @@ import { createErrorJson, createResponseJson } from "./response";
 import { compose } from "@tenon/shared";
 import { IDecoratedControllerExtraFields } from "./controller-core.interface";
 import { IDecoratedController } from "../decorators/controller-decorators/Controller.interface";
+import { arrayType } from "@tenon/shared";
 
 export const initControllers = (app: tenonAppType) => {
   const { controllers } = app.$config;
@@ -45,7 +46,7 @@ export class BaseController implements IDecoratedControllerExtraFields {
   /** Controller装饰器会为子类实例加上该属性 */
   public ControllerName!: string;
   /** Controller装饰器会为子类实例加上该属性 */
-  public prefixPath!: string;
+  // public prefixPath!: string;
   /** Controller装饰器会为子类加上该属性 */
   public static prefixPath: string;
   public subController?: IDecoratedController[];
@@ -54,9 +55,9 @@ export class BaseController implements IDecoratedControllerExtraFields {
     this.app = app;
   }
 
-  getSpecifiedFieldParams(params: any, fields: string[]): any {
-    const result = {};
-    fields.forEach(fieldKey => {
+  getSpecifiedFieldParams<P extends any, T extends keyof P>(params: P, fields: T[]): Record<T, any> {
+    const result: Record<T, unknown> = {} as Record<T, any>;
+    fields.forEach((fieldKey) => {
       if (params[fieldKey]) result[fieldKey] = params[fieldKey];
     });
     return result;

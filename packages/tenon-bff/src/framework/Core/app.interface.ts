@@ -43,6 +43,11 @@ export interface IServerConfig {
   static?: {
     /** 资源目录 */
     path: string;
+  },
+  /** 日志配置 */
+  logger?: {
+    /** 日志目录 */
+    path: string;
   }
 }
 

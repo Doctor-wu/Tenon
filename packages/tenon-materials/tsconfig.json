@@ -10,5 +10,10 @@
       "@compiler/*": ["./src/compiler/*"]
     }
   },
-  "include": ["src", "build.ts"]
+  "include": [
+    "src",
+    "src/components/**/*.json",
+    "src/components/**/*.md",
+    "src/components/**/*.view.tenon"
+  ]
 }

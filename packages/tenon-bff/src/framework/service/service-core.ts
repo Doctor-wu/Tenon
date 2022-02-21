@@ -86,7 +86,7 @@ export class BaseService<DocType = unknown> implements IDecoratedServiceExtraFie
     });
   }
 
-  protected async errorProtectedHandler(resultGetter: () => Promise<any>) {
+  protected async errorProtectedHandler(resultGetter: () => Promise<any>): Promise<[any, any]> {
     let err, result;
     try {
       result = await resultGetter();

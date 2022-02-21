@@ -2,6 +2,7 @@ import { BaseController } from "../../controller";
 import { StatusCode } from "../../controller/status-code";
 import { io } from "../../core/io";
 import { addRoute, requestMethod } from "../../middlewares/router";
+import { IDecoratedController } from "./Controller.interface";
 
 export interface IParamsConfig {
   [props: string]: {
@@ -28,13 +29,15 @@ export const createRequest: (
     target.handlers = target.handlers || [];
     target.handlers.push(
       (instance: BaseController) => {
+        
         addRoute(requestMethod, {
-          path: instance.prefixPath + requestPath,
+          path: (instance.constructor as IDecoratedController).prefixPath + requestPath,
           cb: async (ctx, next) => {
             try {
               await cb.call(instance, ctx, next);
-            } catch (e) {
+            } catch (e: any) {
               io.error(`${instance.ControllerName} Error:`, e);
+              instance.responseError(ctx, next)(1111, `Internal Error: ${e.toString()}`);
             }
           },
           handlerDesc,

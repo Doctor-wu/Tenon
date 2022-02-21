@@ -20,6 +20,7 @@
     "@types/koa-router": "^7.4.4",
     "@types/koa-static": "^4.0.2",
     "@types/mongoose": "^5.11.97",
+    "ansi-regex": "^6.0.1",
     "chalk": "4.1.2",
     "koa": "^2.13.4",
     "koa-bodyparser": "^4.3.0",

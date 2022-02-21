@@ -1,0 +1,62 @@
+[Log] 2022/2/21 下午5:48:54 读取密钥成功
+[Log] 2022/2/21 下午5:48:54 Session initd
+[Log] 2022/2/21 下午5:48:54 - user
+[Log] 2022/2/21 下午5:48:54 Service initd
+[Log] 2022/2/21 下午5:48:54 - RootController
+[Log] 2022/2/21 下午5:48:54 - UserController
+[Log] 2022/2/21 下午5:48:54 - TestController
+[Log] 2022/2/21 下午5:48:54 - AuthController
+[Log] 2022/2/21 下午5:48:54 - TenonComponentController
+[Log] 2022/2/21 下午5:48:54 Controller initd
+[Log] 2022/2/21 下午5:48:54 【 GET / 】 RootController.homePage
+[Log] 2022/2/21 下午5:48:54 【 POST /auth/user/signup 】 UserController.handleSignup
+[Log] 2022/2/21 下午5:48:54 【 POST /auth/user/signIn 】 UserController.handleSignIn
+[Log] 2022/2/21 下午5:48:54 【 GET /auth/user/getUser/:username 】 UserController.getUser
+[Log] 2022/2/21 下午5:48:54 【 GET /auth/user/getUser 】 UserController.getUser
+[Log] 2022/2/21 下午5:48:54 【 POST /auth/user/updateUser 】 UserController.updateUser
+[Log] 2022/2/21 下午5:48:54 【 GET /auth/test/getTest 】 TestController.getTest
+[Log] 2022/2/21 下午5:48:54 【 GET /components/getComponents 】 TenonComponentController.getComponents
+[Log] 2022/2/21 下午5:48:54 Router initd
+[Log] 2022/2/21 下午5:48:54 tenon-server is running at http://localhost:9999
+[Log] 2022/2/21 下午5:48:54 Server launch succeeded!
+[Log] 2022/2/21 下午5:48:54 Launch cost 154ms
+[Log] 2022/2/21 下午5:49:30 读取密钥成功
+[Log] 2022/2/21 下午5:49:30 Session initd
+[Log] 2022/2/21 下午5:49:30 - user
+[Log] 2022/2/21 下午5:49:30 Service initd
+[Log] 2022/2/21 下午5:49:30 - RootController
+[Log] 2022/2/21 下午5:49:30 - UserController
+[Log] 2022/2/21 下午5:49:30 - TestController
+[Log] 2022/2/21 下午5:49:30 - AuthController
+[Log] 2022/2/21 下午5:49:30 - TenonComponentController
+[Log] 2022/2/21 下午5:49:30 Controller initd
+[Log] 2022/2/21 下午5:49:30 【 GET / 】 RootController.homePage
+[Log] 2022/2/21 下午5:49:30 【 POST /auth/user/signup 】 UserController.handleSignup
+[Log] 2022/2/21 下午5:49:30 【 POST /auth/user/signIn 】 UserController.handleSignIn
+[Log] 2022/2/21 下午5:49:30 【 GET /auth/user/getUser/:username 】 UserController.getUser
+[Log] 2022/2/21 下午5:49:30 【 GET /auth/user/getUser 】 UserController.getUser
+[Log] 2022/2/21 下午5:49:30 【 POST /auth/user/updateUser 】 UserController.updateUser
+[Log] 2022/2/21 下午5:49:30 【 GET /auth/test/getTest 】 TestController.getTest
+[Log] 2022/2/21 下午5:49:30 【 GET /components/getComponents 】 TenonComponentController.getComponents
+[Log] 2022/2/21 下午5:49:30 Router initd
+[Log] 2022/2/21 下午5:49:30 tenon-server is running at http://localhost:9999
+[Log] 2022/2/21 下午5:49:30 Server launch succeeded!
+[Log] 2022/2/21 下午5:49:30 Launch cost 80ms
+[Log] 2022/2/21 下午5:49:59 [object Object]
+[Log] 2022/2/21 下午5:49:59 request [GET]/components/getComponents cost 980ms
+[Log] 2022/2/21 下午5:52:41 [object Object]
+[Log] 2022/2/21 下午5:52:41 request [POST]/auth/user/signIn cost 30ms
+[Log] 2022/2/21 下午6:10:36 [object Object]
+[Log] 2022/2/21 下午6:10:36 request [GET]/components/getComponents cost 89ms
+[Log] 2022/2/21 下午7:03:04 [object Object]
+[Log] 2022/2/21 下午7:03:04 request [GET]/components/getComponents cost 14ms
+[Log] 2022/2/21 下午7:03:11 [object Object]
+[Log] 2022/2/21 下午7:03:11 request [GET]/components/getComponents cost 9ms
+[Log] 2022/2/21 下午9:11:26 [object Object]
+[Log] 2022/2/21 下午9:11:26 request [POST]/auth/user/signup cost 130ms
+[Log] 2022/2/21 下午9:12:52 [object Object]
+[Log] 2022/2/21 下午9:12:52 request [POST]/auth/user/signup cost 10ms
+[Log] 2022/2/21 下午9:13:04 [object Object]
+[Log] 2022/2/21 下午9:13:04 request [GET]/components/getComponents cost 27ms
+[Log] 2022/2/21 下午9:23:17 [object Object]
+[Log] 2022/2/21 下午9:23:17 request [GET]/components/getComponents cost 83ms
