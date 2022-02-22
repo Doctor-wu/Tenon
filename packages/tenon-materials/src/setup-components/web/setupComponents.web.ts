@@ -185,16 +185,17 @@ function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
     children = [],
   } = config;
 
-  if (config["<FOR>"] && !config._processedFOR) {
-    const renderLoop = computed<Array<any>>(() => getValueByHackContext(this, config["<FOR>"]));
+  if (props["t-for"] && !config._processedFOR) {
+    
+    const renderLoop = computed<Array<any>>(() => getValueByHackContext(this, props["t-for"]));
 
     return function _custom_for_render(this: any) {
       return h(
         Fragment,
         renderLoop.value.map(
           (item, index) => {
-            const itemKey = config["<FORItemKey>"] || "item";
-            const indexKey = config["<FORIndexKey>"] || "index";
+            const itemKey = config["t-for-item"] || "item";
+            const indexKey = config["t-for-index"] || "index";
             const subConfig = cloneDeep(config);
             subConfig._processedFOR = true;
             this[itemKey] = item;
@@ -205,8 +206,8 @@ function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
     };
   }
 
-  if (config["<IF>"] && !config._processedIF) {
-    const renderCondition = computed(() => getValueByHackContext(this, config["<IF>"]));
+  if (props["t-if"] && !config._processedIF) {
+    const renderCondition = computed(() => getValueByHackContext(this, props["t-if"]));
     return function _custom_if_render(this: any) {
       const subConfig = cloneDeep(config);
       subConfig._processedIF = true;
@@ -233,10 +234,10 @@ function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
       const material = compFactory();
       const source = cloneDeep(processedProps);
       const tenonComp = createTenonEditorComponentByMaterial(material, null, {
-        isSlot: !!source.isSlot,
+        isSlot: !!source.props?.isSlot,
         props: source
       });
-      if (el !== "Compose-View" || !source.isSlot) {
+      if (el !== "Compose-View" || !source.props?.isSlot) {
         processedProps = {
           tenonComp,
           ...tenonComp.props
@@ -257,7 +258,8 @@ function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
     };
 
     children.forEach(child => {
-      const { isSlot, slotKey } = child;
+      const isSlot = child.props?.["t-slot"] !== undefined;
+      const slotKey = child.props?.["t-slot"] || "default";
       if (isSlot) {
         const slotConfig = child;
         if (slotKey === "default") {
@@ -374,7 +376,7 @@ function injectDynamicPropsValue(this: any, value: any, key: string) {
   }
 }
 
-function setupConfigSchemas(config) {
+export function setupConfigSchemas(config) {
   const {
     schemas = [],
   } = config;

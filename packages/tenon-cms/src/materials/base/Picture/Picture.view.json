@@ -1,7 +1,0 @@
-{
-  "el": "a-image",
-  "props": {
-    "<BINDING>": "imageProps",
-    "style": "imageStyle"
-  }
-}

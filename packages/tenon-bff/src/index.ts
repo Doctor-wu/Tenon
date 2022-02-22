@@ -1,5 +1,5 @@
+import { createServer } from "./framework";
 import { RootController, AuthController, TenonComponentController } from "./controllers";
-import { createServer } from "./framework/core/app";
 import { UserService } from "./services/user";
 import path from "path";
 

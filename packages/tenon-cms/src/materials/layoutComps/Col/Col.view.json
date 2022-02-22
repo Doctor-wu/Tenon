@@ -1,9 +1,0 @@
-{
-  "el": "Compose-View",
-  "props": {
-    "isSlot": true,
-    "slotKey": "default",
-    "composeLayout": "{{this.composeLayout}}",
-    "composeBackground": "{{this.composeBackground}}"
-  }
-}

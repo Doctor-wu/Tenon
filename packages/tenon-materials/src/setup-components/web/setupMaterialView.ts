@@ -9,7 +9,9 @@ export const setupMaterialView = (view: Transform.JSXElement) => {
     view.Attributes.forEach(({ key, value }) => {
       if (typeof value === "string") {
         try {
-          tree.props[key] = new Function(`return ${value}`)();
+          if (value.trim().startsWith('{') && value.trim().endsWith('}'))
+            tree.props[key] = new Function(`return ${value}`)();
+          else tree.props[key] = value;
         } catch (e) {
           tree.props[key] = value;
         }

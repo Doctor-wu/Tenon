@@ -24,42 +24,43 @@ export interface ComponentTreeNode {
 }
 
 
-export const createTenonEditorComponentByMaterial = (material: any, sup: ComponentTreeNode | null = null, options: any = {}): ComponentTreeNode => {
-  const {
-    props,
-    slots,
-    isSlot,
-    schemas,
-  } = options;
-  const id = getID();
+export const createTenonEditorComponentByMaterial =
+  (material: any, sup: ComponentTreeNode | null = null, options: any = {}): ComponentTreeNode => {
+    const {
+      props,
+      slots,
+      isSlot,
+      schemas,
+    } = options;
+    const id = getID();
 
-  const expressedComponent: any = reactive<ComponentTreeNode>({
-    name: material.name,
-    parent: sup,
-    material,
-    props: createPropsBySchemas(
-      schemas || material.schemas!
-      , isSlot
-        ? material.config.tenonProps || null
-        : (props || material.config.tenonProps)
-    ),
-    id,
-    refs: {},
-    events: createTenonEvents(material),
-    handlers: [],
-    schemas: schemas || material.schemas!,
-    textID: String(id),
-    slots: {},
-    isSlot: !!isSlot,
-  });
+    const expressedComponent: any = reactive<ComponentTreeNode>({
+      name: material.name,
+      parent: sup,
+      material,
+      props: createPropsBySchemas(
+        schemas || material.schemas!
+        , isSlot
+          ? material.config.tenonProps || null
+          : (props || material.config.tenonProps)
+      ),
+      id,
+      refs: {},
+      events: createTenonEvents(material),
+      handlers: [],
+      schemas: schemas || material.schemas!,
+      textID: String(id),
+      slots: {},
+      isSlot: !!isSlot,
+    });
 
-  if (material.config.nestable) {
-    expressedComponent.children = material.children || [];
+    if (material.config.nestable) {
+      expressedComponent.children = material.children || [];
+    }
+
+    material.tenonComp = expressedComponent;
+    return expressedComponent;
   }
-
-  material.tenonComp = expressedComponent;
-  return expressedComponent;
-}
 
 
 let id = 1;

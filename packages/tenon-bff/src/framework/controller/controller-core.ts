@@ -55,8 +55,8 @@ export class BaseController implements IDecoratedControllerExtraFields {
     this.app = app;
   }
 
-  getSpecifiedFieldParams<P extends any, T extends keyof P>(params: P, fields: T[]): Record<T, any> {
-    const result: Record<T, unknown> = {} as Record<T, any>;
+  getSpecifiedFieldParams<P extends any, T extends keyof P>(params: P, fields: T[]): Record<T, P[T]> {
+    const result: Record<T, P[T]> = {} as Record<T, P[T]>;
     fields.forEach((fieldKey) => {
       if (params[fieldKey]) result[fieldKey] = params[fieldKey];
     });

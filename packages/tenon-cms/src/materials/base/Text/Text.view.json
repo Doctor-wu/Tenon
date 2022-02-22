@@ -1,7 +1,0 @@
-{
-  "el": "span",
-  "props": {
-    "style": "textStyle"
-  },
-  "children": ["{{this.textValue.value}}"]
-}  

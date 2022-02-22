@@ -2,7 +2,7 @@ import { useStore } from "../store";
 import { extractChild, insertChild, insertNewComponent, isAncestor } from "./tree-operation";
 import { nextTick, ref } from 'vue';
 import { Notification } from "@arco-design/web-vue";
-import { findParentTenonComp } from "./setup-materials";
+import { findParentTenonComp } from "@tenon/materials";
 
 
 
