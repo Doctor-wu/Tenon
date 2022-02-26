@@ -4,10 +4,12 @@ import fs from "fs";
 import { FlowName, setPhase } from '@tenon/flow';
 import { debounce } from 'lodash';
 
-const typingsPath = path.resolve(__dirname, './typings');
-const distPath = path.resolve(__dirname, './dist');
-const cachePath = path.resolve(__dirname, './build-cache');
+const typingsPath = path.resolve(__dirname, '../typings');
+const distPath = path.resolve(__dirname, '../dist');
+const cachePath = path.resolve(__dirname, '../build-cache');
+import { createClient } from './client';
 
+const client = createClient();
 let firstBoot = true;
 
 function build() {
@@ -27,16 +29,17 @@ function build() {
   }).then(() => {
     console.log("物料构建完成");
     if (firstBoot) {
-      setPhase(FlowName.LAUNCH_BFF);
-    } else {
+      setPhase(client, FlowName.LAUNCH_BFF);
       firstBoot = false;
+    } else {
+      console.log('正在监听。。。');
     }
   });
 }
 
 
 fs.watch(
-  path.resolve(__dirname, './components'),
+  path.resolve(__dirname, '../components'),
   {
     persistent: true,
     recursive: true,

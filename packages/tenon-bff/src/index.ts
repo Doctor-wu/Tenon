@@ -3,6 +3,7 @@ import { RootController, AuthController, TenonComponentController } from "./cont
 import { UserService } from "./services/user";
 import path from "path";
 import { setPhase, FlowName } from "@tenon/flow";
+import { createClient } from "../scripts/client";
 
 const bootstrap = async () => {
   const server = await createServer({
@@ -32,7 +33,7 @@ const bootstrap = async () => {
 
   server.start();
   server.once('launched', () => {
-    setPhase(FlowName.RUN_CMS);
+    setPhase(createClient(), FlowName.RUN_CMS);
   });
 }
 

@@ -19,6 +19,6 @@
   "exclude": [
     "./dist",
     "./typings",
-    "build.ts"
+    "scripts/build.ts"
   ]
 }

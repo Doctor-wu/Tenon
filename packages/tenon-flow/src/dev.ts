@@ -1,7 +1,7 @@
 import path from 'path';
 import execa, { Options, SyncOptions } from 'execa';
 import { FlowName, setPhase, waitPhase } from './flow';
-import { bootstrap } from './flow/server';
+import { server, createClient, pipeFile } from './connection';
 
 const rootPath = path.resolve(__dirname, '../../../');
 const packagesPath = path.join(rootPath, 'packages');
@@ -34,16 +34,16 @@ const buildFlow = [
   {
     name: FlowName.INSTALL,
     handler: () => {
-      console.log(`>> Installing Dependencies`);
+      console.log(`\n>> Installing Dependencies...\n`);
       execa.commandSync(`pnpm install`);
-      setPhase(FlowName.BUILD_MATERIALS);
+      setPhase(createClient(), FlowName.BUILD_MATERIALS);
     },
     phase: FlowName.INSTALL,
   },
   {
     name: FlowName.BUILD_MATERIALS,
     handler: () => {
-      console.log('>> Compiling Materials...');
+      console.log('\n>> Compiling Materials...\n');
       execa.command(`pnpm run build`, materialCommandOptions);
     },
     phase: FlowName.BUILD_MATERIALS,
@@ -51,7 +51,7 @@ const buildFlow = [
   {
     name: FlowName.LAUNCH_BFF,
     handler: () => {
-      console.log('>> Launching BFF...');
+      console.log('\n>> Launching BFF...\n');
       execa.command(`pnpm run start`, bffCommandOptions);
     },
     phase: FlowName.LAUNCH_BFF,
@@ -59,7 +59,7 @@ const buildFlow = [
   {
     name: FlowName.RUN_CMS,
     handler: () => {
-      console.log('>> Running vite...');
+      console.log('\n>> Running vite...\n');
       execa.command(`npx vite`, cmsCommandOptions)
     },
     phase: FlowName.RUN_CMS,
@@ -68,10 +68,13 @@ const buildFlow = [
 
 console.log('>> 启动Tenon构建...');
 
-bootstrap().then(() => {
-  buildFlow.forEach(async (flow) => {
-    await waitPhase(flow.phase).then(() => {
-      flow.handler();
-    });
+
+buildFlow.forEach(async (flow) => {
+  await waitPhase(flow.phase).then(() => {
+    flow.handler();
   });
-})
+});
+
+server.listen(pipeFile, () => {
+  setPhase(createClient(), FlowName.INSTALL);
+});

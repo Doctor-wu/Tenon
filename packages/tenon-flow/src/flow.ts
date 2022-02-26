@@ -1,5 +1,9 @@
 import Axios from 'axios';
+import net from 'net';
+import { Subscribe } from "@tenon/shared";
+import { createClient } from './connection/client';
 const instance = Axios.create();
+export const sub = new Subscribe;
 
 export const FlowName = {
   INSTALL: 'install',
@@ -8,21 +12,12 @@ export const FlowName = {
   RUN_CMS: 'run-cms',
 }
 
-export const waitPhase = (phase: string, span = 1000): Promise<void> => {
+export const waitPhase = (phase: string): Promise<void> => {
   return new Promise((resolve) => {
-    handleWait(phase, resolve, span);
+    sub.on(phase, resolve);
   })
 }
 
-export const setPhase = (phase: string) => {
-  instance.get(`http://localhost:4396/setPhase?phase=${phase}`);
-}
-
-function handleWait(phase, resolve, span) {
-  setTimeout(() => {
-    instance.get('http://localhost:4396/getPhase').then((res) => {
-      if (res.data === phase) resolve();
-      else handleWait(phase, resolve, span);
-    });
-  }, span);
+export const setPhase = (client, phase: string) => {
+  client.write(Buffer.from(phase));
 }
