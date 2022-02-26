@@ -10,7 +10,6 @@
   "author": "Doctor wu",
   "license": "MIT",
   "devDependencies": {
-    "@tenon/materials": "workspace:*",
     "@tenon/engine": "workspace:*",
     "@tenon/shared": "workspace:*"
   }

@@ -1,7 +1,8 @@
 import { Transform } from "@compiler/transform";
+import { IViewConfig } from "../../type";
 
-export const setupMaterialView = (view: Transform.JSXElement) => {
-  if (view.elementType === "Text") return view.value;
+export const setupMaterialView = (view: Transform.JSXElement): IViewConfig | string => {
+  if (view.elementType === "Text") return view.value!;
   const tree: any = {};
   tree.el = view.identifier;
   tree.props = {};

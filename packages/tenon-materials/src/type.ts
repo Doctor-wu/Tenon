@@ -8,7 +8,7 @@ export interface IMaterialConfig {
 };
 
 export interface IMaterialMeta {
-  view: any;
+  view: IViewConfig;
   logic: any;
   config: any;
   doc: any;
@@ -19,4 +19,11 @@ export interface IMaterial {
   config: any;
   schemas: any;
   component: any;
+}
+
+export interface IViewConfig {
+  children: (IViewConfig | string)[];
+  props: any;
+  el: string;
+  type: string;
 }

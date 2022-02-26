@@ -3,17 +3,20 @@
   "compilerOptions": {
     "jsx": "preserve",
     "composite": true, // 用于帮助 TypeScript 快速确定引用工程的输出文件位置
+    "declarationDir": "typings",
     "outDir": "dist",
     "rootDir": "src",
+    "tsBuildInfoFile": "./build-cache/tsconfig.tsbuildinfo",
     "paths": {
       "@compiler": ["./src/compiler"],
       "@compiler/*": ["./src/compiler/*"]
     }
   },
   "include": [
-    "src",
-    "src/components/**/*.json",
-    "src/components/**/*.md",
-    "src/components/**/*.view.tenon"
+    "src/**/*"
+  ],
+  "exclude": [
+    "./dist",
+    "./typings"
   ]
 }

@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "description": "personal lowCode platform",
   "scripts": {
-    "dev:cms": "ts-node scripts/dev-cms.ts",
-    "dev:mtr": "ts-node scripts/build-materials.ts",
-    "create-base-web-component": "ts-node scripts/create-web-component.ts"
+    "dev:mix": "ts-node scripts/dev-mix.ts"
   },
   "keywords": [
     "lowCode",

@@ -12,4 +12,5 @@ export default defineConfig({
       "~logic": path.resolve(__dirname, "./src/logic"),
     },
   },
+  base: "./src"
 })

@@ -111,11 +111,9 @@ importers:
   packages/tenon-engine:
     specifiers:
       '@tenon/engine': workspace:*
-      '@tenon/materials': workspace:*
       '@tenon/shared': workspace:*
     devDependencies:
       '@tenon/engine': 'link:'
-      '@tenon/materials': link:../tenon-materials
       '@tenon/shared': link:../shared
 
   packages/tenon-materials:

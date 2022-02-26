@@ -33,19 +33,23 @@ export class LogModule extends BaseModule {
     assertDir(logPath);
     assertDir(warnPath);
     assertDir(errorPath);
-    const now = new Date(Date.now());
-    const fileName = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}.log`;
     io.on("afterLog", (...msg: string[]) => {
+      const now = new Date(Date.now());
+      const fileName = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}.log`;
       this.logQueue.addTask(
         this.createTask(pathUtil.join(logPath, fileName), msg)
       );
     });
     io.on("afterWarn", (...msg: string[]) => {
+      const now = new Date(Date.now());
+      const fileName = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}.log`;
       this.warnQueue.addTask(
         this.createTask(pathUtil.join(warnPath, fileName), msg)
       );
     });
     io.on("afterError", (...msg: string[]) => {
+      const now = new Date(Date.now());
+      const fileName = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}.log`;
       this.errorQueue.addTask(
         this.createTask(pathUtil.join(errorPath, fileName), msg)
       );

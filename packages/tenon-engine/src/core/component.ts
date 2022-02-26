@@ -1,5 +1,4 @@
 import { createTenonEvents, IEventsConfig } from "./events";
-import { IMaterial } from "@tenon/materials";
 import { reactive } from "vue";
 import { createPropsBySchemas } from "./schema";
 
@@ -15,10 +14,10 @@ export interface ComponentTreeNode {
   ctx?: any;
   textID?: string;
   parentComponent?: ComponentTreeNode;
-  material?: IMaterial;
   props?: any;
   states?: any;
   children?: ComponentTreeNode[];
+  material?: any;
   slots: Object;
   isSlot?: boolean;
 }

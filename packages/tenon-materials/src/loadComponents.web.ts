@@ -1,8 +1,9 @@
 import path from "path";
 import fs from "fs";
-import { compiler } from "./compiler";
 import { asyncCompose } from "@tenon/shared";
-import { IMaterialConfig, IMaterialMeta } from "./type";
+import { compiler } from "./compiler";
+import { IMaterialConfig, IMaterialMeta, IViewConfig } from "./type";
+import { setupMaterialView } from "./setup-components/web";
 
 
 export const loadWebComponents = async () => {
@@ -12,39 +13,40 @@ export const loadWebComponents = async () => {
 };
 
 const buildComponents = async (components: IMaterialConfig) => {
-  const dirs = path.resolve(__dirname, './components/web');
+  const dirs = path.resolve(__dirname, '../components/web');
   const compSource = fs.readdirSync(dirs);
   await asyncCompose(
     compSource.map.bind(compSource),
     Promise.all.bind(Promise)
   )(async (compGroup) => {
     components[compGroup] = {};
-    const compGroupItems = fs.readdirSync(path.join(dirs, compGroup));
+    const compGroupItems = fs.readdirSync(path.resolve(dirs, compGroup));
     await asyncCompose(
       compGroupItems.map.bind(compGroupItems),
       Promise.all.bind(Promise)
     )(async comp => {
-      const compDir = path.join(dirs, compGroup, comp);
+      const compDir = path.resolve(dirs, compGroup, comp);
       components[compGroup][comp] = {} as IMaterialMeta;
 
       // 组件视图
-      components[compGroup][comp].view = compiler.compile(
-        fs.readFileSync(
-          path.join(compDir, `${comp}.view.tenon`)
-        ).toString()
-      );
+      components[compGroup][comp].view = setupMaterialView(
+        compiler.compile(
+          fs.readFileSync(
+            path.resolve(compDir, `${comp}.view.tenon`)
+          ).toString()
+        )?.children?.[0]!) as IViewConfig;
 
       // 组件逻辑
-      components[compGroup][comp].logic = (await import( /* @vite-ignore */ `${path.join(compDir, `${comp}.ts`)}`)).default.toString();
+      components[compGroup][comp].logic = (await import(`${path.resolve(compDir, `${comp}.ts`)}`)).default.toString();
 
       // 组件文档
       components[compGroup][comp].doc =
         fs.readFileSync(
-          path.join(compDir, `${comp}.md`)
+          path.resolve(compDir, `${comp}.md`)
         ).toString();
 
       // 组件配置
-      components[compGroup][comp].config = await import( /* @vite-ignore */ path.join(compDir, `${comp}.config.json`));
+      components[compGroup][comp].config = await import(path.resolve(compDir, `${comp}.config.json`));
 
     });
   });
