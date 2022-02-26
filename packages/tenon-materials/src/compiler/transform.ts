@@ -34,6 +34,7 @@ export module Transform {
   export interface JSXAttribute {
     key: string;
     value: string | boolean;
+    modifiers: string[];
   }
 
   export class Transformer {
@@ -83,10 +84,13 @@ export module Transform {
               let attr: JSXAttribute = {
                 key: "",
                 value: "",
+                modifiers: [],
               };
               child.children?.forEach((item) => {
                 if (item.type === AST.FinalTokenType.AttributeKey) {
-                  attr.key = item.value!;
+                  const attrKeyFragment = item.value!.split(":");
+                  attr.key = attrKeyFragment[0];
+                  attr.modifiers = attrKeyFragment.slice(1);
                   return;
                 }
 

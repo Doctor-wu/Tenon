@@ -272,13 +272,6 @@ export module AST {
         );
         this.tokenReader.read();
         if (this.tokenReader.peek()?.type === JSXTokenizer.Equator) {
-          // this.parentNode.children?.push(
-          //   this.createASTNode(
-          //     FinalTokenType.Equator,
-          //     undefined,
-          //     this.tokenReader.peek()?.value
-          //   )
-          // );
           this.tokenReader.read();
           if (
             this.tokenReader.peek()?.type === JSXTokenizer.JSXAttributeValue

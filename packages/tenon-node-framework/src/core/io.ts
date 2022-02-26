@@ -7,17 +7,21 @@ const warnStyle = chalk.hex('#FFA500');
 const logStyle = chalk.hex('#cacaca');
 const successStyle = chalk.hex('#33bb33');
 class BaseIO extends Subscribe implements IBaseIO {
+  noEmit = false;
   log = (...args: any[]) => {
+    if (this.noEmit) return;
     const msg = [compose(this.logStyle, this.bold)('[Log]', new Date().toLocaleString()), ...args];
     console.log(...msg);
     this.emit("afterLog", '[Log]', new Date().toLocaleString(), ...args.map(this.reset));
   };
   error = (...args: any[]) => {
+    if (this.noEmit) return;
     const msg = [compose(this.errorStyle, this.bold)('[Error]'), ...args.map(this.reset)];
     console.log(...msg);
     this.emit("afterError", ...msg);
   };
   warn = (...args: any[]) => {
+    if (this.noEmit) return;
     const msg = [compose(this.warnStyle, this.bold)('[Warn]'), ...args.map(this.reset)];
     console.log(...msg);
     this.emit("afterWarn", ...msg);

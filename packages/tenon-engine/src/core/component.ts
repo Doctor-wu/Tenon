@@ -3,12 +3,12 @@ import { reactive } from "vue";
 import { createPropsBySchemas } from "./schema";
 
 export interface ComponentTreeNode {
-  name: string;
-  id: number;
-  schemas: any;
-  parent: ComponentTreeNode | null;
-  refs: any;
-  events: IEventsConfig;
+  name: string; // 组件名称
+  id: number; // 组件id
+  schemas: any; // 组件schemas
+  parent: ComponentTreeNode | null; // 组件父级
+  refs: any; // 引用
+  events: IEventsConfig; // 组件事件
   handlers: string[];
   refKey?: string;
   ctx?: any;
@@ -23,7 +23,7 @@ export interface ComponentTreeNode {
 }
 
 
-export const createTenonEditorComponentByMaterial =
+export const createTenonComponent =
   (material: any, sup: ComponentTreeNode | null = null, options: any = {}): ComponentTreeNode => {
     const {
       props,

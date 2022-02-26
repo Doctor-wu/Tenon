@@ -192,8 +192,6 @@ export class Tokenizer implements JSXTokenizer.ITokenizer {
       this.currentToken.value += char;
       return this.searchCommentContent;
     }
-
-    throw TypeError("Unexpeted Error");
   }
 
   searchJSXAttributeKey(char: string): JSXTokenizer.IStateExcutor {

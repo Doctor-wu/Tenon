@@ -1,4 +1,4 @@
-import { BaseController, Controller, Get } from "../../framework";
+import { BaseController, Controller, Get } from "@tenon/node-framework";
 
 @Controller({
   prefixPath: "/test"

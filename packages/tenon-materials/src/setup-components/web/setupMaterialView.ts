@@ -7,7 +7,7 @@ export const setupMaterialView = (view: Transform.JSXElement): IViewConfig | str
   tree.el = view.identifier;
   tree.props = {};
   if (view.Attributes.length) {
-    view.Attributes.forEach(({ key, value }) => {
+    view.Attributes.forEach(({ key, value, modifiers }) => {
       if (typeof value === "string") {
         try {
           if (value.trim().startsWith('{') && value.trim().endsWith('}'))

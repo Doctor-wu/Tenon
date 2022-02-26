@@ -1,16 +1,17 @@
 {
-  "name": "@tenon/materials",
+  "name": "@tenon/flow",
   "version": "1.0.0",
   "main": "src/index.ts",
+  "module": "src/index.ts",
   "scripts": {
-    "build": "ts-node ./build.ts"
+    "dev:mix": "ts-node src/dev.ts"
   },
   "author": "Doctor wu",
   "license": "MIT",
-  "dependencies": {
+  "devDependencies": {
     "@tenon/shared": "workspace:*",
-    "@tenon/flow": "workspace:*",
-    "@tenon/engine": "workspace:*"
+    "@tenon/node-framework": "workspace:*"
   },
+  "dependencies": {},
   "description": ""
 }

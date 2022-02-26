@@ -1,4 +1,4 @@
-import { BaseController, Controller } from "../../framework";
+import { BaseController, Controller } from "@tenon/node-framework";
 import { TestController } from "./test";
 import { UserController } from "./user";
 

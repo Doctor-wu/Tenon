@@ -10,13 +10,15 @@
     "paths": {
       "@compiler": ["./src/compiler"],
       "@compiler/*": ["./src/compiler/*"]
-    }
+    },
+    "noEmit": false,
   },
   "include": [
     "src/**/*"
   ],
   "exclude": [
     "./dist",
-    "./typings"
+    "./typings",
+    "build.ts"
   ]
 }

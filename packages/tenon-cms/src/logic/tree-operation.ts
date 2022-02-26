@@ -4,7 +4,7 @@ import { useStore } from "../store";
 import {
   config2tree,
   tree2config,
-  createTenonEditorComponentByMaterial,
+  createTenonComponent,
   getID,
   setID,
   ComponentTreeNode,
@@ -49,7 +49,7 @@ export const isAncestor = (parent, child) => {
 }
 
 export function insertNewComponent(beInsert, parent, relative, insertFromFront = false, options: any = {}) {
-  const expressedComponent = createTenonEditorComponentByMaterial(beInsert, parent, options);
+  const expressedComponent = createTenonComponent(beInsert, parent, options);
 
   if (options.isSlot) {
     parent[relative] = expressedComponent;
@@ -85,7 +85,7 @@ export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFr
 export const copyComponentTreeNode = (comp: ComponentTreeNode, options: any = {}): ComponentTreeNode => {
   const store = useStore();
   const beInsert = store.getters['materials/getMaterialsMap'].get(comp.name)();
-  const expressedComponent = createTenonEditorComponentByMaterial(beInsert, options.parent, {
+  const expressedComponent = createTenonComponent(beInsert, options.parent, {
     props: comp.props,
     slots: comp.slots,
     isSlot: options.isSlot,

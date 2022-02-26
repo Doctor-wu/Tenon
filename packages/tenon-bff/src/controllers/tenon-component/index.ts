@@ -1,4 +1,4 @@
-import { BaseController, Controller, Get, Next, RequestContext } from "../../framework";
+import { BaseController, Controller, Get, Next, RequestContext } from "@tenon/node-framework";
 import { loadWebComponents } from "@tenon/materials";
 
 @Controller({

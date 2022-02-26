@@ -1,4 +1,4 @@
-import { ComponentTreeNode, createTenonEditorComponentByMaterial } from "@tenon/engine";
+import { ComponentTreeNode, createTenonComponent } from "@tenon/engine";
 import { getValueByHackContext } from "@tenon/shared";
 import { cloneDeep } from "lodash";
 import { computed, createTextVNode, Fragment, getCurrentInstance, h, ref, resolveDynamicComponent } from "vue";
@@ -77,7 +77,7 @@ export function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
     if (compFactory) {
       const material = compFactory();
       const source = cloneDeep(processedProps);
-      const tenonComp = createTenonEditorComponentByMaterial(material, null, {
+      const tenonComp = createTenonComponent(material, null, {
         isSlot: !!source.props?.isSlot,
         props: source
       });

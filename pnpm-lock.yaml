@@ -38,7 +38,9 @@ importers:
     specifiers:
       '@koa/cors': ^3.1.0
       '@tenon/engine': workspace:*
+      '@tenon/flow': workspace:*
       '@tenon/materials': workspace:*
+      '@tenon/node-framework': workspace:*
       '@tenon/shared': workspace:*
       '@types/koa': ^2.13.4
       '@types/koa-router': ^7.4.4
@@ -78,7 +80,9 @@ importers:
       uuid: 8.3.2
     devDependencies:
       '@tenon/engine': link:../tenon-engine
+      '@tenon/flow': link:../tenon-flow
       '@tenon/materials': link:../tenon-materials
+      '@tenon/node-framework': link:../tenon-node-framework
       '@tenon/shared': link:../shared
 
   packages/tenon-cms:
@@ -116,12 +120,61 @@ importers:
       '@tenon/engine': 'link:'
       '@tenon/shared': link:../shared
 
+  packages/tenon-flow:
+    specifiers:
+      '@tenon/node-framework': workspace:*
+      '@tenon/shared': workspace:*
+    devDependencies:
+      '@tenon/node-framework': link:../tenon-node-framework
+      '@tenon/shared': link:../shared
+
   packages/tenon-materials:
     specifiers:
       '@tenon/engine': workspace:*
+      '@tenon/flow': workspace:*
       '@tenon/shared': workspace:*
     dependencies:
       '@tenon/engine': link:../tenon-engine
+      '@tenon/flow': link:../tenon-flow
+      '@tenon/shared': link:../shared
+
+  packages/tenon-node-framework:
+    specifiers:
+      '@koa/cors': ^3.1.0
+      '@tenon/shared': workspace:*
+      '@types/koa': ^2.13.4
+      '@types/koa-router': ^7.4.4
+      '@types/koa-static': ^4.0.2
+      '@types/mongoose': ^5.11.97
+      ansi-regex: ^6.0.1
+      chalk: 4.1.2
+      koa: ^2.13.4
+      koa-bodyparser: ^4.3.0
+      koa-jwt: ^4.0.3
+      koa-logger: ^3.2.1
+      koa-router: ^10.1.1
+      koa-session: ^6.2.0
+      koa-static: ^5.0.0
+      mongodb: ^4.3.1
+      mongoose: ^6.2.0
+    dependencies:
+      '@koa/cors': 3.1.0
+      '@types/koa': 2.13.4
+      '@types/koa-router': 7.4.4
+      '@types/koa-static': 4.0.2
+      '@types/mongoose': 5.11.97
+      ansi-regex: 6.0.1
+      chalk: 4.1.2
+      koa: 2.13.4
+      koa-bodyparser: 4.3.0
+      koa-jwt: 4.0.3
+      koa-logger: 3.2.1
+      koa-router: 10.1.1
+      koa-session: 6.2.0
+      koa-static: 5.0.0
+      mongodb: 4.3.1
+      mongoose: 6.2.0
+    devDependencies:
       '@tenon/shared': link:../shared
 
 packages:

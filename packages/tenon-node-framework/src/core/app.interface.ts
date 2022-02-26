@@ -48,11 +48,16 @@ export interface IServerConfig {
   logger?: {
     /** 日志目录 */
     path: string;
+  },
+  /** server的命令行输入输出 */
+  io?: {
+    /** 不输出命令行 */
+    noEmit: string;
   }
 }
 
 export type tenonAppType = Koa<Koa.DefaultState, Koa.DefaultContext> & {
-  start: () => void;
+  start: () => Promise<any>;
   $config: IServerConfig;
   $router?: RouterModule;
   $logger?: LogModule;

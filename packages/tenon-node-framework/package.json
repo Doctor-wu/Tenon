@@ -1,19 +1,14 @@
 {
-  "name": "@tenon/bff",
+  "name": "@tenon/node-framework",
   "version": "1.0.0",
-  "description": "",
   "main": "src/index.ts",
+  "module": "src/index.ts",
   "scripts": {
-    "start": "nodemon --watch src -e ts --exec 'xl_close_port -p 9999 & ts-node src/index.ts' &",
-    "genSecret": "ts-node src/framework/utils/genSecret.ts"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Doctor wu",
   "license": "MIT",
   "devDependencies": {
-    "@tenon/engine": "workspace:*",
-    "@tenon/materials": "workspace:*",
-    "@tenon/node-framework": "workspace:*",
-    "@tenon/flow": "workspace:*",
     "@tenon/shared": "workspace:*"
   },
   "dependencies": {
@@ -32,8 +27,7 @@
     "koa-session": "^6.2.0",
     "koa-static": "^5.0.0",
     "mongodb": "^4.3.1",
-    "mongoose": "^6.2.0",
-    "nodemon": "^2.0.15",
-    "uuid": "^8.3.2"
-  }
+    "mongoose": "^6.2.0"
+  },
+  "description": ""
 }

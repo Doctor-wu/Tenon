@@ -1,4 +1,4 @@
-import { BaseService, Service, tenonAppType, io } from "../framework";
+import { BaseService, Service, tenonAppType, io } from "@tenon/node-framework";
 import { SERVICE_NAME } from "./constant";
 import { IUserOptions } from "./user.interface";
 

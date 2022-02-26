@@ -19,6 +19,7 @@ export const createServer = async (config: IServerConfig): Promise<tenonAppType>
   const koaApp = new Koa();
   const tenonApp: tenonAppType = koaApp as tenonAppType;
   tenonApp.$config = config;
+  if (config.io?.noEmit) io.noEmit = true;
 
   // models
   if (config.mongodb) {
@@ -40,20 +41,24 @@ export const createServer = async (config: IServerConfig): Promise<tenonAppType>
 
   tenonApp.start = () => {
     // listen
-    tenonApp.listen(port, () => {
-      io.log(
-        compose(io.bold, io.hex('#e81'))(`${name || CONSTANT.defaultServerName}`),
-        `is running at`,
-        compose(io.bold, io.hex('#1e1'))(`http://localhost:${port}`),
-      );
-      io.log(
-        io.bold.white.bgHex('#a5f')('Server launch succeeded!'),
-      );
-      const endTime = Date.now();
-      io.log(
-        io.successStyle.bold(`Launch cost ${endTime - startTime}ms`)
-      );
-    });
+    return new Promise((resolve) => {
+      tenonApp.listen(port, () => {
+        io.log(
+          compose(io.bold, io.hex('#e81'))(`${name || CONSTANT.defaultServerName}`),
+          `is running at`,
+          compose(io.bold, io.hex('#1e1'))(`http://localhost:${port}`),
+        );
+        io.log(
+          io.bold.white.bgHex('#a5f')('Server launch succeeded!'),
+        );
+        const endTime = Date.now();
+        io.log(
+          io.successStyle.bold(`Launch cost ${endTime - startTime}ms`)
+        );
+        tenonApp.emit('launched');
+        resolve('launched');
+      });
+    })
   }
 
   return tenonApp;
