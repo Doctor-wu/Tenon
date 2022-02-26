@@ -1,6 +1,6 @@
 import path from 'path';
 import execa, { Options, SyncOptions } from 'execa';
-import { FlowName, setPhase, waitPhase } from './flow';
+import { PhaseName, setPhase, waitPhase } from './flow';
 import { server, createClient, pipeFile } from './connection';
 
 const rootPath = path.resolve(__dirname, '../../../');
@@ -32,37 +32,37 @@ const bffCommandOptions: Options = {
 
 const buildFlow = [
   {
-    name: FlowName.INSTALL,
+    name: PhaseName.INSTALL,
     handler: () => {
       console.log(`\n>> Installing Dependencies...\n`);
       execa.commandSync(`pnpm install`);
-      setPhase(createClient(), FlowName.BUILD_MATERIALS);
+      setPhase(createClient(), PhaseName.BUILD_MATERIALS);
     },
-    phase: FlowName.INSTALL,
+    phase: PhaseName.INSTALL,
   },
   {
-    name: FlowName.BUILD_MATERIALS,
+    name: PhaseName.BUILD_MATERIALS,
     handler: () => {
       console.log('\n>> Compiling Materials...\n');
       execa.command(`pnpm run build`, materialCommandOptions);
     },
-    phase: FlowName.BUILD_MATERIALS,
+    phase: PhaseName.BUILD_MATERIALS,
   },
   {
-    name: FlowName.LAUNCH_BFF,
+    name: PhaseName.LAUNCH_BFF,
     handler: () => {
       console.log('\n>> Launching BFF...\n');
       execa.command(`pnpm run start`, bffCommandOptions);
     },
-    phase: FlowName.LAUNCH_BFF,
+    phase: PhaseName.LAUNCH_BFF,
   },
   {
-    name: FlowName.RUN_CMS,
+    name: PhaseName.RUN_CMS,
     handler: () => {
       console.log('\n>> Running vite...\n');
       execa.command(`npx vite`, cmsCommandOptions)
     },
-    phase: FlowName.RUN_CMS,
+    phase: PhaseName.RUN_CMS,
   },
 ];
 
@@ -76,5 +76,5 @@ buildFlow.forEach(async (flow) => {
 });
 
 server.listen(pipeFile, () => {
-  setPhase(createClient(), FlowName.INSTALL);
+  setPhase(createClient(), PhaseName.INSTALL);
 });

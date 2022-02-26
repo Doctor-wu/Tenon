@@ -5,7 +5,7 @@ import { createClient } from './connection/client';
 const instance = Axios.create();
 export const sub = new Subscribe;
 
-export const FlowName = {
+export const PhaseName = {
   INSTALL: 'install',
   BUILD_MATERIALS: 'build-materials',
   LAUNCH_BFF: 'launch-bff',

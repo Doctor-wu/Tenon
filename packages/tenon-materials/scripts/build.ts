@@ -1,7 +1,7 @@
 import path from 'path';
 import execa from 'execa';
 import fs from "fs";
-import { FlowName, setPhase } from '@tenon/flow';
+import { PhaseName, setPhase } from '@tenon/flow';
 import { debounce } from 'lodash';
 
 const typingsPath = path.resolve(__dirname, '../typings');
@@ -29,7 +29,7 @@ function build() {
   }).then(() => {
     console.log("物料构建完成");
     if (firstBoot) {
-      setPhase(client, FlowName.LAUNCH_BFF);
+      setPhase(client, PhaseName.LAUNCH_BFF);
       firstBoot = false;
     } else {
       console.log('正在监听。。。');
