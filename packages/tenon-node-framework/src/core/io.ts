@@ -16,15 +16,15 @@ class BaseIO extends Subscribe implements IBaseIO {
   };
   error = (...args: any[]) => {
     if (this.noEmit) return;
-    const msg = [compose(this.errorStyle, this.bold)('[Error]'), ...args.map(this.reset)];
+    const msg = [compose(this.errorStyle, this.bold)('[Error]'),  new Date().toLocaleString(), ...args];
     console.log(...msg);
-    this.emit("afterError", ...msg);
+    this.emit("afterError", '[Error]', new Date().toLocaleString(), ...args.map(this.reset));
   };
   warn = (...args: any[]) => {
     if (this.noEmit) return;
-    const msg = [compose(this.warnStyle, this.bold)('[Warn]'), ...args.map(this.reset)];
+    const msg = [compose(this.warnStyle, this.bold)('[Warn]'),  new Date().toLocaleString(), ...args];
     console.log(...msg);
-    this.emit("afterWarn", ...msg);
+    this.emit("afterWarn", '[Warn]', new Date().toLocaleString(), ...args.map(this.reset));
   };
 
   logStyle = logStyle;

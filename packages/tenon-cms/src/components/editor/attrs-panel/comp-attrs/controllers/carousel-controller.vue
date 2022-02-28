@@ -5,7 +5,7 @@
         <section class="list-item">
           <section class="item-info">{{ item }}</section>
           <section class="icon-wrapper">
-            <a-button @click="() => handleCopy(index)" type="text" status="success">
+            <a-button @click="() => handleCopy(index)" type="text" status="primary">
               <icon-copy size="48" />
             </a-button>
             <a-button @click="() => handleDelete(index)" type="text" status="danger">
@@ -16,7 +16,7 @@
       </a-list-item>
     </a-list>
     <a-input v-model="beAddedInfo"></a-input>
-    <a-button @click="handleAdd" :disabled="!beAddedInfo" type="primary" status="primary" long>
+    <a-button @click="handleAdd" :disabled="!beAddedInfo" type="primary" long>
       <icon-plus-circle />增加
     </a-button>
   </section>

@@ -4,13 +4,6 @@ export default (lifeCycle, props, ctx, tenonComp) => {
   } = lifeCycle;
   onMounted(() => {
     console.log(lifeCycle, props, ctx, tenonComp);
-    setTimeout(() => {
-      // console.log(1111);
-      
-      // tenonComp.states.items.push(
-      //   "https://tse1-mm.cn.bing.net/th/id/R-C.a322e587792a346cef2e77ee98a4c681?rik=I29Sn8%2f0IPvgig&riu=http%3a%2f%2fi2.hdslb.com%2fbfs%2farchive%2faa8a8edb964bfcee870748c8d61f74f546051b67.jpg&ehk=8hQuZ17Fya431ndZ3TfpBML0fcva5czqnitRtUO9GPE%3d&risl=&pid=ImgRaw&r=0"
-      // );
-    }, 3000);
   });
 
   const addPic = () => {

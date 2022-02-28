@@ -5,7 +5,6 @@ import { compiler } from "./compiler";
 import { IMaterialConfig, IMaterialMeta, IViewConfig } from "./type";
 import { setupMaterialView } from "./setup-components/web";
 
-
 export const loadWebComponents = async () => {
   const components: IMaterialConfig = {};
   await buildComponents(components);
@@ -37,9 +36,8 @@ const buildComponents = async (components: IMaterialConfig) => {
         )?.children?.[0]!) as IViewConfig;
 
       // 组件逻辑
-      components[compGroup][comp].logic = (await
-        (async() => import(/* @vite-ignore */`${path.resolve(compDir, `${comp}.ts`)}`))()
-      ).default.toString();
+      delete require.cache[path.resolve(compDir, `${comp}.ts`)];
+      components[compGroup][comp].logic = require(`${path.resolve(compDir, `${comp}.ts`)}`).default.toString();
 
       // 组件文档
       components[compGroup][comp].doc =

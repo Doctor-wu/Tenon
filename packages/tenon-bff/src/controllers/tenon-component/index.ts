@@ -12,6 +12,7 @@ export class TenonComponentController extends BaseController {
     next: Next,
     params: any,
   ) {
+    // const loadWebComponents = (await import("@tenon/materials")).loadWebComponents;
     const components = await loadWebComponents();
     this.responseJson(ctx, next)(components);
   }
