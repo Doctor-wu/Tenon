@@ -1,5 +1,10 @@
 import DynamicComponent from "@/components/shared/dynamic-component.vue";
-import { Image, Card, Grid, Button, Carousel, Avatar } from "@arco-design/web-vue";
+import Avatar from "@/dependency/Avatar.vue";
+import Text from "@/dependency/Text.vue";
+import {
+  Image, Card, Grid, Button, Carousel,
+  // Avatar
+} from "@arco-design/web-vue";
 
 export const materialDependency = {
   ArcoImage: Image,
@@ -9,6 +14,7 @@ export const materialDependency = {
   ArcoButton: Button,
   ArcoCarousel: Carousel,
   ArcoCarouselItem: Carousel.Item,
-  ArcoAvatar: Avatar,
+  TenonText: Text,
+  TenonAvatar: Avatar,
   DynamicComponent: DynamicComponent,
 }

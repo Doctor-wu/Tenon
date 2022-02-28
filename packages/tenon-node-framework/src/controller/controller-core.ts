@@ -93,7 +93,7 @@ export class BaseController implements IDecoratedControllerExtraFields {
       const errorJson = createErrorJson(errorCode, errorMsg);
       ctx.body = errorJson;
       await next();
-      io.log(errorJson);
+      io.error(errorJson);
     }
   }
 }

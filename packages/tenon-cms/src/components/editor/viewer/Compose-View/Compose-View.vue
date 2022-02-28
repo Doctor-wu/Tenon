@@ -31,11 +31,11 @@
 
 <script lang="ts" setup>
 import { useStore } from '@/store';
-import { toRaw, computed, getCurrentInstance } from 'vue';
+import { toRaw, computed, getCurrentInstance, ComputedRef } from 'vue';
 import Wrapper from '~components/editor/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '~logic/viewer-drag';
 import { editMode } from '~logic/viewer-status';
-import { createTenonComponent } from '@tenon/engine';
+import { createTenonComponent, TenonComponent } from '@tenon/engine';
 import { findParentTenonComp } from '@tenon/materials';
 
 const store = useStore();
@@ -62,10 +62,10 @@ const props = defineProps({
   }
 });
 
-let propsConfig: any = computed(() => {
+let propsConfig: ComputedRef<TenonComponent> = computed<TenonComponent>(() => {
   let result: any = props.tenonComp;
   const instance: any = getCurrentInstance();
-  if (props.isSlot) { 
+  if (props.isSlot) {
     const rootComp = findParentTenonComp(instance)!;
     const rootSlots = rootComp.slots;
     if (rootSlots[props.slotKey]) {
@@ -81,8 +81,11 @@ let propsConfig: any = computed(() => {
     }
   }
   result.ctx = result.ctx || instance.ctx;
+  console.log(result);
   return result;
 });
+
+
 
 </script>
 <style lang="scss" scoped>

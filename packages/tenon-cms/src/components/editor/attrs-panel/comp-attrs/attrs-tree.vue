@@ -7,9 +7,9 @@
       <a-divider style="margin: 10px 0;"></a-divider>
     </template>
     <template v-else>
-      <a-form-item :field="key" :label="properties[key].title" style="margin-left: 30px;">
+      <a-form-item :field="key" :label="properties[key].title" style="margin-left: 20px;">
         <component
-          :is="getFormItemBySchemaType(properties[key].type, key)"
+          :is="getFormItemBySchemaType(properties[key].type, properties[key])"
           v-bind="getBindingsBySchemaType(properties[key].type, key)"
           v-on="getListenersBySchemaType(properties[key].type, key)"
           v-model="activeComponent.props[props.fieldName][key]"
@@ -30,11 +30,15 @@
 <script setup lang="ts">
 import { useStore } from '@/store';
 import { computed } from 'vue';
-import { ComponentTreeNode } from '@tenon/engine';
+import { ComponentTreeNode, ISchema } from '@tenon/engine';
 import { ColorPicker } from 'vue-color-kit';
 import { getValueByHackContext } from '@tenon/shared';
+import carouselController from './controllers/carousel-controller.vue';
 
-const props = defineProps({
+const props: {
+  properties: Record<string, ISchema>;
+  fieldName: string;
+} = defineProps({
   properties: {
     type: Object,
     required: true,
@@ -47,10 +51,14 @@ const props = defineProps({
 const store = useStore();
 const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);
 
-const getFormItemBySchemaType = (type: string, key) => {
+const getFormItemBySchemaType = (type: string, meta: ISchema) => {
   switch (type) {
     case 'string':
-      return 'a-input';
+      return 'a-textarea';
+    case 'array':
+      const listType = meta.listType;
+      if(!listType) return 'a-input';
+      return getListController(listType);
     case 'number':
       return 'a-input-number';
     case 'boolean':
@@ -66,11 +74,24 @@ const getFormItemBySchemaType = (type: string, key) => {
   }
 };
 
+function getListController(listType: string) {
+  switch(listType) {
+    case 'carousel':
+      return carouselController;
+    default:
+      return 'a-input';
+  }
+}
+
 const getBindingsBySchemaType = (type: string, key) => {
   switch (type) {
     case 'color':
       return {
         color: activeComponent.value?.props?.[props.fieldName]?.[key]
+      }
+    case 'array':
+      return {
+        list: activeComponent.value.props?.[props.fieldName]?.[key]
       }
     case 'string':
     case 'boolean':
@@ -101,11 +122,18 @@ const getListenersBySchemaType = (type: string, key) => {
 }
 
 const shouldRenderItem = (properties: any, key) => {
-  if(properties.when === undefined) return true;
-  const result =  getValueByHackContext(activeComponent.value.props, properties.when);
-          activeComponent.value.props[props.fieldName][key] = undefined;
+  if (properties.when === undefined) return true;
+  const result = getValueByHackContext(activeComponent.value.props, properties.when);
+  activeComponent.value.props[props.fieldName][key] = undefined;
   return result;
 }
 </script>
 <style lang="scss" scoped>
+:deep(.arco-textarea-wrapper) .arco-textarea{
+    margin-left: 0 !important;
+}
+
+:deep(.arco-textarea-wrapper) {
+  margin-left: 20px;
+}
 </style>

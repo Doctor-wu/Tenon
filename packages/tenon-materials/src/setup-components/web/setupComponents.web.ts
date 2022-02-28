@@ -1,9 +1,8 @@
 import { asyncCompose } from "@tenon/shared";
 import { parseSchemas2Props } from "@tenon/engine";
 import { cloneDeep } from "lodash";
-import { IMaterial, IMaterialConfig, IMaterialMeta, IViewConfig } from "../../type";
+import { IMaterial, IMaterialConfig, IMaterialMeta } from "../../type";
 import { defineComponent } from "vue";
-import { setupMaterialView } from "./setupMaterialView";
 import { setupConfigSchemas } from "./setupSchemas";
 import { parseConfig2RenderFn } from "./setupRender";
 import { setupComponent } from "./setupFunc";
@@ -76,12 +75,12 @@ function createComponent(viewConfig, logic, doc, material: IMaterialMeta) {
   console.log(viewConfig);
   
   if (componentCache.has(material.config.name)) {
-    return componentCache.get(material.config.name);
+    return { ...componentCache.get(material.config.name) };
   }
   const comp = defineComponent({
     name: material.config.name,
     render: function (this: any) {
-      return parseConfig2RenderFn.call(this, viewConfig, true).call(this);
+      return parseConfig2RenderFn.call(this, cloneDeep(viewConfig)).call(this);
     },
     inheritAttrs: false,
     props: parseSchemas2Props(material.config.schemas),

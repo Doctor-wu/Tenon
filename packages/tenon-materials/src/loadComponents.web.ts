@@ -37,7 +37,9 @@ const buildComponents = async (components: IMaterialConfig) => {
         )?.children?.[0]!) as IViewConfig;
 
       // 组件逻辑
-      components[compGroup][comp].logic = (await import(/* @vite-ignore */`${path.resolve(compDir, `${comp}.ts`)}`)).default.toString();
+      components[compGroup][comp].logic = (await
+        (async() => import(/* @vite-ignore */`${path.resolve(compDir, `${comp}.ts`)}`))()
+      ).default.toString();
 
       // 组件文档
       components[compGroup][comp].doc =
@@ -46,8 +48,7 @@ const buildComponents = async (components: IMaterialConfig) => {
         ).toString();
 
       // 组件配置
-      components[compGroup][comp].config = await import(/* @vite-ignore */path.resolve(compDir, `${comp}.config.json`));
-
+      components[compGroup][comp].config = JSON.parse(fs.readFileSync(path.resolve(compDir, `${comp}.config.json`)).toString());
     });
   });
 };

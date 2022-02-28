@@ -17,7 +17,7 @@ export interface IMaterialMeta {
 export interface IMaterial {
   name: string;
   config: any;
-  schemas: any;
+  schemas: ISchema[];
   component: any;
 }
 

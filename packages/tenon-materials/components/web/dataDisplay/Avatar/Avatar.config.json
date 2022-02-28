@@ -17,6 +17,11 @@
           "title": "头像大小",
           "default": 60
         },
+        "textValue": {
+          "type": "string",
+          "title": "头像文字",
+          "default": "Doctorwu"
+        },
         "shape": {
           "type": "select",
           "title": "头像形状",
@@ -54,12 +59,6 @@
           "default": "#5D61FF"
         }
       }
-    },
-    {
-      "type": "custom",
-      "title": "头像图标样式",
-      "fieldName": "avatarIconStyle",
-      "properties": {}
     }
   ],
   "tenonProps": {

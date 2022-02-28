@@ -1,7 +1,9 @@
 import { executeQueueEvents } from "@tenon/engine";
+import { cloneDeep } from "lodash";
 
 export interface ITenonComponentStates {
-
+  states: any;
+  executeTenonEvents: (eventName: string, ...args: any[]) => void;
 }
 export class TenonComponentStates implements ITenonComponentStates {
   private _states: any;
@@ -11,7 +13,6 @@ export class TenonComponentStates implements ITenonComponentStates {
     this._states = states;
     this._tenonComp = tenonComp;
     this._states.executeTenonEvents$ = this.executeTenonEvents.bind(this);
-    return this.states;
   }
 
   executeTenonEvents(eventName: string, ...args: any[]) {

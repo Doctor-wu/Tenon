@@ -1,1 +1,1 @@
-<a-image t-bind="imageProps" style="imageStyle"></a-image>
+<a-image t-bind="imageProps" style="imageStyle" />

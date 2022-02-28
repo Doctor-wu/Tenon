@@ -8,6 +8,8 @@ import {
   getID,
   setID,
   ComponentTreeNode,
+  TenonComponent,
+  ComponentSerializeConfig,
 } from "@tenon/engine";
 import { cloneDeep } from "lodash";
 
@@ -49,14 +51,14 @@ export const isAncestor = (parent, child) => {
 }
 
 export function insertNewComponent(beInsert, parent, relative, insertFromFront = false, options: any = {}) {
-  const expressedComponent = createTenonComponent(beInsert, parent, options);
+  const componentInstance = createTenonComponent(beInsert, parent, options);
 
   if (options.isSlot) {
-    parent[relative] = expressedComponent;
-    return expressedComponent;
+    parent[relative] = componentInstance;
+    return componentInstance;
   }
-  insertChild(parent, expressedComponent, relative, insertFromFront);
-  return expressedComponent;
+  insertChild(parent, componentInstance, relative, insertFromFront);
+  return componentInstance;
 }
 
 export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFront = false, isSlot = false) => {
@@ -82,7 +84,7 @@ export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFr
   return expressedComponent;
 }
 
-export const copyComponentTreeNode = (comp: ComponentTreeNode, options: any = {}): ComponentTreeNode => {
+export const copyComponentTreeNode = (comp: TenonComponent, options: any = {}): TenonComponent => {
   const store = useStore();
   const beInsert = store.getters['materials/getMaterialsMap'].get(comp.name)();
   const expressedComponent = createTenonComponent(beInsert, options.parent, {
@@ -105,18 +107,21 @@ export const copyComponentTreeNode = (comp: ComponentTreeNode, options: any = {}
 }
 
 
-export const uploadTree = (tree: ComponentTreeNode) => {
-  const config = toRaw<ComponentTreeNode>(
-    tree2config({ toRaw, reactive })(tree)
+export const uploadTree = (tree: TenonComponent) => {
+  const config = toRaw<ComponentSerializeConfig>(
+    tree2config(tree)
   );
 
   return treeModel.set({
     config,
     lastID: getID(),
-  });
+  })
+    .catch((e) => {
+      console.error(e, tree);
+    });
 }
 
-export const downloadTree = async (): Promise<ComponentTreeNode> => {
+export const downloadTree = async (): Promise<TenonComponent> => {
   const store = useStore();
   const tree = await treeModel.get() as any;
   if (!tree) return tree;
@@ -126,8 +131,8 @@ export const downloadTree = async (): Promise<ComponentTreeNode> => {
   } = tree;
   setID(lastID);
   const materialsMap = store.getters["materials/getMaterialsMap"];
-  config2tree({ reactive, materialsMap })(config);
-  store.dispatch('viewer/setTree', config);
+  const component = config2tree({ materialsMap })(config);
+  store.dispatch('viewer/setTree', component);
   store.dispatch('viewer/setActiveComponent', null);
-  return config;
+  return component;
 }

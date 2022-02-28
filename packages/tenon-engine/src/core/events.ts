@@ -1,3 +1,4 @@
+import { IMaterial } from "@tenon/materials";
 import { cloneDeep } from "lodash";
 import { ComponentTreeNode } from "./component";
 
@@ -41,22 +42,22 @@ export interface IHandlerConfig {
 }
 
 export const getActiveComponentUsefulHandlers = (storeFactory) => {
-  const handlers: IHandlerConfig[] = [];
-  const store = storeFactory();
-  const activeComponent: ComponentTreeNode = store.getters['viewer/getActiveComponent'];
-  handlers.push(...activeComponent.handlers.map(eventName => ({
-    eventName,
-    tenonComp: activeComponent,
-  })));
-  let parentComponent = activeComponent.parentComponent;
-  while (parentComponent) {
-    handlers.push(...parentComponent.handlers.map(eventName => ({
-      eventName,
-      tenonComp: parentComponent!,
-    })));
-    parentComponent = parentComponent.parentComponent;
-  }
-  return handlers;
+  // const handlers: IHandlerConfig[] = [];
+  // const store = storeFactory();
+  // const activeComponent: ComponentTreeNode = store.getters['viewer/getActiveComponent'];
+  // handlers.push(...activeComponent.handlers.map(eventName => ({
+  //   eventName,
+  //   tenonComp: activeComponent,
+  // })));
+  // let parentComponent = activeComponent.parentComponent;
+  // while (parentComponent) {
+  //   handlers.push(...parentComponent.handlers.map(eventName => ({
+  //     eventName,
+  //     tenonComp: parentComponent!,
+  //   })));
+  //   parentComponent = parentComponent.parentComponent;
+  // }
+  // return handlers;
 }
 
 
@@ -68,7 +69,7 @@ export function executeQueueEvents(executeQueue: IExecuteQueueItem[], ...args: a
   });
 }
 
-export function createTenonEvents(material: any): IEventsConfig {
+export function createTenonEvents(material: IMaterial): IEventsConfig {
   const events: IEventsConfig = cloneDeep(DEFAULT_EVENTS);
   if (material.config.events) {
     Object.keys(material.config.events).forEach(eventKey => {

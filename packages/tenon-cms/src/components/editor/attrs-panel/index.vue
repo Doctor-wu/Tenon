@@ -50,11 +50,11 @@ const attrs = ref([
     icon: 'icon-common',
     component: compInstance,
   },
-  {
-    title: '事件',
-    icon: 'icon-command',
-    component: compEvents,
-  },
+  // {
+  //   title: '事件',
+  //   icon: 'icon-command',
+  //   component: compEvents,
+  // },
 ]);
 </script>
 

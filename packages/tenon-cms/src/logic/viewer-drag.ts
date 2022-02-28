@@ -3,6 +3,7 @@ import { extractChild, insertChild, insertNewComponent, isAncestor } from "./tre
 import { nextTick, ref } from 'vue';
 import { Notification } from "@arco-design/web-vue";
 import { findParentTenonComp } from "@tenon/materials";
+import { TenonComponent } from "@tenon/engine";
 
 
 
@@ -96,6 +97,6 @@ export const deleteDraggingComponent = (ev: DragEvent) => {
   }
 }
 
-export const isMaterial = (config):boolean => {
+export const isMaterial = (config: TenonComponent):boolean => {
   return !config.parent && !config.isSlot;
 }

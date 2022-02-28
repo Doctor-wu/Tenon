@@ -22,5 +22,11 @@
       "title": "文本样式",
       "fieldName": "textStyle"
     }
-  ]
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "box-sizing": "border-box",
+      "display": "inline-block"
+    }
+  }
 }

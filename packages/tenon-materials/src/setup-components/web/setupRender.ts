@@ -1,4 +1,4 @@
-import { ComponentTreeNode, createTenonComponent } from "@tenon/engine";
+import { ComponentTreeNode, createTenonComponent, TenonComponent } from "@tenon/engine";
 import { getValueByHackContext } from "@tenon/shared";
 import { cloneDeep } from "lodash";
 import { computed, createTextVNode, Fragment, getCurrentInstance, h, ref, resolveDynamicComponent } from "vue";
@@ -6,14 +6,14 @@ import { componentsMap, materialDependency } from "./setupComponents.web";
 import { setupProps } from "./setupProps";
 
 
-export function findParentTenonComp(instance: any): ComponentTreeNode | null {
+export function findParentTenonComp(instance: any): TenonComponent | null {
   if (!instance?.parent) return null;
   if (instance.parent.ctx._isTenonComp) return instance.parent.ctx.tenonComp;
   return findParentTenonComp(instance.parent);
 }
 
 
-export function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
+export function parseConfig2RenderFn(this: any, config) {
   if (typeof config === "string" || typeof config === "number") {
     config = String(config);
     config = config.trim();
@@ -65,10 +65,6 @@ export function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
   if (typeof Component !== "string") {
 
     el = Component;
-    if (config.refKey) {
-      props.ref = props.ref || {};
-      props.ref[config.refKey] = ref();
-    }
   }
   else if (materialDependency[el]) el = materialDependency[el];
 
@@ -77,23 +73,19 @@ export function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
     if (compFactory) {
       const material = compFactory();
       const source = cloneDeep(processedProps);
-      const tenonComp = createTenonComponent(material, null, {
+      const tenonComp = createTenonComponent(material, undefined, {
         isSlot: !!source.props?.isSlot,
-        props: source
+        props: source,
       });
-      if (el !== "Compose-View" || !source.props?.isSlot) {
+      if (el !== "Compose-View" || !source.isSlot) {
         processedProps = {
           tenonComp,
           ...tenonComp.props
         };
       }
-      tenonComp.refKey = config.refKey;
       el = material.component;
     }
   }
-
-  const rootRef = ref(null);
-  processedProps["ref"] = rootRef;
 
   return function _custom_render(this: any) {
     const defaultArray: any[] = [];
@@ -109,51 +101,14 @@ export function parseConfig2RenderFn(this: any, config, isRoot?: boolean) {
         if (slotKey === "default") {
           defaultArray.push(parseConfig2RenderFn.call(this, slotConfig).call(this));
         } else {
-          const vNode = parseConfig2RenderFn.call(this, slotConfig).call(this);
-          if (vNode) {
-            (injectChildren[slotKey] = () => vNode);
-          } else {
-            delete injectChildren[slotKey];
-          }
+          injectChildren[slotKey] =
+            () => parseConfig2RenderFn.call(this, slotConfig).call(this);
         }
       }
       else
         defaultArray.push(parseConfig2RenderFn.call(this, child).call(this));
     });
 
-    const VNode = h(el, processedProps, injectChildren);
-    if (isRoot) {
-      VNode.props = VNode.props || {};
-      if (VNode.props?.onVnodeMounted) {
-        if (!(VNode.props?.onVnodeMounted instanceof Array)) {
-          VNode.props.onVnodeMounted = [VNode.props?.onVnodeMounted];
-        }
-      } else {
-        VNode.props.onVnodeMounted = [];
-      }
-      const instance = getCurrentInstance();
-      VNode.props?.onVnodeMounted.push(() => {
-        if ((instance as any).ctx.tenonComp && (VNode?.props?.ref as any).value) {
-          (instance as any).ctx.tenonComp.refs['$rootRef'] = (VNode?.props?.ref as any).value;
-        }
-      });
-    } else if (config.refKey) {
-      VNode.props = VNode.props || {};
-      if (VNode.props?.onVnodeMounted) {
-        if (!(VNode.props?.onVnodeMounted instanceof Array)) {
-          VNode.props.onVnodeMounted = [VNode.props?.onVnodeMounted];
-        }
-      } else {
-        VNode.props.onVnodeMounted = [];
-      }
-      const instance = getCurrentInstance();
-      VNode.props?.onVnodeMounted.push(() => {
-        if ((instance as any).ctx.tenonComp && (VNode?.props?.ref as any).value) {
-          (instance as any).ctx.tenonComp.refs[config.refKey] = (instance as any).ctx.tenonComp.refs[config.refKey] || [];
-          (instance as any).ctx.tenonComp.refs[config.refKey].push((VNode?.props?.ref as any).value);
-        }
-      });
-    }
-    return VNode;
+    return h(el, processedProps, injectChildren);
   };
 }

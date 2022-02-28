@@ -8,9 +8,10 @@
   "author": "Doctor wu",
   "license": "MIT",
   "dependencies": {
-    "@tenon/shared": "workspace:*",
+    "@tenon/engine": "workspace:*",
     "@tenon/flow": "workspace:*",
-    "@tenon/engine": "workspace:*"
+    "@tenon/shared": "workspace:*",
+    "esbuild": "^0.14.23"
   },
   "description": ""
 }

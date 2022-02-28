@@ -23,17 +23,17 @@ function build() {
     recursive: true,
   });
 
+  const b = Date.now();
   execa.command('tsc', {
     stdio: "inherit",
     cwd: path.resolve(__dirname),
   }).then(() => {
-    console.log("物料构建完成");
+    console.log("\n>> 物料构建完成\n");
     if (firstBoot) {
       setPhase(client, PhaseName.LAUNCH_BFF);
       firstBoot = false;
-    } else {
-      console.log('正在监听。。。');
     }
+    console.log(`构建耗时${Date.now() - b}ms`);
   });
 }
 
@@ -46,7 +46,7 @@ fs.watch(
   },
   debounce((event, fileName) => {
     if (fileName) {
-      console.log(`检测到${fileName}变更，即将重新构建物料`);
+      console.log(`\n检测到${fileName}变更，即将重新构建物料`);
       build();
     }
   }, 1000),

@@ -1,6 +1,10 @@
+import { TenonComponent } from "@tenon/engine";
 import { ref } from "vue";
 import { useStore } from "../store";
-import { copyComponentTreeNode, extractChild, insertChild, insertNewComponent, recursiveInsertNewComponent } from "./tree-operation";
+import {
+  copyComponentTreeNode, extractChild, insertChild,
+  insertNewComponent, recursiveInsertNewComponent
+} from "./tree-operation";
 import { editMode } from "./viewer-status";
 
 export let choosingWrapper = ref(-1);
@@ -47,9 +51,11 @@ export const extractActiveComponentFromParent = (activeComponent) => {
   activeComponent.parent = grandParent;
 }
 
-export const copyActiveComponent = (activeComponent, parent) => {
+export const copyActiveComponent = (activeComponent: TenonComponent, parent) => {
   if (!parent) return;
-  const expressedComponent = copyComponentTreeNode(activeComponent, { parent });
+  
+  const expressedComponent = activeComponent.clone();
+    // copyComponentTreeNode(activeComponent, { parent });
   insertChild(parent, expressedComponent, activeComponent);
 }
 

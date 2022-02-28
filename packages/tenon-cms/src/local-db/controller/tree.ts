@@ -1,10 +1,10 @@
-import { ComponentTreeNode } from "../../store/modules/viewer";
+import { ComponentSerializeConfig } from "@tenon/engine";
 import { TenonIndexedDBInstance } from "../indexedDB";
 import { TenonService } from "../service";
 
 export interface TreeStruct {
   lastID: number;
-  config: ComponentTreeNode;
+  config: ComponentSerializeConfig;
 }
 export default class TreeController {
   public service: TenonService;

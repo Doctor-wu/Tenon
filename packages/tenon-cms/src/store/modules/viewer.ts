@@ -1,32 +1,23 @@
-import _ from 'lodash';
+import _, { cloneDeep } from 'lodash';
 import { Module } from 'vuex';
 import { IRootState } from '..';
-import { ComponentTreeNode, IMaterialConfig, DEFAULT_EVENTS } from "@tenon/engine"
-
+import { ComponentTreeNode, TenonComponent } from "@tenon/engine"
+import { IMaterialConfig } from '@tenon/materials';
 export interface IViewerState {
-  tree: ComponentTreeNode | null;
-  activeComponent: ComponentTreeNode | null;
+  defaultTree: TenonComponent | null;
+  tree: TenonComponent | null;
+  activeComponent: TenonComponent | null;
   hoveringComponent: IMaterialConfig | null;
   draggingComponent: IMaterialConfig | null;
   compId: number;
 }
 
-const defaultTree: ComponentTreeNode = {
-  name: 'Compose-View',
-  id: 0,
-  children: [],
-  parent: null,
-  props: {},
-  refs: {},
-  events: _.cloneDeep(DEFAULT_EVENTS),
-  handlers: [],
-  schemas: {},
-  slots: {},
-};
+const defaultTree: null = null;
 
 export default {
   state() {
     return {
+      defaultTree: null,
       tree: defaultTree,
       activeComponent: null,
       hoveringComponent: null,
@@ -35,11 +26,14 @@ export default {
     };
   },
   mutations: {
-    SET_ACTIVE_COMPONENT(state, component: ComponentTreeNode) {
+    SET_ACTIVE_COMPONENT(state, component: TenonComponent) {
       state.activeComponent = component;
     },
-    SET_TREE(state, tree: ComponentTreeNode) {
+    SET_TREE(state, tree: TenonComponent) {
       state.tree = tree
+    },
+    SET_DEFAULT_TREE(state, tree: TenonComponent) {
+      state.defaultTree = tree
     },
     SET_DRAGGING_COMPONENT(state, component: IMaterialConfig | null) {
       state.draggingComponent = component;
@@ -58,6 +52,9 @@ export default {
     setTree(context, tree: ComponentTreeNode) {
       context.commit('SET_TREE', tree);
     },
+    setDefaultTree(context, tree: ComponentTreeNode) {
+      context.commit('SET_DEFAULT_TREE', tree);
+    },
     setDraggingComponent(context, component: IMaterialConfig | null) {
       context.commit('SET_DRAGGING_COMPONENT', component);
     },
@@ -69,12 +66,7 @@ export default {
       return context.state.compId;
     },
     clearTree(context) {
-      context.commit('SET_TREE', {
-        name: 'Compose-View',
-        id: 0,
-        children: [],
-        props: {},
-      });
+      context.commit('SET_TREE', cloneDeep(context.getters['getDefaultTree']));
       context.commit('SET_ACTIVE_COMPONENT', null);
       context.commit('SET_COMP_ID', 0);
     }
@@ -82,6 +74,9 @@ export default {
   getters: {
     getTree(state: IViewerState, getters: any, rootState: IRootState, rootGetters: any) {
       return state.tree;
+    },
+    getDefaultTree(state: IViewerState, getters: any, rootState: IRootState, rootGetters: any) {
+      return state.defaultTree;
     },
     getActiveComponent(state: IViewerState, getters: any, rootState: IRootState, rootGetters: any) {
       return state.activeComponent;

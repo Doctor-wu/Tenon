@@ -16,14 +16,16 @@ export type SchemaProperty<T extends SchemaType = any> =
   ? BaseSchema & NeedBaseSchemaProp<'options'>
   : BaseSchema;
 
-export interface ISchema {
-  type: string;
+export type ISchema<T extends string = any> = {
+  type: T;
   title: string;
   fieldName: string;
   key?: string;
-  properties: {
+  listType?: T extends "array" ? string : never;
+  properties: T extends "internal" ? never
+  : {
     [props: string]: SchemaProperty
-  };
+  }
 }
 
 export const parseSchemas2Props = (schemas: ISchema[] = []) => {

@@ -1,10 +1,3 @@
-<ArcoAvatar t-bind="avatarConfig" style="avatarStyle">
-  <Text
-    textValue="{value:'{{this.author}}'}"
-    textStyle="{
-      color: 'inherit',
-      verticalAlign: 'middle'
-    }"
-  ></Text>
+<TenonAvatar t-bind="avatarConfig" style="avatarStyle">
   <DynamicComponent is="{{this.icon}}" style="avatarIconStyle" t-slot="trigger-icon"></DynamicComponent>
-</ArcoAvatar>
+</TenonAvatar>

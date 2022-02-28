@@ -1,6 +1,6 @@
 <ArcoCarousel style="carouselStyle" t-bind="carouselConfig">
   <ArcoCarouselItem
-    t-for="this.items"
+    t-for="this.carouselConfig.pics"
     style="{
       width: '75%',
       borderRadius: '8px',

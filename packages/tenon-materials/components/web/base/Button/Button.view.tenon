@@ -1,6 +1,5 @@
 <ArcoButton
   t-bind="buttonProps"
-  onClick="{{(...args) => this.executeTenonEvents$('onClick', ...args)}}"
 >
-  {{this.buttonText.value}}
+  <span>{{this.buttonText.value}}</span>
 </ArcoButton>

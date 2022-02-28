@@ -1,9 +1,10 @@
 <template>
   <section class="tree-container">
     <a-tree
+      v-if="store.getters['viewer/getTree']"
       blockNode
       :fieldNames="{
-        key: 'textID',
+        key: 'id',
         title: 'name',
         children: 'children'
       }"
