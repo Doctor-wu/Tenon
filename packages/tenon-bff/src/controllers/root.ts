@@ -10,6 +10,9 @@ class RootController extends BaseController {
     ctx: RequestContext,
     next: Next,
   ) {
+    if (ctx.method === 'options') {
+      return ctx.body = '';
+    }
     ctx._startTime = Date.now();
     await next();
     ctx._endTime = Date.now();

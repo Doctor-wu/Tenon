@@ -60,6 +60,7 @@ importers:
       mongodb: ^4.3.1
       mongoose: ^6.2.0
       nodemon: ^2.0.15
+      svg-captcha: ^1.4.0
       uuid: ^8.3.2
     dependencies:
       '@koa/cors': 3.1.0
@@ -79,6 +80,7 @@ importers:
       mongodb: 4.3.1
       mongoose: 6.2.0
       nodemon: 2.0.15
+      svg-captcha: 1.4.0
       uuid: 8.3.2
     devDependencies:
       '@tenon/engine': link:../tenon-engine
@@ -2512,6 +2514,13 @@ packages:
     resolution: {integrity: sha1-Kv3oTQPlC5qO3EROMGEKcCle37Q=}
     dev: false
 
+  /opentype.js/0.7.3:
+    resolution: {integrity: sha1-QPuM4Yv9YOdESO/f5EKDQJg5eqs=}
+    hasBin: true
+    dependencies:
+      tiny-inflate: 1.0.3
+    dev: false
+
   /ora/5.4.1:
     resolution: {integrity: sha512-5b6Y85tPxZZ7QytO+BQzysW31HJku27cRIlkbAXaNx+BdcVi+LlRFmVXzeF6a7JCwJpyw5c4b+YSVImQIrBpuQ==}
     engines: {node: '>=10'}
@@ -3061,8 +3070,19 @@ packages:
     engines: {node: '>= 0.4'}
     dev: false
 
+  /svg-captcha/1.4.0:
+    resolution: {integrity: sha512-/fkkhavXPE57zRRCjNqAP3txRCSncpMx3NnNZL7iEoyAtYwUjPhJxW6FQTQPG5UPEmCrbFoXS10C3YdJlW7PDg==}
+    engines: {node: '>=4.x'}
+    dependencies:
+      opentype.js: 0.7.3
+    dev: false
+
   /through/2.3.8:
     resolution: {integrity: sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=}
+    dev: false
+
+  /tiny-inflate/1.0.3:
+    resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
     dev: false
 
   /tmp/0.0.33:

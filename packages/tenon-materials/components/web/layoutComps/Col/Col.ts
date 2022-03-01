@@ -4,9 +4,6 @@ export default (lifeCycle, props, ctx, tenonComp) => {
   } = lifeCycle;
   onMounted(() => {
     console.log(lifeCycle, props, ctx, tenonComp);
-    setTimeout(() => {
-      tenonComp.states.author = 123;
-    }, 1000);
   });
 
   onBeforeMount(() => {

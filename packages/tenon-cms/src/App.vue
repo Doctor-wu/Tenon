@@ -2,21 +2,15 @@
 // This starter template is using Vue 3 <script setup> SFCs
 
 import { useStore } from '@/store';
-import { computed, defineAsyncComponent } from 'vue';
+import { computed, markRaw } from 'vue';
 
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 const store = useStore();
 const activeLayout = computed(() => store.getters["layout/getActiveLayout"]);
-console.log(activeLayout.value);
-
-const Layout = defineAsyncComponent(async () => {
-  return await activeLayout.value;
-});
-
 </script>
 
 <template>
-  <Layout></Layout>
+  <component :is="markRaw(activeLayout)" />
 </template>
 
 <style>

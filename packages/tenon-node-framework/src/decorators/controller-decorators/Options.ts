@@ -16,7 +16,7 @@ export function Options<P = any>(requestPath: string, requestOptions: IRequestOp
       /** 检查参数 */
       const [success, errorMsg, errorCode] = checkParams(paramsConfig, params);
       if (!success) {
-        return this.responseError(ctx, next)(errorCode as number, errorMsg as string);
+        return await this.responseError(ctx, next)(errorCode as number, errorMsg as string);
       }
       /** 检查参数 */
 

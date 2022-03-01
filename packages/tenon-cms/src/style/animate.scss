@@ -22,24 +22,35 @@
   }
 }
 
-@keyframes deletor-slide-down {
+@keyframes slide-to-left {
   0% {
-    transform: rotate(60deg);
-    transform-origin: top right;
+    transform: translateX(100%);
   }
   100% {
-    transform: rotate(0deg);
-    transform-origin: top right;
+    transform: translateX(0);
   }
 }
 
-@keyframes deletor-slide-up {
+@keyframes slide-to-right {
   0% {
-    transform: rotate(0deg);
-    transform-origin: top right;
+    transform: translateX(0);
   }
   100% {
-    transform: rotate(60deg);
-    transform-origin: top right;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes slide-in-from-right {
+  0% {
+    opacity: 0.3;
+    transform: translateX(10%);
+  }
+  20% {
+    opacity: 0.8;
+    transform: translateX(2%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
 }

@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const prefixUrl = "http://localhost:9999";
 
@@ -40,16 +40,23 @@ requestInstance.interceptors.response.use(
   }
 );
 
+type responseType = {
+  success: boolean;
+  successText: string;
+  data: any;
+  errorMsg?: string;
+}
+
 export const $get = (path: string, params?: any) => {
-  return requestInstance.get(prefixUrl + path, params);
+  return requestInstance.get<any,responseType>(prefixUrl + path, params);
 }
 
 export const $post = (path: string, params: any) => {
-  return requestInstance.post(prefixUrl + path, params);
+  return requestInstance.post<any, responseType>(prefixUrl + path, params);
 }
 
 export const $put = (path: string, params: any) => {
-  return requestInstance.put(prefixUrl + path, params);
+  return requestInstance.put<any, responseType>(prefixUrl + path, params);
 }
 
 export const $delete = (path: string, params: any) => {

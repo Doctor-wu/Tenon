@@ -77,11 +77,13 @@ export class BaseController implements IDecoratedControllerExtraFields {
     ctx: Koa.Context,
     next: Koa.Next,
   ) {
-    return async function (data: any) {
+    return async function (data: any, options: {
+      noLog?: boolean
+    } = {}) {
       const responseJson = createResponseJson(data);
       ctx.body = responseJson;
       await next();
-      io.log(responseJson);
+      if(!options.noLog) io.log(responseJson);
     }
   }
 
@@ -93,7 +95,7 @@ export class BaseController implements IDecoratedControllerExtraFields {
       const errorJson = createErrorJson(errorCode, errorMsg);
       ctx.body = errorJson;
       await next();
-      io.error(errorJson);
+      io.error(JSON.stringify(errorJson));
     }
   }
 }

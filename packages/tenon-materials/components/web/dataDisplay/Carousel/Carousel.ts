@@ -6,12 +6,6 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     console.log(lifeCycle, props, ctx, tenonComp);
   });
 
-  const addPic = () => {
-    tenonComp.states.items.push(
-      "https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/6480dbc69be1b5de95010289787d64f1.png~tplv-uwbnlip3yd-webp.webp"
-    );
-  }
-
   return {
     author: 'Doctorwu',
     items: [
@@ -19,6 +13,5 @@ export default (lifeCycle, props, ctx, tenonComp) => {
       "https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/0265a04fddbd77a19602a15d9d55d797.png~tplv-uwbnlip3yd-webp.webp",
       "https://p1-arco.byteimg.com/tos-cn-i-uwbnlip3yd/6480dbc69be1b5de95010289787d64f1.png~tplv-uwbnlip3yd-webp.webp",
     ],
-    addPic,
   }
 }

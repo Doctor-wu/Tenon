@@ -18,7 +18,7 @@ import { ref } from 'vue';
 import { computed, nextTick } from 'vue';
 
 const animator = ref();
-const animateName = ref("deletor-slide-down");
+const animateName = ref("slide-to-left");
 const animating = ref(false);
 const animateTime = ref(300);
 let initd = ref(false);
@@ -26,13 +26,13 @@ let initd = ref(false);
 const displayDeletor = computed(() => {
   const isShow = (dragging.value && !draggingMaterial.value);
   if (isShow) {
-    animateName.value = "deletor-slide-down";
+    animateName.value = "slide-to-left";
     nextTick(() => {
       animator.value.run();
     });
   } else if (!draggingMaterial.value) {
     animating.value = true;
-    animateName.value = "deletor-slide-up";
+    animateName.value = "slide-to-right";
     nextTick(() => {
       animator.value.run();
     });
@@ -52,8 +52,6 @@ const displayDeletor = computed(() => {
 }
 
 .entity {
-  border-bottom-left-radius: 50%;
-  border-bottom-right-radius: 50%;
   height: 60px;
   width: 60px;
   box-sizing: content-box;

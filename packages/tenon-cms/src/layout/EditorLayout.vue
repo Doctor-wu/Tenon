@@ -1,14 +1,14 @@
 <template>
   <section class="layout-container">
     <section class="header-container">
-      <Header></Header>
+      <Header icon-routes="*"></Header>
     </section>
     <section class="layout-body">
       <section class="operation-container">
         <Operation></Operation>
       </section>
       <section class="view-container">
-        <router-view></router-view>
+        <CacheView></CacheView>
       </section>
       <section class="attrsPanel-container">
         <AttrsPanel></AttrsPanel>
@@ -21,6 +21,7 @@
 import Header from '~components/layout-comps/header.vue';
 import Operation from '~components/editor/operation/index.vue';
 import AttrsPanel from '~components/editor/attrs-panel/index.vue';
+import CacheView from './CacheView.vue';
 </script>
 
 <style lang="scss" scoped>

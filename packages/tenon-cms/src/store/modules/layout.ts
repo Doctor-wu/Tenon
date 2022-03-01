@@ -1,16 +1,17 @@
 import { Module } from 'vuex';
 import { IRootState } from '..';
 import { Component } from 'vue';
+import EditorLayout from '@/layout/EditorLayout.vue';
 
 
 export interface ILayoutState {
-  activeLayout: () => Promise<Component>;
+  activeLayout: Component;
 }
 
 export default {
   state() {
     return {
-      activeLayout: () => import("@/layout/EditorLayout.vue"),
+      activeLayout: EditorLayout,
     };
   },
   mutations: {
@@ -19,13 +20,13 @@ export default {
     }
   },
   actions: {
-    setLayout({ commit }, layout) {
+    setActiveLayout({ commit }, layout) {
       commit('SET_LAYOUT', layout);
     },
   },
   getters: {
-    async getActiveLayout(state: ILayoutState) {
-      return await state.activeLayout();
+    getActiveLayout(state: ILayoutState) {
+      return state.activeLayout;
     },
   },
   namespaced: true,

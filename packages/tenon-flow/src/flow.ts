@@ -10,7 +10,7 @@ export const PhaseName = {
 
 export const waitPhase = (phase: string): Promise<void> => {
   return new Promise((resolve) => {
-    sub.on(phase, resolve);
+    sub.once(phase, resolve);
   })
 }
 

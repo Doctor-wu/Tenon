@@ -1,7 +1,7 @@
 <template>
   <section class="wrapper">
     <section>
-      <AnimateButton size="24px">
+      <AnimateButton @click="$router.push('/')" size="24px">
         <span style="vertical-align: -3px;">Tenon</span>
       </AnimateButton>
       <span class="sub-title">一站式低代码平台</span>
@@ -14,7 +14,7 @@
           </TextButton>
         </a>
       </li>
-      <li class="nav-item" v-for="item in routerNavs">
+      <li class="nav-item" v-for="item in routeNavs">
         <router-link :to="item.path">
           <AnimateButton size="20px">{{ item.name }}</AnimateButton>
         </router-link>
@@ -25,24 +25,45 @@
 <script setup lang="ts">
 import TextButton from '~components/shared/text-button.vue';
 import AnimateButton from '~components/shared/animate-button.vue';
-const routerNavs = [
+import { Ref, ref } from 'vue';
+const props = defineProps<{
+  iconRoutes: string[] | '*'
+}>();
+
+const navs = [
   {
     name: '定制物料',
     path: '/',
+    key: 'DM',
   },
   {
     name: '文档',
     path: '/',
+    key: 'DOC',
   },
   {
     name: '组件',
     path: '/',
+    key: 'COMP',
   },
   {
     name: '关于',
     path: '/',
+    key: 'ABOUT',
   },
 ];
+let routeNavs: Ref<(typeof navs)> = ref([]);
+if(props.iconRoutes === '*') routeNavs.value = navs;
+else {
+  const navSet = new Set;
+  props.iconRoutes.forEach(nav => {
+    navSet.add(nav);
+  });
+  routeNavs.value = navs.map(nav => {
+    return navSet.has(nav.key) ? nav : false;
+  }).filter(Boolean) as typeof navs;
+}
+
 </script>
 <style lang="scss" scoped>
 .wrapper {
@@ -50,9 +71,9 @@ const routerNavs = [
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 15px 20px 10px;
   box-sizing: border-box;
   justify-content: space-between;
+  padding: 0 12px;
 }
 
 .sub-title {

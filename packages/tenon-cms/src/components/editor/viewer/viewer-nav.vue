@@ -119,6 +119,7 @@ function deleteConfig() {
   padding: 5px 20px;
   box-sizing: border-box;
   justify-content: start;
+  margin-right: 40px;
 }
 
 .nav-item-icon {
