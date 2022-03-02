@@ -1,16 +1,23 @@
-import { BaseController, Controller, Get, Next, Post, RequestContext, useService } from "@tenon/node-framework";
+import { BaseController, Controller, Get, RequestNext, Post, RequestContext, useService, MiddleWare } from "@tenon/node-framework";
+import { AuthMiddleWare } from "../../middlewares/auth-middleware";
 import { SERVICE_NAME } from "../../services/constant";
 import { UserService } from "../../services/user";
 import { confusePwd, useCaptcha } from "./util";
 
 @Controller({
-  prefixPath: ''
+  prefixPath: '',
+  middleware: [
+    () => {
+      console.log('SignController middleware');
+      return [true];
+    }
+  ]
 })
 export class SignController extends BaseController {
 
   @useService(SERVICE_NAME.user)
   user!: UserService;
-  
+
 
   @Post("/signup", {
     params: {
@@ -39,15 +46,14 @@ export class SignController extends BaseController {
   })
   async handleSignup(
     ctx: RequestContext,
-    next: Next,
+    next: RequestNext,
     params: any,
   ) {
     // 验证码
     if (!await this.assertCaptcha(ctx, next, params)) return;
     // 是否已存在
     if (!await this.assertExistUser(ctx, next, params)) return;
-    console.log(112233);
-    
+
     // 注册服务
     params.password = confusePwd(params.password);
     const [err, user] = await this.user.addUser(params);
@@ -57,13 +63,13 @@ export class SignController extends BaseController {
       await this.responseJson(ctx, next)(this.getDisplayUserInfo(user));
     }
   }
-  
+
   async assertExistUser(
     ctx: RequestContext,
-    next: Next,
+    next: RequestNext,
     params: any,
   ) {
-    const [_, existed] = await this.user.getUsers({username: params.username});
+    const [_, existed] = await this.user.getUsers({ username: params.username });
     if (existed?.length) {
       await this.responseError(ctx, next)(1111, `用户名${params.username}已存在`);
       return false;
@@ -73,7 +79,7 @@ export class SignController extends BaseController {
 
   async assertCaptcha(
     ctx: RequestContext,
-    next: Next,
+    next: RequestNext,
     params: any,
   ) {
     if (ctx.session.captcha !== params.captcha.toLowerCase()) {
@@ -101,7 +107,7 @@ export class SignController extends BaseController {
   })
   async handleSignIn(
     ctx: RequestContext,
-    next: Next,
+    next: RequestNext,
     params: any,
   ) {
     // 验证码
@@ -134,6 +140,6 @@ export class SignController extends BaseController {
     const captcha = useCaptcha();
     ctx.session.captcha = captcha.text.toLowerCase();
     ctx.response.type = 'svg';
-    this.responseJson(ctx, next)(captcha.data, {noLog: true});
+    this.responseJson(ctx, next)(captcha.data, { noLog: true });
   }
 }

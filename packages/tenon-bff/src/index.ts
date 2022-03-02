@@ -26,6 +26,9 @@ const bootstrap = async () => {
     static: {
       path: path.resolve(__dirname, "./static"),
     },
+    session: {
+      key: 'tenon:ssid'
+    },
     logger: {
       path: path.resolve(__dirname, "./logFiles"),
     }

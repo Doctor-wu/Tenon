@@ -28,8 +28,7 @@ export const setupStore = (app) => {
   });
 
   // 将 store 实例作为插件安装
-  app.use(store)
-  setupMaterials(store);
+  app.use(store);
 };
 
 export const useStore = () => store;

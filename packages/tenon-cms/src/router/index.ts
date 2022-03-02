@@ -13,6 +13,7 @@ export const setupRouter = (app) => {
         component: () => import('../views/EditorCore.vue'),
         meta: {
           layout: () => import('@/layout/EditorLayout.vue'),
+          needAuth: true,
         }
       },
       {
@@ -25,6 +26,7 @@ export const setupRouter = (app) => {
         component: () => import('../views/Auth/SignIn.vue'),
         meta: {
           layout: () => import('@/layout/AuthLayout.vue'),
+          authPage: true,
         }
       },
       {
@@ -33,6 +35,7 @@ export const setupRouter = (app) => {
         component: () => import('../views/Auth/Signup.vue'),
         meta: {
           layout: () => import('@/layout/AuthLayout.vue'),
+          authPage: true,
         }
       },
       {

@@ -10,6 +10,7 @@ import 'vue-color-kit/dist/vue-color-kit.css'
 
 import { setupStore } from './store';
 import { setupRouter } from './router';
+import { TenonIndexedDBInstance } from './local-db/indexedDB';
 
 const app = createApp(App);
 
@@ -20,10 +21,13 @@ app.use(ArcoVue, {
 });
 app.use(ArcoVueIcon);
 
-// 初始化Store
-setupStore(app);
-// 初始化路由
-setupRouter(app);
+const bootstrap = async () => {
+  // 初始化Store
+  setupStore(app);
+  // 初始化路由
+  setupRouter(app);
+  // 将app挂载到页面上
+  app.mount('#app');
+}
 
-// 将app挂载到页面上
-app.mount('#app');
+TenonIndexedDBInstance.eventEmitter.on('onLaunch', bootstrap);

@@ -1,4 +1,5 @@
 import { BaseController } from "../../controller";
+import { controllerRegistry, getControllerStore } from "../../controller/registry";
 import { StatusCode } from "../../controller/status-code";
 import { io } from "../../core/io";
 import { addRoute, requestMethod } from "../../middlewares/router";
@@ -29,7 +30,6 @@ export const createRequest: (
     target.handlers = target.handlers || [];
     target.handlers.push(
       (instance: BaseController) => {
-        
         addRoute(requestMethod, {
           path: (instance.constructor as IDecoratedController).prefixPath + requestPath,
           cb: async (ctx, next) => {

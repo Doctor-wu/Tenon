@@ -1,5 +1,5 @@
 import { BaseController } from "../../controller";
-import { IDecoratedControllerExtraFields } from "../../controller/controller-core.interface";
+import { IDecoratedControllerExtraFields, TypeMiddleware } from "../../controller/controller-core.interface";
 
 export interface IDecoratedController{
   new(...args: any[]): BaseController & IDecoratedControllerExtraFields;
@@ -10,6 +10,7 @@ export interface IDecoratedController{
 export interface IControllerConfig {
   prefixPath: string;
   name?: string;
+  middleware?: TypeMiddleware[];
 }
 
 // export interface IDecorated

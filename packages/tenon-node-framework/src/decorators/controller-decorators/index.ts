@@ -5,3 +5,4 @@ export * from "./Put";
 export * from "./Delete";
 export * from "./Options";
 export * from "./useRouter";
+export * from "./MiddleWare";

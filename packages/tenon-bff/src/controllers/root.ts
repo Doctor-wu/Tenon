@@ -1,4 +1,4 @@
-import { BaseController, Controller, RequestContext, Next, io, useRouter, Get } from "@tenon/node-framework";
+import { BaseController, Controller, RequestContext, RequestNext, io, useRouter, Get } from "@tenon/node-framework";
 
 @Controller({
   prefixPath: '',
@@ -8,7 +8,7 @@ class RootController extends BaseController {
   @useRouter
   async getHandler(
     ctx: RequestContext,
-    next: Next,
+    next: RequestNext,
   ) {
     if (ctx.method === 'options') {
       return ctx.body = '';
@@ -27,7 +27,7 @@ class RootController extends BaseController {
   @Get("/")
   async homePage(
     ctx: RequestContext,
-    next: Next,
+    next: RequestNext,
   ) {
     this.response(ctx, next)("<h1>Tenon --Doctorwu</h1>");
   }

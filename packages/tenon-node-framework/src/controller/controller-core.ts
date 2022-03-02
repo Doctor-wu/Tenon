@@ -3,10 +3,8 @@ import { io } from "../core/io";
 import Koa from "koa";
 import { createErrorJson, createResponseJson } from "./response";
 import { compose } from "@tenon/shared";
-import { IDecoratedControllerExtraFields } from "./controller-core.interface";
+import { IDecoratedControllerExtraFields, TypeMiddleware } from "./controller-core.interface";
 import { IDecoratedController } from "../decorators/controller-decorators/Controller.interface";
-import { arrayType } from "@tenon/shared";
-
 export const initControllers = (app: tenonAppType) => {
   const { controllers } = app.$config;
   if (!controllers) return;
@@ -42,7 +40,7 @@ export const createControllerInstance = (app: tenonAppType, Ctor: { new(...args:
 export class BaseController implements IDecoratedControllerExtraFields {
   public app: tenonAppType;
   /** Get/Post 类的请求装饰器会给Controller的原型上添加handlers属性 */
-  protected handlers!: ((instance: BaseController) => void)[];
+  public handlers!: ((instance: BaseController) => void)[];
   /** Controller装饰器会为子类实例加上该属性 */
   public ControllerName!: string;
   /** Controller装饰器会为子类实例加上该属性 */
@@ -50,6 +48,7 @@ export class BaseController implements IDecoratedControllerExtraFields {
   /** Controller装饰器会为子类加上该属性 */
   public static prefixPath: string;
   public subController?: IDecoratedController[];
+  public middleware: TypeMiddleware[] = [];
 
   constructor(app: tenonAppType) {
     this.app = app;
@@ -83,7 +82,7 @@ export class BaseController implements IDecoratedControllerExtraFields {
       const responseJson = createResponseJson(data);
       ctx.body = responseJson;
       await next();
-      if(!options.noLog) io.log(responseJson);
+      if (!options.noLog) io.log(responseJson);
     }
   }
 

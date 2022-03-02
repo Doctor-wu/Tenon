@@ -20,12 +20,16 @@ import ViewerNav from '~components/editor/viewer/viewer-nav.vue';
 import ComposeView from '~components/editor/viewer/Compose-View/Compose-View.vue';
 import ViewerNotice from '~components/editor/viewer/viewer-notice.vue';
 import { editMode } from '~logic/viewer-status';
+import { setupMaterials } from '@/logic/setup-materials';
 
 const store = useStore();
 const panel = ref<HTMLElement>();
 
 onMounted(() => {
   panel.value?.scrollIntoView();
+  if (!store.getters['viewer/getTree']) {
+    setupMaterials(store);
+  }
 });
 
 </script>

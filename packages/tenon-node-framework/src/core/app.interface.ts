@@ -68,4 +68,4 @@ export type tenonAppType = Koa<Koa.DefaultState, Koa.DefaultContext> & {
 }
 
 export type RequestContext = Koa.Context;
-export type Next = Koa.Next;
+export type RequestNext = Koa.Next;

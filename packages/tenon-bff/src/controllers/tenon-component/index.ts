@@ -1,18 +1,22 @@
-import { BaseController, Controller, Get, Next, RequestContext } from "@tenon/node-framework";
+import {
+  BaseController, Controller, Get,
+  RequestNext, RequestContext, MiddleWare
+} from "@tenon/node-framework";
 import { loadWebComponents } from "@tenon/materials";
+import { AuthMiddleWare } from "../../middlewares/auth-middleware";
 
 @Controller({
-  prefixPath: '/components'
+  prefixPath: '/components',
 })
 export class TenonComponentController extends BaseController {
 
   @Get('/getComponents')
+  @MiddleWare(AuthMiddleWare)
   async getComponents(
     ctx: RequestContext,
-    next: Next,
+    next: RequestNext,
     params: any,
   ) {
-    // const loadWebComponents = (await import("@tenon/materials")).loadWebComponents;
     const components = await loadWebComponents();
     this.responseJson(ctx, next)(components);
   }

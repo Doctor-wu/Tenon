@@ -51,6 +51,7 @@ import { onMounted, reactive, ref } from 'vue';
 import { useCaptcha } from './captcha';
 import Animate from '@/components/shared/animate.vue';
 import AuthPageTitle from '@/components/layout-comps/auth/auth-page-title.vue';
+import { useRouter } from 'vue-router';
 const formRef = ref<any>(null);
 const form = reactive({
   username: '',
@@ -103,6 +104,7 @@ const handleSubmit = debounce(async () => {
   const result = await signupApi(form);
   if (result.success) {
     Message.success('注册成功');
+    useRouter().push('/auth/signIn');
   } else {
     Message.error(result.errorMsg!);
     updateCaptcha();

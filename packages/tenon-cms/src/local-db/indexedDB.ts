@@ -1,40 +1,38 @@
+import { Subscribe } from "@tenon/shared";
 import { TenonService } from "./service";
 
 export class TenonIndexedDB {
   public _db!: IDBDatabase;
   public services = new Set<TenonService>();
   private _request: IDBOpenDBRequest;
+  public eventEmitter = new Subscribe();
   public onLoad: any[] = [];
   constructor(name: string) {
-    this._request = indexedDB.open(name, 1);
+    this._request = indexedDB.open(name, 4);
     this.setupRequest().then(() => {
-      this.onLoad.forEach((fn: Function) => {
-        fn(this);
-      });
-      this.onLoad = [];
+      this.eventEmitter.emit('onLaunch');
     });
-  }
-
-  addOnLoad(fn: Function) {
-    this.onLoad.push(fn);
   }
 
   setupRequest() {
     return new Promise((resolve, reject) => {
       this._request.onsuccess = (event: any) => {
         this._db = this._request.result;
+        this.eventEmitter.emit('success', this._db);
         resolve(event);
       };
       this._request.onerror = (event: any) => {
         console.error('indexedDB开启失败');
+        this.eventEmitter.emit('error');
         reject(event);
       }
       this._request.onupgradeneeded = (event: any) => {
         this._db = event.target.result;
+        this.eventEmitter.emit('upgradeneeded', this._db);
         resolve(event);
-        [...this.services.values()].forEach((service: TenonService) => {
-          service.update(this);
-        });
+        // [...this.services.values()].forEach((service: TenonService) => {
+        //   service.update(this);
+        // });
       }
     })
   }

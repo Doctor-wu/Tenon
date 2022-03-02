@@ -1,3 +1,5 @@
+import { useRouter } from "@/router";
+import { useStore } from "@/store";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const prefixUrl = "http://localhost:9999";
@@ -35,6 +37,10 @@ requestInstance.interceptors.response.use(
     const code = error.response?.status
     if (code === 403) {
       // TODO 登陆态失效
+      const store = useStore();
+      store.dispatch('user/clearUserInfo');
+      const router = useRouter();
+      router.push('/auth/signIn');
     }
     return Promise.reject(error)
   }

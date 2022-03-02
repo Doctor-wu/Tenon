@@ -1,4 +1,4 @@
-import { BaseController, Controller, Get, Post, Next, RequestContext, useService } from "@tenon/node-framework";
+import { BaseController, Controller, Get, Post, RequestNext, RequestContext, useService } from "@tenon/node-framework";
 import { SERVICE_NAME } from "../../services/constant";
 import { UserService } from "../../services/user";
 import crypto from "crypto";
@@ -17,7 +17,7 @@ class UserController extends BaseController {
   @Get("/getUser/:username")
   async getUser(
     ctx: RequestContext,
-    next: Next,
+    next: RequestNext,
     params: any,
   ) {
     const condition = this.getSpecifiedFieldParams(params, ["username", "password"]);
@@ -47,7 +47,7 @@ class UserController extends BaseController {
   })
   async updateUser(
     ctx: RequestContext,
-    next: Next,
+    next: RequestNext,
     params: any,
   ) {
     const userInfo = this.getSpecifiedFieldParams(params, ["username", "phone", "password", "gender", "email"]);
