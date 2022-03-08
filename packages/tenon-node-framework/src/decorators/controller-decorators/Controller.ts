@@ -1,6 +1,7 @@
 import { BaseController, createControllerInstance } from "../../controller";
 import { IControllerConfig, IDecoratedController } from "./Controller.interface";
 import { getControllerStore } from "../../controller/registry";
+import { cloneDeep } from "lodash";
 
 /**
  * Controller的装饰器，所有Controller都会被收集起来同时被实例化
@@ -32,6 +33,12 @@ export function Controller(config: IControllerConfig) {
         if (this.subController) {
           this.subController.forEach(Sub => {
             Sub.prefixPath = DecoratedController.prefixPath + Sub.prefixPath;
+            if (this.middleware.length) {
+              const handlers: Function[] = (Reflect.getPrototypeOf(Sub.prototype) as any).handlers;
+              handlers.push((instance: BaseController) => {
+                instance.middleware.unshift(...cloneDeep(this.middleware));
+              });
+            }
             createControllerInstance(this.app, Sub);
           });
         }

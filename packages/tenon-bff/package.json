@@ -20,6 +20,7 @@
     "@koa/cors": "^3.1.0",
     "@types/koa": "^2.13.4",
     "@types/koa-router": "^7.4.4",
+    "@types/koa-session": "^5.10.6",
     "@types/koa-static": "^4.0.2",
     "@types/mongoose": "^5.11.97",
     "ansi-regex": "^6.0.1",

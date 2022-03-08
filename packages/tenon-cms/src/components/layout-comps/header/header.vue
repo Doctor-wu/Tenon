@@ -15,9 +15,10 @@
         </a>
       </li>
       <li class="nav-item" v-for="item in routeNavs">
-        <router-link :to="item.path">
+        <router-link v-if="item.path" :to="item.path">
           <AnimateButton size="20px">{{ item.name }}</AnimateButton>
         </router-link>
+        <component v-else-if="item.component" :is="markRaw(item.component)"></component>
       </li>
     </ul>
   </section>
@@ -25,10 +26,12 @@
 <script setup lang="ts">
 import TextButton from '~components/shared/text-button.vue';
 import AnimateButton from '~components/shared/animate-button.vue';
-import { Ref, ref } from 'vue';
+import { markRaw, Ref, ref } from 'vue';
+import Avatar from './avatar.vue';
 const props = defineProps<{
   iconRoutes: string[] | '*'
 }>();
+
 
 const navs = [
   {
@@ -51,9 +54,13 @@ const navs = [
     path: '/',
     key: 'ABOUT',
   },
+  {
+    key: 'MINE',
+    component: Avatar,
+  }
 ];
 let routeNavs: Ref<(typeof navs)> = ref([]);
-if(props.iconRoutes === '*') routeNavs.value = navs;
+if (props.iconRoutes === '*') routeNavs.value = navs;
 else {
   const navSet = new Set;
   props.iconRoutes.forEach(nav => {
@@ -65,6 +72,7 @@ else {
 }
 
 </script>
+
 <style lang="scss" scoped>
 .wrapper {
   height: 100%;

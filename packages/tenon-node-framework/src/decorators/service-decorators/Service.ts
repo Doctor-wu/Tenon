@@ -3,7 +3,7 @@ import { serviceRegistry } from "../../service/registry";
 import { IDecoratedService, IServiceConfig } from "./Service.interface";
 
 export function Service(config: IServiceConfig) {
-  const { schema, schemaOptions, name } = config;
+  const { schema,name } = config;
   return function serviceDecorator<T extends { new(...args: any[]): BaseService }>(
     Ctor: T
   ): T & IDecoratedService {
@@ -12,12 +12,8 @@ export function Service(config: IServiceConfig) {
 
       constructor(...args: any) {
         super(...args);
-        this.schemaConfig = schema;
-        if (schemaOptions) {
-          this.schemaOptions = schemaOptions;
-        }
         this.serviceName = name || Ctor.name;
-        this.buildSchema();
+        this.schemaInstance = schema;
         this.buildModel();
         serviceRegistry.set(this.serviceName, this);
       }

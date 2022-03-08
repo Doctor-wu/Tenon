@@ -5,6 +5,8 @@ import { Message } from "@arco-design/web-vue";
 export const setupRouterHooks = (router: Router) => {
   const store = useStore();
   router.beforeEach(async (to, from, next) => {
+    console.log(to, from);
+
     const { layout, needAuth, authPage } = to.meta as any;
     const userInfo = await store.getters['user/getUserInfo'];
     if (needAuth && !userInfo) {
@@ -15,8 +17,9 @@ export const setupRouterHooks = (router: Router) => {
       return next('/');
     }
     if (!layout) return true;
-    const layoutComponent = await layout();
-    store.dispatch("layout/setActiveLayout", layoutComponent.default);
+    layout().then((layoutComponent) => {
+      store.dispatch("layout/setActiveLayout", layoutComponent.default);
+    });
     next();
   });
 }

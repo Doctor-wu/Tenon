@@ -1,4 +1,5 @@
 import {
+  Schema,
   SchemaDefinition,
   SchemaDefinitionType,
   SchemaOptions,
@@ -6,10 +7,9 @@ import {
 } from "mongoose";
 import { IDecoratedServiceExtraFields } from "../../service/service-core.interface";
 
-export interface IServiceConfig<DocType = any> {
-  schema: SchemaDefinition<SchemaDefinitionType<DocType>>;
+export interface IServiceConfig {
+  schema: Schema;
   name?: string;
-  schemaOptions?: SchemaOptions;
 }
 
 export interface IDecoratedService<DocType = any> {

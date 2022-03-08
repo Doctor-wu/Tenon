@@ -7,6 +7,7 @@ import { initModules } from "../modules";
 import { initControllers } from "../controller";
 import { initServices } from "../service";
 import { compose } from "@tenon/shared";
+import { mergeWith } from "lodash";
 
 export * from "./app.interface";
 
@@ -18,7 +19,9 @@ export const createServer = async (config: IServerConfig): Promise<tenonAppType>
   // app
   const koaApp = new Koa();
   const tenonApp: tenonAppType = koaApp as tenonAppType;
-  tenonApp.$config = config;
+  tenonApp.$config = mergeWith({}, {
+    session: CONSTANT.defaultSessionConfig,
+  }, config);
   if (config.io?.noEmit) io.noEmit = true;
 
   // models

@@ -5,6 +5,7 @@ import { createErrorJson, createResponseJson } from "./response";
 import { compose } from "@tenon/shared";
 import { IDecoratedControllerExtraFields, TypeMiddleware } from "./controller-core.interface";
 import { IDecoratedController } from "../decorators/controller-decorators/Controller.interface";
+import { requestMethod } from "../middlewares/router";
 export const initControllers = (app: tenonAppType) => {
   const { controllers } = app.$config;
   if (!controllers) return;
@@ -18,9 +19,16 @@ export const initControllers = (app: tenonAppType) => {
   compose(io.moduleStyle, io.log)('Controller initd');
 
   /** 打印路由列表 */
+  const requestMethodColor: Record<requestMethod, any> = {
+    get: io.hex('#3339f3'),
+    post: io.successStyle,
+    put: io.chalk.cyanBright,
+    delete: io.errorStyle,
+    options: io.logStyle,
+  }
   app.$router?.routeList.forEach(([requestMethod, handlerDesc, requestPath]) => {
     io.log(
-      compose(io.bold, io.successStyle)(`【 ${requestMethod.toUpperCase()} ${requestPath} 】`),
+      compose(io.bold, requestMethodColor[requestMethod])(`【 ${requestMethod.toUpperCase()} ${requestPath} 】`),
       io.logStyle(`${handlerDesc}`),
     );
   });
@@ -35,6 +43,7 @@ export const createControllerInstance = (app: tenonAppType, Ctor: { new(...args:
   const instance = new Ctor(app);
   app.$controllers![instance.ControllerName] = instance;
   io.log(`- ${instance.ControllerName}`);
+  return instance;
 }
 
 export class BaseController implements IDecoratedControllerExtraFields {
@@ -95,6 +104,20 @@ export class BaseController implements IDecoratedControllerExtraFields {
       ctx.body = errorJson;
       await next();
       io.error(JSON.stringify(errorJson));
+    }
+  }
+
+  smartResponse(
+    ctx: Koa.Context,
+    next: Koa.Next,
+  ) {
+    const self = this;
+    return async function (error, result) {
+      if (error) {
+        await self.responseError(ctx, next)(1111, error);
+      } else {
+        await self.responseJson(ctx, next)(result);
+      }
     }
   }
 }

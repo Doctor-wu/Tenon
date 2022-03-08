@@ -1,14 +1,24 @@
-import { createServer } from "@tenon/node-framework";
-import { RootController, AuthController, TenonComponentController } from "./controllers";
-import { UserService } from "./services/user";
 import path from "path";
 import { setPhase, PhaseName } from "@tenon/flow";
 import { createClient } from "../scripts/client";
+import { createServer } from "@tenon/node-framework";
+import {
+  RootController,
+  AuthController,
+  TenonComponentController,
+  TenonProjectController,
+  TenonPageController
+} from "./controllers";
+import {
+  UserService,
+  ProjectService,
+  PageService,
+} from "./services";
 
 const bootstrap = async () => {
   const server = await createServer({
     server: {
-      port: 9999,
+      port: 9847,
     },
     mongodb: {
       username: 'doctorwu',
@@ -19,15 +29,21 @@ const bootstrap = async () => {
       RootController,
       AuthController,
       TenonComponentController,
+      TenonProjectController,
+      TenonPageController,
     ],
     services: [
       UserService,
+      ProjectService,
+      PageService,
     ],
     static: {
       path: path.resolve(__dirname, "./static"),
     },
     session: {
-      key: 'tenon:ssid'
+      key: 'tenon:ssid',
+      sameSite: true,
+      maxAge: 3600 * 1000,
     },
     logger: {
       path: path.resolve(__dirname, "./logFiles"),

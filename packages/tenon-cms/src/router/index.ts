@@ -1,6 +1,18 @@
+import { defineComponent, h } from 'vue';
 import { createRouter, createWebHashHistory, Router } from 'vue-router'
 import { setupRouterHooks } from './router-hooks';
+import DynamicLoadingComponent from '@/components/shared/dynamic-loading-component.vue';
 let router: Router;
+
+function createDynamicLoadingComponent(factory: () => Promise<any>) {
+  return defineComponent({
+    render: () => {
+      return h(DynamicLoadingComponent, {
+        componentFactory: factory,
+      })
+    },
+  });
+}
 
 export const setupRouter = (app) => {
   // 创建一个新的 store 实例
@@ -8,22 +20,52 @@ export const setupRouter = (app) => {
     history: createWebHashHistory(),
     routes: [
       {
-        path: '/',
+        path: '/edit/:projectId/:pageId',
         name: 'editor',
-        component: () => import('../views/EditorCore.vue'),
+        component: createDynamicLoadingComponent(
+          () => import('@/views/EditorCore.vue')
+        ),
         meta: {
           layout: () => import('@/layout/EditorLayout.vue'),
           needAuth: true,
         }
       },
       {
+        path: '/',
+        redirect: '/project-list',
+      },
+      {
+        path: '/project-list',
+        name: 'project-list',
+        component: createDynamicLoadingComponent(
+          () => import('@/views/TenonProjectCore.vue'),
+        ),
+        meta: {
+          layout: () => import('@/layout/TenonProjectLayout.vue'),
+          needAuth: true,
+        }
+      },
+      {
+        path: '/page-list/:projectId/:projectName',
+        name: 'page-list',
+        component: createDynamicLoadingComponent(
+          () => import('@/views/TenonPageCore.vue')
+        ),
+        meta: {
+          layout: () => import('@/layout/TenonPageLayout.vue'),
+          needAuth: true,
+        }
+      },
+      {
         path: '/auth',
-        redirect: '/auth/signIn'
+        redirect: '/auth/signIn',
       },
       {
         path: '/auth/signIn',
         name: 'signIn',
-        component: () => import('../views/Auth/SignIn.vue'),
+        component: createDynamicLoadingComponent(
+          () => import('@/views/Auth/SignIn.vue')
+        ),
         meta: {
           layout: () => import('@/layout/AuthLayout.vue'),
           authPage: true,
@@ -32,7 +74,9 @@ export const setupRouter = (app) => {
       {
         path: '/auth/signup',
         name: 'signup',
-        component: () => import('../views/Auth/Signup.vue'),
+        component: createDynamicLoadingComponent(
+          () => import('@/views/Auth/Signup.vue')
+        ),
         meta: {
           layout: () => import('@/layout/AuthLayout.vue'),
           authPage: true,
@@ -41,7 +85,9 @@ export const setupRouter = (app) => {
       {
         path: '/blank',
         name: 'blank',
-        component: () => import('@/views/Blank.vue'),
+        component: createDynamicLoadingComponent(
+          () => import('@/views/Blank.vue')
+        ),
         meta: {
           layout: () => import('@/layout/Blank.vue'),
         }
@@ -49,7 +95,9 @@ export const setupRouter = (app) => {
       {
         path: '/:catchAll(.*)',
         name: 'shim',
-        component: () => import('@/views/Blank.vue'),
+        component: createDynamicLoadingComponent(
+          () => import('@/views/Blank.vue')
+        ),
         meta: {
           layout: () => import('@/layout/Blank.vue'),
         }

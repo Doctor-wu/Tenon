@@ -46,6 +46,7 @@ importers:
       '@tenon/shared': workspace:*
       '@types/koa': ^2.13.4
       '@types/koa-router': ^7.4.4
+      '@types/koa-session': ^5.10.6
       '@types/koa-static': ^4.0.2
       '@types/mongoose': ^5.11.97
       ansi-regex: ^6.0.1
@@ -66,6 +67,7 @@ importers:
       '@koa/cors': 3.1.0
       '@types/koa': 2.13.4
       '@types/koa-router': 7.4.4
+      '@types/koa-session': 5.10.6
       '@types/koa-static': 4.0.2
       '@types/mongoose': 5.11.97
       ansi-regex: 6.0.1
@@ -367,6 +369,13 @@ packages:
   /@types/koa-send/4.1.3:
     resolution: {integrity: sha512-daaTqPZlgjIJycSTNjKpHYuKhXYP30atFc1pBcy6HHqB9+vcymDgYTguPdx9tO4HMOqNyz6bz/zqpxt5eLR+VA==}
     dependencies:
+      '@types/koa': 2.13.4
+    dev: false
+
+  /@types/koa-session/5.10.6:
+    resolution: {integrity: sha512-p4rgkeRmiJu8XGC3eH2duRCNgnLUl6sjadEXH/AsieH/9fqYfXSZoZNC9CAe+FQK+QmM76hVyvuJ5Jrl5xxNeA==}
+    dependencies:
+      '@types/cookies': 0.7.7
       '@types/koa': 2.13.4
     dev: false
 

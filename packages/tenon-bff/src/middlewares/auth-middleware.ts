@@ -1,10 +1,10 @@
-import { TypeMiddleware } from "@tenon/node-framework/src/controller/controller-core.interface";
+import { TypeMiddleware } from "@tenon/node-framework";
 
 export const AuthMiddleWare: TypeMiddleware = ({
   ctx,
   params
 }) => {
-  console.log(ctx.session);
+  console.log(ctx.session, 'AuthMiddleWare');
   
   if (!ctx.session.user) {
     ctx.response.status = 403;

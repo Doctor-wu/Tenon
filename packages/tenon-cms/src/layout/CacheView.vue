@@ -1,11 +1,14 @@
 <template>
   <router-view v-slot="{ Component }">
-    <keep-alive>
-      <component :is="Component" v-if="$route.meta.keepAlive" />
-    </keep-alive>
-    <component :is="Component" v-if="!$route.meta.keepAlive" />
+    <template v-if="Component">
+      <keep-alive>
+        <component :is="markRaw(Component)" v-if="$route.meta.keepAlive" />
+      </keep-alive>
+      <component :is="markRaw(Component)" v-if="!$route.meta.keepAlive" />
+    </template>
   </router-view>
 </template>
 
 <script setup lang="ts">
+import { markRaw, shallowRef } from 'vue';
 </script>

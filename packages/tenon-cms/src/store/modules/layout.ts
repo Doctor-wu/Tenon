@@ -1,7 +1,7 @@
 import { Module } from 'vuex';
 import { IRootState } from '..';
 import { Component } from 'vue';
-import EditorLayout from '@/layout/EditorLayout.vue';
+import TenonProjectLayout from '@/layout/TenonProjectLayout.vue';
 
 
 export interface ILayoutState {
@@ -11,7 +11,7 @@ export interface ILayoutState {
 export default {
   state() {
     return {
-      activeLayout: EditorLayout,
+      activeLayout: TenonProjectLayout,
     };
   },
   mutations: {

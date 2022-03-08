@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import Header from '~components/layout-comps/header.vue';
+import Header from '@/components/layout-comps/header/header.vue';
 import Operation from '~components/editor/operation/index.vue';
 import AttrsPanel from '~components/editor/attrs-panel/index.vue';
 import CacheView from './CacheView.vue';

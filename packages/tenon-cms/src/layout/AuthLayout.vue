@@ -16,7 +16,7 @@
 </template>
 <script setup lang="ts">
 import CacheView from './CacheView.vue';
-import Header from '@/components/layout-comps/header.vue';
+import Header from '@/components/layout-comps/header/header.vue';
 import AuthSider from '../components/layout-comps/auth/auth-sider.vue';
 
 </script>

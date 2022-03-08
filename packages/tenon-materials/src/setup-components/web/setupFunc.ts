@@ -9,7 +9,7 @@ import { findParentTenonComp } from "./setupRender";
 
 export function setupComponent(props, ctx, logic) {
   const instance = getCurrentInstance();
-  const tenonComp: TenonComponent = (instance as any)?.ctx.$attrs.tenonComp;
+  const tenonComp: TenonComponent = (instance as any)?.attrs?.tenonComp;
   if (!tenonComp) return;
 
   tenonComp.ctx = (instance as any)?.ctx;

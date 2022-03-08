@@ -1,8 +1,8 @@
-import { BaseService, Service, tenonAppType, io } from "@tenon/node-framework";
-import { SERVICE_NAME } from "./constant";
+import { BaseService, Service, tenonAppType, io, createSchema } from "@tenon/node-framework";
+import { SERVICE_NAME } from "../constant";
 import { IUserOptions } from "./user.interface";
 
-const userSchema = {
+const userSchema = createSchema({
   username: {
     type: String,
     required: true,
@@ -31,7 +31,7 @@ const userSchema = {
     type: Boolean,
     default: false,
   }
-}
+});
 
 @Service({
   schema: userSchema,

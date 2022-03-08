@@ -21,16 +21,6 @@ export class BaseService<DocType = unknown> implements IDecoratedServiceExtraFie
   protected app: tenonAppType;
 
   /** 
-   * Service装饰器会为实例加上schemes属性 
-   * */
-  protected schemaConfig!: SchemaDefinition<SchemaDefinitionType<DocType>>;
-
-  /** 
-   * Service装饰器会为实例加上schemaType属性 
-   * */
-  protected schemaOptions!: SchemaOptions;
-
-  /** 
    * Service装饰器会为Service在实例化时去创造一个schemaInstance对象 
    * */
   protected schemaInstance!: Schema;
@@ -47,11 +37,6 @@ export class BaseService<DocType = unknown> implements IDecoratedServiceExtraFie
 
   constructor(app: tenonAppType) {
     this.app = app;
-  }
-
-  /** 初始化Schema */
-  protected buildSchema() {
-    this.schemaInstance = new Schema(this.schemaConfig, this.schemaOptions);
   }
 
   /** 初始化Model */

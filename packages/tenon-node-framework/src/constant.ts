@@ -8,6 +8,7 @@ export const CONSTANT = {
     signed: true, // 签名cookie
     renew: true,
     /** cookie快过期时自动重新设置*/
+    sameSite: 'strict',
   },
   defaultCorsConfig: {
     credentials: true,

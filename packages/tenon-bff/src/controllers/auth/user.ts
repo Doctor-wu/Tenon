@@ -1,6 +1,6 @@
 import { BaseController, Controller, Get, Post, RequestNext, RequestContext, useService } from "@tenon/node-framework";
 import { SERVICE_NAME } from "../../services/constant";
-import { UserService } from "../../services/user";
+import { UserService } from "../../services";
 import crypto from "crypto";
 import { SignController } from "./sign";
 

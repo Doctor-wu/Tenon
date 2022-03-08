@@ -25,7 +25,7 @@ export function Delete<P = any>(requestPath: string, requestOptions: IRequestOpt
       /** 处理中间件 */
       const store = getControllerStore(this.ControllerName);
       const middleware = this.middleware.concat();
-      middleware.unshift(...(store.middleware?.[propertyKey] || []));
+      middleware.push(...(store.middleware?.[propertyKey] || []));
       const [access, reason] = await processMiddleWare(middleware, ctx, params);
       if (access === false) return this.responseError(ctx, next)(1111, reason as string);
       /** 处理中间件 */

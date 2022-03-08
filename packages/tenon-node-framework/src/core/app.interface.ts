@@ -1,4 +1,5 @@
 import Koa from "koa";
+import session from "koa-session";
 import { Mongoose } from "mongoose";
 import { BaseController } from "../controller";
 import { ConnectionModule } from "../modules/connectionModule";
@@ -38,6 +39,7 @@ export interface IServerConfig {
     signed?: boolean;
     /** cookie快过期时自动重新设置*/
     renew?: boolean;
+    sameSite?: 'lax' | 'strict' | boolean
   },
   /** 静态资源配置 */
   static?: {
@@ -67,5 +69,5 @@ export type tenonAppType = Koa<Koa.DefaultState, Koa.DefaultContext> & {
   $mongoose?: Mongoose;
 }
 
-export type RequestContext = Koa.Context;
+export type RequestContext = Koa.Context & { session: session.Session };
 export type RequestNext = Koa.Next;

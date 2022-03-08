@@ -2,11 +2,11 @@ import { useRouter } from "@/router";
 import { useStore } from "@/store";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-const prefixUrl = "http://localhost:9999";
+const prefixUrl = "http://localhost:9847";
 
 const networkConfig: AxiosRequestConfig = {
   headers: {
-      'Content-Type': 'application/json'
+    'Content-Type': 'application/json'
   },
   withCredentials: true,
   timeout: 40000
@@ -54,7 +54,18 @@ type responseType = {
 }
 
 export const $get = (path: string, params?: any) => {
-  return requestInstance.get<any,responseType>(prefixUrl + path, params);
+  if (params) {
+    const keys = Object.keys(params);
+    if (keys.length) {
+      path += '?';
+      keys.forEach(key => {
+        path += key;
+        path += '=';
+        path += params[key];
+      });
+    }
+  }
+  return requestInstance.get<any, responseType>(prefixUrl + path);
 }
 
 export const $post = (path: string, params: any) => {
@@ -66,5 +77,16 @@ export const $put = (path: string, params: any) => {
 }
 
 export const $delete = (path: string, params: any) => {
-  return requestInstance.delete(prefixUrl + path, params);
+  if (params) {
+    const keys = Object.keys(params);
+    if (keys.length) {
+      path += '?';
+      keys.forEach(key => {
+        path += key;
+        path += '=';
+        path += params[key];
+      });
+    }
+  }
+  return requestInstance.delete<any, responseType>(prefixUrl + path);
 }

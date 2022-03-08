@@ -1,7 +1,9 @@
-import { BaseController, Controller, Get, RequestNext, Post, RequestContext, useService, MiddleWare } from "@tenon/node-framework";
-import { AuthMiddleWare } from "../../middlewares/auth-middleware";
+import {
+  BaseController, Controller, Get, RequestNext,
+  Post, RequestContext, useService, MiddleWare, io
+} from "@tenon/node-framework";
 import { SERVICE_NAME } from "../../services/constant";
-import { UserService } from "../../services/user";
+import { UserService } from "../../services";
 import { confusePwd, useCaptcha } from "./util";
 
 @Controller({
@@ -124,12 +126,13 @@ export class SignController extends BaseController {
     }
   }
 
-  getDisplayUserInfo(userInfo: any) {
-    return this.getSpecifiedFieldParams(userInfo, [
-      "username",
-      "phone",
-      "email",
-    ])
+  @Get("/signOut")
+  async handlerSignOut(
+    ctx,
+    next,
+  ) {
+    ctx.session = null;
+    this.responseJson(ctx, next)("登出成功");
   }
 
   @Get("/getCaptcha")
@@ -138,8 +141,16 @@ export class SignController extends BaseController {
     next,
   ) {
     const captcha = useCaptcha();
-    ctx.session.captcha = captcha.text.toLowerCase();
+    ctx.session!.captcha = captcha.text.toLowerCase();
     ctx.response.type = 'svg';
     this.responseJson(ctx, next)(captcha.data, { noLog: true });
+  }
+
+  getDisplayUserInfo(userInfo: any) {
+    return this.getSpecifiedFieldParams(userInfo, [
+      "username",
+      "phone",
+      "email",
+    ])
   }
 }
