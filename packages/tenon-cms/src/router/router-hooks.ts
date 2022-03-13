@@ -17,9 +17,13 @@ export const setupRouterHooks = (router: Router) => {
       return next('/');
     }
     if (!layout) return true;
-    layout().then((layoutComponent) => {
-      store.dispatch("layout/setActiveLayout", layoutComponent.default);
-    });
+    const timer = setTimeout(() => { // 延迟50ms设置loading，避免闪屏 
+      store.dispatch('layout/setLoading', true);
+    }, 50);
+    const layoutComponent = await layout();
+    clearTimeout(timer);
+    store.dispatch("layout/setActiveLayout", layoutComponent.default);
+    store.dispatch('layout/setLoading', false);
     next();
   });
 }

@@ -35,6 +35,18 @@ class TenonPageController extends BaseController {
     await this.smartResponse(ctx, next)(error, result);
   }
 
+  @Get('/getPageInfo/:pageId')
+  @MiddleWare(AuthMiddleWare)
+  async getPageInfo(
+    ctx,
+    next,
+    params
+  ) {
+    const { pageId } = params;
+    const [error, result] = await this.pageService.getPageInfo(pageId);
+    await this.smartResponse(ctx, next)(error, result);
+  }
+
   @Post('/addPage', {
     params: {
       pageName: {
@@ -65,6 +77,7 @@ class TenonPageController extends BaseController {
       }
     }
   })
+  @MiddleWare(AuthMiddleWare)
   async deletePage(
     ctx,
     next,

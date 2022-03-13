@@ -1,5 +1,4 @@
 import { createStore, Store } from 'vuex';
-import { setupMaterials } from "@/logic/setup-materials";
 export interface IRootState {
   author: string;
 }

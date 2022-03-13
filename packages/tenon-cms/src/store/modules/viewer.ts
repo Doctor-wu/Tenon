@@ -1,8 +1,10 @@
-import _, { cloneDeep } from 'lodash';
 import { Module } from 'vuex';
 import { IRootState } from '..';
 import { ComponentTreeNode, TenonComponent } from "@tenon/engine"
 import { IMaterialConfig } from '@tenon/materials';
+import { getTreeModel } from "@/local-db";
+
+const treeModel = getTreeModel();
 export interface IViewerState {
   defaultTree: TenonComponent | null;
   tree: TenonComponent | null;
@@ -66,7 +68,7 @@ export default {
       return context.state.compId;
     },
     clearTree(context) {
-      context.commit('SET_TREE', cloneDeep(context.getters['getDefaultTree']));
+      context.commit('SET_TREE', context.getters['getDefaultTree'].clone());
       context.commit('SET_ACTIVE_COMPONENT', null);
       context.commit('SET_COMP_ID', 0);
     }

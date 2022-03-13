@@ -29,6 +29,14 @@ class PageService extends BaseService {
     });
   }
 
+  public async getPageInfo(pageId: string) {
+    return this.errorProtectedHandler(async () => {
+      const query = await this.model.find({ _id: pageId });
+      if (query.length === 0) throw new Error(`不存在页面：${pageId}`);
+      return query[0];
+    });
+  }
+
   public async getProjectPages(id: string) {
     return this.errorProtectedHandler(async () => {
       return await this.model.find({

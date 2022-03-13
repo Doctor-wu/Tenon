@@ -59,6 +59,14 @@ class ProjectService extends BaseService {
     });
   }
 
+  public async getProjectInfo(projectId: string) {
+    return this.errorProtectedHandler(async () => {
+      const query = await this.model.find({ _id: projectId });
+      if (query.length === 0) throw new Error(`不存在项目：${projectId}`);
+      return query[0];
+    });
+  }
+
   public async deleteProject(_id: string) {
     return this.errorProtectedHandler(async () => {
       let err, result;

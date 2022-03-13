@@ -1,6 +1,6 @@
 import { TypeMiddleware } from "@tenon/node-framework";
 
-export const AuthMiddleWare: TypeMiddleware = ({
+export const AuthMiddleWare: TypeMiddleware = async ({
   ctx,
   params
 }) => {

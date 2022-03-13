@@ -29,14 +29,13 @@ export class TenonService {
   }
 
   createStore(storeName: string) {
-    debugger;
     const db = this.db._db;
     if (!db) return;
     if (!db.objectStoreNames.contains(storeName)) {
       this.store = db.createObjectStore(storeName, { autoIncrement: true });
-      this.createIndex('username', 'username', {
-        unique: true,
-      });
+      // this.createIndex('username', 'username', {
+      //   unique: true,
+      // });
     }
   }
 

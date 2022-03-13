@@ -8,7 +8,7 @@ export class TenonIndexedDB {
   public eventEmitter = new Subscribe();
   public onLoad: any[] = [];
   constructor(name: string) {
-    this._request = indexedDB.open(name, 4);
+    this._request = indexedDB.open(name, 1);
     this.setupRequest().then(() => {
       this.eventEmitter.emit('onLaunch');
     });
@@ -29,10 +29,6 @@ export class TenonIndexedDB {
       this._request.onupgradeneeded = (event: any) => {
         this._db = event.target.result;
         this.eventEmitter.emit('upgradeneeded', this._db);
-        resolve(event);
-        // [...this.services.values()].forEach((service: TenonService) => {
-        //   service.update(this);
-        // });
       }
     })
   }

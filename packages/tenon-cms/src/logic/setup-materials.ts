@@ -8,7 +8,10 @@ import ComposeViewVue from '@/components/editor/viewer/Compose-View/Compose-View
 import { cloneDeep } from "lodash";
 import { ISchema, TenonComponent } from "@tenon/engine";
 
+let initd = false;
 export const setupMaterials = async (store: Store<IRootState>) => {
+  if (initd) return;
+  initd = true;
   const components = await (await getComponentsApi()).data;
   const {
     componentsMap,

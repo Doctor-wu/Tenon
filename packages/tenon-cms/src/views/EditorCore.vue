@@ -14,23 +14,50 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, onBeforeMount, onBeforeUnmount } from 'vue';
 import { useStore } from '@/store';
 import ViewerNav from '~components/editor/viewer/viewer-nav.vue';
 import ComposeView from '~components/editor/viewer/Compose-View/Compose-View.vue';
 import ViewerNotice from '~components/editor/viewer/viewer-notice.vue';
 import { editMode } from '~logic/viewer-status';
 import { setupMaterials } from '@/logic/setup-materials';
+import { useRouter } from 'vue-router';
+import { getPageInfoApi } from '@/api'
+import { Message } from '@arco-design/web-vue';
 
 const store = useStore();
 const panel = ref<HTMLElement>();
+const router = useRouter();
+const pageInfo = ref();
+const {
+  projectId, pageId,
+} = router.currentRoute.value.params;
+
 
 onMounted(() => {
   panel.value?.scrollIntoView();
-  if (!store.getters['viewer/getTree']) {
-    setupMaterials(store);
-  }
 });
+
+onBeforeMount(() => {
+  getPageInfoApi(pageId)
+    .then(({ data, success, errorMsg }) => {
+      if (!success) {
+        Message.error(errorMsg!);
+      }
+      else {
+        pageInfo.value = data;
+        console.log(pageInfo.value);
+      }
+    });
+});
+
+onBeforeUnmount(() => {
+  store.dispatch('viewer/clearTree');
+})
+
+if (!store.getters['viewer/getTree']) {
+  setupMaterials(store);
+}
 
 </script>
 <style lang="scss" scoped>

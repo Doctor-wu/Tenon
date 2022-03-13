@@ -28,6 +28,18 @@ class TenonProjectController extends BaseController {
     await this.smartResponse(ctx, next)(error, result);
   }
 
+  @Get('/getProjectInfo/:projectId')
+  @MiddleWare(AuthMiddleWare)
+  async getPageInfo(
+    ctx,
+    next,
+    params
+  ) {
+    const { projectId } = params;
+    const [error, result] = await this.projectService.getProjectInfo(projectId);
+    await this.smartResponse(ctx, next)(error, result);
+  }
+
   @Post('/addProject', {
     params: {
       projectName: {

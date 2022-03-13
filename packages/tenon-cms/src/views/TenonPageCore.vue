@@ -31,18 +31,20 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
-import { getRandomColor } from '@tenon/shared';
+import { ref } from 'vue';
 import { deletePageApi, getPagesApi } from '@/api/page';
 import { useRouter } from '@/router';
 import AddPageModal from '@/components/page-list/add-page-modal.vue';
 import PageCardOptions from '@/components/page-list/page-card-options.vue';
 import { Message } from '@arco-design/web-vue';
+import { getProjectInfoApi } from '@/api';
+import { useStore } from '@/store';
 
 const pages = ref<any>([]);
 const cardOptions = ref<any[]>([]);
 const loaded = ref(false);
 const projectId = useRouter().currentRoute.value.params['projectId'];
+const store = useStore();
 
 const fetchPages = async () => {
   loaded.value = false;
@@ -53,6 +55,16 @@ const fetchPages = async () => {
 };
 
 fetchPages();
+store.getters['project/getProjectInfo'].then(({ _id }) => {
+  if (_id !== projectId) {
+    console.log('update');
+    
+    getProjectInfoApi(projectId)
+      .then(({ data }) => {
+        store.dispatch('project/setProjectInfo', data);
+      });
+  }
+})
 
 const deletePage = async (pageId) => {
   const { success, data, errorMsg } = await deletePageApi({ pageId });
