@@ -12,6 +12,7 @@ export interface IViewerState {
   hoveringComponent: IMaterialConfig | null;
   draggingComponent: IMaterialConfig | null;
   compId: number;
+  scale: number;
 }
 
 const defaultTree: null = null;
@@ -25,6 +26,7 @@ export default {
       hoveringComponent: null,
       draggingComponent: null,
       compId: 0,
+      scale: 1,
     };
   },
   mutations: {
@@ -45,6 +47,9 @@ export default {
     },
     SET_COMP_ID(state, id: number) {
       state.compId = id;
+    },
+    SET_SCALE(state, scale) {
+      state.scale = scale;
     }
   },
   actions: {
@@ -71,6 +76,9 @@ export default {
       context.commit('SET_TREE', context.getters['getDefaultTree'].clone());
       context.commit('SET_ACTIVE_COMPONENT', null);
       context.commit('SET_COMP_ID', 0);
+    },
+    setScale({ commit }, scale: number) {
+      commit('SET_SCALE', scale);
     }
   },
   getters: {
@@ -93,6 +101,9 @@ export default {
       const id = state.compId;
       state.compId++;
       return id;
+    },
+    scale(state: IViewerState) {
+      return state.scale;
     }
   },
   namespaced: true,

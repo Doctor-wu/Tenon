@@ -22,6 +22,7 @@
       <icon-eraser class="nav-item-icon" />
       <span>清</span>
     </AnimateButton>
+    <Scale></Scale>
     <Deletor></Deletor>
   </section>
 </template>
@@ -33,7 +34,8 @@ import { h } from 'vue';
 import { Message, Modal } from '@arco-design/web-vue';
 import AnimateButton from '~components/shared/animate-button.vue';
 import { downloadTree, uploadTree } from '~logic/tree-operation';
-import Deletor from './deletor.vue';
+import Deletor from '../deletor.vue';
+import Scale from './scale.vue';
 
 const store = useStore();
 

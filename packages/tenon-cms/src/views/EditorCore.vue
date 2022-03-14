@@ -14,9 +14,9 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, onBeforeMount, onBeforeUnmount } from 'vue';
-import { useStore } from '@/store';
-import ViewerNav from '~components/editor/viewer/viewer-nav.vue';
+import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed, watchEffect } from 'vue';
+import { useStore } from 'vuex';
+import ViewerNav from '@/components/editor/viewer/viewer-nav/viewer-nav.vue';
 import ComposeView from '~components/editor/viewer/Compose-View/Compose-View.vue';
 import ViewerNotice from '~components/editor/viewer/viewer-notice.vue';
 import { editMode } from '~logic/viewer-status';
@@ -32,10 +32,22 @@ const pageInfo = ref();
 const {
   projectId, pageId,
 } = router.currentRoute.value.params;
+const editorWidth = ref('320px');
+const editorHeight = ref('100%');
+const editorZoom = computed(() => {
+  return store.getters['viewer/scale'];
+})
+
+watchEffect(async () => {
+  const scale = store.getters['viewer/scale'];
+  const width = (await store.getters['project/getProjectInfo'])?.userConfig.screenWidth;
+  editorWidth.value = (width || 320) + 'px';
+  editorHeight.value = 100 + '%';
+});
 
 
 onMounted(() => {
-  panel.value?.scrollIntoView();
+  // panel.value?.scrollIntoView();
 });
 
 onBeforeMount(() => {
@@ -62,7 +74,6 @@ if (!store.getters['viewer/getTree']) {
 </script>
 <style lang="scss" scoped>
 .rootView {
-  transform: scale(1);
   height: 100%;
   // 劫持编辑器继承样式
   text-align: left;
@@ -80,8 +91,10 @@ if (!store.getters['viewer/getTree']) {
 
 .viewer-panel {
   box-shadow: 0 3px 18px 8px #00000010;
-  min-height: 812px;
-  width: 360px;
+  zoom: v-bind(editorZoom);
+  width: v-bind(editorWidth);
+  // height: v-bind(editorHeight);
+  min-height: 670px;
   // overflow: auto;
   margin: 20px;
   display: flex;
