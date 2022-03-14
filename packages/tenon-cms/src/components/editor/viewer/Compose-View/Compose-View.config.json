@@ -27,5 +27,10 @@
       "title": "Compose文本样式",
       "fieldName": "composeTextStyle"
     }
-  ]
+  ],
+  "tenonProps": {
+    "composeLayout": {
+      "padding": "0px"
+    }
+  }
 }
