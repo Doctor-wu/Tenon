@@ -8,7 +8,7 @@ import { IDecoratedController } from "./Controller.interface";
 export interface IParamsConfig {
   [props: string]: {
     required?: boolean;
-    type?: "number" | "string" | "boolean";
+    type?: "number" | "string" | "boolean" | "object";
     defaultValue?: any;
     validator?: (param?: any) => [true] | [false, string];
   }

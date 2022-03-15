@@ -16,7 +16,7 @@
         </a-avatar>
         <ProjectCardOptions
           :ref="(el) => cardOptions[index] = el"
-          @on-open="() => $router.push({ path: `/page-list/${project._id}/${project.projectName}` })"
+          @on-open="() => $router.push({ path: `/page-list/${project._id}` })"
           @on-delete="() => deleteProject(project._id)"
         ></ProjectCardOptions>
       </section>

@@ -1,11 +1,22 @@
 <template>
   <section class="nav-container">
-    <a-page-header :title="$route.params?.projectName" subtitle="pages" @back="$router.back()"/>
+    <a-page-header
+      :title="projectInfo?.projectName"
+      subtitle="pages"
+      @back="$router.push('/project-list')"
+    />
   </section>
 </template>
 <script setup lang="ts">
-import { useRouter } from '@/router';
-const router = useRouter();
+import { ref, watchEffect } from 'vue';
+import { useStore } from 'vuex';
+const store = useStore();
+const projectInfo = ref<any>({});
+watchEffect(() => {
+  store.getters['project/getProjectInfo'].then((data) => {
+    projectInfo.value = data;
+  });
+})
 </script>
 <style lang="scss" scoped>
 .nav-container {

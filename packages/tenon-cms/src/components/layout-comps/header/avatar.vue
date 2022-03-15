@@ -22,7 +22,7 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue';
-import { useStore } from '@/store';
+import { useStore } from 'vuex';
 import { signOutApi } from '@/api';
 import { getUserModel } from '@/local-db/controller/user';
 import { useRouter } from '@/router';

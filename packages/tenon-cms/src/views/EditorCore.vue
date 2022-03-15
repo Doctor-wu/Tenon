@@ -24,6 +24,8 @@ import { setupMaterials } from '@/logic/setup-materials';
 import { useRouter } from 'vue-router';
 import { getPageInfoApi } from '@/api'
 import { Message } from '@arco-design/web-vue';
+import { config2tree } from '@tenon/engine';
+
 
 const store = useStore();
 const panel = ref<HTMLElement>();
@@ -36,19 +38,14 @@ const editorWidth = ref('320px');
 const editorHeight = ref('100%');
 const editorZoom = computed(() => {
   return store.getters['viewer/scale'];
-})
+});
 
 watchEffect(async () => {
-  const scale = store.getters['viewer/scale'];
   const width = (await store.getters['project/getProjectInfo'])?.userConfig.screenWidth;
   editorWidth.value = (width || 320) + 'px';
   editorHeight.value = 100 + '%';
 });
 
-
-onMounted(() => {
-  // panel.value?.scrollIntoView();
-});
 
 onBeforeMount(() => {
   getPageInfoApi(pageId)
@@ -57,6 +54,16 @@ onBeforeMount(() => {
         Message.error(errorMsg!);
       }
       else {
+        const config = data.tree;
+        if (data.tree) {
+          store.dispatch(
+            'viewer/setTree',
+            config2tree(
+              { materialsMap: store.getters['materials/getMaterialsMap'] }
+            )(config),
+          );
+        }
+        store.dispatch('page/setPageInfo', data);
         pageInfo.value = data;
         console.log(pageInfo.value);
       }
@@ -65,7 +72,7 @@ onBeforeMount(() => {
 
 onBeforeUnmount(() => {
   store.dispatch('viewer/clearTree');
-})
+});
 
 if (!store.getters['viewer/getTree']) {
   setupMaterials(store);

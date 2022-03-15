@@ -15,7 +15,7 @@
         </a-avatar>
         <PageCardOptions
           :ref="(el) => cardOptions[index] = el"
-          @on-open="() => $router.push(`/edit/${$route.params.projectId}/${page._id}`)"
+          @on-open="() => $router.push(`/edit/${page._id}`)"
           @on-delete="() => deletePage(page._id)"
         ></PageCardOptions>
       </section>
@@ -55,16 +55,18 @@ const fetchPages = async () => {
 };
 
 fetchPages();
-store.getters['project/getProjectInfo'].then(({ _id }) => {
+store.getters['project/getProjectInfo'].then((data) => {
+  const { _id } = data || {};
   if (_id !== projectId) {
     console.log('update');
-    
+
     getProjectInfoApi(projectId)
       .then(({ data }) => {
         store.dispatch('project/setProjectInfo', data);
+        console.log(data);
       });
   }
-})
+});
 
 const deletePage = async (pageId) => {
   const { success, data, errorMsg } = await deletePageApi({ pageId });

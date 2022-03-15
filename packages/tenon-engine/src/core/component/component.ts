@@ -38,7 +38,7 @@ export class TenonComponent implements ComponentTreeNode {
         }
       );
     }
-    Object.keys(config.slots).forEach(slotKey => {
+    Object.keys(config.slots || {}).forEach(slotKey => {
       instance.slots[slotKey] = TenonComponent.createInstanceByDeserialize(config.slots[slotKey], materialsMap)!;
       instance.slots[slotKey].parent = instance;
     });

@@ -71,6 +71,12 @@ export class BaseService<DocType = unknown> implements IDecoratedServiceExtraFie
     });
   }
 
+  protected async deleteItemById(_id: string) {
+    const result = await this.Model.deleteOne({ _id });
+    if (result.deletedCount === 0) throw new Error('删除失败');
+    else return '删除成功';
+  }
+
   protected async errorProtectedHandler(resultGetter: () => Promise<any>): Promise<[any, any]> {
     let err, result;
     try {

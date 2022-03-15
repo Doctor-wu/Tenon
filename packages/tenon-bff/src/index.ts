@@ -14,6 +14,7 @@ import {
   ProjectService,
   PageService,
 } from "./services";
+import { TenonComponentService } from "./services/tenon-component-service";
 
 const bootstrap = async () => {
   const server = await createServer({
@@ -36,6 +37,7 @@ const bootstrap = async () => {
       UserService,
       ProjectService,
       PageService,
+      TenonComponentService,
     ],
     static: {
       path: path.resolve(__dirname, "./static"),

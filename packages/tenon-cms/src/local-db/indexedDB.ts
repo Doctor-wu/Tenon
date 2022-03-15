@@ -8,7 +8,7 @@ export class TenonIndexedDB {
   public eventEmitter = new Subscribe();
   public onLoad: any[] = [];
   constructor(name: string) {
-    this._request = indexedDB.open(name, 1);
+    this._request = indexedDB.open(name, 2);
     this.setupRequest().then(() => {
       this.eventEmitter.emit('onLaunch');
     });

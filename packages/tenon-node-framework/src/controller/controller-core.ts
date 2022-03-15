@@ -114,7 +114,7 @@ export class BaseController implements IDecoratedControllerExtraFields {
     const self = this;
     return async function (error, result) {
       if (error) {
-        await self.responseError(ctx, next)(1111, error);
+        await self.responseError(ctx, next)(1111, error.message || error);
       } else {
         await self.responseJson(ctx, next)(result);
       }

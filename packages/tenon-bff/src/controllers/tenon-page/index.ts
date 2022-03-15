@@ -6,6 +6,7 @@ import {
 import { AuthMiddleWare } from "../../middlewares/auth-middleware";
 import type { PageService } from "../../services";
 import { SERVICE_NAME } from "../../services/constant";
+import { TenonComponentService } from "../../services/tenon-component-service";
 
 @Controller({
   name: 'TenonPageController',
@@ -15,6 +16,9 @@ class TenonPageController extends BaseController {
 
   @useService(SERVICE_NAME.page)
   pageService!: PageService;
+
+  @useService(SERVICE_NAME.tenonComponent)
+  tenonComponentService!: TenonComponentService;
 
   @Get('/getPages/:projectId', {
     params: {
@@ -67,6 +71,41 @@ class TenonPageController extends BaseController {
   ) {
     const [error, result] = await this.pageService.createNewPage(params);
     await this.smartResponse(ctx, next)(error?.message || error, result);
+  }
+
+  @Post('/saveTree', {
+    params: {
+      tree: {
+        required: true,
+        type: 'object',
+      },
+      version: {
+        type: 'number',
+        required: true,
+      },
+      belongPageId: {
+        type: 'string',
+        required: true,
+      },
+    }
+  })
+  async saveTree(
+    ctx,
+    next,
+    params
+  ) {
+    const {
+      tree, version, belongPageId,
+    } = params;
+    let error, result;
+    [error, result] = await this.tenonComponentService
+      .createNewTenonComponentTree(tree, belongPageId, version);
+    if (error) return await this.smartResponse(ctx, next)(error, result);
+    [error, result] = await this.pageService.updatePageInfo(belongPageId, {
+      newestVersion: version,
+    });
+    result = '保存成功';
+    return await this.smartResponse(ctx, next)(error, result);
   }
 
   @Delete('/deletePage', {

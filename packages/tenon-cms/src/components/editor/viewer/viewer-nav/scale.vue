@@ -1,9 +1,11 @@
 <template>
   <section class="scale-container">
     <section class="scale-value">
-      <AnimateButton @click="clearScale" style="padding: 5px 2px;">
-        {{ Number(store.getters['viewer/scale']).toFixed(2) }}x
-        </AnimateButton>
+      <AnimateButton
+        info="恢复缩放"
+        @click="clearScale"
+        style="padding: 5px 2px;"
+      >{{ Number(store.getters['viewer/scale']).toFixed(2) }}x</AnimateButton>
     </section>
     <section class="operate">
       <TextButton :disabled="disableUp" class="animate-extra" @click="upScale">

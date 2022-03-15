@@ -20,7 +20,7 @@ export const setupRouter = (app) => {
     history: createWebHashHistory(),
     routes: [
       {
-        path: '/edit/:projectId/:pageId',
+        path: '/edit/:pageId',
         name: 'editor',
         component: createDynamicLoadingComponent(
           () => import('@/views/EditorCore.vue')
@@ -46,7 +46,7 @@ export const setupRouter = (app) => {
         }
       },
       {
-        path: '/page-list/:projectId/:projectName',
+        path: '/page-list/:projectId',
         name: 'page-list',
         component: createDynamicLoadingComponent(
           () => import('@/views/TenonPageCore.vue')
