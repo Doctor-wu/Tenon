@@ -7,7 +7,7 @@
       <a-divider style="margin: 10px 0;"></a-divider>
     </template>
     <template v-else>
-      <a-form-item :field="key" :label="properties[key].title" style="margin-left: 20px;">
+      <a-form-item :field="key" :label="properties[key].title">
         <component
           :is="getFormItemBySchemaType(properties[key].type, properties[key])"
           v-bind="getBindingsBySchemaType(properties[key].type, key)"
@@ -32,8 +32,8 @@ import { useStore } from '@/store';
 import { computed } from 'vue';
 import { ComponentTreeNode, ISchema } from '@tenon/engine';
 import { ColorPicker } from 'vue-color-kit';
-import { getValueByHackContext } from '@tenon/shared';
 import carouselController from './controllers/carousel-controller.vue';
+import iconTypeController from './controllers/icon-type-controller.vue';
 
 const props: {
   properties: Record<string, ISchema>;
@@ -55,10 +55,6 @@ const getFormItemBySchemaType = (type: string, meta: ISchema) => {
   switch (type) {
     case 'string':
       return 'a-textarea';
-    case 'array':
-      const listType = meta.listType;
-      if(!listType) return 'a-input';
-      return getListController(listType);
     case 'number':
       return 'a-input-number';
     case 'boolean':
@@ -69,6 +65,12 @@ const getFormItemBySchemaType = (type: string, meta: ISchema) => {
       return 'a-select';
     case 'color':
       return ColorPicker;
+    case 'array':
+      const listType = meta.listType;
+      if(!listType) return 'a-input';
+      return getListController(listType);
+    case 'icon-type':
+      return iconTypeController;
     default:
       return 'a-input';
   }
@@ -120,13 +122,6 @@ const getListenersBySchemaType = (type: string, key) => {
       return {};
   }
 }
-
-const shouldRenderItem = (properties: any, key) => {
-  if (properties.when === undefined) return true;
-  const result = getValueByHackContext(activeComponent.value.props, properties.when);
-  activeComponent.value.props[props.fieldName][key] = undefined;
-  return result;
-}
 </script>
 <style lang="scss" scoped>
 :deep(.arco-textarea-wrapper) .arco-textarea{
@@ -134,6 +129,6 @@ const shouldRenderItem = (properties: any, key) => {
 }
 
 :deep(.arco-textarea-wrapper) {
-  margin-left: 20px;
+  // margin-left: 20px;
 }
 </style>

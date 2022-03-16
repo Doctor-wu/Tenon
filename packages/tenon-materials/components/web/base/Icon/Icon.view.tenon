@@ -1,0 +1,1 @@
+<TenonIcon iconConfig="{{this.iconConfig}}" style="{{this.iconStyle}}"></TenonIcon>

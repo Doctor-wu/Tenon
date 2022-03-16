@@ -94,7 +94,7 @@ let propsConfig: ComputedRef<TenonComponent> = computed<TenonComponent>(() => {
   width: 100%;
 }
 .compose-view-container.editable {
-  min-height: 40px;
+  min-height: 20px;
 }
 .compose-view-container.editable.dropable {
   outline: 1px dashed red;
@@ -105,7 +105,7 @@ let propsConfig: ComputedRef<TenonComponent> = computed<TenonComponent>(() => {
   right: 0;
   top: 0;
   bottom: 0;
-  height: 40px;
+  height: 20px;
   margin: auto;
   text-align: center;
   color: #77777799;

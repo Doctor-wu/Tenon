@@ -1,5 +1,11 @@
 <ArcoButton
   t-bind="buttonProps"
 >
-  <span>{{this.buttonText.value}}</span>
+  <span t-if="this.buttonText.value">{{this.buttonText.value}}</span>
+  <Compose-View
+    t-if="!this.buttonText.value"
+    slotKey="default" 
+    placeholder="拖入组件生成按钮内容"
+    isSlot="true"
+  ></Compose-View>
 </ArcoButton>

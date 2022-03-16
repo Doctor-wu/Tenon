@@ -77,6 +77,12 @@ export class BaseService<DocType = unknown> implements IDecoratedServiceExtraFie
     else return '删除成功';
   }
 
+  protected async deleteManyByIds(ids: string[]) {
+    const result = await this.Model.deleteMany({ _id: { $in: ids } });
+    if (result.deletedCount === ids.length) return '删除成功';
+    throw new Error('删除失败');
+  }
+
   protected async errorProtectedHandler(resultGetter: () => Promise<any>): Promise<[any, any]> {
     let err, result;
     try {

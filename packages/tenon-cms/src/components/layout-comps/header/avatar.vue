@@ -46,8 +46,7 @@ async function logout() {
 </script>
 <style lang="scss" scoped>
 .list-item {
-  padding: 0 10px;
-  box-sizing: content-box;
+  box-sizing: border-box;
   &:hover {
     color: #337ef3;
   }

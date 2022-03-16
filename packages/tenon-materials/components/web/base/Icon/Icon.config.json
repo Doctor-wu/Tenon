@@ -1,0 +1,75 @@
+{
+  "name": "Icon",
+  "icon": "thunderbolt",
+  "description": ["Icon 是一个<基础组件>, Icon可以提供图标相关的能力"],
+  "platform": ["web"],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "图标配置",
+      "fieldName": "iconConfig",
+      "properties": {
+        "type": {
+          "type": "icon-type",
+          "title": "图标种类",
+          "default": "thunder"
+        },
+        "size": {
+          "type": "number",
+          "title": "图标大小",
+          "default": 20
+        },
+        "strokeWidth": {
+          "type": "number",
+          "title": "线宽",
+          "default": 4
+        },
+        "strokeLinecap": {
+          "type": "select",
+          "title": "端点类型",
+          "options":{
+            "butt": "butt",
+            "round": "round",
+            "square": "square"
+          },
+          "default": "butt"
+        },
+        "strokeLinejoin": {
+          "type": "select",
+          "title": "拐角类型",
+          "options":{
+            "arcs": "arcs",
+            "bevel": "bevel",
+            "miter": "miter",
+            "miter-clip": "miter-clip",
+            "round": "round"
+          },
+          "default": "miter"
+        },
+        "spin": {
+          "type": "boolean",
+          "title": "是否旋转",
+          "default": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "图标样式",
+      "fieldName": "iconStyle",
+      "properties": {
+        "color": {
+          "type": "color",
+          "title": "图标颜色",
+          "default": "#000000"
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "box-sizing": "border-box",
+      "display": "inline-block"
+    }
+  }
+}

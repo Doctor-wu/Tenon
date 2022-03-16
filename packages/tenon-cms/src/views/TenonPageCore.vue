@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { deletePageApi, getPagesApi } from '@/api/page';
-import { useRouter } from '@/router';
+import { useRouter } from 'vue-router';
 import AddPageModal from '@/components/page-list/add-page-modal.vue';
 import PageCardOptions from '@/components/page-list/page-card-options.vue';
 import { Message } from '@arco-design/web-vue';

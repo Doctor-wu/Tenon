@@ -77,16 +77,16 @@ class PageService extends BaseService {
 
   public async deletePage(_id: string) {
     return this.errorProtectedHandler(async () => {
-      const result = await this.model.deleteOne({
-        _id,
-      });
-      if (result.deletedCount > 0) return '删除成功';
-      else throw new Error('删除失败');
+      const [error, result] = await this.deletePages([_id]);
+      if (error) throw error;
+      return result;
     });
   }
 
   public async deletePages(_ids: string[]) {
     return this.errorProtectedHandler(async () => {
+      const [error] = await this.tenonComponentService.deleteTrees(_ids);
+      if (error) throw error;
       const query = await this.model.deleteMany({ _id: { $in: _ids } });
       if (query.deletedCount === _ids.length) {
         return '删除成功';
