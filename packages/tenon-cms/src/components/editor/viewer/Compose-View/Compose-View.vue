@@ -1,5 +1,6 @@
 <template>
   <section
+    v-if="!(!editMode && !propsConfig?.children?.length)"
     class="compose-view-container"
     :style="[
       ($attrs as any).composeLayout || {},

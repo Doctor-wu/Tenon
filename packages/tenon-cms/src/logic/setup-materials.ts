@@ -33,7 +33,7 @@ export const setupMaterials = async (store: Store<IRootState>) => {
     return base;
   };
   componentsMap.set("Compose-View", composeView);
-  componentsGroup.get("base")?.unshift(composeView);
+  componentsGroup.get("Base")?.unshift(composeView);
 
   store.dispatch('materials/setMaterials', componentsGroup);
   store.dispatch('materials/setMaterialsMap', componentsMap);

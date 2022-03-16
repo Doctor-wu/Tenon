@@ -1,0 +1,18 @@
+<ArcoMenuItem 
+  t-bind="menuItemConfig"
+  key="{{this.tenonComp.id}}"
+>
+  <Compose-View
+    slotKey="icon" 
+    placeholder="图标"
+    isSlot="true"
+    composeLayout="{
+      boxSizing: 'border-box',
+      display: 'inline-block',
+      width: 'auto',
+      minWidth: '20px',
+      verticalAlign: '-5px'
+    }"
+  />
+  {{this.menuItemConfig.text}}
+</ArcoMenuItem>

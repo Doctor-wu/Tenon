@@ -3,8 +3,14 @@ import Avatar from "@/dependency/Avatar.vue";
 import Text from "@/dependency/Text.vue";
 import Icon from "@/dependency/Icon.vue";
 import {
-  Image, Card, Grid, Button, Carousel,
-  // Avatar
+  Image,
+  Card,
+  Grid,
+  Button,
+  Carousel,
+  Menu,
+  SubMenu,
+  MenuItem,
 } from "@arco-design/web-vue";
 import {
   IconArrowDown,
@@ -15,9 +21,11 @@ import {
   IconCaretLeft,
   IconCaretRight,
   IconCaretUp,
+  IconGithub,
   IconQq,
   IconThunderbolt,
-  IconWechat
+  IconWechat,
+  IconWechatpay
 } from '@arco-design/web-vue/es/icon';
 
 export const materialDependency = {
@@ -28,6 +36,9 @@ export const materialDependency = {
   ArcoButton: Button,
   ArcoCarousel: Carousel,
   ArcoCarouselItem: Carousel.Item,
+  ArcoMenu: Menu,
+  ArcoSubMenu: Menu.SubMenu,
+  ArcoMenuItem: Menu.Item,
   TenonText: Text,
   TenonAvatar: Avatar,
   TenonIcon: Icon,
@@ -46,4 +57,6 @@ export const IconTypes = {
   caretRight: IconCaretRight,
   wechat: IconWechat,
   qq: IconQq,
+  github: IconGithub,
+  wechatPay: IconWechatpay,
 };

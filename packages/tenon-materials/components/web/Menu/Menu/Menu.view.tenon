@@ -1,0 +1,15 @@
+<ArcoMenu 
+  t-bind="menuConfig"
+  style="menuStyle"
+>
+  <Compose-View
+    slotKey="default" 
+    placeholder="拖入组件生成菜单内容"
+    isSlot="true"
+    composeLayout="{
+      boxSizing: 'border-box',
+      width: 'auto',
+      height: '100%'
+    }"
+  />
+</ArcoMenu>

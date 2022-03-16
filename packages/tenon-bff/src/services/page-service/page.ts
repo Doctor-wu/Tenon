@@ -44,7 +44,6 @@ class PageService extends BaseService {
       const result: any = query[0].toJSON();
       let tree: any = null;
       if (result.newestVersion !== 0) {
-        console.log(pageId, result.newestVersion);
         [, [tree] = [null]] = await this.tenonComponentService.getTrees({
           belongPageId: pageId,
           version: result.newestVersion,
@@ -53,6 +52,7 @@ class PageService extends BaseService {
       return {
         ...result,
         tree: tree?.tree,
+        newestId: tree?.newestId || 1000,
       };
     });
   }

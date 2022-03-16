@@ -1,0 +1,20 @@
+{
+  "name": "SubMenu",
+  "icon": "thunderbolt",
+  "description": ["SubMenu 是一个<导航组件>, SubMenu可以提供菜单相关的能力"],
+  "platform": ["web"],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "子菜单配置",
+      "fieldName": "subMenuConfig",
+      "properties": {
+        "title": {
+          "type": "input",
+          "title": "子菜单文字",
+          "default": "子菜单"
+        }
+      }
+    }
+  ]
+}

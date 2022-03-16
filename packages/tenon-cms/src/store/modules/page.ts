@@ -8,6 +8,7 @@ export interface IPageState {
     newestVersion: number;
     pageName: string;
     belongProjectId: any;
+    newestId: number;
     tree: any;
   } | null;
 }

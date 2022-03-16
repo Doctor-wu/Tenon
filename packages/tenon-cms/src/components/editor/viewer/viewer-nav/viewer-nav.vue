@@ -35,7 +35,7 @@ import { useStore } from '@/store';
 import { computed, h, ref, watchEffect } from 'vue';
 import { Message, Modal } from '@arco-design/web-vue';
 import AnimateButton from '~components/shared/animate-button.vue';
-import { tree2config } from '@tenon/engine';
+import { tree2config, getID } from '@tenon/engine';
 import Deletor from '../deletor.vue';
 import Scale from './scale.vue';
 import { saveTreeApi } from '@/api/page';
@@ -62,6 +62,7 @@ async function saveTree() {
     tree: config,
     version: pageInfo.value.newestVersion + 1,
     belongPageId: pageInfo.value._id,
+    newestId: getID(),
   }).then(({ success, errorMsg, successText }) => {
     if (!success) {
       Message.error(errorMsg!);

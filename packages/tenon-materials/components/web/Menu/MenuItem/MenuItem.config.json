@@ -1,0 +1,25 @@
+{
+  "name": "MenuItem",
+  "icon": "thunderbolt",
+  "description": ["MenuItem 是一个<导航组件>, MenuItem可以提供菜单相关的能力"],
+  "platform": ["web"],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "菜单项配置",
+      "fieldName": "menuItemConfig",
+      "properties": {
+        "text": {
+          "type": "input",
+          "title": "菜单项文字",
+          "default": "菜单项"
+        },
+        "disabled": {
+          "type": "boolean",
+          "title": "是否禁用",
+          "default": false
+        }
+      }
+    }
+  ]
+}

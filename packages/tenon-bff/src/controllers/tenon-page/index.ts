@@ -73,6 +73,7 @@ class TenonPageController extends BaseController {
     await this.smartResponse(ctx, next)(error?.message || error, result);
   }
 
+  @MiddleWare(AuthMiddleWare)
   @Post('/saveTree', {
     params: {
       tree: {
@@ -86,7 +87,11 @@ class TenonPageController extends BaseController {
       belongPageId: {
         type: 'string',
         required: true,
-      },
+      }, 
+      newestId: {
+        type: 'number',
+        required: true,
+      }
     }
   })
   async saveTree(
@@ -95,11 +100,11 @@ class TenonPageController extends BaseController {
     params
   ) {
     const {
-      tree, version, belongPageId,
+      tree, version, belongPageId, newestId,
     } = params;
     let error, result;
     [error, result] = await this.tenonComponentService
-      .createNewTenonComponentTree(tree, belongPageId, version);
+      .createNewTenonComponentTree(tree, belongPageId, newestId, version);
     if (error) return await this.smartResponse(ctx, next)(error, result);
     [error, result] = await this.pageService.updatePageInfo(belongPageId, {
       newestVersion: version,

@@ -23,6 +23,10 @@ const tenonComponentSchema = createSchema({
   createTime: {
     type: String,
     required: true,
+  },
+  newestId: {
+    type: Number,
+    required: true,
   }
 });
 
@@ -32,12 +36,15 @@ const tenonComponentSchema = createSchema({
 })
 class TenonComponentService extends BaseService {
 
-  public createNewTenonComponentTree(tree: any, belongPageId: string, version = 1) {
+  public createNewTenonComponentTree(
+    tree: any, belongPageId: string, newestId: number, version = 1
+  ) {
     return this.errorProtectedHandler(async () => {
       return this.addItem({
         tree,
         belongPageId,
         version,
+        newestId,
         createTime: String(Date.now()),
       });
     });

@@ -24,7 +24,7 @@ import { setupMaterials } from '@/logic/setup-materials';
 import { useRouter } from 'vue-router';
 import { getPageInfoApi } from '@/api'
 import { Message } from '@arco-design/web-vue';
-import { config2tree } from '@tenon/engine';
+import { config2tree, setID } from '@tenon/engine';
 
 
 const store = useStore();
@@ -64,6 +64,7 @@ onBeforeMount(() => {
           );
         }
         store.dispatch('page/setPageInfo', data);
+        setID(data.newestId);
         pageInfo.value = data;
         console.log(pageInfo.value);
       }

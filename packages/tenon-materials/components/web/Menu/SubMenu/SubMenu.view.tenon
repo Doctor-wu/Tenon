@@ -1,0 +1,15 @@
+<ArcoSubMenu 
+  t-bind="subMenuConfig"
+  key="{{this.tenonComp.id}}"
+>
+  <Compose-View
+    slotKey="default"
+    placeholder="拖入MenuItem生成菜单项"
+    isSlot="true"
+    composeLayout="{
+      boxSizing: 'border-box',
+      padding: '2px',
+      minHeight: '30px'
+    }"
+  />
+</ArcoSubMenu>

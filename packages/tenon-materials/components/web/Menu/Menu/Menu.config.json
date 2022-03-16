@@ -1,0 +1,88 @@
+{
+  "name": "Menu",
+  "icon": "thunderbolt",
+  "description": ["Menu 是一个<导航组件>, Menu可以提供菜单相关的能力"],
+  "platform": ["web"],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "菜单配置",
+      "fieldName": "menuConfig",
+      "properties": {
+        "theme": {
+          "type": "select",
+          "title": "主题",
+          "options":{
+            "light": "亮色",
+            "dark": "暗色"
+          },
+          "default": "light"
+        },
+        "mode": {
+          "type": "select",
+          "title": "模式",
+          "options":{
+            "vertical": "垂直",
+            "horizontal": "水平",
+            "pop": "弹出",
+            "popButton": "底部弹出"
+          },
+          "default": "vertical"
+        },
+        "level-indent": {
+          "type": "number",
+          "title": "层级缩进量",
+          "default": 4
+        },
+        "auto-open": {
+          "type": "boolean",
+          "title": "默认展开所有多级菜单",
+          "default": false
+        },
+        "default-collapsed": {
+          "type": "boolean",
+          "title": "默认是否折叠菜单",
+          "default": false
+        },
+        "collapsed-width": {
+          "type": "number",
+          "title": "折叠菜单宽度",
+          "default": 120
+        },
+        "accordion": {
+          "type": "boolean",
+          "title": "是否开启手风琴效果",
+          "default": false
+        },
+        "show-collapse-button": {
+          "type": "boolean",
+          "title": "是否内置折叠按钮",
+          "default": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "菜单样式",
+      "fieldName": "menuStyle",
+      "properties": {
+        "width": {
+          "type": "string",
+          "title": "菜单宽度",
+          "default": "320px"
+        },
+        "height": {
+          "type": "string",
+          "title": "菜单高度",
+          "default": "100%"
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "box-sizing": "border-box",
+      "height": "100%"
+    }
+  }
+}

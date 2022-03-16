@@ -54,7 +54,7 @@
       }
     },
     {
-      "type": "object",
+      "type": "custom",
       "title": "图标样式",
       "fieldName": "iconStyle",
       "properties": {
