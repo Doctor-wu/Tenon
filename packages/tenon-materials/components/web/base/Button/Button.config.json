@@ -18,7 +18,7 @@
         "value": {
           "type": "string",
           "title": "文本内容",
-          "default": "按钮"
+          "default": ""
         }
       }
     },

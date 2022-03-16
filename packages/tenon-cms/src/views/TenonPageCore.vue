@@ -38,7 +38,7 @@ import AddPageModal from '@/components/page-list/add-page-modal.vue';
 import PageCardOptions from '@/components/page-list/page-card-options.vue';
 import { Message } from '@arco-design/web-vue';
 import { getProjectInfoApi } from '@/api';
-import { useStore } from '@/store';
+import { useStore } from 'vuex';
 
 const pages = ref<any>([]);
 const cardOptions = ref<any[]>([]);

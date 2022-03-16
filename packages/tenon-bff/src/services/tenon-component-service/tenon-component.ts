@@ -56,8 +56,7 @@ class TenonComponentService extends BaseService {
       const query = await this.model.deleteMany({
         belongPageId: { $in: pageIds }
       });
-      if (query.deletedCount === pageIds.length) return '删除成功';
-      throw new Error('删除失败');
+      return '删除成功';
     })
   }
 

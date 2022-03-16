@@ -91,7 +91,7 @@ class PageService extends BaseService {
       if (query.deletedCount === _ids.length) {
         return '删除成功';
       }
-      else throw new Error('删除失败');
+      else throw new Error('删除页面失败');
     });
   }
 

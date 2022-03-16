@@ -6,6 +6,12 @@
     t-if="!this.buttonText.value"
     slotKey="default" 
     placeholder="拖入组件生成按钮内容"
+    composeLayout="{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexWrap: 'wrap'
+    }"
     isSlot="true"
   ></Compose-View>
 </ArcoButton>

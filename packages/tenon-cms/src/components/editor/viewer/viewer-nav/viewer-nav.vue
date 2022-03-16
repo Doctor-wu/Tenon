@@ -67,6 +67,10 @@ async function saveTree() {
       Message.error(errorMsg!);
     } else {
       Message.success(successText);
+      store.dispatch('page/setPageInfo', {
+        ...pageInfo.value,
+        newestVersion: pageInfo.value.newestVersion + 1
+      });
     }
   });
 }
