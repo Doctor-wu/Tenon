@@ -1,0 +1,18 @@
+{
+  "name": "@tenon/internal-components",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Doctor wu",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {
+    "@tenon/materials": "workspace:*",
+    "@tenon/engine": "workspace:*",
+    "@tenon/shared": "workspace:*"
+  },
+  "description": ""
+}

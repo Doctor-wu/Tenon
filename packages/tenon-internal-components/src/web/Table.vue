@@ -5,7 +5,7 @@
 import { findParentTenonComp } from '@tenon/materials';
 import { computed, getCurrentInstance, h, useSlots } from 'vue';
 import { useStore } from 'vuex';
-import { TenonComponent } from '../../core';
+import { TenonComponent } from '@tenon/engine';
 
 const props = defineProps<{
   columns: any,

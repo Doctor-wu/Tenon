@@ -15,7 +15,7 @@
   },
   "include": [
     "src/**/*"
-  ],
+, "../tenon-internal-components/shim.d copy.ts"  ],
   "exclude": [
     "./dist",
     "./typings",

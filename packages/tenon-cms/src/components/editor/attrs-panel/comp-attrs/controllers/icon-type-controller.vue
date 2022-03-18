@@ -15,7 +15,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { IconTypes } from '@tenon/engine';
+import { IconTypes } from '@tenon/internal-components';
 
 const props = defineProps<{
   modelValue: string;

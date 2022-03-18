@@ -16,6 +16,7 @@
     "@tenon/bff": "workspace:*",
     "@tenon/cms": "workspace:*",
     "@tenon/engine": "workspace:*",
+    "@tenon/internal-components": "workspace:*",
     "@tenon/materials": "workspace:*",
     "@tenon/shared": "workspace:*",
     "@vitejs/plugin-vue": "^1.9.3",

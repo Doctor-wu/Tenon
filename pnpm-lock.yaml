@@ -98,6 +98,7 @@ importers:
       '@tenon/bff': workspace:*
       '@tenon/cms': workspace:*
       '@tenon/engine': workspace:*
+      '@tenon/internal-components': workspace:*
       '@tenon/materials': workspace:*
       '@tenon/shared': workspace:*
       '@vitejs/plugin-vue': ^1.9.3
@@ -112,6 +113,7 @@ importers:
       '@tenon/bff': link:../tenon-bff
       '@tenon/cms': 'link:'
       '@tenon/engine': link:../tenon-engine
+      '@tenon/internal-components': link:../tenon-internal-components
       '@tenon/materials': link:../tenon-materials
       '@tenon/shared': link:../shared
       '@vitejs/plugin-vue': 1.10.2_vite@2.8.6
@@ -136,6 +138,16 @@ importers:
       '@tenon/shared': workspace:*
     devDependencies:
       '@tenon/node-framework': link:../tenon-node-framework
+      '@tenon/shared': link:../shared
+
+  packages/tenon-internal-components:
+    specifiers:
+      '@tenon/engine': workspace:*
+      '@tenon/materials': workspace:*
+      '@tenon/shared': workspace:*
+    dependencies:
+      '@tenon/engine': link:../tenon-engine
+      '@tenon/materials': link:../tenon-materials
       '@tenon/shared': link:../shared
 
   packages/tenon-materials:

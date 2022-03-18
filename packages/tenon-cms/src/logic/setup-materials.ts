@@ -2,7 +2,7 @@ import { getComponentsApi } from "@/api";
 import { IRootState } from "@/store";
 import { IMaterial, setupConfigSchemas, setupWebComponents } from "@tenon/materials";
 import { Store } from "vuex";
-import { materialDependency } from "@tenon/engine";
+import { materialDependency } from "@tenon/internal-components";
 import ComposeViewConfig from "@/components/editor/viewer/Compose-View/Compose-View.config.json";
 import ComposeViewVue from '@/components/editor/viewer/Compose-View/Compose-View.vue';
 import { cloneDeep } from "lodash";
