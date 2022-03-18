@@ -73,7 +73,6 @@ class TenonPageController extends BaseController {
     await this.smartResponse(ctx, next)(error?.message || error, result);
   }
 
-  @MiddleWare(AuthMiddleWare)
   @Post('/saveTree', {
     params: {
       tree: {
@@ -87,13 +86,14 @@ class TenonPageController extends BaseController {
       belongPageId: {
         type: 'string',
         required: true,
-      }, 
+      },
       newestId: {
         type: 'number',
         required: true,
       }
     }
   })
+  @MiddleWare(AuthMiddleWare)
   async saveTree(
     ctx,
     next,
@@ -111,6 +111,44 @@ class TenonPageController extends BaseController {
     });
     result = '保存成功';
     return await this.smartResponse(ctx, next)(error, result);
+  }
+
+  @Delete('/deleteTree', {
+    params: {
+      pageId: {
+        type: "string",
+        required: true,
+      },
+      version: {
+        type: "string",
+        required: true,
+      },
+    }
+  })
+  @MiddleWare(AuthMiddleWare)
+  async deleteTree(
+    ctx,
+    next,
+    params,
+  ) {
+    const {
+      pageId,
+      version,
+    } = params;
+    const [pageInfoError, pageInfo] = await this.pageService.getPageInfo(pageId);
+    if (pageInfoError) return this.smartResponse(ctx, next)(pageInfoError, pageInfo);
+    const [deleteTreeError, result] = await this.tenonComponentService.deleteTreeByFilter({
+      belongPageId: pageId,
+      version: parseInt(version),
+    });
+    if (deleteTreeError) return this.smartResponse(ctx, next)(deleteTreeError, result);
+    if (parseInt(version) == pageInfo.newestVersion) {
+      const [error] = await this.pageService.updatePageInfo(pageId, {
+        newestVersion: pageInfo.newestVersion - 1,
+      });
+      if (error) return this.smartResponse(ctx, next)(error, null);
+    }
+    return this.smartResponse(ctx, next)(deleteTreeError, result);
   }
 
   @Delete('/deletePage', {

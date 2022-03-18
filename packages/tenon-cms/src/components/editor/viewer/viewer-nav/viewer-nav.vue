@@ -44,15 +44,21 @@ import LoadConfig from './load-config.vue';
 const store = useStore();
 const pageInfo = ref<any>({});
 const projectInfo = ref<any>({});
+
 watchEffect(() => {
   store.getters['page/getPageInfo'].then((data) => {
     pageInfo.value = data;
   });
+}, {
+  flush: 'post'
 });
+
 watchEffect(() => {
   store.getters['project/getProjectInfo'].then((data) => {
     projectInfo.value = data;
   });
+}, {
+  flush: 'post'
 });
 
 async function saveTree() {

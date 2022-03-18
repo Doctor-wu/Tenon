@@ -72,6 +72,14 @@ class TenonComponentService extends BaseService {
       return await this.deleteItemById(_id);
     });
   }
+
+  public deleteTreeByFilter(filter) {
+    return this.errorProtectedHandler(async () => {
+      const query = await this.model.deleteOne(filter);
+      if (query.deletedCount === 0) throw new Error('删除组件树失败');
+      return '删除成功';
+    });
+  }
 }
 
 export { TenonComponentService };

@@ -85,6 +85,7 @@ export const $delete = (path: string, params: any) => {
         path += key;
         path += '=';
         path += params[key];
+        path += '&';
       });
     }
   }
