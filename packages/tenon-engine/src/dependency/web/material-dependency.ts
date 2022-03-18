@@ -1,7 +1,9 @@
-import DynamicComponent from "@/components/shared/dynamic-component.vue";
-import Avatar from "@/dependency/Avatar.vue";
-import Text from "@/dependency/Text.vue";
-import Icon from "@/dependency/Icon.vue";
+import DynamicComponent from "./dynamic-component.vue";
+import Root from "./Root.vue";
+import Avatar from "./Avatar.vue";
+import Text from "./Text.vue";
+import Icon from "./Icon.vue";
+import Table from "./Table.vue";
 import {
   Image,
   Card,
@@ -9,8 +11,6 @@ import {
   Button,
   Carousel,
   Menu,
-  SubMenu,
-  MenuItem,
 } from "@arco-design/web-vue";
 import {
   IconArrowDown,
@@ -39,9 +39,11 @@ export const materialDependency = {
   ArcoMenu: Menu,
   ArcoSubMenu: Menu.SubMenu,
   ArcoMenuItem: Menu.Item,
+  TenonRoot: Root,
   TenonText: Text,
   TenonAvatar: Avatar,
   TenonIcon: Icon,
+  TenonTable: Table,
   DynamicComponent: DynamicComponent,
 }
 

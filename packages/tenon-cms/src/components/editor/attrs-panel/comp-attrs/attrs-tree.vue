@@ -1,5 +1,5 @@
 <template>
-  <template v-for="key in Object.keys(properties)" :key="fieldName + key">
+  <template v-for="key in Object.keys(properties || {})" :key="fieldName + key">
     <template v-if="properties[key].type === 'group'">
       <a-sub-menu class="attrs-group" :title="properties[key].title">
         <AttrsTree :properties="properties[key].properties" :fieldName="fieldName"></AttrsTree>
@@ -30,10 +30,12 @@
 <script setup lang="ts">
 import { useStore } from '@/store';
 import { computed } from 'vue';
-import { ComponentTreeNode, ISchema } from '@tenon/engine';
+import { ISchema, TenonComponent } from '@tenon/engine';
 import { ColorPicker } from 'vue-color-kit';
 import carouselController from './controllers/carousel-controller.vue';
 import iconTypeController from './controllers/icon-type-controller.vue';
+import tableColumnController from './controllers/table-column-controller.vue';
+import tableDataController from './controllers/table-data-controller.vue';
 
 const props: {
   properties: Record<string, ISchema>;
@@ -49,7 +51,7 @@ const props: {
   }
 });
 const store = useStore();
-const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);
+const activeComponent = computed<TenonComponent>(() => store.getters['viewer/getActiveComponent']);
 
 const getFormItemBySchemaType = (type: string, meta: ISchema) => {
   switch (type) {
@@ -71,6 +73,10 @@ const getFormItemBySchemaType = (type: string, meta: ISchema) => {
       return getListController(listType);
     case 'icon-type':
       return iconTypeController;
+    case 'table-column':
+      return tableColumnController;
+    case 'table-data':
+      return tableDataController;
     default:
       return 'a-input';
   }

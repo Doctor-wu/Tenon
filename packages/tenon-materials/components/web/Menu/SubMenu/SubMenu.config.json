@@ -1,6 +1,6 @@
 {
   "name": "SubMenu",
-  "icon": "thunderbolt",
+  "icon": "menu-fold",
   "description": ["SubMenu 是一个<导航组件>, SubMenu可以提供菜单相关的能力"],
   "platform": ["web"],
   "schemas": [

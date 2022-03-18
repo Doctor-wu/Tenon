@@ -60,7 +60,6 @@ export function parseConfig2RenderFn(this: any, config) {
   }
 
   let processedProps: any = setupProps.call(this.tenonComp.ctx, props) || {};
-
   const Component = resolveDynamicComponent(el);
   if (typeof Component !== "string") {
 
@@ -102,7 +101,11 @@ export function parseConfig2RenderFn(this: any, config) {
           defaultArray.push(parseConfig2RenderFn.call(this, slotConfig).call(this));
         } else {
           injectChildren[slotKey] =
-            () => parseConfig2RenderFn.call(this, slotConfig).call(this);
+            (...args) => {
+              slotConfig.props = slotConfig.props || {};
+              slotConfig.props['_slotParams'] = cloneDeep(args);
+              return parseConfig2RenderFn.call(this, slotConfig).call(this);
+            }
         }
       }
       else

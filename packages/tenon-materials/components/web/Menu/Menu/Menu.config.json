@@ -1,6 +1,6 @@
 {
   "name": "Menu",
-  "icon": "thunderbolt",
+  "icon": "menu",
   "description": ["Menu 是一个<导航组件>, Menu可以提供菜单相关的能力"],
   "platform": ["web"],
   "schemas": [

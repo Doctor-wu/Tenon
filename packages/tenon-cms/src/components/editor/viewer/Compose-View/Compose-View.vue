@@ -21,6 +21,7 @@
           <component
             :is="toRaw(subConfig.material.component)"
             :tenonComp="subConfig"
+            :_slotParams="_slotParams"
             v-bind="subConfig.props"
           ></component>
         </Wrapper>
@@ -60,6 +61,9 @@ const props = defineProps({
   },
   tenonProps: {
     type: Object
+  },
+  _slotParams: {
+    type: Array,
   }
 });
 

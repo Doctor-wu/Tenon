@@ -75,6 +75,7 @@ import CacheView from './CacheView.vue';
   padding-top: 64px;
   padding-bottom: 40px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .layout-body .attrsPanel-container {

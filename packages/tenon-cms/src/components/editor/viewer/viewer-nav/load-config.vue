@@ -33,7 +33,7 @@ import { useStore } from '@/store';
 import { Message } from '@arco-design/web-vue';
 import { ref } from 'vue';
 import day from 'dayjs';
-import { config2tree } from '@tenon/engine';
+import { config2tree, setID } from '@tenon/engine';
 const drawerVisible = ref(false);
 const trees = ref<any>([]);
 const loading = ref(true);
@@ -67,6 +67,7 @@ function applyTree(tree) {
       { materialsMap: store.getters['materials/getMaterialsMap'] }
     )(config),
   );
+  setID(tree.newestId || 1000);
   Message.success('应用成功');
   // store.dispatch('viewer/setTree', )
 }

@@ -67,7 +67,7 @@ export class TenonComponent implements ComponentTreeNode {
   initProps(schemas, source) {
     this.props = createPropsBySchemas(
       schemas,
-      Object.assign({}, this.material?.config.tenonProps, source || {})
+      Object.assign({}, this.material?.config?.tenonProps, source || {})
     );
   }
 
@@ -98,7 +98,7 @@ export class TenonComponent implements ComponentTreeNode {
     newConfig.name = this.name;
     // newConfig.states = toRaw(cloneDeep(this.states));
     if (this.props) {
-      newConfig.props = cloneDeep(this.props);
+      newConfig.props = cloneDeep(toRaw(this.props));
     }
     if (this.schemas) {
       newConfig.schemas = toRaw(this.schemas);

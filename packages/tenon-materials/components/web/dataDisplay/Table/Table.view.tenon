@@ -1,0 +1,2 @@
+<TenonTable t-bind="tableConfig" style="tableStyle">
+</TenonTable>

@@ -15,7 +15,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { IconTypes } from '@/logic/material-dependency';
+import { IconTypes } from '@tenon/engine';
 
 const props = defineProps<{
   modelValue: string;

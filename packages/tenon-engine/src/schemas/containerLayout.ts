@@ -13,7 +13,7 @@ export const containerSchema: ISchema =
         padding: {
           type: "string",
           title: "内边距",
-          default: "5px"
+          default: "0px"
         },
         margin: {
           type: "string",

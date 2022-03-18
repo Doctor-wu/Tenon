@@ -37,6 +37,7 @@ export const parseSchemas2Props = (schemas: ISchema[] = []) => {
     } = schema;
     let propField = {};
     switch (type) {
+      case 'custom':
       case 'object':
         propField = {
           type: Object,
@@ -75,7 +76,7 @@ export const createPropsBySchemas = (
         const sourceKeysSet = new Set<string>();
         sourceKeys.forEach(key => {
           sourceKeysSet.add(key);
-        })
+        });
         Object.keys(properties).forEach(propertyKey => {
           switch (properties?.[propertyKey].type) {
             case 'group':
@@ -103,6 +104,7 @@ export const createPropsBySchemas = (
         props[fieldName] = internalSchema[key];
         break;
       default:
+        props[fieldName] = {};
         break;
     }
   });

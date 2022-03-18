@@ -1,0 +1,49 @@
+{
+  "name": "Table",
+  "icon": "file",
+  "description": ["Table组件"],
+  "dependencies": [],
+  "platform": ["web"],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "表格配置",
+      "fieldName": "tableConfig",
+      "properties": {
+        "columns": {
+          "type": "table-column",
+          "title": "表格列",
+          "default": [
+            {
+              "dataIndex": "username",
+              "title": "用户名"
+            },
+            {
+              "dataIndex": "email",
+              "title": "邮箱"
+            }
+          ]
+        },
+        "data": {
+          "type": "table-data",
+          "title": "表格数据",
+          "default": [
+            { "username": "doctorwu", "email": "wuzhdkelfodek@qq.com" },
+            { "username": "test", "email": "daskfjaewarld@qq.com" }
+          ]
+        },
+        "op": {
+          "type": "boolean",
+          "title": "是否开启操作列",
+          "default": false
+        }
+      }
+    },
+    {
+      "type": "custom",
+      "title": "表格样式",
+      "fieldName": "tableStyle",
+      "properties": {}
+    }
+  ]
+}
