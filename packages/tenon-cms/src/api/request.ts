@@ -1,6 +1,6 @@
 import { useRouter } from "@/router";
 import { useStore } from "@/store";
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const prefixUrl = "http://localhost:9847";
 

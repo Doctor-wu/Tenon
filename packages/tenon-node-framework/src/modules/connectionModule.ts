@@ -20,7 +20,7 @@ export class ConnectionModule extends BaseModule {
   }
 
   private initBodyParser(app: tenonAppType) {
-    app.use(bodyParser());
+    app.use(bodyParser(app.$config.bodyParser));
   }
 
   private initSession(app: tenonAppType) {

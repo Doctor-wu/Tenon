@@ -39,7 +39,6 @@ const setType = (type) => {
   display: flex;
   transition: background 0.3s ease;
   user-select: none;
-  cursor: pointer;
   flex-wrap: wrap;
   gap: 6px;
 }
@@ -51,6 +50,7 @@ const setType = (type) => {
   padding: 5px;
   width: 75px;
   box-sizing: border-box;
+  cursor: pointer;
   &:hover {
     background-color: #f3f3f3;
   }

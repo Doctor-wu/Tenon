@@ -40,6 +40,8 @@ const editorZoom = computed(() => {
   return store.getters['viewer/scale'];
 });
 
+
+
 watchEffect(async () => {
   const width = (await store.getters['project/getProjectInfo'])?.userConfig.screenWidth;
   editorWidth.value = (width || 320) + 'px';
@@ -48,6 +50,9 @@ watchEffect(async () => {
 
 
 onBeforeMount(() => {
+  if (!store.getters['viewer/getTree']) {
+    setupMaterials(store);
+  }
   getPageInfoApi(pageId)
     .then(({ data, success, errorMsg }) => {
       if (!success) {
@@ -75,9 +80,6 @@ onBeforeUnmount(() => {
   store.dispatch('viewer/clearTree');
 });
 
-if (!store.getters['viewer/getTree']) {
-  setupMaterials(store);
-}
 
 </script>
 <style lang="scss" scoped>

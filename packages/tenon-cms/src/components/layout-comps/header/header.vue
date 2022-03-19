@@ -4,7 +4,7 @@
       <AnimateButton @click="$router.push('/')" size="24px">
         <span style="vertical-align: -3px;">Tenon</span>
       </AnimateButton>
-      <span class="sub-title">一站式低代码平台</span>
+      <span class="sub-title">渐进式低代码平台</span>
     </section>
     <ul class="nav-list">
       <li class="nav-item">

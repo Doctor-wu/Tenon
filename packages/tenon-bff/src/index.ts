@@ -45,10 +45,13 @@ const bootstrap = async () => {
     session: {
       key: 'tenon:ssid',
       sameSite: true,
-      maxAge: 3600 * 1000,
+      maxAge: 6 * 3600 * 1000,
     },
     logger: {
       path: path.resolve(__dirname, "./logFiles"),
+    },
+    bodyParser: {
+      jsonLimit: '10mb'
     }
   });
 

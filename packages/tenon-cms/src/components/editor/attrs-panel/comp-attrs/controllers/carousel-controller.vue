@@ -6,10 +6,10 @@
           <section class="item-info">{{ item }}</section>
           <section class="icon-wrapper">
             <a-button @click="() => handleCopy(index)" type="text" status="primary">
-              <icon-copy size="48" />
+              <icon-copy size="20" />
             </a-button>
             <a-button @click="() => handleDelete(index)" type="text" status="danger">
-              <icon-minus-circle size="48" />
+              <icon-minus-circle size="20" />
             </a-button>
           </section>
         </section>

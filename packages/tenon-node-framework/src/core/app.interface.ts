@@ -55,6 +55,11 @@ export interface IServerConfig {
   io?: {
     /** 不输出命令行 */
     noEmit: string;
+  },
+  /** bodyParse配置 */
+  bodyParser?: {
+    /** JSON大小限制 */
+    jsonLimit: string;
   }
 }
 

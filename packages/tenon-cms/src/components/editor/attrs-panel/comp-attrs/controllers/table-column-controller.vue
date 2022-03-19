@@ -1,5 +1,12 @@
 <template>
   <section class="table-column-container">
+    <EditTableColumnModal
+      ref="modal"
+      :edit-index="editIndex"
+      :pre-source="editColumnValue"
+      @add-column="handleAddColumn"
+      @update-column="handleUpdateColumn"
+    ></EditTableColumnModal>
     <section class="table-column-item" v-for="(item, index) in modelValue">
       <section class="item-info">{{ item.title }}-{{ item.dataIndex }}</section>
       <section class="item-op">
@@ -35,12 +42,12 @@
         </section>
       </section>
     </section>
-    <EditTableColumnModal @add-column="handleAddColumn"></EditTableColumnModal>
   </section>
 </template>
 <script setup lang="ts">
 import { cloneDeep } from 'lodash';
-import EditTableColumnModal from './edit-table-column-modal.vue';
+import { ref } from 'vue';
+import EditTableColumnModal from './table-column-modal.vue';
 
 const props = defineProps<{
   modelValue: {
@@ -49,6 +56,10 @@ const props = defineProps<{
   }[];
 }>();
 const $emit = defineEmits(['update:modelValue']);
+
+const editColumnValue = ref<any>(null);
+const editIndex = ref(-1);
+const modal = ref<any>();
 
 const moveColumnUp = (index: number) => {
   [
@@ -77,7 +88,14 @@ const deleteColumn = (index: number) => {
 };
 
 const updateColumn = (index: number) => {
+  editColumnValue.value = cloneDeep(props.modelValue[index]);
+  editIndex.value = index;
+  modal.value.edit();
+};
 
+const handleUpdateColumn = (index, column: any) => {
+  props.modelValue[index] = column;
+  $emit("update:modelValue", cloneDeep(props.modelValue));
 };
 
 const handleAddColumn = (column: any) => {

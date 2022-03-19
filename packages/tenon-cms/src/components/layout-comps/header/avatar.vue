@@ -1,21 +1,22 @@
 <template>
   <a-dropdown trigger="hover" position="br">
     <a-avatar
-      style="background-color: #3378f3;"
+      style="background-color: #3378f3;margin-bottom: 2px;cursor: pointer;"
       shape="square"
+      :size="30"
     >{{ userInfo?.username?.slice(0, 1).toUpperCase() }}</a-avatar>
     <template #content>
       <a-doption class="list-item">
         <template #icon>
           <icon-user />
         </template>
-        <template #default> 个人信息</template>
+        <template #default>个人信息</template>
       </a-doption>
       <a-doption class="list-item" @click="logout">
         <template #icon>
           <icon-undo />
         </template>
-        <template #default> 退出登录</template>
+        <template #default>退出登录</template>
       </a-doption>
     </template>
   </a-dropdown>
