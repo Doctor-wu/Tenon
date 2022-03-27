@@ -1,11 +1,12 @@
 <template>
   <section class="scale-container">
     <section class="scale-value">
-      <AnimateButton
-        info="恢复缩放"
-        @click="clearScale"
-        style="padding: 5px 2px;"
-      >{{ Number(store.getters['viewer/scale']).toFixed(2) }}x</AnimateButton>
+      <AnimateButton info="恢复缩放" @click="clearScale">
+        <section style="display: flex; align-items: center;">
+          <icon-search class="nav-item-icon" style="margin-right: 5px;"/>
+          {{ Number(store.getters['viewer/scale']).toFixed(2) }}x
+        </section>
+      </AnimateButton>
     </section>
     <section class="operate">
       <TextButton :disabled="disableUp" class="animate-extra" @click="upScale">
@@ -43,7 +44,7 @@ const clearScale = () => {
 .scale-container {
   display: flex;
   align-items: center;
-  margin-left: 10px;
+  justify-self: flex-end;
 
   .animate-extra {
     padding: 2px 0;

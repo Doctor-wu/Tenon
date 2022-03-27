@@ -4,6 +4,7 @@ import Avatar from "./Avatar.vue";
 import Text from "./Text.vue";
 import Icon from "./Icon.vue";
 import Table from "./Table.vue";
+// import Button from "./Button.vue";
 import {
   Image,
   Card,
@@ -74,7 +75,7 @@ export const materialDependency = {
   ArcoMenu: Menu,
   ArcoSubMenu: Menu.SubMenu,
   ArcoMenuItem: Menu.Item,
-  TenonRoot: Root,
+  TenonTemplate: Root,
   TenonText: Text,
   TenonAvatar: Avatar,
   TenonIcon: Icon,

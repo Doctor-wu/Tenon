@@ -7,14 +7,16 @@ import {
   AuthController,
   TenonComponentController,
   TenonProjectController,
-  TenonPageController
+  TenonPageController,
+  TenonEventController,
 } from "./controllers";
 import {
   UserService,
   ProjectService,
   PageService,
+  TenonEventService,
+  TenonComponentService,
 } from "./services";
-import { TenonComponentService } from "./services/tenon-component-service";
 
 const bootstrap = async () => {
   const server = await createServer({
@@ -32,12 +34,14 @@ const bootstrap = async () => {
       TenonComponentController,
       TenonProjectController,
       TenonPageController,
+      TenonEventController,
     ],
     services: [
       UserService,
       ProjectService,
       PageService,
       TenonComponentService,
+      TenonEventService,
     ],
     static: {
       path: path.resolve(__dirname, "./static"),

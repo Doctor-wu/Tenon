@@ -1,28 +1,28 @@
 <template>
   <section
-    v-if="!(!editMode && !propsConfig?.children?.length)"
+    v-if="!(!editMode && !tenonTreeNode?.children?.length)"
     class="compose-view-container"
     :style="[
       ($attrs as any).composeLayout || {},
       ($attrs as any).composeBackground || {},
       ($attrs as any).composeTextStyle || {}
     ]"
-    :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === propsConfig, editable: editMode }"
-    @dragenter="(e) => handleContainerDropEnter(e, propsConfig)"
+    :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === tenonTreeNode, editable: editMode }"
+    @dragenter="(e) => handleContainerDropEnter(e, tenonTreeNode)"
     @dragover.prevent="() => { }"
-    @drop="(e) => handleContainerDrop(e, propsConfig)"
+    @drop="(e) => handleContainerDrop(e, tenonTreeNode)"
   >
-    <template v-if="propsConfig?.children?.length">
-      <template v-for="subConfig in propsConfig.children" :key="subConfig.id">
+    <template v-if="tenonTreeNode?.children?.length">
+      <template v-for="subTreeNode in tenonTreeNode.children" :key="subTreeNode.id">
         <Wrapper
-          :style="[subConfig?.props?.containerStyle, subConfig?.props?.containerBackground]"
-          :tenonComp="subConfig"
+          :style="[subTreeNode?.props?.containerStyle, subTreeNode?.props?.containerBackground]"
+          :tenonComp="subTreeNode"
         >
           <component
-            :is="toRaw(subConfig.material.component)"
-            :tenonComp="subConfig"
-            :_slotParams="_slotParams"
-            v-bind="subConfig.props"
+            :is="toRaw(subTreeNode.material.component)"
+            v-bind="subTreeNode.props"
+            :tenonComp="subTreeNode"
+            :tenonCompProps="tenonCompProps"
           ></component>
         </Wrapper>
       </template>
@@ -45,7 +45,7 @@ const store = useStore();
 const props = defineProps({
   tenonComp: {
     type: [Object, Function],
-    default: () => { }
+    default: () => ({}),
   } as any,
   isSlot: {
     type: Boolean,
@@ -59,15 +59,13 @@ const props = defineProps({
     type: String,
     default: "拖入物料以生成组件"
   },
-  tenonProps: {
-    type: Object
-  },
-  _slotParams: {
-    type: Array,
+  tenonCompProps: {
+    type: Object,
+    default: () => ({}),
   }
 });
 
-let propsConfig: ComputedRef<TenonComponent> = computed<TenonComponent>(() => {
+let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => {
   let result: any = props.tenonComp;
   const instance: any = getCurrentInstance();
   if (props.isSlot) {
@@ -86,7 +84,6 @@ let propsConfig: ComputedRef<TenonComponent> = computed<TenonComponent>(() => {
     }
   }
   result.ctx = result.ctx || instance.ctx;
-  console.log(result);
   return result;
 });
 

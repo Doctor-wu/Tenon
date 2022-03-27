@@ -136,12 +136,16 @@ export class SignController extends BaseController {
   }
 
   @Get("/getCaptcha")
+  @MiddleWare(({ ctx, params }) => {
+    console.log(ctx.session);
+    return [true];
+  })
   async getCaptcha(
     ctx: RequestContext,
     next,
   ) {
     const captcha = useCaptcha();
-    ctx.session!.captcha = captcha.text.toLowerCase();
+    ctx.session.captcha = captcha.text.toLowerCase();
     ctx.response.type = 'svg';
     this.responseJson(ctx, next)(captcha.data, { noLog: true });
   }

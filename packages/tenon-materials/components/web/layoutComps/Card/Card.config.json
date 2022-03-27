@@ -27,6 +27,11 @@
           "title": "是否可悬浮",
           "default": false
         },
+        "showHeader": {
+          "type": "boolean",
+          "title": "展示卡片头部",
+          "default": true
+        },
         "size": {
           "type": "select",
           "title": "卡片尺寸",

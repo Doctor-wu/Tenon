@@ -10,8 +10,7 @@
       boxSizing: 'border-box',
       display: 'inline-block',
       width: 'auto',
-      minWidth: '20px',
-      verticalAlign: '-5px'
+      minWidth: '20px'
     }"
   />
   {{this.menuItemConfig.text}}

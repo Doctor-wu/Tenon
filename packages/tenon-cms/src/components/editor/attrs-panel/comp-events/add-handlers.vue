@@ -8,7 +8,7 @@
       </b>
     </div>
     <a-button @click="addHandler" style="margin-bottom: 10px" type="dashed" long>
-      <icon-plus></icon-plus>添加Handlers
+      <icon-plus></icon-plus> 添加处理事件
     </a-button>
   </a-card>
 </template>

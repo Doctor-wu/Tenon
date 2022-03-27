@@ -1,26 +1,32 @@
-import { executeQueueEvents } from "@tenon/engine";
-import { cloneDeep } from "lodash";
+import { reactive } from "vue";
 
 export interface ITenonComponentStates {
   states: any;
-  executeTenonEvents: (eventName: string, ...args: any[]) => void;
 }
 export class TenonComponentStates implements ITenonComponentStates {
   private _states: any;
   private _tenonComp: any;
 
-  constructor(states: any, tenonComp: any) {
-    this._states = states;
+  constructor(states: any = {}, tenonComp: any) {
+    this._states = reactive(states);
+    this.proxyState(this._states);
     this._tenonComp = tenonComp;
-    this._states.executeTenonEvents$ = this.executeTenonEvents.bind(this);
   }
 
-  executeTenonEvents(eventName: string, ...args: any[]) {
-    if (!this._tenonComp.events[eventName]) return;
-    executeQueueEvents(this._tenonComp.events[eventName].executeQueue, ...args);
-  };
+  private proxyState(states: any) {
+    Object.keys(states).forEach(key => {
+      Reflect.defineProperty(this, key, {
+        get(this: any) {
+          return Reflect.get(this._states, key);
+        },
+        set(this: any, value) {
+          return Reflect.set(this._states, key, value);
+        }
+      })
+    })
+  }
 
-  public get states() {
+  get states() {
     return this._states;
   }
 }

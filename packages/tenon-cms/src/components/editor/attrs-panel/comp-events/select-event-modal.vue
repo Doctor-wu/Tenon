@@ -1,8 +1,7 @@
 <template>
   <a-modal v-model:visible="visible" @ok="handleOk" @cancel="handleCancel">
     <template #title>
-      选择Handlers
-      <small>(仅可选择自身或祖先的handlers)</small>
+      选择处理事件
     </template>
     <div
       @click="() => selectHandler(item)"
@@ -17,7 +16,7 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { IHandlerConfig } from "../../../logic/events";
+import { IHandlerConfig } from "@tenon/engine";
 
 const emit = defineEmits(["choose"]);
 

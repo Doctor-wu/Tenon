@@ -1,6 +1,6 @@
 import { IMaterial } from "@tenon/materials";
 import { cloneDeep } from "lodash";
-import { ComponentTreeNode } from "./component";
+import { ComponentTreeNode, TenonComponent } from "./component";
 
 interface IDefaultEvents {
   onMounted: IEventStruct;
@@ -60,6 +60,13 @@ export const getActiveComponentUsefulHandlers = (storeFactory) => {
   // return handlers;
 }
 
+export const callTenonEvent = (
+  tenonComp: TenonComponent, eventName: string, ...args: any[]
+) => {
+  if (args[0]?.currentTarget && args[0]?.currentTarget !== tenonComp.ctx.$el) return;
+  if (!tenonComp.events[eventName] || !tenonComp.events[eventName].executeQueue.length) return;
+  console.log('>>> CallTenonEvent', eventName, args, tenonComp);
+}
 
 export function executeQueueEvents(executeQueue: IExecuteQueueItem[], ...args: any[]) {
   executeQueue.forEach(item => {

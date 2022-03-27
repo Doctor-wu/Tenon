@@ -12,6 +12,9 @@ export const setupMaterialView = (view: Transform.JSXElement): IViewConfig | str
         try {
           if (value.trim().startsWith('{') && value.trim().endsWith('}'))
             tree.props[key] = new Function(`return ${value}`)();
+          else if (value.trim() === 'true' || value.trim() === 'false') {
+            tree.props[key] = eval(value);
+          }
           else tree.props[key] = value;
         } catch (e) {
           tree.props[key] = value;

@@ -1,4 +1,4 @@
-import { ComponentTreeNode, TenonComponent, TenonComponentStates } from "@tenon/engine";
+import { callTenonEvent, ComponentTreeNode, TenonComponent, TenonComponentStates } from "@tenon/engine";
 import {
   getCurrentInstance,
   onMounted, onUpdated,
@@ -14,11 +14,17 @@ export function setupComponent(props, ctx, logic) {
 
   tenonComp.ctx = (instance as any)?.ctx;
   tenonComp.ctx.tenonComp = tenonComp.ctx.tenonComp || tenonComp;
+  Object.assign(tenonComp.ctx, tenonComp.props, tenonComp.states);
 
-  const parentComp: ComponentTreeNode | null = findParentTenonComp(instance);
-  if (parentComp) {
-    tenonComp.parentComponent = parentComp;
-  };
+  const parentComp: TenonComponent | null = findParentTenonComp(instance);
+
+  onMounted(() => {
+    callTenonEvent(tenonComp, 'onMounted');
+  });
+
+  onBeforeUnmount(() => {
+    callTenonEvent(tenonComp, 'onBeforeUnmount');
+  });
 
 
   const originStates = logic?.({
@@ -26,9 +32,15 @@ export function setupComponent(props, ctx, logic) {
     watch: watchEffect,
   }, props, ctx, tenonComp) || {};
 
+  Object.keys(originStates || {}).forEach(key => {
+    if (typeof originStates[key] === 'function') {
+      tenonComp.handlers.push(key);
+    }
+  });
+
   const tenonStates = new TenonComponentStates(originStates, tenonComp);
-  const setupStates = reactive(tenonStates.states);
-  // tenonComp.states = setupStates;
+  const setupStates = tenonStates.states;
+  tenonComp.states = tenonStates;
 
   tenonComp.ctx._isTenonComp = true;
 

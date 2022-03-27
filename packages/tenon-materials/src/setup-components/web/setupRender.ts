@@ -1,8 +1,9 @@
 import { ComponentTreeNode, createTenonComponent, TenonComponent } from "@tenon/engine";
 import { getValueByHackContext } from "@tenon/shared";
 import { cloneDeep } from "lodash";
-import { computed, createTextVNode, Fragment, getCurrentInstance, h, ref, resolveDynamicComponent } from "vue";
+import { computed, createTextVNode, Fragment, getCurrentInstance, h, ref, resolveDynamicComponent, withScopeId } from "vue";
 import { componentsMap, materialDependency } from "./setupComponents.web";
+import { setupComponentEvents } from "./setupEvents";
 import { setupProps } from "./setupProps";
 
 
@@ -60,9 +61,9 @@ export function parseConfig2RenderFn(this: any, config) {
   }
 
   let processedProps: any = setupProps.call(this.tenonComp.ctx, props) || {};
+  
   const Component = resolveDynamicComponent(el);
   if (typeof Component !== "string") {
-
     el = Component;
   }
   else if (materialDependency[el]) el = materialDependency[el];
@@ -86,7 +87,7 @@ export function parseConfig2RenderFn(this: any, config) {
     }
   }
 
-  return function _custom_render(this: any) {
+  function _custom_render(this: any) {
     const defaultArray: any[] = [];
     const injectChildren: any = {
       default: () => defaultArray,
@@ -112,6 +113,10 @@ export function parseConfig2RenderFn(this: any, config) {
         defaultArray.push(parseConfig2RenderFn.call(this, child).call(this));
     });
 
+    setupComponentEvents(this.tenonComp, processedProps);
+
     return h(el, processedProps, injectChildren);
   };
+  
+  return _custom_render;
 }

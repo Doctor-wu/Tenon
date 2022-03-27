@@ -3,7 +3,10 @@
     <a-empty v-if="activeComponent?.material?.config.setup === 'native'">该组件为内部组件</a-empty>
     <template v-else>
       <a-card title="States">
-        <pre style="overflow: auto;max-height: 250px;">{{ JSON.stringify(activeComponent.states, null, 2) }}</pre>
+        <pre style="overflow: auto;max-height: 250px;">{{ JSON.stringify(activeComponent.states?.states, null, 2) }}</pre>
+      </a-card>
+      <a-card title="Props" style="margin-top: 20px;">
+        <pre style="overflow: auto;max-height: 250px;">{{ JSON.stringify(activeComponent.ctx?.tenonCompProps, null, 2) }}</pre>
       </a-card>
       <a-list style="margin-top: 12px;">
         <template #header>Handlers</template>
@@ -24,14 +27,16 @@
 <script setup lang="ts">
 import { useStore } from '@/store';
 import { computed, ref } from 'vue';
-import { ComponentTreeNode } from '@tenon/engine';
+import { TenonComponent } from '@tenon/engine';
 
 const store = useStore();
-const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);
+const activeComponent = computed<TenonComponent>(() => store.getters['viewer/getActiveComponent']);
 console.log(activeComponent.value);
 
 const simulateTrigger = (item: string) => {
-  activeComponent.value.states[item]?.();
+  const handler = activeComponent.value?.states?.[item];
+  
+  handler && handler();
 }
 
 </script>

@@ -3,6 +3,9 @@
   "icon": "thunderbolt",
   "description": ["Icon 是一个<基础组件>, Icon可以提供图标相关的能力"],
   "platform": ["web"],
+  "events":{
+    "onClick": "点击时"
+  },
   "schemas": [
     {
       "type": "object",

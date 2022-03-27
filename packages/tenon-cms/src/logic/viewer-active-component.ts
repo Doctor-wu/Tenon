@@ -10,8 +10,8 @@ import { editMode } from "./viewer-status";
 export let choosingWrapper = ref(-1);
 
 export const handleSelectComponent = (e: MouseEvent, config) => {
+  if (!editMode.value) return;
   e.stopPropagation();
-  if (!editMode) return;
   const store = useStore();
   store.dispatch("viewer/setActiveComponent", config);
 }

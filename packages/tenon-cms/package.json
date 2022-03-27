@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "nocheck-build": "vite build",
     "serve": "vite preview"
   },
   "dependencies": {
@@ -19,7 +20,6 @@
     "@tenon/internal-components": "workspace:*",
     "@tenon/materials": "workspace:*",
     "@tenon/shared": "workspace:*",
-    "@vitejs/plugin-vue": "^1.9.3",
     "sass": "^1.43.4",
     "typescript": "^4.4.3",
     "vite": "^2.6.4",

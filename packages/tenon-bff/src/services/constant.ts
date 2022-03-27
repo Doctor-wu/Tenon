@@ -3,4 +3,5 @@ export const SERVICE_NAME = {
   project: "project",
   page: "page",
   tenonComponent: "tenonComponent",
+  tenonEvent: "tenonEvent",
 }

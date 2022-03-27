@@ -3,7 +3,7 @@
 </template>
 <script setup lang="ts">
 import { findParentTenonComp } from '@tenon/materials';
-import { computed, getCurrentInstance, h, useSlots } from 'vue';
+import { computed, getCurrentInstance, h, toRaw } from 'vue';
 import { useStore } from 'vuex';
 import { TenonComponent } from '@tenon/engine';
 
@@ -15,8 +15,7 @@ const props = defineProps<{
 }>();
 
 const computedColumns = computed(() => {
-  if(!props.op) return props.columns;
-  const slots = useSlots();
+  if (!props.op) return props.columns;
   const store = useStore();
   const operationColumn = {
     dataIndex: '__op__',
@@ -27,23 +26,15 @@ const computedColumns = computed(() => {
     render: ({ record, column, rowIndex }) => {
       const materialsMap = store.getters['materials/getMaterialsMap'];
       const factory = materialsMap.get('Compose-View');
-      const parent = findParentTenonComp(getCurrentInstance());
-      let tenonComponent;
-      if (parent?.slots[`op-${rowIndex}`]) {
-        tenonComponent = parent?.slots[`op-${rowIndex}`];
-      } else {
-        tenonComponent = new TenonComponent(
-          factory(),
-          {
-            parent: parent || undefined,
-            props: {},
-          }
-        );
-      }
-      return h(tenonComponent.material.component, {
-        tenonComp: tenonComponent,
+      const material = factory();
+      return h(material.component, {
         isSlot: true,
         slotKey: `op-${rowIndex}`,
+        tenonCompProps: {
+          record,
+          column: toRaw(column),
+          rowIndex,
+        },
         placeholder: '拖入组件生成操作'
       });
     },

@@ -1,7 +1,5 @@
 <template>
-  <span style="word-wrap:break-word;white-space:normal;" :style="textStyle">
-    {{textValue.value}}
-  </span>
+  <span :style="textStyle">{{ textValue.value }}</span>
 </template>
 <script setup lang="ts">
 import { CSSProperties } from 'vue';
@@ -12,7 +10,6 @@ const props = defineProps<{
   },
   textStyle: CSSProperties;
 }>();
-console.log(props);
 
 </script>
 

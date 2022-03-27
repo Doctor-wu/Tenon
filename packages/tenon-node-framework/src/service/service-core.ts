@@ -83,6 +83,13 @@ export class BaseService<DocType = unknown> implements IDecoratedServiceExtraFie
     throw new Error('删除失败');
   }
 
+  protected async updateItemById(_id: string, info) {
+    const result = await this.model.updateOne({ _id }, info);
+    if (!result.matchedCount) throw `更新内容不存在：${_id}`;
+    if (!result.modifiedCount) throw '更新失败';
+    return '更新成功';
+  }
+
   protected async errorProtectedHandler(resultGetter: () => Promise<any>): Promise<[any, any]> {
     let err, result;
     try {

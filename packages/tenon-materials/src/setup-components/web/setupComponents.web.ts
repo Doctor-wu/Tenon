@@ -72,8 +72,6 @@ const processComponent = async (
 const componentCache = new Map();
 
 function createComponent(viewConfig, logic, doc, material: IMaterialMeta) {
-  console.log(viewConfig);
-  
   if (componentCache.has(material.config.name)) {
     return { ...componentCache.get(material.config.name) };
   }
@@ -83,7 +81,13 @@ function createComponent(viewConfig, logic, doc, material: IMaterialMeta) {
       return parseConfig2RenderFn.call(this, cloneDeep(viewConfig)).call(this);
     },
     inheritAttrs: false,
-    props: parseSchemas2Props(material.config.schemas),
+    props: {
+      tenonCompProps: {
+        type: Object,
+        default: () => ({}),
+      },
+      ...parseSchemas2Props(material.config.schemas),
+    },
     setup: function (props, ctx) {
       return setupComponent(props, ctx, logic);
     },

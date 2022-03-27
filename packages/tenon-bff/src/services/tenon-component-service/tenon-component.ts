@@ -1,6 +1,5 @@
 import { BaseService, Service, createSchema, useService } from "@tenon/node-framework";
 import { SERVICE_NAME } from "../constant";
-import { ITenonComponentConfig } from "./tenon-component.interface";
 const requiredUniqueString = {
   type: String,
   required: true,

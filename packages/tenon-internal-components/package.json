@@ -8,11 +8,11 @@
   },
   "author": "Doctor wu",
   "license": "MIT",
-  "devDependencies": {},
   "dependencies": {
-    "@tenon/materials": "workspace:*",
     "@tenon/engine": "workspace:*",
-    "@tenon/shared": "workspace:*"
+    "@tenon/materials": "workspace:*",
+    "@tenon/shared": "workspace:*",
+    "sass": "^1.43.4"
   },
   "description": ""
 }

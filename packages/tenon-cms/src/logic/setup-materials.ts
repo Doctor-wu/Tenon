@@ -10,7 +10,9 @@ import { ISchema, TenonComponent } from "@tenon/engine";
 
 let initd = false;
 export const setupMaterials = async (store: Store<IRootState>) => {
-  if (initd) return;
+  // if (initd) return;
+  console.log(materialDependency);
+  
   initd = true;
   const components = await (await getComponentsApi()).data;
   const {

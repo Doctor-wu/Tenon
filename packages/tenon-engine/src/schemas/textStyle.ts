@@ -56,7 +56,7 @@ export const textStyleSchema = {
     "wordWrap": {
       "type": "string",
       "title": "文本换行",
-      "default": "normal"
+      "default": "break-word"
     },
     "textShadow": {
       "type": "string",

@@ -5,20 +5,24 @@ import { ComponentSerializeConfig, ComponentTreeNode } from "./component.interfa
 import { IMaterial } from "@tenon/materials";
 import { cloneDeep } from "lodash";
 import { ITenonComponentStates, TenonComponentStates } from "../states";
+import { createTenonEvents, DEFAULT_EVENTS, IEventsConfig } from "../events";
 
 export class TenonComponent implements ComponentTreeNode {
   public name!: string;
   public id: number;
   public schemas: any;
   public parent?: ComponentTreeNode;
-  public parentComponent?: ComponentTreeNode;
+  // public parentComponent?: ComponentTreeNode;
   public material: IMaterial;
-  // public states?: ITenonComponentStates;
+  public materialConfig: IMaterial['config'];
+  public states?: ITenonComponentStates;
   public props?: any;
   public children?: TenonComponent[];
   public slots!: Record<string, TenonComponent>;
   public ctx?: any;
   public isSlot?: boolean;
+  public handlers: string[] = [];
+  public events!: IEventsConfig;
 
   static createInstanceByDeserialize(
     config: ComponentSerializeConfig, materialsMap: Map<string, () => IMaterial>
@@ -57,11 +61,17 @@ export class TenonComponent implements ComponentTreeNode {
     this.parent = options.parent;
     this.name = material.name;
     this.material = material;
+    this.materialConfig = material.config;
     this.schemas = material.schemas;
+    this.initEvents();
     this.initProps(material.schemas, options.props);
     this.initSlots();
     if (material.config.nestable) this.children = [];
     return reactive(this);
+  }
+
+  initEvents() {
+    this.events = createTenonEvents(this.material);
   }
 
   initProps(schemas, source) {

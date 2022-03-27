@@ -10,7 +10,6 @@ export default (lifeCycle, props, ctx, tenonComp) => {
 
   const add = () => {
     tenonComp.states.count.value++;
-    console.log(tenonComp.states.count.value);
   }
 
   const subtract = () => {

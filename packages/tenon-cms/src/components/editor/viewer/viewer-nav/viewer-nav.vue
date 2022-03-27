@@ -19,11 +19,15 @@
       <icon-eraser class="nav-item-icon" />
       <span>清</span>
     </AnimateButton>
+    <a-divider direction="vertical" class="nav-divider"></a-divider>
     <AnimateButton info="保存页面配置" @click="saveTree">
       <icon-upload class="nav-item-icon" />
       <span>存</span>
     </AnimateButton>
     <LoadConfig></LoadConfig>
+    <a-divider direction="vertical" class="nav-divider"></a-divider>
+    <TenonEvent></TenonEvent>
+    <a-divider direction="vertical" class="nav-divider"></a-divider>
     <Scale></Scale>
     <Deletor></Deletor>
   </section>
@@ -40,12 +44,14 @@ import Deletor from '../deletor.vue';
 import Scale from './scale.vue';
 import { saveTreeApi } from '@/api/page';
 import LoadConfig from './load-config.vue';
+import TenonEvent from './tenon-event.vue';
 
 const store = useStore();
 const pageInfo = ref<any>({});
 const projectInfo = ref<any>({});
 
 watchEffect(() => {
+const store = useStore();
   store.getters['page/getPageInfo'].then((data) => {
     pageInfo.value = data;
   });
@@ -54,6 +60,7 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
+const store = useStore();
   store.getters['project/getProjectInfo'].then((data) => {
     projectInfo.value = data;
   });
@@ -117,6 +124,11 @@ function deleteConfig() {
   margin-right: 40px;
 }
 
+.nav-divider {
+  margin: 0 5px;
+}
+
+:deep(.nav-item-icon),
 .nav-item-icon {
   font-size: 16px;
 }
