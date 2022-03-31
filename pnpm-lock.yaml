@@ -14,6 +14,8 @@ importers:
       execa: ^5.1.1
       inquirer: ^8.2.0
       lodash: ^4.17.21
+      monaco-editor: ^0.33.0
+      rollup-plugin-monaco-editor: ^0.2.1
       tslint: ^6.1.3
       vite: ^2.8.6
       vue: ^3.2.21
@@ -28,6 +30,8 @@ importers:
       dayjs: 1.11.0
       execa: 5.1.1
       inquirer: 8.2.1
+      monaco-editor: 0.33.0
+      rollup-plugin-monaco-editor: 0.2.1_monaco-editor@0.33.0
       tslint: 6.1.3
       vite: 2.8.6
       vue: 3.2.31
@@ -691,6 +695,13 @@ packages:
     resolution: {integrity: sha512-TaTivMB6pYI1kXwrFlEhLeGfOqoDNdTxjCdwRfFFkEA30Eu+k48W34nlok2EYWJfFFzqaEmichdNM7th6M5HNw==}
     dev: true
 
+  /ast-types/0.14.2:
+    resolution: {integrity: sha512-O0yuUDnZeQDL+ncNGlJ78BiO4jnYI3bvMsD5prT0/nsgijG/LpNBIr63gTjVTNsiGkgQhiyCShTgxt8oXOrklA==}
+    engines: {node: '>=4'}
+    dependencies:
+      tslib: 2.3.1
+    dev: false
+
   /axios/0.26.1:
     resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
     dependencies:
@@ -1192,6 +1203,10 @@ packages:
   /entities/2.2.0:
     resolution: {integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==}
     dev: true
+
+  /es-module-lexer/0.3.26:
+    resolution: {integrity: sha512-Va0Q/xqtrss45hWzP8CZJwzGSZJjDM5/MJRE3IXXnUCcVLElR9BRaE9F62BopysASyc4nM3uwhSW7FFB9nlWAA==}
+    dev: false
 
   /esbuild-android-64/0.14.27:
     resolution: {integrity: sha512-LuEd4uPuj/16Y8j6kqy3Z2E9vNY9logfq8Tq+oTE2PZVuNs3M1kj5Qd4O95ee66yDGb3isaOCV7sOLDwtMfGaQ==}
@@ -2190,6 +2205,10 @@ packages:
       minimist: 1.2.5
     dev: false
 
+  /monaco-editor/0.33.0:
+    resolution: {integrity: sha512-VcRWPSLIUEgQJQIE0pVT8FcGBIgFoxz7jtqctE+IiCxWugD0DwgyQBcZBhdSrdMC84eumoqMZsGl2GTreOzwqw==}
+    dev: false
+
   /mongodb-connection-string-url/2.5.2:
     resolution: {integrity: sha512-tWDyIG8cQlI5k3skB6ywaEA5F9f5OntrKKsT/Lteub2zgwSUlhqEN2inGgBTm8bpYJf8QYBdA/5naz65XDpczA==}
     dependencies:
@@ -2622,6 +2641,20 @@ packages:
     dependencies:
       picomatch: 2.3.1
 
+  /recast/0.20.5:
+    resolution: {integrity: sha512-E5qICoPoNL4yU0H0NoBDntNB0Q5oMSNh9usFctYniLBluTthi3RsQVBXIJNbApOlvSwW/RGxIuokPcAc59J5fQ==}
+    engines: {node: '>= 4'}
+    dependencies:
+      ast-types: 0.14.2
+      esprima: 4.0.1
+      source-map: 0.6.1
+      tslib: 2.3.1
+    dev: false
+
+  /regenerator-runtime/0.13.9:
+    resolution: {integrity: sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==}
+    dev: false
+
   /registry-auth-token/4.2.1:
     resolution: {integrity: sha512-6gkSb4U6aWJB4SF2ZvLb76yCBjcvufXBqvvEx1HbmKPkutswjW1xNVRY0+daljIYRbogN7O0etYSlbiaEQyMyw==}
     engines: {node: '>=6.0.0'}
@@ -2672,6 +2705,21 @@ packages:
     dependencies:
       onetime: 5.1.2
       signal-exit: 3.0.7
+    dev: false
+
+  /rollup-plugin-monaco-editor/0.2.1_monaco-editor@0.33.0:
+    resolution: {integrity: sha512-3NXxPczYDi67VLc1W/aiNAHVTDrWQPe6XP3kMvr+3tNfDnePXttAUtydhDMk3KnPaRJHekZA3Xh3a9bLZ15cyA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      monaco-editor: ^0.21.2
+      rollup: ^2.33.1
+    dependencies:
+      es-module-lexer: 0.3.26
+      magic-string: 0.25.9
+      monaco-editor: 0.33.0
+      recast: 0.20.5
+      regenerator-runtime: 0.13.9
+      semver: 7.3.5
     dev: false
 
   /rollup/2.70.1:

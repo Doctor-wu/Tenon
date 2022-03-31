@@ -3,8 +3,8 @@
     <section class="scale-value">
       <AnimateButton info="恢复缩放" @click="clearScale">
         <section style="display: flex; align-items: center;">
-          <icon-search class="nav-item-icon" style="margin-right: 5px;"/>
-          {{ Number(store.getters['viewer/scale']).toFixed(2) }}x
+          <icon-search size="18" class="nav-item-icon" style="margin-right: 5px;"/>
+          <span>{{ Number(store.getters['viewer/scale']).toFixed(2) }}x</span>
         </section>
       </AnimateButton>
     </section>
@@ -47,7 +47,7 @@ const clearScale = () => {
   justify-self: flex-end;
 
   .animate-extra {
-    padding: 2px 0;
+    padding: 0;
     display: flex;
     align-items: center;
   }

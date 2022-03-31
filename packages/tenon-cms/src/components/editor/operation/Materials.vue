@@ -15,6 +15,9 @@
         <CompItem :config="config" v-for="config in group" />
       </a-sub-menu>
     </a-menu>
+    <section style="text-align: center;">
+      <a-spin v-if="!store.getters['materials/getMaterials']?.size"></a-spin>
+    </section>
   </section>
 </template>
 <script setup lang="ts">

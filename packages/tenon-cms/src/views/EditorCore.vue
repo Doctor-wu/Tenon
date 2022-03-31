@@ -4,33 +4,36 @@
       <ViewerNav></ViewerNav>
     </section>
     <section class="viewer-panel" :class="[editMode ? 'editMode' : '']" ref="panel">
-      <template v-if="store?.getters['viewer/getTree']">
+      <template v-if="store?.getters['viewer/getTree'] && !fetchingTree">
         <ComposeView :tenonComp="store.getters['viewer/getTree']" class="rootView"></ComposeView>
       </template>
+      <a-spin :tip="store?.getters['viewer/getTree'] ? '正在拉取在线数据' : '正在初始化编辑器'" v-else></a-spin>
     </section>
     <section class="viewer-notice">
       <ViewerNotice></ViewerNotice>
     </section>
   </section>
 </template>
+
+
 <script setup lang="ts">
-import { ref, onMounted, onBeforeMount, onBeforeUnmount, computed, watchEffect } from 'vue';
+import { ref, onBeforeMount, onBeforeUnmount, computed, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import ViewerNav from '@/components/editor/viewer/viewer-nav/viewer-nav.vue';
 import ComposeView from '~components/editor/viewer/Compose-View/Compose-View.vue';
 import ViewerNotice from '~components/editor/viewer/viewer-notice.vue';
 import { editMode } from '~logic/viewer-status';
-import { setupMaterials } from '@/logic/setup-materials';
+import { setupMaterials } from '~logic/setup-materials';
 import { useRouter } from 'vue-router';
 import { getPageInfoApi } from '@/api'
 import { Message } from '@arco-design/web-vue';
 import { config2tree, setID } from '@tenon/engine';
 
-
 const store = useStore();
 const panel = ref<HTMLElement>();
 const router = useRouter();
 const pageInfo = ref();
+const fetchingTree = ref(true);
 const {
   projectId, pageId,
 } = router.currentRoute.value.params;
@@ -40,14 +43,11 @@ const editorZoom = computed(() => {
   return store.getters['viewer/scale'];
 });
 
-
-
 watchEffect(async () => {
   const width = (await store.getters['project/getProjectInfo'])?.userConfig.screenWidth;
   editorWidth.value = (width || 320) + 'px';
   editorHeight.value = 100 + '%';
 });
-
 
 onBeforeMount(() => {
   if (!store.getters['viewer/getTree']) {
@@ -73,6 +73,9 @@ onBeforeMount(() => {
         pageInfo.value = data;
         console.log(pageInfo.value);
       }
+    })
+    .finally(() => {
+      fetchingTree.value = false;
     });
 });
 
@@ -80,8 +83,9 @@ onBeforeUnmount(() => {
   store.dispatch('viewer/clearTree');
 });
 
-
 </script>
+
+
 <style lang="scss" scoped>
 .rootView {
   height: 100%;
@@ -109,6 +113,7 @@ onBeforeUnmount(() => {
   margin: 20px;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   margin: auto;
   &.editMode {

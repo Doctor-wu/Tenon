@@ -12,6 +12,7 @@ import { setupStore } from './store';
 import { setupRouter } from './router';
 import { TenonIndexedDBInstance } from './local-db/indexedDB';
 
+
 const app = createApp(App);
 
 // 初始化 arco-design

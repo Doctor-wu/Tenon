@@ -2,7 +2,8 @@
   <section class="nav-wrapper">
     <a-page-header
       @back="$router.push(`/page-list/${projectInfo._id}`)"
-      :title="pageInfo?.pageName"
+      :title="projectInfo?.projectName"
+      :subtitle="pageInfo?.pageName"
     ></a-page-header>
     <a-divider direction="vertical"></a-divider>
     <TextToggle
@@ -11,17 +12,17 @@
       :info="editMode ? '编辑模式' : '预览模式'"
       :color="editMode ? '#1693ef' : '#00b42a'"
     >
-      <icon-edit v-if="editMode" class="nav-item-icon" />
-      <icon-eye v-else class="nav-item-icon" />
+      <icon-edit size="18" v-if="editMode" class="nav-item-icon" />
+      <icon-eye size="18" v-else class="nav-item-icon" />
       <span>{{ editMode ? '编辑' : '预览' }}</span>
     </TextToggle>
     <AnimateButton info="清空页面配置" @click="deleteConfig" color="#f53f3f">
-      <icon-eraser class="nav-item-icon" />
+      <icon-eraser size="18" class="nav-item-icon" />
       <span>清</span>
     </AnimateButton>
     <a-divider direction="vertical" class="nav-divider"></a-divider>
     <AnimateButton info="保存页面配置" @click="saveTree">
-      <icon-upload class="nav-item-icon" />
+      <icon-upload size="18" class="nav-item-icon" />
       <span>存</span>
     </AnimateButton>
     <LoadConfig></LoadConfig>

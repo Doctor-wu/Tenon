@@ -1,6 +1,6 @@
 import {
   BaseController, Controller, Get,
-  RequestNext, RequestContext, useService, Post, Delete
+  RequestNext, RequestContext, useService, Post, Delete,
 } from "@tenon/node-framework";
 import { AuthMiddleWare } from "../../middlewares/auth-middleware";
 import { TenonEventService } from "../../services";
@@ -21,6 +21,10 @@ export class TenonEventController extends BaseController {
         type: 'string',
         required: true,
       },
+      eventName: {
+        type: 'string',
+        required: true,
+      },
       pageId: {
         type: 'string',
         required: true,
@@ -37,9 +41,11 @@ export class TenonEventController extends BaseController {
     params: any,
   ) {
     const {
-      content, pageId, gather,
+      content, pageId, gather, eventName
     } = params;
-    const [error, result] = await this.tenonEventService.addEvent(content, pageId, gather);
+    const [error, result] = await this.tenonEventService.addEvent(
+      { content, belongPageId: pageId, eventName, gather }
+    );
     return await this.smartResponse(ctx, next)(error, result);
   }
 

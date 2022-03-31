@@ -2,10 +2,10 @@ import { $delete, $get, $post } from "../request"
 
 const prefix = "/tenon-event";
 
-export const getPageEvents = (pageId) => $get(`${prefix}/getEvents/${pageId}`);
+export const getTenonEventsApi = (pageId) => $get(`${prefix}/getEvents/${pageId}`);
 
-export const updateEvent = (params) => $post(`${prefix}/updateEvent`, params);
+export const updateTenonEventApi = (params) => $post(`${prefix}/updateEvent`, params);
 
-export const deleteEvent = (eventId) => $delete(`${prefix}/deleteEvent`, { eventId });
+export const deleteTenonEventApi = (eventId) => $delete(`${prefix}/deleteEvent`, { eventId });
 
-export const addEvent = (params) => $delete(`${prefix}/addEvent`, params);
+export const addTenonEventApi = (params) => $post(`${prefix}/addEvent`, params);

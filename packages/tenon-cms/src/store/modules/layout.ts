@@ -1,7 +1,7 @@
 import { Module } from 'vuex';
 import { IRootState } from '..';
 import { Component } from 'vue';
-import TenonProjectLayout from '@/layout/TenonProjectLayout.vue';
+import InitLayout from '@/layout/InitLayout.vue';
 
 
 export interface ILayoutState {
@@ -12,7 +12,7 @@ export interface ILayoutState {
 export default {
   state() {
     return {
-      activeLayout: TenonProjectLayout,
+      activeLayout: InitLayout,
       loadingLayout: false,
     };
   },

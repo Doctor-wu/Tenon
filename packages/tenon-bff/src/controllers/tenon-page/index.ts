@@ -4,7 +4,7 @@ import {
   Get, MiddleWare, Post, useService
 } from "@tenon/node-framework";
 import { AuthMiddleWare } from "../../middlewares/auth-middleware";
-import type { PageService } from "../../services";
+import type { PageService, TenonEventService } from "../../services";
 import { SERVICE_NAME } from "../../services/constant";
 import { TenonComponentService } from "../../services/tenon-component-service";
 
@@ -13,6 +13,9 @@ import { TenonComponentService } from "../../services/tenon-component-service";
   prefixPath: '/tenon-page'
 })
 class TenonPageController extends BaseController {
+
+  @useService(SERVICE_NAME.tenonEvent)
+  tenonEventService!: TenonEventService;
 
   @useService(SERVICE_NAME.page)
   pageService!: PageService;
@@ -48,6 +51,13 @@ class TenonPageController extends BaseController {
   ) {
     const { pageId } = params;
     const [error, result] = await this.pageService.getPageInfo(pageId);
+    const [eventError, eventResult] = await this.tenonEventService.getEvents({
+      belongPageId: pageId,
+    });
+    if (eventError) return await this.smartResponse(ctx, next)(eventError, eventResult);
+    else {
+      result.events = eventResult;
+    }
     await this.smartResponse(ctx, next)(error, result);
   }
 

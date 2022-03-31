@@ -5,10 +5,10 @@
       <a-card title="States">
         <pre style="overflow: auto;max-height: 250px;">{{ JSON.stringify(activeComponent.states?.states, null, 2) }}</pre>
       </a-card>
-      <a-card title="Props" style="margin-top: 20px;">
+      <a-card title="Props" style="margin: 20px 0;">
         <pre style="overflow: auto;max-height: 250px;">{{ JSON.stringify(activeComponent.ctx?.tenonCompProps, null, 2) }}</pre>
       </a-card>
-      <a-list style="margin-top: 12px;">
+      <a-list style="margin: 20px 0;">
         <template #header>Handlers</template>
         <a-list-item v-for="(item, key) in activeComponent.handlers" :key="key">
           <section class="instance-handler-item">

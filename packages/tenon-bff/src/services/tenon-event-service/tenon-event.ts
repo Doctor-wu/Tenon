@@ -6,6 +6,10 @@ const tenonEventSchema = createSchema({
     type: String,
     required: true,
   },
+  eventName: {
+    type: String,
+    required: true,
+  },
   belongPageId: {
     type: String,
     required: true,
@@ -22,9 +26,9 @@ const tenonEventSchema = createSchema({
 })
 class TenonEventService extends BaseService {
 
-  async addEvent(content, belongPageId, gather?: string) {
+  async addEvent(eventInfo: ITenonEventConfig) {
     return this.errorProtectedHandler(async () => {
-      return await this.addItem({ content, belongPageId, gather });
+      return await this.addItem(eventInfo);
     });
   }
 
