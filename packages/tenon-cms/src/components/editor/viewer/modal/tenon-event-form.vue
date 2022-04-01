@@ -33,14 +33,14 @@
 </template>
 <script setup lang="ts">
 import { computed, reactive, ref, watch, watchEffect } from 'vue';
-import MonacaEditor from '@/components/code-mirror/MonacaEditor.vue';
+import MonacaEditor from '@/components/web-code/MonacaEditor.vue';
 import { Message } from '@arco-design/web-vue';
-import { addTenonEventApi } from '@/api';
+import { addTenonEventApi, updateTenonEventApi } from '@/api';
 import { useStore } from 'vuex';
 import { cloneDeep } from 'lodash';
 const store = useStore();
 
-const $emit = defineEmits(['onAddEvent']);
+const $emit = defineEmits(['onAddEvent', 'onUpdateEvent']);
 
 const form = ref();
 const props = defineProps<{
@@ -49,6 +49,7 @@ const props = defineProps<{
     eventName?: string;
     content?: string;
     gather?: string;
+    _id?: string;
   }
 }>();
 
@@ -65,8 +66,6 @@ watch(props, () => {
   eventData.value = cloneDeep(props.eventInfo);
 }, { immediate: true });
 
-
-// const computeEventData = computed(() => (Object.assign({}, props.eventInfo)));
 const rules = {
   eventName: [
     { required: true, type: 'string' }
@@ -96,6 +95,17 @@ function submitEvent() {
         }
         $emit('onAddEvent');
         Message.success('新建事件成功');
+      })
+    } else {
+      const params = Object.assign({}, eventData.value);
+      updateTenonEventApi(params).then(({
+        success, errorMsg, data
+      }) => {
+        if (!success) {
+          return Message.error(errorMsg!);
+        }
+        $emit('onUpdateEvent');
+        Message.success(data);
       })
     }
   })

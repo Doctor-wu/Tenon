@@ -69,12 +69,20 @@ export class TenonEventController extends BaseController {
 
   @Post('/updateEvent', {
     params: {
-      eventId: {
+      content: {
         type: 'string',
         required: true,
       },
-      eventInfo: {
-        type: 'object',
+      eventName: {
+        type: 'string',
+        required: true,
+      },
+      gather: {
+        type: 'string',
+        defaultValue: 'default'
+      },
+      _id: {
+        type: 'string',
         required: true,
       }
     }
@@ -85,9 +93,13 @@ export class TenonEventController extends BaseController {
     params: any,
   ) {
     const {
-      eventInfo, eventId,
+      content, gather, eventName, _id
     } = params;
-    const [error, result] = await this.tenonEventService.updateEvent(eventId, eventInfo);
+    const [error, result] = await this.tenonEventService.updateEvent(_id, {
+      content,
+      gather,
+      eventName,
+    });
     return await this.smartResponse(ctx, next)(error, result);
   }
 

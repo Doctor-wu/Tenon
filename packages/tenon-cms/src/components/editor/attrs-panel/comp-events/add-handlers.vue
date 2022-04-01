@@ -1,31 +1,44 @@
 <template>
   <a-card :title="eventConfig.eventLabel">
-    <div class="stock-handler" v-for="(item, index) in eventConfig.executeQueue">
-      <b>{{ item.eventName.toUpperCase() }}</b>
+    <div class="stock-handler" v-for="(eventMeta, index) in eventConfig.executeQueue">
+      <b>{{ eventMeta.eventName }}</b>
       <b>
-        {{ item.tenonCompName }}_{{ item.tenonCompID }}
+        <!-- {{ item.tenonCompName }}_{{ item.tenonCompID }} -->
         <icon-delete @click="() => deleteStockHandler(index)" class="delete-stock-handler" />
       </b>
     </div>
     <a-button @click="addHandler" style="margin-bottom: 10px" type="dashed" long>
-      <icon-plus></icon-plus> 添加处理事件
+      <icon-plus></icon-plus>添加处理事件
     </a-button>
   </a-card>
 </template>
-<script setup lang="ts">import { computed } from 'vue';
+<script setup lang="ts">import { computed, ref, watchEffect } from 'vue';
 import { useStore } from '@/store';
-import { ComponentTreeNode, IEventStruct, IHandlerConfig } from '@tenon/engine';
-
-const store = useStore();
-const activeComponent = computed<ComponentTreeNode>(() => store.getters['viewer/getActiveComponent']);
+import { TenonComponent, IEventStruct, IEventMeta } from '@tenon/engine';
 
 interface propsType {
   eventConfig: IEventStruct;
   eventsKey: string;
 }
+
+const store = useStore();
+const activeComponent = computed<TenonComponent>(() => store.getters['viewer/getActiveComponent']);
 const props = defineProps<propsType>();
 
 const emit = defineEmits(['doSelect']);
+
+const pageInfo = ref();
+watchEffect(async () => {
+  pageInfo.value = await store.getters['page/getPageInfo'];
+});
+
+const eventsMap = computed<Map<string, IEventMeta>>(() => {
+  const map = new Map();
+  pageInfo.value?.events.forEach((eventItem) => {
+    map.set(eventItem._id, eventItem);
+  });
+  return map;
+})
 
 const addHandler = () => {
   emit('doSelect', {
@@ -37,13 +50,9 @@ const deleteStockHandler = (index: number) => {
   (activeComponent.value.events[props.eventsKey] as IEventStruct).executeQueue.splice(index, 1);
 }
 
-const handleAddEvent = (handler: IHandlerConfig) => {
-  if (!handler) return;
-  (activeComponent.value.events[props.eventsKey] as IEventStruct).executeQueue.push({
-    eventName: handler.eventName,
-    tenonCompID: handler.tenonComp.id,
-    tenonCompName: handler.tenonComp.name,
-  });
+const handleAddEvent = (eventItem: IEventMeta) => {
+  if (!eventItem) return;
+  (activeComponent.value.events[props.eventsKey] as IEventStruct).executeQueue.push(eventItem);
 };
 </script>
 <style lang="scss" scoped>

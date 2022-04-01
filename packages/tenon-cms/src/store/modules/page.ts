@@ -1,4 +1,4 @@
-import { getPageInfoApi } from '@/api';
+import { getPageInfoApi, getTenonEventsApi } from '@/api';
 import { getPageModel } from '@/local-db/controller/page';
 import { Message } from '@arco-design/web-vue';
 import { Module } from 'vuex';
@@ -39,15 +39,16 @@ export default {
       commit('SET_PAGE_INFO', null);
       getPageModel().remove();
     },
-    async updatePageInfo({ commit, dispatch, state }) {
-      await getPageModel().remove();
+    async updatePageEvent({ commit, dispatch, state }) {
+      const currPageInfo = Object.assign({}, state.pageInfo);
       const {
         success, errorMsg, data
-      } = await getPageInfoApi(state.pageInfo?._id);
+      } = await getTenonEventsApi(currPageInfo?._id);
       if (!success) {
         return Message.error(errorMsg!);
       }
-      dispatch('setPageInfo', data);
+      currPageInfo.events = data;
+      dispatch('setPageInfo', currPageInfo);
     }
   },
   getters: {

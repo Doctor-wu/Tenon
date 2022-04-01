@@ -8,7 +8,7 @@ export default (
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount,
   } = lifeCycle;
   onMounted(() => {
-    console.log(lifeCycle, props, ctx, tenonComp);
+    // console.log(lifeCycle, props, ctx, tenonComp);
   });
 
   return {

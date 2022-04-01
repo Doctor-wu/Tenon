@@ -4,8 +4,8 @@ import { getID } from "./id";
 import { ComponentSerializeConfig, ComponentTreeNode } from "./component.interface";
 import { IMaterial } from "@tenon/materials";
 import { cloneDeep } from "lodash";
-import { ITenonComponentStates, TenonComponentStates } from "../states";
-import { createTenonEvents, DEFAULT_EVENTS, IEventsConfig } from "../events";
+import { ITenonComponentStates } from "../states";
+import { createTenonEvents, IEventsConfig } from "../events";
 
 export class TenonComponent implements ComponentTreeNode {
   public name!: string;
@@ -42,6 +42,9 @@ export class TenonComponent implements ComponentTreeNode {
         }
       );
     }
+    if (config.events) {
+      instance.events = config.events;
+    }
     Object.keys(config.slots || {}).forEach(slotKey => {
       instance.slots[slotKey] = TenonComponent.createInstanceByDeserialize(config.slots[slotKey], materialsMap)!;
       instance.slots[slotKey].parent = instance;
@@ -69,6 +72,12 @@ export class TenonComponent implements ComponentTreeNode {
     if (material.config.nestable) this.children = [];
     return reactive(this);
   }
+
+
+  get tenonCompProps() {
+    return this.ctx?.tenonCompProps;
+  }
+
 
   initEvents() {
     this.events = createTenonEvents(this.material);
@@ -106,7 +115,6 @@ export class TenonComponent implements ComponentTreeNode {
     const newConfig: ComponentSerializeConfig = {} as ComponentSerializeConfig;
     newConfig.id = this.id;
     newConfig.name = this.name;
-    // newConfig.states = toRaw(cloneDeep(this.states));
     if (this.props) {
       newConfig.props = cloneDeep(toRaw(this.props));
     }
@@ -117,6 +125,12 @@ export class TenonComponent implements ComponentTreeNode {
       newConfig.children = this.children.map(child => {
         return child.serialize();
       });
+    }
+    if (this.events) {
+      newConfig.events = cloneDeep(this.events);
+      // Object.keys(newConfig.events).forEach(key => {
+      //   newConfig.events[key].executeQueue = newConfig.events[key].executeQueue.map(item => item._id);
+      // });
     }
     if (this.slots) {
       const oldSlots = toRaw(this.slots);

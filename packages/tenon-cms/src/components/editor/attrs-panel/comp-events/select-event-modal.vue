@@ -1,24 +1,23 @@
 <template>
   <a-modal v-model:visible="visible" @ok="handleOk" @cancel="handleCancel">
-    <template #title>
-      选择处理事件
-    </template>
+    <template #title>选择处理事件</template>
     <div
       @click="() => selectHandler(item)"
       class="handler-item"
       :class="{ active: selectedHandler === item }"
-      v-for="item in handlers"
+      v-for="item in pageInfo?.events || []"
     >
       <b>{{ item.eventName.toUpperCase() }}</b>
-      <b>{{ item.tenonComp.name }}_{{ item.tenonComp.id }}</b>
     </div>
   </a-modal>
 </template>
 <script setup lang="ts">
-import { ref } from "vue";
-import { IHandlerConfig } from "@tenon/engine";
+import { IPageState } from "@/store/modules/page";
+import { ref, watchEffect } from "vue";
+import { useStore } from "vuex";
 
 const emit = defineEmits(["choose"]);
+const store = useStore();
 
 const visible = ref(false);
 
@@ -36,23 +35,22 @@ const handleCancel = () => {
 const openModal = () => visible.value = true;
 const closeModal = () => visible.value = false;
 
-const handlers = ref<IHandlerConfig[]>([]);
+const pageInfo = ref<IPageState["pageInfo"]>();
+watchEffect(async () => {
+  pageInfo.value = await store.getters['page/getPageInfo'];
+});
 
-const setHandlers = (values: IHandlerConfig[]) => {
-  handlers.value = values;
-};
 
-const selectedHandler = ref<IHandlerConfig | null>();
+const selectedHandler = ref();
 
-const selectHandler = (item: IHandlerConfig) => {
-  if(selectedHandler.value === item) return selectedHandler.value = null;
+const selectHandler = (item) => {
+  if (selectedHandler.value === item) return selectedHandler.value = null;
   selectedHandler.value = item;
 }
 
 defineExpose({
   openModal,
   closeModal,
-  setHandlers,
 });
 </script>
 <style lang="scss" scoped>

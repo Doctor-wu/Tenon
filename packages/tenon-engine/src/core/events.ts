@@ -1,6 +1,6 @@
 import { IMaterial } from "@tenon/materials";
 import { cloneDeep } from "lodash";
-import { ComponentTreeNode, TenonComponent } from "./component";
+import { TenonComponent } from "./component";
 
 interface IDefaultEvents {
   onMounted: IEventStruct;
@@ -23,56 +23,44 @@ export interface IEventsConfig {
   [props: string]: IEventStruct;
 }
 
-export interface IExecuteQueueItem {
-  eventName: string;
-  tenonCompID: number;
-  tenonCompName: string;
-}
-
 export interface IEventStruct {
   eventLabel: string;
-  executeQueue: IExecuteQueueItem[];
+  executeQueue: IEventMeta[];
 }
 
-export const eventsMap = new Map<string, Function>();
-
-export interface IHandlerConfig {
+export interface IEventMeta {
+  _id: string;
   eventName: string;
-  tenonComp: ComponentTreeNode;
+  content: string;
+  gather: string;
 }
 
-export const getActiveComponentUsefulHandlers = (storeFactory) => {
-  // const handlers: IHandlerConfig[] = [];
-  // const store = storeFactory();
-  // const activeComponent: ComponentTreeNode = store.getters['viewer/getActiveComponent'];
-  // handlers.push(...activeComponent.handlers.map(eventName => ({
-  //   eventName,
-  //   tenonComp: activeComponent,
-  // })));
-  // let parentComponent = activeComponent.parentComponent;
-  // while (parentComponent) {
-  //   handlers.push(...parentComponent.handlers.map(eventName => ({
-  //     eventName,
-  //     tenonComp: parentComponent!,
-  //   })));
-  //   parentComponent = parentComponent.parentComponent;
-  // }
-  // return handlers;
-}
-
-export const callTenonEvent = (
+export const callTenonEvent = async (
   tenonComp: TenonComponent, eventName: string, ...args: any[]
 ) => {
   if (args[0]?.currentTarget && args[0]?.currentTarget !== tenonComp.ctx.$el) return;
   if (!tenonComp.events[eventName] || !tenonComp.events[eventName].executeQueue.length) return;
-  console.log('>>> CallTenonEvent', eventName, args, tenonComp);
+  const events = tenonComp.events[eventName].executeQueue;
+  // console.log('>>> CallTenonEvent', eventName, args, tenonComp);
+  events.forEach(eventItem => {
+    executeTenonEvent(eventItem, tenonComp, ...args);
+  });
 }
 
-export function executeQueueEvents(executeQueue: IExecuteQueueItem[], ...args: any[]) {
-  executeQueue.forEach(item => {
-    const eventIdentifier = `${item.eventName}_${item.tenonCompID}`;
-    const eventEntity = eventsMap.get(eventIdentifier);
-    if (eventEntity) eventEntity.apply(null, args);
+export const executeTenonEvent = (
+  eventMeta: IEventMeta,
+  tenonComp: TenonComponent,
+  ...args: any[]
+) => {
+  const trigger = new Function('injectMeta', `
+    const {
+      $comp
+    } = injectMeta;
+    ${eventMeta.content}
+  `);
+  trigger({
+    $comp: tenonComp,
+    $args: args,
   });
 }
 

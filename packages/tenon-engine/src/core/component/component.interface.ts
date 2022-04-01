@@ -32,4 +32,5 @@ export interface ComponentSerializeConfig {
   children?: ComponentSerializeConfig[];
   slots: Object;
   states: any;
+  events: any;
 }

@@ -13,7 +13,6 @@
 <script lang="ts" setup>
 import SelectEventModal from './select-event-modal.vue';
 import AddHandlers from './add-handlers.vue';
-import { getActiveComponentUsefulHandlers } from '@tenon/engine';
 import { computed, ref } from 'vue';
 import { useStore } from '@/store';
 
@@ -32,7 +31,6 @@ let selecting: {
 
 const doSelect = (value: any) => {
   selecting = value;
-  eventSelector.value!.setHandlers(getActiveComponentUsefulHandlers(useStore));
   eventSelector.value!.openModal();
 }
 </script>

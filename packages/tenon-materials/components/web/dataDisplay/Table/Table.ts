@@ -3,7 +3,7 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount, watch
   } = lifeCycle;
   onMounted(() => {
-    console.log(lifeCycle, props, ctx, tenonComp);
+    // console.log(lifeCycle, props, ctx, tenonComp);
   });
 
   return {

@@ -23,18 +23,16 @@ onMounted, import { getTenonEventsApi } from '@/api';
               hoverable
             >
               <section class="event-item-wrapper">
-                <span class="event-name">
+                <b class="event-name">
                   <span style="color: red;">*</span> 新建事件
-                </span>
+                </b>
                 <a-button
                   @click.stop="() => handleDeleteEvent(-1)"
                   style="float: right;"
                   status="danger"
                   size="mini"
                   type="text"
-                >
-                  <icon-delete></icon-delete>
-                </a-button>
+                >取消</a-button>
               </section>
             </a-card>
           </li>
@@ -45,16 +43,22 @@ onMounted, import { getTenonEventsApi } from '@/api';
           >
             <a-card @click="() => handleSelectEvent(item)" class="event-title-card" hoverable>
               <section class="event-item-wrapper">
-                <span class="event-name">{{ item.eventName }}</span>
-                <a-button
-                  @click.stop="() => handleDeleteEvent(index)"
-                  style="float: right;"
-                  status="danger"
-                  size="mini"
-                  type="text"
+                <b class="event-name">{{ item.eventName }}</b>
+                <a-popconfirm
+                  :content="`确认删除${item.eventName}事件吗?`"
+                  @ok="() => handleDeleteEvent(index)"
+                  position="right"
                 >
-                  <icon-delete></icon-delete>
-                </a-button>
+                  <a-button
+                    @click.stop="() => { }"
+                    style="float: right;"
+                    status="danger"
+                    size="mini"
+                    type="text"
+                  >
+                    <icon-delete></icon-delete>
+                  </a-button>
+                </a-popconfirm>
               </section>
             </a-card>
           </li>
@@ -64,7 +68,11 @@ onMounted, import { getTenonEventsApi } from '@/api';
         </section>
         <main class="event-info">
           <section v-if="selectedEvent" class="event-info-wrapper">
-            <TenonEventForm @on-add-event="onAddedEvent" :event-info="selectedEvent"></TenonEventForm>
+            <TenonEventForm
+              @on-update-event="onUpdatedEvent"
+              @on-add-event="onAddedEvent"
+              :event-info="selectedEvent"
+            ></TenonEventForm>
           </section>
           <section v-else class="empty-event-info">
             <a-empty>未选中事件</a-empty>
@@ -75,7 +83,7 @@ onMounted, import { getTenonEventsApi } from '@/api';
   </a-modal>
 </template>
 <script setup lang="ts">
-import { getTenonEventsApi } from '@/api';
+import { deleteTenonEventApi, getTenonEventsApi } from '@/api';
 import { Message } from '@arco-design/web-vue';
 import { computed, onMounted, ref, watchEffect } from 'vue';
 import { useStore } from 'vuex';
@@ -106,7 +114,7 @@ const close = () => {
 
 watchEffect(async () => {
   const pageInfo = await store.getters['page/getPageInfo'];
-  
+
   eventList.value = pageInfo.events || [];
 });
 
@@ -119,20 +127,38 @@ function handleAddEvent() {
 function onAddedEvent() {
   addingEvent.value = false;
   selectedEvent.value = null;
-  store.dispatch('page/updatePageInfo');
+  store.dispatch('page/updatePageEvent');
 }
 
-function handleDeleteEvent(index) {
+function onUpdatedEvent() {
+  store.dispatch('page/updatePageEvent');
+}
+
+async function handleDeleteEvent(index) {
   if (index === -1) { // 新增事件
     addingEvent.value = false;
 
     if (selectedEvent.value?._new) {
       selectedEvent.value = null;
     }
+  } else {
+    const willBeDelete = eventList.value[index];
+    const {
+      success, errorMsg
+    } = await deleteTenonEventApi(willBeDelete._id);
+    if (!success) {
+      return Message.error(errorMsg!);
+    }
+    store.dispatch('page/updatePageEvent');
+    Message.success('删除成功');
+    if (selectedEvent.value?._id === willBeDelete._id) {
+      selectedEvent.value = null;
+    }
   }
 }
 
 const selectedEvent = ref<{
+  _id?: string;
   _new?: boolean;
   eventName?: string;
   content?: string;
@@ -173,7 +199,7 @@ defineExpose({ open, close });
   }
 
   .event-item.active {
-    box-shadow: 0 0 18px #3983f433;
+    box-shadow: 0px 0 28px -8px #4c8cec;
   }
 
   .empty-event,
