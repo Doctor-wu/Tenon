@@ -8,7 +8,7 @@
           :collapsed="false"
           :level-indent="0"
         >
-          <template v-for="(schema, index) in schemas" :key="schema.fieldName + schema.title">
+          <template v-for="(schema, index) in schemas">
             <a-sub-menu :title="schema.title">
               <CustomAttrs v-if="schema.type === 'custom'" :schema="schema"></CustomAttrs>
               <AttrsTree v-else :properties="schema.properties" :fieldName="schema.fieldName"></AttrsTree>

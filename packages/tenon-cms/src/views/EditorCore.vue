@@ -85,7 +85,6 @@ onBeforeUnmount(() => {
 
 </script>
 
-
 <style lang="scss" scoped>
 .rootView {
   height: 100%;

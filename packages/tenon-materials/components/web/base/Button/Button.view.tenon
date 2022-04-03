@@ -3,7 +3,7 @@
 >
   <span t-if="this.buttonText.value">{{this.buttonText.value}}</span>
   <Compose-View
-    t-if="!this.buttonText.value"
+    t-if="this.buttonText.value === undefined || this.buttonText.value === ''"
     slotKey="default" 
     placeholder="拖入组件生成按钮内容"
     composeLayout="{

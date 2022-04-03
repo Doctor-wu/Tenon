@@ -1,4 +1,5 @@
 import { callTenonEvent, TenonComponent } from "@tenon/engine";
+import { useStore } from "vuex";
 
 export function setupComponentEvents(tenonComp: TenonComponent, props: any) {
   const events = tenonComp.materialConfig.events;

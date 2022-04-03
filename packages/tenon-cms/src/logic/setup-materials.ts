@@ -7,12 +7,15 @@ import ComposeViewConfig from "@/components/editor/viewer/Compose-View/Compose-V
 import ComposeViewVue from '@/components/editor/viewer/Compose-View/Compose-View.vue';
 import { cloneDeep } from "lodash";
 import { ISchema, TenonComponent } from "@tenon/engine";
+import { watchEffect } from "vue";
+import { Message } from "@arco-design/web-vue";
+
 
 let initd = false;
 export const setupMaterials = async (store: Store<IRootState>) => {
   // if (initd) return;
   console.log(materialDependency);
-  
+
   initd = true;
   const components = await (await getComponentsApi()).data;
   const {
@@ -42,4 +45,34 @@ export const setupMaterials = async (store: Store<IRootState>) => {
   const defaultTree = new TenonComponent(composeView(), {});
   store.dispatch('viewer/setTree', cloneDeep(defaultTree));
   store.dispatch('viewer/setDefaultTree', defaultTree);
+
+
+  TenonComponent.staticHook.afterDeserialize((instance: TenonComponent) => {
+    if (instance.propsBinding._bindings.size > 0) {
+      instance.lifecycleHook.onMounted(() => {
+        Array.from(instance.propsBinding._bindings.keys()).forEach(key => {
+          const [fieldName, propsKey] = key.split('@');
+          const expression = instance.propsBinding.getBinding(fieldName, propsKey);
+          console.log(instance, fieldName, propsKey, expression);
+
+          const trigger = new Function('injectMeta', `
+            const {
+              $comp,
+            } = injectMeta;
+            return ${expression};
+          `);
+          const cancel = watchEffect(() => {
+            try {
+              instance.props[fieldName][propsKey] = trigger({
+                $comp: instance,
+              });
+            } catch (e) {
+              Message.error(`[Expression Error]: ${e}`);
+            }
+          });
+          instance.runtimeBinding[instance.propsBinding.makeKey(fieldName, propsKey)] = cancel;
+        });
+      });
+    }
+  });
 }

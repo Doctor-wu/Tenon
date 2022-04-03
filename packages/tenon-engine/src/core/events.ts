@@ -1,5 +1,6 @@
 import { IMaterial } from "@tenon/materials";
 import { cloneDeep } from "lodash";
+import { useStore } from "vuex";
 import { TenonComponent } from "./component";
 
 interface IDefaultEvents {
@@ -25,7 +26,7 @@ export interface IEventsConfig {
 
 export interface IEventStruct {
   eventLabel: string;
-  executeQueue: IEventMeta[];
+  executeQueue: string[];
 }
 
 export interface IEventMeta {
@@ -35,15 +36,20 @@ export interface IEventMeta {
   gather: string;
 }
 
+export const eventsMap: {
+  value: Map<string, IEventMeta> | null;
+} = {
+  value: null,
+};
+
 export const callTenonEvent = async (
   tenonComp: TenonComponent, eventName: string, ...args: any[]
 ) => {
   if (args[0]?.currentTarget && args[0]?.currentTarget !== tenonComp.ctx.$el) return;
   if (!tenonComp.events[eventName] || !tenonComp.events[eventName].executeQueue.length) return;
-  const events = tenonComp.events[eventName].executeQueue;
-  // console.log('>>> CallTenonEvent', eventName, args, tenonComp);
-  events.forEach(eventItem => {
-    executeTenonEvent(eventItem, tenonComp, ...args);
+  const eventIds = tenonComp.events[eventName].executeQueue;
+  eventIds.forEach(async eventId => {
+    executeTenonEvent(eventsMap.value!.get(eventId)!, tenonComp, ...args);
   });
 }
 

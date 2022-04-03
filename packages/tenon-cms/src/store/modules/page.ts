@@ -1,6 +1,8 @@
 import { getPageInfoApi, getTenonEventsApi } from '@/api';
 import { getPageModel } from '@/local-db/controller/page';
 import { Message } from '@arco-design/web-vue';
+import { eventsMap, IEventMeta, TenonComponent } from '@tenon/engine';
+import { cloneDeep } from 'lodash';
 import { Module } from 'vuex';
 import { IRootState } from '..';
 
@@ -32,8 +34,15 @@ export default {
     setPageInfo({ commit }, payload) {
       commit('SET_PAGE_INFO', payload);
       getPageModel().set({
-        page: payload
+        page: cloneDeep(payload)
       });
+      eventsMap.value = (() => {
+        const map = new Map<string, IEventMeta>();
+        (payload.events || []).forEach(eventItem => {
+          map.set(eventItem._id, eventItem);
+        });
+        return map;
+      })();
     },
     clearPageInfo({ commit }) {
       commit('SET_PAGE_INFO', null);

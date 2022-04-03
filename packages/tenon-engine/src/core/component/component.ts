@@ -5,24 +5,33 @@ import { ComponentSerializeConfig, ComponentTreeNode } from "./component.interfa
 import { IMaterial } from "@tenon/materials";
 import { cloneDeep } from "lodash";
 import { ITenonComponentStates } from "../states";
-import { createTenonEvents, IEventsConfig } from "../events";
+import { createTenonEvents, IEventMeta, IEventsConfig } from "../events";
+import { TenonPropsBinding } from "../props-binding";
+import { TenonLifeCycleHook } from "../hooks/lifecycle";
+import { StaticHooksKey, TenonStaticHook } from "../hooks";
 
 export class TenonComponent implements ComponentTreeNode {
   public name!: string;
   public id: number;
   public schemas: any;
-  public parent?: ComponentTreeNode;
-  // public parentComponent?: ComponentTreeNode;
+  public parent?: TenonComponent;
   public material: IMaterial;
   public materialConfig: IMaterial['config'];
   public states?: ITenonComponentStates;
   public props?: any;
+  public propsBinding: TenonPropsBinding;
+  public runtimeBinding: Record<string, any> = {};
   public children?: TenonComponent[];
   public slots!: Record<string, TenonComponent>;
   public ctx?: any;
   public isSlot?: boolean;
   public handlers: string[] = [];
   public events!: IEventsConfig;
+  public lifecycleHook!: TenonLifeCycleHook;
+
+  static eventsMap?: Map<string, IEventMeta>;
+
+  static staticHook: TenonStaticHook = new TenonStaticHook();
 
   static createInstanceByDeserialize(
     config: ComponentSerializeConfig, materialsMap: Map<string, () => IMaterial>
@@ -31,8 +40,6 @@ export class TenonComponent implements ComponentTreeNode {
     if (!compFactory) return null;
     const material = compFactory();
     const instance = new TenonComponent(material);
-    // debugger;
-    // instance.states = new TenonComponentStates(config.states, instance);
     if (config.children) {
       instance.children = config.children.map(
         childConfig => {
@@ -42,22 +49,29 @@ export class TenonComponent implements ComponentTreeNode {
         }
       );
     }
-    if (config.events) {
-      instance.events = config.events;
-    }
     Object.keys(config.slots || {}).forEach(slotKey => {
       instance.slots[slotKey] = TenonComponent.createInstanceByDeserialize(config.slots[slotKey], materialsMap)!;
       instance.slots[slotKey].parent = instance;
     });
+
+    if (config.events) {
+      instance.events = config.events;
+    }
+
+    instance.propsBinding = TenonPropsBinding.createInstanceByDeserialize(config.propsBinding || '{}');
+
+    TenonComponent.staticHook.executeHook(StaticHooksKey.afterDeserialize, instance);
+
     Object.assign(instance, config, {
       slots: instance.slots,
       children: instance.children,
+      propsBinding: instance.propsBinding,
     });
     return instance;
   }
 
   constructor(material: IMaterial, options: {
-    parent?: ComponentTreeNode;
+    parent?: TenonComponent;
     props?: any;
   } = {}) {
     this.id = getID();
@@ -66,9 +80,11 @@ export class TenonComponent implements ComponentTreeNode {
     this.material = material;
     this.materialConfig = material.config;
     this.schemas = material.schemas;
+    this.initLifeCycle();
     this.initEvents();
     this.initProps(material.schemas, options.props);
     this.initSlots();
+    this.propsBinding = new TenonPropsBinding();
     if (material.config.nestable) this.children = [];
     return reactive(this);
   }
@@ -76,6 +92,15 @@ export class TenonComponent implements ComponentTreeNode {
 
   get tenonCompProps() {
     return this.ctx?.tenonCompProps;
+  }
+
+  initLifeCycle() {
+    this.lifecycleHook = new TenonLifeCycleHook();
+    this.lifecycleHook.onBeforeUnmount(() => {
+      Object.keys(this.runtimeBinding).forEach(key => {
+        this.runtimeBinding[key]();
+      });
+    })
   }
 
 
@@ -101,12 +126,17 @@ export class TenonComponent implements ComponentTreeNode {
     });
     instance.schemas = cloneDeep(this.schemas);
     instance.material = cloneDeep(this.material);
+    instance.events = cloneDeep(this.events);
     // instance.slots = cloneDeep(this.slots);
     Object.keys(this.slots).forEach(slotKey => {
       instance.slots[slotKey] = this.slots[slotKey].clone();
     });
     if (this.children) {
-      instance.children = this.children.map(child => child.clone());
+      instance.children = this.children.map(child => {
+        const childInstance = child.clone();
+        childInstance.parent = instance;
+        return childInstance;
+      });
     };
     return instance;
   }
@@ -118,6 +148,9 @@ export class TenonComponent implements ComponentTreeNode {
     if (this.props) {
       newConfig.props = cloneDeep(toRaw(this.props));
     }
+    if (this.propsBinding) {
+      newConfig.propsBinding = this.propsBinding.serialize();
+    }
     if (this.schemas) {
       newConfig.schemas = toRaw(this.schemas);
     }
@@ -127,10 +160,7 @@ export class TenonComponent implements ComponentTreeNode {
       });
     }
     if (this.events) {
-      newConfig.events = cloneDeep(this.events);
-      // Object.keys(newConfig.events).forEach(key => {
-      //   newConfig.events[key].executeQueue = newConfig.events[key].executeQueue.map(item => item._id);
-      // });
+      newConfig.events = toRaw(this.events);
     }
     if (this.slots) {
       const oldSlots = toRaw(this.slots);
@@ -140,6 +170,10 @@ export class TenonComponent implements ComponentTreeNode {
       });
     }
     return newConfig;
+  }
+
+  onBeforeMount(cb: Function) {
+
   }
 }
 

@@ -2,6 +2,7 @@ import { IEventsConfig } from "../events";
 import { IMaterial } from "@tenon/materials";
 import { ISchema } from "../schema";
 import { ITenonComponentStates } from "../states";
+import { TenonPropsBinding } from "../props-binding";
 
 export interface ComponentTreeNode {
   name: string; // 组件名称
@@ -16,6 +17,7 @@ export interface ComponentTreeNode {
   // textID?: string;
   // parentComponent?: ComponentTreeNode;
   props?: any;
+  propsBinding: TenonPropsBinding;
   states?: ITenonComponentStates;
   children?: ComponentTreeNode[];
   material: IMaterial;
@@ -29,6 +31,7 @@ export interface ComponentSerializeConfig {
   name: string;
   schemas: ISchema[];
   props: any;
+  propsBinding: string;
   children?: ComponentSerializeConfig[];
   slots: Object;
   states: any;

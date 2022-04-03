@@ -1,7 +1,7 @@
 <template>
   <a-card :title="eventConfig.eventLabel">
-    <div class="stock-handler" v-for="(eventMeta, index) in eventConfig.executeQueue">
-      <b>{{ eventMeta.eventName }}</b>
+    <div class="stock-handler" v-for="( id, index) in eventConfig.executeQueue">
+      <b>{{ eventsMap.get(id)?.eventName }}</b>
       <b>
         <!-- {{ item.tenonCompName }}_{{ item.tenonCompID }} -->
         <icon-delete @click="() => deleteStockHandler(index)" class="delete-stock-handler" />
@@ -52,7 +52,7 @@ const deleteStockHandler = (index: number) => {
 
 const handleAddEvent = (eventItem: IEventMeta) => {
   if (!eventItem) return;
-  (activeComponent.value.events[props.eventsKey] as IEventStruct).executeQueue.push(eventItem);
+  (activeComponent.value.events[props.eventsKey] as IEventStruct).executeQueue.push(eventItem._id);
 };
 </script>
 <style lang="scss" scoped>

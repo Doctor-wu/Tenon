@@ -1,4 +1,4 @@
-import { callTenonEvent, ComponentTreeNode, TenonComponent, TenonComponentStates } from "@tenon/engine";
+import { callTenonEvent, ComponentTreeNode, LifeCycleHooksKey, TenonComponent, TenonComponentStates } from "@tenon/engine";
 import {
   getCurrentInstance,
   onMounted, onUpdated,
@@ -20,10 +20,12 @@ export function setupComponent(props, ctx, logic) {
 
   onMounted(() => {
     callTenonEvent(tenonComp, 'onMounted');
+    tenonComp.lifecycleHook.executeHook(LifeCycleHooksKey.onMounted);
   });
 
   onBeforeUnmount(() => {
     callTenonEvent(tenonComp, 'onBeforeUnmount');
+    tenonComp.lifecycleHook.executeHook(LifeCycleHooksKey.onBeforeUnmount);
   });
 
 

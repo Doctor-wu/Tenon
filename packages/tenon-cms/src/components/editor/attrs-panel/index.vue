@@ -27,7 +27,7 @@ import { useStore } from '../../../store';
 import { computed, effect, ref, toRaw } from 'vue';
 import { editMode } from '../../../logic/viewer-status';
 import CompAttrs from './comp-attrs/comp-attrs.vue';
-import BaseInfo from './base-attrs/base-info.vue';
+import BaseInfo from './comp-base/base-info.vue';
 import compInstance from './comp-instance/comp-instance.vue';
 import compEvents from './comp-events/comp-events.vue';
 

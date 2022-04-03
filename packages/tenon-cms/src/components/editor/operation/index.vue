@@ -32,7 +32,16 @@ import ComponentTree from './component-tree.vue';
   padding-bottom: 5px;
   border-bottom: 1px solid #e8e8e8;
   height: 100%;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
+  overflow: auto;
+}
+:deep(.arco-tabs-nav) {
+  min-height: 64px;
+}
+:deep(.arco-tabs-content) {
+  flex: 1;
   overflow: auto;
 }
 

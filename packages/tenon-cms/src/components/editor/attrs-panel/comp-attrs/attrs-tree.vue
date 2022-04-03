@@ -7,35 +7,67 @@
       <a-divider style="margin: 10px 0;"></a-divider>
     </template>
     <template v-else>
-      <a-form-item :field="key" :label="properties[key].title">
-        <component
-          :is="getFormItemBySchemaType(properties[key].type, properties[key])"
-          v-bind="getBindingsBySchemaType(properties[key].type, key)"
-          v-on="getListenersBySchemaType(properties[key].type, key)"
-          v-model="activeComponent.props[props.fieldName][key]"
-          placeholder="please input..."
-          allow-clear
-        >
-          <template v-if="properties[key].type === 'select'">
-            <a-option
-              v-for="optionsKey in Object.keys(properties[key].options)"
-              :value="optionsKey"
-            >{{ properties[key].options[optionsKey] }}</a-option>
-          </template>
-        </component>
+      <a-form-item :field="key">
+        <template #label>
+          {{ properties[key].title }}
+          <a-button
+            class="bindingBtn"
+            :class="{ activeBinding: activeComponent.propsBinding.hasBinding(fieldName, key) }"
+            type="text"
+            size="mini"
+            style="padding: 0 3px;"
+            @click="() => useExpressionField(fieldName, key)"
+          >
+            <icon-link />
+          </a-button>
+        </template>
+        <template v-if="!activeComponent.propsBinding.hasBinding(fieldName, key)">
+          <component
+            :is="getFormItemBySchemaType(properties[key].type, properties[key])"
+            v-bind="getBindingsBySchemaType(properties[key].type, key)"
+            v-on="getListenersBySchemaType(properties[key].type, key)"
+            placeholder="please input..."
+            allow-clear
+          >
+            <template v-if="properties[key].type === 'select'">
+              <a-option
+                v-for="optionsKey in Object.keys(properties[key].options)"
+                :value="optionsKey"
+              >{{ properties[key].options[optionsKey] }}</a-option>
+            </template>
+          </component>
+        </template>
+        <template v-else>
+          <section style="width: 100%">
+            <a-alert title="表达式绑定">
+              <span>
+                可以使用JS表达式来动态的绑定字段,
+                <b>$comp</b>将作为组件实例注入到作用域中
+              </span>
+            </a-alert>
+            <a-textarea
+              :modelValue="activeComponent.propsBinding.getBinding(fieldName, key)"
+              @input="(value) => handleBindingInput(fieldName, key, value)"
+              @blur="() => handleBinding(fieldName, key)"
+              placeholder="请输入表达式"
+              class="binding-textarea"
+            ></a-textarea>
+          </section>
+        </template>
       </a-form-item>
     </template>
   </template>
 </template>
 <script setup lang="ts">
 import { useStore } from '@/store';
-import { computed } from 'vue';
+import { computed, effect, watchEffect } from 'vue';
 import { ISchema, TenonComponent } from '@tenon/engine';
 import { ColorPicker } from 'vue-color-kit';
 import carouselController from './controllers/carousel-controller.vue';
 import iconTypeController from './controllers/icon-type-controller.vue';
 import tableColumnController from './controllers/table-column-controller.vue';
 import tableDataController from './controllers/table-data-controller.vue';
+import { Message } from '@arco-design/web-vue';
 
 const props: {
   properties: Record<string, ISchema>;
@@ -69,7 +101,7 @@ const getFormItemBySchemaType = (type: string, meta: ISchema) => {
       return ColorPicker;
     case 'array':
       const listType = meta.listType;
-      if(!listType) return 'a-input';
+      if (!listType) return 'a-input';
       return getListController(listType);
     case 'icon-type':
       return iconTypeController;
@@ -83,7 +115,7 @@ const getFormItemBySchemaType = (type: string, meta: ISchema) => {
 };
 
 function getListController(listType: string) {
-  switch(listType) {
+  switch (listType) {
     case 'carousel':
       return carouselController;
     default:
@@ -108,6 +140,7 @@ const getBindingsBySchemaType = (type: string, key) => {
     case 'select':
     default:
       return {
+        modelValue: activeComponent.value.props[props.fieldName]?.[key]
       }
   }
 }
@@ -121,20 +154,75 @@ const getListenersBySchemaType = (type: string, key) => {
         },
       }
     case 'string':
-    case 'number':
     case 'boolean':
     case 'object':
+    case 'number':
+    case 'select':
+    case 'array':
     default:
-      return {};
+      return {
+        'update:modelValue': (value) => {
+          activeComponent.value.props[props.fieldName][key] = value;
+        }
+      };
   }
 }
+
+const useExpressionField = (fieldName, key) => {
+  if (activeComponent.value.propsBinding.hasBinding(fieldName, key)) { // 已经存在就解绑
+    activeComponent.value.propsBinding.deleteBinding(fieldName, key);
+  } else {
+    activeComponent.value.propsBinding.addBinding(fieldName, key, '');
+  }
+}
+
+const handleBindingInput = (fieldName, key, value) => {
+  activeComponent.value.propsBinding.setBinding(fieldName, key, value);
+}
+
+const handleBinding = (fieldName, key) => {
+  const expression = activeComponent.value.propsBinding.getBinding(fieldName, key);
+  if (expression === '' || expression === undefined) return;
+  const trigger = new Function('injectMeta', `
+    const {
+      $comp,
+    } = injectMeta;
+    return ${expression};
+  `);
+  if (activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)]) {
+    activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)]();
+  };
+  const cancel = watchEffect(() => {
+    try {
+      activeComponent.value.props[fieldName][key] = trigger({
+        $comp: activeComponent.value,
+      });
+    } catch (e) {
+      Message.error(`[Expression Error]: ${e}`);
+    }
+  });
+  activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)] = cancel;
+}
+
 </script>
+
 <style lang="scss" scoped>
-:deep(.arco-textarea-wrapper) .arco-textarea{
-    margin-left: 0 !important;
+:deep(.arco-textarea-wrapper) .arco-textarea {
+  margin-left: 0 !important;
 }
 
 :deep(.arco-textarea-wrapper) {
   // margin-left: 20px;
+}
+
+.binding-textarea {
+  margin-top: 20px;
+}
+
+.bindingBtn {
+  color: gray;
+  &.activeBinding {
+    color: #3579f4;
+  }
 }
 </style>

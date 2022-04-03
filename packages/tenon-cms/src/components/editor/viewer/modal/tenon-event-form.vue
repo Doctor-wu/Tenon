@@ -61,8 +61,6 @@ const eventData = ref<{
 }>({});
 
 watch(props, () => {
-  console.log(props.eventInfo);
-
   eventData.value = cloneDeep(props.eventInfo);
 }, { immediate: true });
 
