@@ -6,27 +6,17 @@
   "schemas": [
     {
       "type": "object",
-      "title": "文本内容",
-      "fieldName": "textValue",
+      "title": "循环逻辑配置",
+      "fieldName": "ForConfig",
       "properties": {
-        "value": {
-          "type": "string",
-          "title": "文本内容",
-          "default": "TEXT"
+        "loop": {
+          "type": "loop",
+          "title": "循环",
+          "default": []
         }
       }
-    },
-    {
-      "type": "internal",
-      "key": "textStyle",
-      "title": "文本样式",
-      "fieldName": "textStyle"
     }
   ],
   "tenonProps": {
-    "containerStyle": {
-      "box-sizing": "border-box",
-      "display": "inline-block"
-    }
   }
 }

@@ -49,6 +49,7 @@
               :modelValue="activeComponent.propsBinding.getBinding(fieldName, key)"
               @input="(value) => handleBindingInput(fieldName, key, value)"
               @blur="() => handleBinding(fieldName, key)"
+              @focus="handleFocusExpression"
               placeholder="请输入表达式"
               class="binding-textarea"
             ></a-textarea>
@@ -60,14 +61,15 @@
 </template>
 <script setup lang="ts">
 import { useStore } from '@/store';
-import { computed, effect, watchEffect } from 'vue';
-import { ISchema, TenonComponent } from '@tenon/engine';
+import { computed, h, watchEffect } from 'vue';
+import { ISchema, TenonComponent, TenonPropsBinding } from '@tenon/engine';
 import { ColorPicker } from 'vue-color-kit';
 import carouselController from './controllers/carousel-controller.vue';
 import iconTypeController from './controllers/icon-type-controller.vue';
 import tableColumnController from './controllers/table-column-controller.vue';
 import tableDataController from './controllers/table-data-controller.vue';
 import { Message } from '@arco-design/web-vue';
+import { editMode } from '@/logic/viewer-status';
 
 const props: {
   properties: Record<string, ISchema>;
@@ -103,6 +105,8 @@ const getFormItemBySchemaType = (type: string, meta: ISchema) => {
       const listType = meta.listType;
       if (!listType) return 'a-input';
       return getListController(listType);
+    case 'loop':
+      return () => h('b', '该字段仅支持表达式');
     case 'icon-type':
       return iconTypeController;
     case 'table-column':
@@ -177,26 +181,39 @@ const useExpressionField = (fieldName, key) => {
   }
 }
 
+const handleFocusExpression = () => {
+  TenonPropsBinding.trackingBinding = false;
+}
+
 const handleBindingInput = (fieldName, key, value) => {
   activeComponent.value.propsBinding.setBinding(fieldName, key, value);
 }
 
 const handleBinding = (fieldName, key) => {
+  TenonPropsBinding.trackingBinding = true;
   const expression = activeComponent.value.propsBinding.getBinding(fieldName, key);
   if (expression === '' || expression === undefined) return;
   const trigger = new Function('injectMeta', `
     const {
       $comp,
+      _editMode,
     } = injectMeta;
-    return ${expression};
+    try {
+      return (${expression});
+    } catch(e) {
+      console.error(e);
+      return '';
+    }
   `);
   if (activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)]) {
     activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)]();
   };
   const cancel = watchEffect(() => {
+    if (!TenonPropsBinding.trackingBinding) return;
     try {
       activeComponent.value.props[fieldName][key] = trigger({
         $comp: activeComponent.value,
+        _editMode: editMode,
       });
     } catch (e) {
       Message.error(`[Expression Error]: ${e}`);

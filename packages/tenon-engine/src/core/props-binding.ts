@@ -14,6 +14,7 @@ export interface ITenonPropsBinding<T = any> {
 }
 
 export class TenonPropsBinding<T = any> implements ITenonPropsBinding<T>{
+  static trackingBinding = true;
   public _bindings = new Map<string, T>();
   public _bindingKeys = new Set<string>();
 

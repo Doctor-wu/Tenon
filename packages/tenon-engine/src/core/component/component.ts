@@ -30,15 +30,7 @@ export class TenonComponent implements ComponentTreeNode {
   public lifecycleHook!: TenonLifeCycleHook;
   public mounted = false;
 
-  static editMode: any = undefined;
-
-  get editMode() {
-    console.dir(TenonComponent);
-    console.log(TenonComponent.editMode);
-    
-    
-    return TenonComponent.editMode;
-  }
+  static editMode: any;
 
   static eventsMap?: Map<string, IEventMeta>;
 
@@ -139,7 +131,6 @@ export class TenonComponent implements ComponentTreeNode {
       parent: this.parent,
       props: cloneDeep(this.props),
     });
-    console.log(instance);
     instance.schemas = cloneDeep(this.schemas);
     instance.material = cloneDeep(this.material);
     instance.events = cloneDeep(this.events);
@@ -154,22 +145,27 @@ export class TenonComponent implements ComponentTreeNode {
         return childInstance;
       });
     };
-    console.timeEnd('clone-children')
-    console.timeEnd('clone');
     return instance;
   }
 
+  destroy() {
+    Object.keys(this.runtimeBinding).forEach(key => {
+      this.runtimeBinding[key]();
+      delete this.runtimeBinding[key];
+    });
+    // subtractID();
+    Object.keys(this.slots).forEach(slotKey => {
+      this.slots[slotKey].destroy();
+    });
+    this.children?.forEach(child => child.destroy());
+  }
+
   serialize(): ComponentSerializeConfig {
-    console.time('serialize');
     const newConfig: ComponentSerializeConfig = {} as ComponentSerializeConfig;
     newConfig.id = this.id;
     newConfig.name = this.name;
     if (this.props) {
-      console.time('serialize-props');
       newConfig.props = cloneDeep(this.props);
-      console.log(this.props);
-      
-      console.timeEnd('serialize-props');
     }
     if (this.propsBinding) {
       newConfig.propsBinding = this.propsBinding.serialize();
@@ -192,7 +188,6 @@ export class TenonComponent implements ComponentTreeNode {
         newConfig.slots[key] = oldSlots[key].serialize();
       });
     }
-    console.timeEnd('serialize');
     return newConfig;
   }
 

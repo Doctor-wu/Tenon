@@ -33,7 +33,7 @@
 
 <script lang="ts" setup>
 import { useStore } from '@/store';
-import { toRaw, computed, getCurrentInstance, ComputedRef } from 'vue';
+import { toRaw, computed, getCurrentInstance, ComputedRef, onMounted, watchEffect, watch } from 'vue';
 import Wrapper from '~components/editor/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '~logic/viewer-drag';
 import { editMode } from '~logic/viewer-status';
@@ -64,10 +64,9 @@ const props = defineProps({
     default: () => ({}),
   }
 });
-
+const instance: any = getCurrentInstance();
 let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => {
   let result: any = props.tenonComp;
-  const instance: any = getCurrentInstance();
   if (props.isSlot) {
     const rootComp = findParentTenonComp(instance)!;
     const rootSlots = rootComp.slots;
@@ -82,8 +81,24 @@ let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => 
       result = comp;
       rootSlots[props.slotKey] = comp;
     }
+    if (instance.attrs.childrenBucket) {
+      if (!instance.attrs.childrenBucket.value) {
+        instance.attrs.childrenBucket.value = result.children;
+      } else {
+        const cancel = watchEffect(() => {
+          if (instance.attrs.childrenBucket.value.length) {
+            result.children?.forEach(c => c.destroy());
+            result.children = instance.attrs.childrenBucket.value.map(i => i.clone());
+          }
+        });
+        (result as TenonComponent).lifecycleHook.onBeforeUnmount(() => {
+          cancel();
+        });
+      }
+    }
   }
   result.ctx = result.ctx || instance.ctx;
+  result.ctx.tenonComp = result;
   return result;
 });
 

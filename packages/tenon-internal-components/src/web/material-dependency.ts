@@ -4,7 +4,8 @@ import Avatar from "./Avatar.vue";
 import Text from "./Text.vue";
 import Icon from "./Icon.vue";
 import Table from "./Table.vue";
-// import Button from "./Button.vue";
+import For from "./For.vue";
+
 import {
   Image,
   Card,
@@ -13,6 +14,7 @@ import {
   Carousel,
   Menu,
 } from "@arco-design/web-vue";
+
 import {
   IconArrowDown,
   IconArrowLeft,
@@ -80,6 +82,7 @@ export const materialDependency = {
   TenonAvatar: Avatar,
   TenonIcon: Icon,
   TenonTable: Table,
+  TenonFor: For,
   DynamicComponent: DynamicComponent,
 }
 

@@ -16,7 +16,7 @@ let initd = false;
 export const setupMaterials = async (store: Store<IRootState>) => {
   if (initd) return;
   console.log(materialDependency);
-  
+
   TenonComponent.editMode = editMode;
 
   initd = true;
@@ -50,28 +50,38 @@ export const setupMaterials = async (store: Store<IRootState>) => {
   store.dispatch('viewer/setDefaultTree', defaultTree);
 
   TenonPropsBinding.staticHook.afterAddingBinding((instance: TenonComponent, fieldName, propsKey, expression) => {
+    if (!TenonPropsBinding.trackingBinding) return;
     const trigger = () => {
-      // console.log(instance, fieldName, propsKey, expression);
-
-      const trigger = new Function('injectMeta', `
+      console.log(instance, fieldName, propsKey, expression);
+      try {
+        const handler = new Function('injectMeta', `
         const {
           $comp,
           _editMode,
         } = injectMeta;
-        return ${expression};
-      `);
-      const injectMeta = {
-        $comp: instance,
-        _editMode: editMode,
-      };
-      const cancel = watchEffect(() => {
         try {
-          instance.props[fieldName][propsKey] = trigger(injectMeta);
-        } catch (e) {
-          Message.error(`[Expression Error]: ${e}`);
+          return ${expression};
+        } catch(e) {
+          console.error(e);
+          return '';
         }
-      });
-      instance.runtimeBinding[instance.propsBinding.makeKey(fieldName, propsKey)] = cancel;
+      `);
+        const injectMeta = {
+          $comp: instance,
+          _editMode: editMode,
+        };
+        const cancel = watchEffect(() => {
+          if (!TenonPropsBinding.trackingBinding) return;
+          try {
+            instance.props[fieldName][propsKey] = handler(injectMeta);
+          } catch (e) {
+            Message.error(`[Expression Error]: ${e}`);
+          }
+        });
+        instance.runtimeBinding[instance.propsBinding.makeKey(fieldName, propsKey)] = cancel;
+      } catch (e) {
+        debugger;
+      }
     };
     if (instance.mounted) {
       trigger();

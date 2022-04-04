@@ -6,6 +6,8 @@ export const getID = () => {
   return currId;
 }
 
+export const subtractID = () => id--;
+
 export const setID = (newID: number) => {
   id = newID;
 }
