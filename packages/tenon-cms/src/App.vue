@@ -2,15 +2,14 @@
 // This starter template is using Vue 3 <script setup> SFCs
 
 import { useStore } from '@/store';
-import { computed, markRaw, shallowRef } from 'vue';
+import { computed, markRaw, ref, shallowRef } from 'vue';
 
 // Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
 const store = useStore();
-const activeLayout = store.getters["layout/getActiveLayout"];
 </script>
 
 <template>
-  <component :is="markRaw(store.getters['layout/getActiveLayout'])" />
+  <component :is="store.getters['layout/getActiveLayout']" />
 </template>
 
 <style>

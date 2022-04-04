@@ -6,15 +6,18 @@ import { materialDependency } from "@tenon/internal-components";
 import ComposeViewConfig from "@/components/editor/viewer/Compose-View/Compose-View.config.json";
 import ComposeViewVue from '@/components/editor/viewer/Compose-View/Compose-View.vue';
 import { cloneDeep } from "lodash";
-import { ISchema, TenonComponent } from "@tenon/engine";
+import { ISchema, TenonComponent, TenonPropsBinding } from "@tenon/engine";
 import { watchEffect } from "vue";
 import { Message } from "@arco-design/web-vue";
+import { editMode } from "./viewer-status";
 
 
 let initd = false;
 export const setupMaterials = async (store: Store<IRootState>) => {
-  // if (initd) return;
+  if (initd) return;
   console.log(materialDependency);
+  
+  TenonComponent.editMode = editMode;
 
   initd = true;
   const components = await (await getComponentsApi()).data;
@@ -46,33 +49,34 @@ export const setupMaterials = async (store: Store<IRootState>) => {
   store.dispatch('viewer/setTree', cloneDeep(defaultTree));
   store.dispatch('viewer/setDefaultTree', defaultTree);
 
+  TenonPropsBinding.staticHook.afterAddingBinding((instance: TenonComponent, fieldName, propsKey, expression) => {
+    const trigger = () => {
+      // console.log(instance, fieldName, propsKey, expression);
 
-  TenonComponent.staticHook.afterDeserialize((instance: TenonComponent) => {
-    if (instance.propsBinding._bindings.size > 0) {
-      instance.lifecycleHook.onMounted(() => {
-        Array.from(instance.propsBinding._bindings.keys()).forEach(key => {
-          const [fieldName, propsKey] = key.split('@');
-          const expression = instance.propsBinding.getBinding(fieldName, propsKey);
-          console.log(instance, fieldName, propsKey, expression);
-
-          const trigger = new Function('injectMeta', `
-            const {
-              $comp,
-            } = injectMeta;
-            return ${expression};
-          `);
-          const cancel = watchEffect(() => {
-            try {
-              instance.props[fieldName][propsKey] = trigger({
-                $comp: instance,
-              });
-            } catch (e) {
-              Message.error(`[Expression Error]: ${e}`);
-            }
-          });
-          instance.runtimeBinding[instance.propsBinding.makeKey(fieldName, propsKey)] = cancel;
-        });
+      const trigger = new Function('injectMeta', `
+        const {
+          $comp,
+          _editMode,
+        } = injectMeta;
+        return ${expression};
+      `);
+      const injectMeta = {
+        $comp: instance,
+        _editMode: editMode,
+      };
+      const cancel = watchEffect(() => {
+        try {
+          instance.props[fieldName][propsKey] = trigger(injectMeta);
+        } catch (e) {
+          Message.error(`[Expression Error]: ${e}`);
+        }
       });
+      instance.runtimeBinding[instance.propsBinding.makeKey(fieldName, propsKey)] = cancel;
+    };
+    if (instance.mounted) {
+      trigger();
+    } else {
+      instance.lifecycleHook.onMounted(trigger);
     }
   });
 }

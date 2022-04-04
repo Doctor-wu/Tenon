@@ -1,0 +1,13 @@
+<TenonTemplate t-if="this.IfConfig.render || this.getEditMode().value">
+  <Compose-View
+    t-if="this.IfConfig.render"
+    slotKey="default"
+    placeholder="拖入组件生成组件内容"
+    isSlot="true"
+  ></Compose-View>
+  <TenonText
+    t-if="!this.IfConfig.render && this.getEditMode().value"
+  >
+    元素将不会渲染
+  </TenonText>
+</TenonTemplate>

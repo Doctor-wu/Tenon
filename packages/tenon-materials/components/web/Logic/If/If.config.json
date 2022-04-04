@@ -1,0 +1,24 @@
+{
+  "name": "If",
+  "icon": "code-block",
+  "description": ["If 是一个<逻辑组件>, If可以提供是否渲染子元素的能力"],
+  "platform": ["web"],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "逻辑配置",
+      "fieldName": "IfConfig",
+      "properties": {
+        "render": {
+          "type": "boolean",
+          "title": "是否渲染子元素",
+          "default": true
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+    }
+  }
+}

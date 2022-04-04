@@ -53,6 +53,7 @@ export function parseConfig2RenderFn(this: any, config) {
 
   if (props["t-if"] && !config._processedIF) {
     const renderCondition = computed(() => getValueByHackContext(this, props["t-if"]));
+    
     return function _custom_if_render(this: any) {
       const subConfig = cloneDeep(config);
       subConfig._processedIF = true;

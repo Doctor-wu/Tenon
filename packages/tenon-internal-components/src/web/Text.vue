@@ -1,5 +1,7 @@
 <template>
-  <span :style="textStyle">{{ textValue.value }}</span>
+  <span :style="textStyle">
+    <slot>{{ textValue.value }}</slot>
+  </span>
 </template>
 <script setup lang="ts">
 import { CSSProperties } from 'vue';

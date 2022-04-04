@@ -1,10 +1,11 @@
+import { TenonBaseHook } from "./base";
 
 export enum LifeCycleHooksKey {
   onMounted = 'onMounted',
   onBeforeUnmount = 'onBeforeUnmount',
 }
 
-export class TenonLifeCycleHook {
+export class TenonLifeCycleHook extends TenonBaseHook<LifeCycleHooksKey>{
   public hooks = new Map<LifeCycleHooksKey, Array<Function>>();
 
   onMounted(cb: Function) {
@@ -15,10 +16,5 @@ export class TenonLifeCycleHook {
   onBeforeUnmount(cb: Function) {
     if (!this.hooks.get(LifeCycleHooksKey.onBeforeUnmount)) this.hooks.set(LifeCycleHooksKey.onBeforeUnmount, []);
     this.hooks.get(LifeCycleHooksKey.onBeforeUnmount)?.push(cb);
-  }
-
-  executeHook(hook: LifeCycleHooksKey, ...args: any[]) {
-    if (!this.hooks.get(hook)) return;
-    this.hooks.get(hook)?.forEach(cb => cb(...args));
   }
 }

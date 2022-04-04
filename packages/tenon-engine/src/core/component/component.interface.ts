@@ -14,6 +14,7 @@ export interface ComponentTreeNode {
   parent?: ComponentTreeNode; // 组件父级
   // refKey?: string;
   ctx?: any;
+  mounted: boolean;
   // textID?: string;
   // parentComponent?: ComponentTreeNode;
   props?: any;

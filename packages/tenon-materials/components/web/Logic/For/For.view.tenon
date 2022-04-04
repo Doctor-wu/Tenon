@@ -1,0 +1,1 @@
+<TenonText textValue="{{this.textValue}}" textStyle="{{this.textStyle}}"></TenonText>

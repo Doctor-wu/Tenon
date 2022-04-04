@@ -6,7 +6,7 @@
       </a-sub-menu>
       <a-divider style="margin: 10px 0;"></a-divider>
     </template>
-    <template v-else>
+    <template v-else-if="!properties[key].internal">
       <a-form-item :field="key">
         <template #label>
           {{ properties[key].title }}
@@ -171,6 +171,7 @@ const getListenersBySchemaType = (type: string, key) => {
 const useExpressionField = (fieldName, key) => {
   if (activeComponent.value.propsBinding.hasBinding(fieldName, key)) { // 已经存在就解绑
     activeComponent.value.propsBinding.deleteBinding(fieldName, key);
+    activeComponent.value.props[fieldName][key] = '';
   } else {
     activeComponent.value.propsBinding.addBinding(fieldName, key, '');
   }

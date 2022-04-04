@@ -63,6 +63,7 @@ const processComponent = async (
       schemas: bornConfig.schemas,
       component: createComponent(view, logic, doc, materialMeta),
     };
+    
     return base;
   };
   componentsMap.set(config.name, compFactory);

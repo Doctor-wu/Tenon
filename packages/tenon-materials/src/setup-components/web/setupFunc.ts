@@ -28,11 +28,10 @@ export function setupComponent(props, ctx, logic) {
     tenonComp.lifecycleHook.executeHook(LifeCycleHooksKey.onBeforeUnmount);
   });
 
-
   const originStates = logic?.({
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount,
     watch: watchEffect,
-  }, props, ctx, tenonComp) || {};
+  }, props, ctx, tenonComp, TenonComponent.editMode) || {};
 
   Object.keys(originStates || {}).forEach(key => {
     if (typeof originStates[key] === 'function') {

@@ -10,6 +10,7 @@
         && !store?.getters['viewer/getDraggingComponent'],
       active: editMode && !dragging && store?.getters['viewer/getActiveComponent'] === tenonComp
     }"
+    v-if="shouldRender"
     @dragstart.capture="(e) => handleMaterialDragStart(e, tenonComp, false)"
     @dragend="(e) => handleMaterialDragEnd(e, tenonComp)"
     @dragover.prevent="() => { }"
@@ -24,17 +25,22 @@
   </section>
 </template>
 <script lang="ts" setup>
-import { handleMaterialDragStart, handleMaterialDragEnd, handleWrapperDrop, dragging, hovering } from '../../../logic/viewer-drag';
-import { editMode } from '../../../logic/viewer-status';
-import { useStore } from '../../../store';
-import { choosingWrapper, handleSelectComponent } from '../../../logic/viewer-active-component';
+import { handleMaterialDragStart, handleMaterialDragEnd, handleWrapperDrop, dragging, hovering } from '~logic/viewer-drag';
+import { editMode } from '~logic/viewer-status';
+import { useStore } from '@/store';
+import { computed } from 'vue';
+import { choosingWrapper, handleSelectComponent } from '~logic/viewer-active-component';
+import { TenonComponent } from '@tenon/engine';
 const store = useStore();
 
-const props = defineProps({
-  tenonComp: {
-    type: Object,
-    required: true,
-  },
+const props = defineProps<{
+  tenonComp: TenonComponent
+}>();
+
+const shouldRender = computed(() => {
+  if(props.tenonComp.name !== 'If') return true;
+  if(!editMode.value && !props.tenonComp.props.IfConfig.render) return false;
+  return true;
 });
 
 
@@ -44,7 +50,7 @@ const props = defineProps({
   border-bottom: 2px solid #00b42a;
 }
 .wrapper-container.editable {
-  // padding: 10px;
+  padding: 2px;
   // background-color: #eee;
   border: 1px dashed #ccc;
 }
