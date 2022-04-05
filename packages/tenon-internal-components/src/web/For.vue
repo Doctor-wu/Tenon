@@ -34,6 +34,7 @@ const renderList = computed(() => {
         index,
       },
       childrenBucket,
+      disabled: index !== 0,
     });
   });
 });

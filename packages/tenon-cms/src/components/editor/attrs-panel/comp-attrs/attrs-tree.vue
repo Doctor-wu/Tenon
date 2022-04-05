@@ -61,7 +61,7 @@
 </template>
 <script setup lang="ts">
 import { useStore } from '@/store';
-import { computed, h, watchEffect } from 'vue';
+import { computed, h, onBeforeUnmount, watchEffect } from 'vue';
 import { ISchema, TenonComponent, TenonPropsBinding } from '@tenon/engine';
 import { ColorPicker } from 'vue-color-kit';
 import carouselController from './controllers/carousel-controller.vue';
@@ -216,7 +216,8 @@ const handleBinding = (fieldName, key) => {
         _editMode: editMode,
       });
     } catch (e) {
-      Message.error(`[Expression Error]: ${e}`);
+      // Message.error(`[Expression Error]: ${e}`);
+      console.error(e);
     }
   });
   activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)] = cancel;

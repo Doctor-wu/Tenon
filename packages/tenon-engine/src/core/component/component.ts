@@ -1,6 +1,6 @@
 import { reactive, toRaw } from "vue";
 import { createPropsBySchemas } from "../schema";
-import { getID } from "./id";
+import { getID, releaseID } from "./id";
 import { ComponentSerializeConfig, ComponentTreeNode } from "./component.interface";
 import { IMaterial } from "@tenon/materials";
 import { cloneDeep } from "lodash";
@@ -149,15 +149,45 @@ export class TenonComponent implements ComponentTreeNode {
   }
 
   destroy() {
+    // debugger;
     Object.keys(this.runtimeBinding).forEach(key => {
       this.runtimeBinding[key]();
-      delete this.runtimeBinding[key];
     });
-    // subtractID();
+    releaseID(this.id);
     Object.keys(this.slots).forEach(slotKey => {
       this.slots[slotKey].destroy();
     });
     this.children?.forEach(child => child.destroy());
+    setTimeout(() => {
+      let originThis = toRaw(this);
+      originThis.props = undefined;
+      originThis.children = undefined;
+
+      if (originThis?.ctx?.tenonComp) {
+        originThis.ctx.tenonComp;
+        originThis.ctx.$el = null;
+      }
+      originThis.ctx = undefined;
+      originThis.parent = undefined;
+      // @ts-ignore
+      originThis.lifecycleHook = undefined;
+      // @ts-ignore
+      originThis.propsBinding = undefined;
+      // @ts-ignore
+      originThis.runtimeBinding = undefined;
+      // @ts-ignore
+      originThis.material = undefined;
+      // @ts-ignore
+      originThis.schemas = undefined;
+      // @ts-ignore
+      originThis.events = undefined;
+      // @ts-ignore
+      originThis.handlers = undefined;
+      originThis.states = undefined;
+      originThis.materialConfig = undefined;
+      // @ts-ignore
+      originThis.slots = undefined;
+    }, 0);
   }
 
   serialize(): ComponentSerializeConfig {

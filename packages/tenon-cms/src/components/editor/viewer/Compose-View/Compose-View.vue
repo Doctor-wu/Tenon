@@ -28,12 +28,19 @@
       </template>
     </template>
     <section v-else-if="editMode" class="default-tip">{{ placeholder }}</section>
+    <section
+      v-if="disabled && editMode"
+      class="disable-mask"
+      @dragenter.stop="() => { }"
+      @dragover.stop="() => { }"
+      @drop.stop="() => { }"
+    ></section>
   </section>
 </template>
 
 <script lang="ts" setup>
 import { useStore } from '@/store';
-import { toRaw, computed, getCurrentInstance, ComputedRef, onMounted, watchEffect, watch } from 'vue';
+import { toRaw, computed, getCurrentInstance, ComputedRef, onMounted, watchEffect, watch, ref } from 'vue';
 import Wrapper from '~components/editor/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '~logic/viewer-drag';
 import { editMode } from '~logic/viewer-status';
@@ -62,7 +69,11 @@ const props = defineProps({
   tenonCompProps: {
     type: Object,
     default: () => ({}),
-  }
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
 });
 const instance: any = getCurrentInstance();
 let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => {
@@ -81,34 +92,42 @@ let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => 
       result = comp;
       rootSlots[props.slotKey] = comp;
     }
-    if (instance.attrs.childrenBucket) {
-      if (!instance.attrs.childrenBucket.value) {
-        instance.attrs.childrenBucket.value = result.children;
-      } else {
-        const cancel = watchEffect(() => {
-          if (instance.attrs.childrenBucket.value.length) {
-            result.children?.forEach(c => c.destroy());
-            result.children = instance.attrs.childrenBucket.value.map(i => i.clone());
-          }
-        });
-        (result as TenonComponent).lifecycleHook.onBeforeUnmount(() => {
-          cancel();
-        });
-      }
-    }
   }
   result.ctx = result.ctx || instance.ctx;
   result.ctx.tenonComp = result;
   return result;
 });
 
-
-
+if (instance.attrs.childrenBucket) {
+  if (!instance.attrs.childrenBucket.value) {
+    instance.attrs.childrenBucket.value = tenonTreeNode.value.children;
+  } else {
+    const cancel = watchEffect(() => {
+      if (instance.attrs.childrenBucket.value.length && editMode.value) {
+        tenonTreeNode.value.children?.forEach(c => c.destroy());
+        tenonTreeNode.value.children = instance.attrs.childrenBucket.value.map(i => i.clone());
+      }
+    }, { flush: 'pre' });
+    (tenonTreeNode.value as TenonComponent).lifecycleHook.onBeforeUnmount(() => {
+      cancel();
+    });
+  }
+}
 </script>
 <style lang="scss" scoped>
 .compose-view-container {
   position: relative;
   width: 100%;
+}
+
+.disable-mask {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff77;
+  z-index: 1;
 }
 .compose-view-container.editable {
   min-height: 20px;

@@ -52,7 +52,7 @@ export const setupMaterials = async (store: Store<IRootState>) => {
   TenonPropsBinding.staticHook.afterAddingBinding((instance: TenonComponent, fieldName, propsKey, expression) => {
     if (!TenonPropsBinding.trackingBinding) return;
     const trigger = () => {
-      console.log(instance, fieldName, propsKey, expression);
+      // console.log(instance, fieldName, propsKey, expression);
       try {
         const handler = new Function('injectMeta', `
         const {
@@ -75,12 +75,14 @@ export const setupMaterials = async (store: Store<IRootState>) => {
           try {
             instance.props[fieldName][propsKey] = handler(injectMeta);
           } catch (e) {
-            Message.error(`[Expression Error]: ${e}`);
+            // Message.error(`[Expression Error]: ${e}`);
+            console.error(e);
           }
         });
         instance.runtimeBinding[instance.propsBinding.makeKey(fieldName, propsKey)] = cancel;
       } catch (e) {
-        debugger;
+        console.error(e);
+        // debugger;
       }
     };
     if (instance.mounted) {

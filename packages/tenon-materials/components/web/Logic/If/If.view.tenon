@@ -7,6 +7,7 @@
   ></Compose-View>
   <TenonText
     t-if="!this.IfConfig.render && this.getEditMode().value"
+    textStyle="{color: 'red', fontSize: '12px'}"
   >
     元素将不会渲染
   </TenonText>
