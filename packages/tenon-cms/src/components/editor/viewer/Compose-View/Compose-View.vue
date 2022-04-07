@@ -103,7 +103,7 @@ if (instance.attrs.childrenBucket) {
     instance.attrs.childrenBucket.value = tenonTreeNode.value.children;
   } else {
     const cancel = watchEffect(() => {
-      if (instance.attrs.childrenBucket.value.length && editMode.value) {
+      if (editMode.value) {
         tenonTreeNode.value.children?.forEach(c => c.destroy());
         tenonTreeNode.value.children = instance.attrs.childrenBucket.value.map(i => i.clone());
       }

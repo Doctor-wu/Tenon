@@ -1,9 +1,8 @@
 <Compose-View
   slotKey="default" 
   isSlot="true"
-  composeLayout="{
-    display: 'flex',
-    flexWrap: 'wrap'
-  }"
+  composeLayout="{{this.composeLayout}}"
+  composeBackground= "{{this.composeBackground}}"
+  tenonCompProps="{{this.tenonCompProps}}"
 >
 </Compose-View>

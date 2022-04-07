@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "start": "nodemon --watch src -e ts --exec 'xl_close_port -p 9999 & ts-node src/index.ts' &",
+    "start": "nodemon --watch src -e ts --exec ts-node src/index.ts",
     "genSecret": "ts-node src/framework/utils/genSecret.ts"
   },
   "author": "Doctor wu",

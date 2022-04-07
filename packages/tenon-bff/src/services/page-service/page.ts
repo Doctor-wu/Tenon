@@ -17,6 +17,12 @@ export const pageSchema = createSchema({
   newestVersion: {
     type: Number,
     default: 0,
+  },
+  pageStates: {
+    type: {},
+    default: {
+      author: 'Doctorwu'
+    },
   }
 });
 
@@ -33,7 +39,8 @@ class PageService extends BaseService {
     return this.errorProtectedHandler(async () => {
       const query = await this.model.find(config);
       if (query.length > 0) throw new Error(`该项目下已存在<${config.pageName}>页面`);
-      return await this.addItem(config);
+      const pageInfo = await this.addItem(config);
+      return pageInfo;
     });
   }
 

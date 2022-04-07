@@ -42,6 +42,7 @@ export default {
           state.userInfo = existed.userInfo;
         }
       }
+      console.log('[UserInfo] ', state.userInfo);
       return state.userInfo;
     },
   },

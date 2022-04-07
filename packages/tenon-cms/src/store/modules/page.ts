@@ -1,4 +1,4 @@
-import { getPageInfoApi, getTenonEventsApi } from '@/api';
+import { getTenonEventsApi } from '@/api';
 import { getPageModel } from '@/local-db/controller/page';
 import { Message } from '@arco-design/web-vue';
 import { eventsMap, IEventMeta, TenonComponent } from '@tenon/engine';
@@ -68,6 +68,8 @@ export default {
           state.pageInfo = existed.page;
         }
       }
+      console.log('[PageInfo] ', state.pageInfo);
+
       return state.pageInfo;
     },
   },

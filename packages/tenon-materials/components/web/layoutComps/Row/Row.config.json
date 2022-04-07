@@ -3,9 +3,23 @@
   "icon": "file",
   "description": ["Row组件"],
   "dependencies": [],
-  "platform": [
-    "web"
-  ],
+  "platform": ["web"],
   "schemas": [
-  ]
+    {
+      "type": "internal",
+      "key": "containerLayout",
+      "title": "Row子容器样式",
+      "fieldName": "composeLayout"
+    },
+    {
+      "type": "internal",
+      "key": "containerBackground",
+      "title": "Row子容器背景",
+      "fieldName": "composeBackground"
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+    }
+  }
 }

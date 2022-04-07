@@ -84,8 +84,12 @@ export class BaseService<DocType = unknown> implements IDecoratedServiceExtraFie
   }
 
   protected async updateItemById(_id: string, info) {
-    const result = await this.model.updateOne({ _id }, info);
-    if (!result.matchedCount) throw `更新内容不存在：${_id}`;
+    return await this.updateItemByQuery({ _id }, info);
+  }
+
+  protected async updateItemByQuery(query, info) {
+    const result = await this.model.updateOne(query, info);
+    if (!result.matchedCount) throw `更新内容不存在`;
     if (!result.modifiedCount) throw '更新失败';
     return '更新成功';
   }

@@ -83,6 +83,30 @@ class TenonPageController extends BaseController {
     await this.smartResponse(ctx, next)(error?.message || error, result);
   }
 
+  @Post('/updateStates', {
+    params: {
+      pageId: {
+        type: 'string',
+        required: true,
+      },
+      pageStates: {
+        type: 'object',
+        required: true,
+      }
+    }
+  })
+  async handleUpdateStates(
+    ctx,
+    next,
+    params
+  ) {
+    const {
+      pageStates, pageId,
+    } = params;
+    const [error, result] = await this.pageService.updatePageInfo(pageId, { pageStates });
+    return await this.smartResponse(ctx, next)(error, result);
+  }
+
   @Post('/saveTree', {
     params: {
       tree: {

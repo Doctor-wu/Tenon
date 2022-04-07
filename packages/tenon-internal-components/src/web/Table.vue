@@ -15,6 +15,7 @@ const props = defineProps<{
 }>();
 
 const computedColumns = computed(() => {
+  const childrenBucket = { value: undefined };
   if (!props.op) return props.columns;
   const store = useStore();
   const operationColumn = {
@@ -35,7 +36,9 @@ const computedColumns = computed(() => {
           column: toRaw(column),
           rowIndex,
         },
-        placeholder: '拖入组件生成操作'
+        placeholder: '拖入组件生成操作',
+        childrenBucket,
+        disabled: rowIndex !== 0,
       });
     },
   };

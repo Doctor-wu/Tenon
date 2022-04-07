@@ -4,6 +4,7 @@
     placeholder="拖入组件生成卡片头部"
     isSlot="true"
     t-slot="title"
+    t-if="!this.cardProps.title"
   >
   </Compose-View>
   <Compose-View

@@ -44,7 +44,7 @@
         "title": {
           "type": "string",
           "title": "标题文字(优先)",
-          "when": "!this.cardProps.customTitle"
+          "default": ""
         }
       }
     }

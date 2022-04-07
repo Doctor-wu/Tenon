@@ -3,5 +3,6 @@
   isSlot="true"
   composeLayout="{{this.composeLayout}}"
   composeBackground= "{{this.composeBackground}}"
+  tenonCompProps="{{this.tenonCompProps}}"
 >
 </Compose-View>
