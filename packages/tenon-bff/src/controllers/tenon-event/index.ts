@@ -43,6 +43,10 @@ export class TenonEventController extends BaseController {
     const {
       content, pageId, gather, eventName
     } = params;
+    const [_, existed] = await this.tenonEventService.getEvents({ belongPageId: pageId, eventName });
+    if (existed.length) {
+      return this.responseError(ctx, next)(1111, `页面已存在<${eventName}>事件`);
+    }
     const [error, result] = await this.tenonEventService.addEvent(
       { content, belongPageId: pageId, eventName, gather }
     );

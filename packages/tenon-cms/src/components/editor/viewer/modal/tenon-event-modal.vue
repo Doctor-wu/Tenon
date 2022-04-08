@@ -221,6 +221,8 @@ defineExpose({ open, close });
     margin: 0;
     padding: 6px;
     border-right: 1px solid #e3e3e3;
+    box-sizing: border-box;
+    overflow: auto;
   }
 
   .event-info {

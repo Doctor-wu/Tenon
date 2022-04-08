@@ -44,10 +44,15 @@ export const downMoveActiveComponent = (activeComponent) => {
 
 export const extractActiveComponentFromParent = (activeComponent) => {
   const { parent } = activeComponent;
-  const { parent: grandParent } = parent;
+  let grandParent = parent;
+  let relative = parent;
+  while (grandParent && !(grandParent = grandParent.parent).children) {
+    relative = grandParent;
+  }
   if (!parent || !grandParent) return;
+  debugger;
   extractChild(parent, activeComponent);
-  insertChild(grandParent, activeComponent, parent);
+  insertChild(grandParent, activeComponent, relative);
   activeComponent.parent = grandParent;
 }
 

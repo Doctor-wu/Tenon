@@ -1,6 +1,5 @@
-import { ref } from 'vue';
 <template>
-  <AnimateButton color="lightseagreen" info="设置页面事件" @click="handleSetEvent">
+  <AnimateButton  class="nav-item" color="lightseagreen" info="设置页面事件" @click="handleSetEvent">
     <icon-command size="18" class="nav-item-icon" />
     <span>事件</span>
   </AnimateButton>

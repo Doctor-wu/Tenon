@@ -1,5 +1,5 @@
 <template>
-  <AnimateButton info="读取页面配置" @click="loadConfig">
+  <AnimateButton class="nav-item" info="读取页面配置" @click="loadConfig">
     <icon-download class="nav-item-icon" />
     <span>读</span>
   </AnimateButton>

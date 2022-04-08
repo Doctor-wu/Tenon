@@ -30,6 +30,8 @@ export class TenonComponent implements ComponentTreeNode {
   public lifecycleHook!: TenonLifeCycleHook;
   public mounted = false;
 
+  static customConfig: any = {};
+
   static editMode: any;
 
   static eventsMap?: Map<string, IEventMeta>;

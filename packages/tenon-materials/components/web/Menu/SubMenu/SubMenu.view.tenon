@@ -6,6 +6,7 @@
     slotKey="default"
     placeholder="拖入MenuItem生成菜单项"
     isSlot="true"
+    tenonCompProps="{{this.tenonCompProps}}"
     composeLayout="{
       boxSizing: 'border-box',
       padding: '2px',

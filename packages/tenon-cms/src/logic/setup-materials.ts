@@ -49,14 +49,23 @@ export const setupMaterials = async (store: Store<IRootState>) => {
   store.dispatch('viewer/setTree', cloneDeep(defaultTree));
   store.dispatch('viewer/setDefaultTree', defaultTree);
 
+  TenonComponent.customConfig.getPageStates = async () => {
+    const pageInfo = await store.getters['page/getPageInfo'];
+    const pageStates = pageInfo.pageStates;
+    return pageStates;
+  }
+
+
   TenonPropsBinding.staticHook.afterAddingBinding((instance: TenonComponent, fieldName, propsKey, expression) => {
     if (!TenonPropsBinding.trackingBinding) return;
-    const trigger = () => {
+    const trigger = async () => {
       // console.log(instance, fieldName, propsKey, expression);
+      const pageInfo = await store.getters['page/getPageInfo'];
       try {
         const handler = new Function('injectMeta', `
         const {
           $comp,
+          $pageStates,
           _editMode,
         } = injectMeta;
         try {
@@ -68,6 +77,7 @@ export const setupMaterials = async (store: Store<IRootState>) => {
       `);
         const injectMeta = {
           $comp: instance,
+          $pageStates: pageInfo.pageStates,
           _editMode: editMode,
         };
         const cancel = watchEffect(() => {

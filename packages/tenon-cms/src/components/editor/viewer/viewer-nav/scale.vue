@@ -42,9 +42,10 @@ const clearScale = () => {
 </script>
 <style lang="scss" scoped>
 .scale-container {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-self: flex-end;
+  vertical-align: sub;
 
   .animate-extra {
     padding: 0;

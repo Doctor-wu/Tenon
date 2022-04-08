@@ -28,6 +28,7 @@ export default {
   mutations: {
     SET_PAGE_INFO(state, pageInfo) {
       state.pageInfo = pageInfo;
+      console.log('[PageInfo] ', pageInfo);
     }
   },
   actions: {
@@ -68,7 +69,6 @@ export default {
           state.pageInfo = existed.page;
         }
       }
-      console.log('[PageInfo] ', state.pageInfo);
 
       return state.pageInfo;
     },

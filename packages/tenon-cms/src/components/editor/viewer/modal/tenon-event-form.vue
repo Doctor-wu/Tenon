@@ -11,7 +11,7 @@
       </a-form-item>
       <a-alert title="作用域变量注入">
         <section>
-          <b>$pageState</b>: 可以通过$state获取页面的状态
+          <b>$pageStates</b>: 可以通过$pageStates获取页面的状态
         </section>
         <section>
           <b>$comp</b>: 可以通过$comp获取组件实例，可以从中获取组件状态和组件props，也可以调用组件的一些内部方法

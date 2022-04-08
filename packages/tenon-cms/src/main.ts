@@ -4,7 +4,7 @@ import ArcoVueIcon from '@arco-design/web-vue/es/icon';
 import App from './App.vue';
 import './style/index.scss';
 import '@arco-design/web-vue/dist/arco.css';
-import { ColorPicker } from 'vue-color-kit'
+// import { ColorPicker } from 'vue-color-kit'
 // stylesheet
 import 'vue-color-kit/dist/vue-color-kit.css'
 

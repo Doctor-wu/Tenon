@@ -6,6 +6,7 @@
     slotKey="icon" 
     placeholder="图标"
     isSlot="true"
+    tenonCompProps="{{this.tenonCompProps}}"
     composeLayout="{
       boxSizing: 'border-box',
       display: 'inline-block',

@@ -189,13 +189,15 @@ const handleBindingInput = (fieldName, key, value) => {
   activeComponent.value.propsBinding.setBinding(fieldName, key, value);
 }
 
-const handleBinding = (fieldName, key) => {
+const handleBinding = async (fieldName, key) => {
   TenonPropsBinding.trackingBinding = true;
   const expression = activeComponent.value.propsBinding.getBinding(fieldName, key);
   if (expression === '' || expression === undefined) return;
+  const pageInfo = await store.getters['page/getPageInfo'];
   const trigger = new Function('injectMeta', `
     const {
       $comp,
+      $pageStates,
       _editMode,
     } = injectMeta;
     try {
@@ -208,11 +210,12 @@ const handleBinding = (fieldName, key) => {
   if (activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)]) {
     activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)]();
   };
-  const cancel = watchEffect(() => {
+  const cancel = watchEffect(async () => {
     if (!TenonPropsBinding.trackingBinding) return;
     try {
       activeComponent.value.props[fieldName][key] = trigger({
         $comp: activeComponent.value,
+        $pageStates: pageInfo.pageStates,
         _editMode: editMode,
       });
     } catch (e) {

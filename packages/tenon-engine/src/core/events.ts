@@ -53,19 +53,22 @@ export const callTenonEvent = async (
   });
 }
 
-export const executeTenonEvent = (
+export const executeTenonEvent = async (
   eventMeta: IEventMeta,
   tenonComp: TenonComponent,
   ...args: any[]
 ) => {
+  const $pageStates = await TenonComponent.customConfig.getPageStates();
   const trigger = new Function('injectMeta', `
     const {
-      $comp
+      $comp,
+      $pageStates,
     } = injectMeta;
     ${eventMeta.content}
   `);
   trigger({
     $comp: tenonComp,
+    $pageStates,
     $args: args,
   });
 }

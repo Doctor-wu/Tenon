@@ -3,12 +3,14 @@
     slotKey="title"
     placeholder="拖入组件生成卡片头部"
     isSlot="true"
+    tenonCompProps="{{this.tenonCompProps}}"
     t-slot="title"
     t-if="!this.cardProps.title"
   >
   </Compose-View>
   <Compose-View
     slotKey="default" 
+    tenonCompProps="{{this.tenonCompProps}}"
     placeholder="拖入组件生成卡片内容"
     isSlot="true"
   >
