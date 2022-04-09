@@ -1,0 +1,18 @@
+<ArcoAlert t-bind="alertConfig">
+  <Compose-View
+    slotKey="action"
+    placeholder="拖入组件生成自定义操作"
+    isSlot="true"
+    tenonCompProps="{{this.tenonCompProps}}"
+    t-slot="action"
+    t-if="this.alertConfig.useCustomAction"
+  >
+  </Compose-View>
+  <Compose-View
+    slotKey="default"
+    tenonCompProps="{{this.tenonCompProps}}"
+    placeholder="拖入组件生成提示内容"
+    isSlot="true"
+  >
+  </Compose-View>
+</ArcoAlert>

@@ -3,8 +3,18 @@
 </template>
 
 <script setup lang="ts">
-import * as monaco from "monaco-editor";
-import { onBeforeUnmount, onMounted, ref, watch, watchEffect } from 'vue';
+// import {
+//   KeyCode,
+//   KeyMod,
+// } from "monaco-editor";
+//按需引入
+import {
+  editor as monacoEditor,
+} from 'monaco-editor/esm/vs/editor/editor.api'
+import 'monaco-editor/esm/vs/basic-languages/html/html.contribution'
+import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution'
+import 'monaco-editor/esm/vs/basic-languages/css/css.contribution'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
 import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
@@ -37,17 +47,15 @@ const props = defineProps<{
 const $emit = defineEmits(['update:modelValue']);
 
 const editorRef = ref();
-let editor: monaco.editor.IStandaloneCodeEditor;
+let editor: monacoEditor.IStandaloneCodeEditor;
 let cancelWatch = watch(props, () => {
   if (editor.getValue() !== props.modelValue) {
     editor.setValue(props.modelValue || '');
   }
 });
-
-
 initLanguages();
 onMounted(() => {
-  editor = monaco.editor.create(editorRef.value, {
+  editor = monacoEditor.create(editorRef.value, {
     language: 'javascript',
     theme: 'vs-dark',
     value: props.modelValue,
@@ -58,10 +66,9 @@ onMounted(() => {
     fontSize: 15, //字体大小
     quickSuggestionsDelay: 100, //代码提示延时
   });
-
-  editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, function () {
-    console.log('save');
-  });
+  // editor.addCommand(KeyMod.CtrlCmd | KeyCode.KeyS, function () {
+  //   console.log('save');
+  // });
 
   editor.onDidChangeModelContent(() => {
     const text = editor?.getValue();

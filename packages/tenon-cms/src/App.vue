@@ -1,16 +1,12 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-
-import { useStore } from '@/store';
-import { computed, markRaw, ref, shallowRef } from 'vue';
-
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-const store = useStore();
-</script>
-
 <template>
   <component :is="store.getters['layout/getActiveLayout']" />
 </template>
+
+<script setup lang="ts">
+import { useStore } from '@/store';
+// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
+const store = useStore();
+</script>
 
 <style>
 #app {

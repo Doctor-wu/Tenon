@@ -1,4 +1,3 @@
-onMounted, import { getTenonEventsApi } from '@/api';
 <template>
   <a-modal
     :footer="false"
@@ -83,9 +82,9 @@ onMounted, import { getTenonEventsApi } from '@/api';
   </a-modal>
 </template>
 <script setup lang="ts">
-import { deleteTenonEventApi, getTenonEventsApi } from '@/api';
+import { deleteTenonEventApi } from '@/api';
 import { Message } from '@arco-design/web-vue';
-import { computed, onMounted, ref, watchEffect } from 'vue';
+import { ref, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import TenonEventForm from './tenon-event-form.vue';
 const store = useStore();

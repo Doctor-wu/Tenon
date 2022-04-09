@@ -1,0 +1,56 @@
+{
+  "name": "Alert",
+  "icon": "file",
+  "description": ["Alert是一个<提示组件>, 提供提示能力"],
+  "dependencies": [],
+  "platform": [
+    "web"
+  ],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "提示组件配置",
+      "fieldName": "alertConfig",
+      "properties": {
+        "type": {
+          "type": "select",
+          "title": "提示的类型",
+          "default": "info",
+          "options": {
+            "info": "info",
+            "warning": "warning",
+            "error": "error",
+            "success": "success"
+          }
+        },
+        "title": {
+          "type": "string",
+          "title": "提示的标题",
+          "default": ""
+        },
+        "show-icon": {
+          "type": "boolean",
+          "title": "展示图标",
+          "default": true
+        },
+        "closable": {
+          "type": "boolean",
+          "title": "是否展示关闭按钮",
+          "default": false
+        },
+        "useCustomAction": {
+          "type": "boolean",
+          "title": "是否使用自定义操作按钮",
+          "default": false
+        },
+        "banner": {
+          "type": "boolean",
+          "title": "是否作为顶部公告使用（去除边框和圆角",
+          "default": false
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+  }
+}

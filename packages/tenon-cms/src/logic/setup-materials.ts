@@ -8,7 +8,6 @@ import ComposeViewVue from '@/components/editor/viewer/Compose-View/Compose-View
 import { cloneDeep } from "lodash";
 import { ISchema, TenonComponent, TenonPropsBinding } from "@tenon/engine";
 import { watchEffect } from "vue";
-import { Message } from "@arco-design/web-vue";
 import { editMode } from "./viewer-status";
 
 

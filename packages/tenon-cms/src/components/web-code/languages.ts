@@ -1,9 +1,11 @@
-import * as monaco from "monaco-editor";
+import {
+  languages
+} from "monaco-editor";
 
 let initd = false;
 export function initLanguages() {
   if (initd) return;
-  monaco.languages.registerCompletionItemProvider('javascript', {
+  languages.registerCompletionItemProvider('javascript', {
     // @ts-ignore
     provideCompletionItems(model, position) {
       const textUntilPosition = model.getValueInRange({
@@ -20,25 +22,25 @@ export function initLanguages() {
         return [
           {
             label: '$pageState',
-            kind: monaco.languages.CompletionItemKind.Variable,
+            kind: languages.CompletionItemKind.Variable,
             documentation: '页面状态',
             insertText: '$pageState',
           },
           {
             label: '$comp',
-            kind: monaco.languages.CompletionItemKind.Variable,
+            kind: languages.CompletionItemKind.Variable,
             documentation: '组件实例',
             insertText: '$comp',
           },
           {
             label: '$events',
-            kind: monaco.languages.CompletionItemKind.Variable,
+            kind: languages.CompletionItemKind.Variable,
             documentation: '页面事件',
             insertText: '$events',
           },
           {
             label: '$router',
-            kind: monaco.languages.CompletionItemKind.Variable,
+            kind: languages.CompletionItemKind.Variable,
             documentation: '路由',
             insertText: '$router',
           },
