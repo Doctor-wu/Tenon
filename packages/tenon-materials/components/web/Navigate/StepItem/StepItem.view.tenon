@@ -1,0 +1,20 @@
+<ArcoStepItem
+  t-bind="stepItemConfig"
+>
+  <Compose-View
+    t-slot="icon"
+    t-if="this.stepItemConfig.useCustomIcon"
+    slotKey="icon" 
+    placeholder="拖入图标"
+    isSlot="true"
+    tenonCompProps="{{this.tenonCompProps}}"
+  />
+  <Compose-View
+    t-slot="description"
+    t-if="this.stepItemConfig.useCustomDescription"
+    slotKey="description" 
+    placeholder="拖入组件生成描述内容"
+    isSlot="true"
+    tenonCompProps="{{this.tenonCompProps}}"
+  />
+</ArcoStepItem>

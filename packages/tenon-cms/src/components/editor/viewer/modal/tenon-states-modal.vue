@@ -84,7 +84,6 @@ function makeDataTree(data: Record<string, any>) {
     }
     result.push(node);
   });
-  console.log(result);
 
   return result;
 }

@@ -46,7 +46,8 @@
               </span>
             </a-alert>
             <a-textarea
-              :modelValue="activeComponent.propsBinding.getBinding(fieldName, key)"
+              :default-value="activeComponent.propsBinding.getBinding(fieldName, key)"
+              v-model="propsBindingComposingValue[`${fieldName}@${key}`]"
               @input="(value) => handleBindingInput(fieldName, key, value)"
               @blur="() => handleBinding(fieldName, key)"
               @focus="handleFocusExpression"
@@ -61,14 +62,13 @@
 </template>
 <script setup lang="ts">
 import { useStore } from '@/store';
-import { computed, h, onBeforeUnmount, watchEffect } from 'vue';
+import { computed, h, onBeforeUnmount, ref, watchEffect } from 'vue';
 import { ISchema, TenonComponent, TenonPropsBinding } from '@tenon/engine';
 import { ColorPicker } from 'vue-color-kit';
 import carouselController from './controllers/carousel-controller.vue';
 import iconTypeController from './controllers/icon-type-controller.vue';
 import tableColumnController from './controllers/table-column-controller.vue';
 import tableDataController from './controllers/table-data-controller.vue';
-import { Message } from '@arco-design/web-vue';
 import { editMode } from '@/logic/viewer-status';
 
 const props: {
@@ -86,6 +86,8 @@ const props: {
 });
 const store = useStore();
 const activeComponent = computed<TenonComponent>(() => store.getters['viewer/getActiveComponent']);
+
+const propsBindingComposingValue = ref({});
 
 const getFormItemBySchemaType = (type: string, meta: ISchema) => {
   switch (type) {
@@ -186,11 +188,12 @@ const handleFocusExpression = () => {
 }
 
 const handleBindingInput = (fieldName, key, value) => {
-  activeComponent.value.propsBinding.setBinding(fieldName, key, value);
+  propsBindingComposingValue.value[`${fieldName}@${key}`] = value;
 }
 
 const handleBinding = async (fieldName, key) => {
   TenonPropsBinding.trackingBinding = true;
+  activeComponent.value.propsBinding.setBinding(fieldName, key, propsBindingComposingValue.value[`${fieldName}@${key}`]);
   const expression = activeComponent.value.propsBinding.getBinding(fieldName, key);
   if (expression === '' || expression === undefined) return;
   const pageInfo = await store.getters['page/getPageInfo'];

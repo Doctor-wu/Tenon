@@ -1,7 +1,7 @@
 {
   "name": "For",
   "icon": "code-block",
-  "description": ["For 是一个<基础组件>, For可以提供文本相关的能力"],
+  "description": ["For 是一个<逻辑组件>, For可以提供循环相关的能力"],
   "platform": ["web"],
   "schemas": [
     {

@@ -3,7 +3,7 @@ import {
   getCurrentInstance,
   onMounted, onUpdated,
   onBeforeUnmount, onBeforeMount,
-  reactive, watchEffect
+  reactive, watchEffect, watch
 } from "vue";
 import { findParentTenonComp } from "./setupRender";
 
@@ -30,7 +30,7 @@ export function setupComponent(props, ctx, logic) {
 
   const originStates = logic?.({
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount,
-    watch: watchEffect,
+    watch,
   }, props, ctx, tenonComp, TenonComponent.editMode) || {};
 
   Object.keys(originStates || {}).forEach(key => {

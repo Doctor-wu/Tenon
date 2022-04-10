@@ -1,0 +1,11 @@
+<ArcoStep
+  t-bind="stepConfig"
+>
+  <Compose-View
+    slotKey="default" 
+    placeholder="拖入步骤项生成步骤内容"
+    isSlot="{{true}}"
+    tenonCompProps="{{this.tenonCompProps}}"
+    useTeleport="{{true}}"
+  />
+</ArcoStep>

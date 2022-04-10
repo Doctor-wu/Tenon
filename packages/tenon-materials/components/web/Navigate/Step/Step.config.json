@@ -1,0 +1,89 @@
+{
+  "name": "Step",
+  "icon": "menu",
+  "description": ["Step 是一个<导航组件>, Step可以提供步骤条相关的能力"],
+  "platform": ["web"],
+  "events": {
+    "onChange": "步骤数发生改变时"
+  },
+  "schemas": [
+    {
+      "type": "object",
+      "title": "步骤条配置",
+      "fieldName": "stepConfig",
+      "properties": {
+        "type": {
+          "type": "select",
+          "title": "步骤条的类型",
+          "options":{
+            "default": "default",
+            "dot": "dot",
+            "navigation": "navigation",
+            "arrow": "arrow"
+          },
+          "default": "default"
+        },
+        "direction": {
+          "type": "select",
+          "title": "步骤条的显示方向",
+          "options":{
+            "vertical": "垂直",
+            "horizontal": "水平"
+          },
+          "default": "horizontal"
+        },
+        "label-placement": {
+          "type": "select",
+          "title": "标签描述文字放置的位置",
+          "options":{
+            "vertical": "垂直",
+            "horizontal": "水平"
+          },
+          "default": "horizontal"
+        },
+        "current": {
+          "type": "number",
+          "title": "当前步骤数"
+        },
+        "default-current": {
+          "type": "number",
+          "title": "默认的步骤数",
+          "default": 1
+        },
+        "status": {
+          "type": "select",
+          "title": "当前步骤的状态",
+          "options":{
+            "wait": "wait",
+            "process": "process",
+            "finish": "finish",
+            "error": "error"
+          },
+          "default": "process"
+        },
+        "line-less": {
+          "type": "boolean",
+          "title": "是否使用无连接线样式",
+          "default": false
+        },
+        "small": {
+          "type": "boolean",
+          "title": "是否使用小型步骤条",
+          "default": false
+        },
+        "changeable": {
+          "type": "boolean",
+          "title": "是否可以点击切换",
+          "default": false
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "overflow": "auto",
+      "padding": "3px",
+      "box-sizing": "border-box"
+    }
+  }
+}

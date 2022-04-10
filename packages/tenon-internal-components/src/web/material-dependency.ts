@@ -14,6 +14,8 @@ import {
   Carousel,
   Menu,
   Alert,
+  Step,
+  Steps,
 } from "@arco-design/web-vue";
 
 import {
@@ -79,6 +81,8 @@ export const materialDependency = {
   ArcoSubMenu: Menu.SubMenu,
   ArcoMenuItem: Menu.Item,
   ArcoAlert: Alert,
+  ArcoStep: Steps,
+  ArcoStepItem: Step,
   TenonTemplate: Root,
   TenonText: Text,
   TenonAvatar: Avatar,

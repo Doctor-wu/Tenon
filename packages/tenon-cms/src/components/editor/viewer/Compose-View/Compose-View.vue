@@ -2,7 +2,9 @@
   <section
     v-if="!(!editMode && !tenonTreeNode?.children?.length)"
     class="compose-view-container"
+    ref="selfRef"
     :style="[
+      { display: (tenonTreeNode?.children?.length && useTeleport) ? 'none' : 'block' },
       ($attrs as any).composeLayout || {},
       ($attrs as any).composeBackground || {},
       ($attrs as any).composeTextStyle || {}
@@ -13,18 +15,35 @@
     @drop="(e) => handleContainerDrop(e, tenonTreeNode)"
   >
     <template v-if="tenonTreeNode?.children?.length">
-      <template v-for="subTreeNode in tenonTreeNode.children" :key="subTreeNode.id">
-        <Wrapper
-          :style="[subTreeNode?.props?.containerStyle, subTreeNode?.props?.containerBackground]"
-          :tenonComp="subTreeNode"
-        >
-          <component
-            :is="toRaw(subTreeNode.material.component)"
-            v-bind="subTreeNode.props"
+      <teleport v-if="useTeleport && selfRef" :to="selfRef?.parentElement">
+        <template v-for="subTreeNode in tenonTreeNode.children" :key="subTreeNode.id">
+          <Wrapper
+            :style="[subTreeNode?.props?.containerStyle, subTreeNode?.props?.containerBackground]"
             :tenonComp="subTreeNode"
-            :tenonCompProps="tenonCompProps"
-          ></component>
-        </Wrapper>
+          >
+            <component
+              :is="toRaw(subTreeNode.material.component)"
+              v-bind="subTreeNode.props"
+              :tenonComp="subTreeNode"
+              :tenonCompProps="tenonCompProps"
+            ></component>
+          </Wrapper>
+        </template>
+      </teleport>
+      <template v-else>
+        <template v-for="subTreeNode in tenonTreeNode.children" :key="subTreeNode.id">
+          <Wrapper
+            :style="[subTreeNode?.props?.containerStyle, subTreeNode?.props?.containerBackground]"
+            :tenonComp="subTreeNode"
+          >
+            <component
+              :is="toRaw(subTreeNode.material.component)"
+              v-bind="subTreeNode.props"
+              :tenonComp="subTreeNode"
+              :tenonCompProps="tenonCompProps"
+            ></component>
+          </Wrapper>
+        </template>
       </template>
     </template>
     <section v-else-if="editMode" class="default-tip">{{ placeholder }}</section>
@@ -40,12 +59,23 @@
 
 <script lang="ts" setup>
 import { useStore } from '@/store';
-import { toRaw, computed, getCurrentInstance, ComputedRef, onMounted, watchEffect, watch, ref } from 'vue';
+import {
+  toRaw,
+  computed,
+  getCurrentInstance,
+  ComputedRef,
+  onMounted,
+  watchEffect,
+  ref,
+  onBeforeUnmount,
+} from 'vue';
 import Wrapper from '~components/editor/viewer/wrapper.vue';
 import { handleContainerDropEnter, handleContainerDrop } from '~logic/viewer-drag';
 import { editMode } from '~logic/viewer-status';
-import { createTenonComponent, TenonComponent } from '@tenon/engine';
+import { createTenonComponent, LifeCycleHooksKey, TenonComponent } from '@tenon/engine';
 import { findParentTenonComp } from '@tenon/materials';
+
+const selfRef = ref<HTMLElement>();
 
 const store = useStore();
 
@@ -74,6 +104,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  useTeleport: {
+    type: Boolean,
+    default: false
+  }
 });
 const instance: any = getCurrentInstance();
 let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => {
@@ -95,7 +129,16 @@ let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => 
   }
   result.ctx = result.ctx || instance.ctx;
   result.ctx.tenonComp = result;
+  console.log(result);
+
   return result;
+});
+
+onMounted(() => {
+  tenonTreeNode.value.lifecycleHook.executeHook(LifeCycleHooksKey.onMounted);
+});
+onBeforeUnmount(() => {
+  tenonTreeNode.value.lifecycleHook.executeHook(LifeCycleHooksKey.onBeforeUnmount);
 });
 
 if (instance.attrs.childrenBucket) {

@@ -1,0 +1,56 @@
+{
+  "name": "StepItem",
+  "icon": "list",
+  "description": ["StepItem 是一个<导航组件>, StepItem可以提供步骤项相关的能力"],
+  "platform": ["web"],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "步骤项配置",
+      "fieldName": "stepItemConfig",
+      "properties": {
+        "title": {
+          "type": "input",
+          "title": "步骤的标题",
+          "default": "步骤的标题"
+        },
+        "description": {
+          "type": "input",
+          "title": "步骤的描述信息",
+          "default": "步骤的描述信息"
+        },
+        "status": {
+          "type": "select",
+          "title": "当前步骤的状态",
+          "options":{
+            "wait": "wait",
+            "process": "process",
+            "finish": "finish",
+            "error": "error"
+          }
+        },
+        "useCustomIcon": {
+          "type": "boolean",
+          "title": "是否使用自定义图标",
+          "default": false
+        },
+        "useCustomDescription": {
+          "type": "boolean",
+          "title": "是否使用自定义描述内容",
+          "default": false
+        },
+        "disabled": {
+          "type": "boolean",
+          "title": "是否禁用",
+          "default": false
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "margin": "0 3px",
+      "box-sizing": "border-box"
+    }
+  }
+}

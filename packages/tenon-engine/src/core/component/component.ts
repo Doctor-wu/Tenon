@@ -29,6 +29,7 @@ export class TenonComponent implements ComponentTreeNode {
   public events!: IEventsConfig;
   public lifecycleHook!: TenonLifeCycleHook;
   public mounted = false;
+  public el!: HTMLElement;
 
   static customConfig: any = {};
 
@@ -107,6 +108,9 @@ export class TenonComponent implements ComponentTreeNode {
       });
     });
     this.lifecycleHook.onMounted(() => {
+      if (this.ctx) {
+        this.el = this.ctx.$el;
+      }
       this.mounted = true;
     });
   }
