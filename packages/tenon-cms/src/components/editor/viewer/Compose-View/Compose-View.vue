@@ -4,10 +4,12 @@
     class="compose-view-container"
     ref="selfRef"
     :style="[
-      { display: ((tenonTreeNode?.children?.length && useTeleport) || !(editMode || tenonTreeNode?.children?.length)) ? 'none' : 'block' },
       ($attrs as any).composeLayout || {},
       ($attrs as any).composeBackground || {},
-      ($attrs as any).composeTextStyle || {}
+      ($attrs as any).composeTextStyle || {},
+      ((tenonTreeNode?.children?.length && useTeleport) || !(editMode || tenonTreeNode?.children?.length))
+        ? { display: 'none' }
+        : {},
     ]"
     :class="{ dropable: store?.getters['viewer/getHoveringComponent'] === tenonTreeNode, editable: editMode }"
     @dragenter="(e) => handleContainerDropEnter(e, tenonTreeNode)"
@@ -130,13 +132,13 @@ let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => 
       result = comp;
       rootSlots[props.slotKey] = comp;
     }
-  } else if(props.attach) {
+  } else if (props.attach) {
     const rootComp = findParentTenonComp(instance)!;
-      const materialsMap = store.getters['materials/getMaterialsMap'];
-      const materialFactory = materialsMap.get("Compose-View");
-      const material = materialFactory();
-      const comp = createTenonComponent(material, rootComp);
-      result = comp;
+    const materialsMap = store.getters['materials/getMaterialsMap'];
+    const materialFactory = materialsMap.get("Compose-View");
+    const material = materialFactory();
+    const comp = createTenonComponent(material, rootComp);
+    result = comp;
   }
   result.ctx = result.ctx || instance.ctx;
   result.ctx.tenonComp = result;

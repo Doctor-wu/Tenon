@@ -39,6 +39,7 @@ const renderList = computed(() => {
       composeLayout: props.composeLayout,
       composeBackground: props.composeBackground,
       childrenBucket,
+      // useTeleport: true,
       disabled: index !== 0,
     });
   });

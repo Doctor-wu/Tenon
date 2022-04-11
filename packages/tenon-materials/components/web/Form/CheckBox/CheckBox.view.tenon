@@ -11,6 +11,7 @@
     isSlot="true"
     t-slot="checkbox"
     placeholder="拖入组件生成复选框内容"
+    useTeleport="{{true}}"
     tenonCompProps="{{this.tenonCompProps}}"
     composeLayout="{
       width: '100%'
