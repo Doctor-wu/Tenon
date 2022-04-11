@@ -4,24 +4,21 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount
   } = lifeCycle;
 
+  if (!tenonComp.propsBinding.hasBinding('datePickerConfig', 'model-value')) {
+    tenonComp.propsBinding.addBinding('datePickerConfig', 'model-value', '$comp.states.dateValue');
+  }
   onMounted(() => {
     // console.log(lifeCycle, props, ctx, tenonComp);
+    tenonComp.eventCalledHook.onCalled((eventName, ...args) => {
+      if (eventName === "onChange") {
+        const [value, date, dateString] = args;
+        tenonComp.states.dateValue = date;
+      }
+    });
   });
 
-  const add = () => {
-    tenonComp.states.count.value++;
-  }
-
-  const subtract = () => {
-    tenonComp.states.count.value--;
-  }
-
   return {
-    count: {
-      value: 0,
-    },
     author: 'Doctorwu',
-    add,
-    subtract,
+    dateValue: Date.now(),
   }
 }

@@ -1,106 +1,48 @@
 {
   "name": "DatePicker",
   "icon": "file",
-  "description": ["Button组件"],
+  "description": ["DatePicker组件, 提供日期选择的能力"],
   "dependencies": [],
   "platform": [
     "web"
   ],
   "events": {
-    "onClick": "点击时"
+    "onChange": "选择日期时"
   },
   "schemas": [
     {
       "type": "object",
-      "title": "按钮文字",
-      "fieldName": "buttonText",
+      "title": "日期选择组件属性",
+      "fieldName": "datePickerConfig",
       "properties": {
-        "value": {
+        "model-value": {
           "type": "string",
-          "title": "文本内容",
-          "default": ""
-        }
-      }
-    },
-    {
-      "type": "object",
-      "title": "按钮属性",
-      "fieldName": "buttonProps",
-      "properties": {
-        "type": {
-          "type": "select",
-          "title": "按钮类型",
-          "options": {
-            "primary": "primary",
-            "secondary": "secondary",
-            "dashed": "dashed",
-            "outline": "outline",
-            "text": "text"
-          },
-          "default": "primary"
+          "title": "绑定值"
         },
-        "shape": {
-          "type": "select",
-          "title": "按钮形状",
-          "options": {
-            "square": "square",
-            "round": "round",
-            "circle": "circle"
-          },
-          "default": "square"
+        "default-value": {
+          "type": "string",
+          "title": "默认值"
         },
-        "status": {
-          "type": "select",
-          "title": "按钮状态",
-          "options": {
-            "normal": "normal",
-            "warning": "warning",
-            "success": "success",
-            "danger": "danger"
-          },
-          "default": "normal"
+        "format": {
+          "type": "string",
+          "title": "格式"
         },
-        "size": {
-          "type": "select",
-          "title": "按钮大小",
-          "options": {
-            "mini": "mini",
-            "small": "small",
-            "medium": "medium",
-            "large": "large"
-          },
-          "default": "medium"
-        },
-        "long": {
+        "show-time": {
           "type": "boolean",
-          "title": "按钮的宽度是否随容器自适应",
-          "default": true
-        },
-        "loading": {
-          "type": "boolean",
-          "title": "按钮是否为加载中状态",
+          "title": "是否增加时间选择",
           "default": false
         },
-        "disabled": {
+        "show-now-btn": {
           "type": "boolean",
-          "title": "按钮是否禁用",
+          "title": "是否显示获取当前时间的按钮",
           "default": false
-        },
-        "html-type": {
-          "type": "string",
-          "title": "button的原生type属性",
-          "default": "button"
-        },
-        "href": {
-          "type": "string",
-          "title": "跳转链接",
-          "default": null
         }
       }
     }
   ],
   "tenonProps": {
     "containerStyle": {
+      "display": "inline-block",
       "box-sizing": "border-box"
     }
   }

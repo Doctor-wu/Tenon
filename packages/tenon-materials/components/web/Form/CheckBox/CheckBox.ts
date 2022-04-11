@@ -5,7 +5,9 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount, watch
   } = lifeCycle;
 
-  tenonComp.propsBinding.addBinding('checkboxConfig', 'model-value', '$comp.states.selected');
+  if (!tenonComp.propsBinding.hasBinding('checkboxConfig', 'model-value')) {
+    tenonComp.propsBinding.addBinding('checkboxConfig', 'model-value', '$comp.states.selected');
+  }
 
   onMounted(() => {
     tenonComp.eventCalledHook.onCalled((eventName, ...args) => {
