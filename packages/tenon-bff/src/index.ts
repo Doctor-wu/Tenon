@@ -55,7 +55,7 @@ const bootstrap = async () => {
       path: path.resolve(__dirname, "./logFiles"),
     },
     bodyParser: {
-      jsonLimit: '10mb'
+      jsonLimit: '20mb'
     }
   });
 

@@ -6,7 +6,7 @@
         <pre style="overflow: auto;max-height: 250px;">{{ JSON.stringify(activeComponent.states?.states, null, 2) }}</pre>
       </a-card>
       <a-card title="tenonCompProps" style="margin: 20px 0;">
-        <pre style="overflow: auto;max-height: 250px;">{{ JSON.stringify(activeComponent.ctx?.tenonCompProps, null, 2) }}</pre>
+        <pre style="overflow: auto;max-height: 250px;">{{ JSON.stringify(activeComponent.tenonCompProps, null, 2) }}</pre>
       </a-card>
       <a-list style="margin: 20px 0;">
         <template #header>Handlers</template>

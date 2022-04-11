@@ -15,6 +15,18 @@
           "default": []
         }
       }
+    },
+    {
+      "type": "internal",
+      "key": "containerLayout",
+      "title": "For子容器样式",
+      "fieldName": "composeLayout"
+    },
+    {
+      "type": "internal",
+      "key": "containerBackground",
+      "title": "For子容器背景",
+      "fieldName": "composeBackground"
     }
   ],
   "tenonProps": {

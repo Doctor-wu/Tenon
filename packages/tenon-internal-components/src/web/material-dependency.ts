@@ -16,6 +16,20 @@ import {
   Alert,
   Step,
   Steps,
+  Checkbox,
+  CheckboxGroup,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  InputTag,
+  Radio,
+  Rate,
+  Select,
+  Switch,
+  Textarea,
+  TimePicker,
+  Tag,
 } from "@arco-design/web-vue";
 
 import {
@@ -69,7 +83,7 @@ import {
   IconSearch,
 } from '@arco-design/web-vue/es/icon';
 
-export const materialDependency = {
+export const materialDependency: any = {
   ArcoImage: Image,
   ArcoCard: Card,
   GridCol: Grid.Col,
@@ -83,6 +97,20 @@ export const materialDependency = {
   ArcoAlert: Alert,
   ArcoStep: Steps,
   ArcoStepItem: Step,
+  ArcoCheckbox: Checkbox,
+  ArcoCheckboxGroup: CheckboxGroup,
+  ArcoDatePicker: DatePicker,
+  ArcoForm: Form,
+  ArcoInput: Input,
+  ArcoInputNumber: InputNumber,
+  ArcoInputTag: InputTag,
+  ArcoRadio: Radio,
+  ArcoRate: Rate,
+  ArcoSelect: Select,
+  ArcoSwitch: Switch,
+  ArcoTextarea: Textarea,
+  ArcoTimePicker: TimePicker,
+  ArcoTag: Tag,
   TenonTemplate: Root,
   TenonText: Text,
   TenonAvatar: Avatar,

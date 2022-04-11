@@ -1,0 +1,61 @@
+{
+  "name": "CheckBox",
+  "icon": "file",
+  "description": ["CheckBox组件"],
+  "dependencies": [],
+  "platform": [
+    "web"
+  ],
+  "events": {
+    "onChange": "值改变时"
+  },
+  "schemas": [
+    {
+      "type": "object",
+      "title": "CheckBox配置",
+      "fieldName": "checkboxConfig",
+      "properties": {
+        "model-value": {
+          "type": "boolean",
+          "title": "checkbox是否选中",
+          "internal": false,
+          "default": false
+        },
+        "useCustomCheckbox": {
+          "type": "boolean",
+          "title": "是否使用自定义复选框",
+          "default": false
+        },
+        "default-checked": {
+          "type": "boolean",
+          "title": "默认是否选中",
+          "default": false
+        },
+        "labelValue": {
+          "type": "string",
+          "title": "复选框label值",
+          "default": "复选框label"
+        },
+        "value": {
+          "type": "string",
+          "title": "选中该选项对应的值",
+          "default": "123"
+        },
+        "disabled": {
+          "type": "boolean",
+          "title": "是否禁用",
+          "default": false
+        },
+        "indeterminate": {
+          "type": "boolean",
+          "title": "是否为半选状态",
+          "default": false
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+    }
+  }
+}

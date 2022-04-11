@@ -4,7 +4,7 @@
     class="compose-view-container"
     ref="selfRef"
     :style="[
-      { display: (tenonTreeNode?.children?.length && useTeleport) ? 'none' : 'block' },
+      { display: ((tenonTreeNode?.children?.length && useTeleport) || !(editMode || tenonTreeNode?.children?.length)) ? 'none' : 'block' },
       ($attrs as any).composeLayout || {},
       ($attrs as any).composeBackground || {},
       ($attrs as any).composeTextStyle || {}
@@ -100,6 +100,10 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  attach: {
+    type: Boolean,
+    default: false,
+  },
   disabled: {
     type: Boolean,
     default: false,
@@ -126,6 +130,13 @@ let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => 
       result = comp;
       rootSlots[props.slotKey] = comp;
     }
+  } else if(props.attach) {
+    const rootComp = findParentTenonComp(instance)!;
+      const materialsMap = store.getters['materials/getMaterialsMap'];
+      const materialFactory = materialsMap.get("Compose-View");
+      const material = materialFactory();
+      const comp = createTenonComponent(material, rootComp);
+      result = comp;
   }
   result.ctx = result.ctx || instance.ctx;
   result.ctx.tenonComp = result;

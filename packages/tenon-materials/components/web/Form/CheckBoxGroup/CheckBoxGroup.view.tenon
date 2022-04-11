@@ -1,0 +1,15 @@
+<ArcoCheckboxGroup
+  t-bind="checkboxGroupConfig"
+  style="{
+    width: '100%',
+    boxSizing: 'border-box'
+  }"
+>
+  <Compose-View
+    slotKey="default" 
+    placeholder="拖入checkbox"
+    tenonCompProps="{{this.tenonCompProps}}"
+    useTeleport="{{true}}"
+    isSlot="true"
+  ></Compose-View>
+</ArcoCheckboxGroup>

@@ -1,0 +1,24 @@
+<ArcoTag t-bind="tagConfig">
+  <Compose-View
+    t-slot="icon"
+    slotKey="icon"
+    isSlot="true"
+    placeholder="拖入图标"
+    tenonCompProps="{{this.tenonCompProps}}"
+    composeLayout="{
+      display: 'inline'
+    }"
+    t-if="this.tagExtraConfig.useIcon"
+  >
+  </Compose-View>
+  <Compose-View
+    slotKey="close-icon"
+    isSlot="true"
+    t-slot="close-icon"
+    tenonCompProps="{{this.tenonCompProps}}"
+    placeholder="拖入关闭图标"
+    t-if="this.tagExtraConfig.useCustomCloseIcon"
+  >
+  </Compose-View>
+  <span>{{this.tagConfig.tagValue}}</span>
+</ArcoTag>

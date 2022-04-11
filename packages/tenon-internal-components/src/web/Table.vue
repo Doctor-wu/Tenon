@@ -3,7 +3,7 @@
 </template>
 <script setup lang="ts">
 import { findParentTenonComp } from '@tenon/materials';
-import { computed, getCurrentInstance, h, toRaw } from 'vue';
+import { computed, getCurrentInstance, h, reactive, toRaw } from 'vue';
 import { useStore } from 'vuex';
 import { TenonComponent } from '@tenon/engine';
 
@@ -31,11 +31,11 @@ const computedColumns = computed(() => {
       return h(material.component, {
         isSlot: true,
         slotKey: `op-${rowIndex}`,
-        tenonCompProps: {
+        tenonCompProps: reactive({
           record,
           column: toRaw(column),
           rowIndex,
-        },
+        }),
         placeholder: '拖入组件生成操作',
         childrenBucket,
         disabled: rowIndex !== 0,

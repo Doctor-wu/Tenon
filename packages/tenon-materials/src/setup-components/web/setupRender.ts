@@ -1,7 +1,7 @@
 import { ComponentTreeNode, createTenonComponent, TenonComponent } from "@tenon/engine";
 import { getValueByHackContext } from "@tenon/shared";
 import { cloneDeep } from "lodash";
-import { computed, createTextVNode, Fragment, getCurrentInstance, h, ref, resolveDynamicComponent, withScopeId } from "vue";
+import { computed, createTextVNode, Fragment, getCurrentInstance, h, reactive, ref, resolveDynamicComponent, withScopeId } from "vue";
 import { componentsMap, materialDependency } from "./setupComponents.web";
 import { setupComponentEvents } from "./setupEvents";
 import { setupProps } from "./setupProps";
@@ -53,7 +53,7 @@ export function parseConfig2RenderFn(this: any, config) {
 
   if (props["t-if"] && !config._processedIF) {
     const renderCondition = computed(() => getValueByHackContext(this, props["t-if"]));
-    
+
     return function _custom_if_render(this: any) {
       const subConfig = cloneDeep(config);
       subConfig._processedIF = true;
@@ -62,7 +62,14 @@ export function parseConfig2RenderFn(this: any, config) {
   }
 
   let processedProps: any = setupProps.call(this.tenonComp.ctx, props) || {};
-  
+
+  if (props["_scopeSlotArgs"]) {
+    processedProps.tenonCompProps.scopeSlotArgs = props["_scopeSlotArgs"];
+    if (this.tenonComp) {
+      this.tenonComp.tenonCompProps.scopeSlotArgs = props["_scopeSlotArgs"];
+    }
+  }
+
   const Component = resolveDynamicComponent(el);
   if (typeof Component !== "string") {
     el = Component;
@@ -103,9 +110,11 @@ export function parseConfig2RenderFn(this: any, config) {
           defaultArray.push(parseConfig2RenderFn.call(this, slotConfig).call(this));
         } else {
           injectChildren[slotKey] =
-            (...args) => {
-              slotConfig.props = slotConfig.props || {};
-              slotConfig.props['_slotParams'] = cloneDeep(args);
+            (scope) => {
+              if (scope && Object.keys(scope).length) {
+                slotConfig.props = slotConfig.props || {};
+                slotConfig.props['_scopeSlotArgs'] = scope;
+              }
               return parseConfig2RenderFn.call(this, slotConfig).call(this);
             }
         }
@@ -118,6 +127,6 @@ export function parseConfig2RenderFn(this: any, config) {
 
     return h(el, processedProps, injectChildren);
   };
-  
+
   return _custom_render;
 }

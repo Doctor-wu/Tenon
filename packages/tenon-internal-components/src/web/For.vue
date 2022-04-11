@@ -2,12 +2,14 @@
   <component :is="renderList"></component>
 </template>
 <script setup lang="ts">
-import { computed, h } from 'vue';
+import { computed, h, reactive } from 'vue';
 import { useStore } from 'vuex';
 import { Message } from '@arco-design/web-vue';
 
 const props = defineProps<{
   loop: any[];
+  composeLayout: any;
+  composeBackground: any;
 }>();
 
 const internalLoop = computed(() => {
@@ -27,12 +29,15 @@ const renderList = computed(() => {
     const factory = materialsMap.get('Compose-View');
     const material = factory();
     return h(material.component, {
-      isSlot: true,
-      slotKey: `__loop-${index}__`,
-      tenonCompProps: {
+      isSlot: index === 0,
+      attach: index !==0,
+      slotKey: `__loop__`,
+      tenonCompProps: reactive({
         item,
         index,
-      },
+      }),
+      composeLayout: props.composeLayout,
+      composeBackground: props.composeBackground,
       childrenBucket,
       disabled: index !== 0,
     });

@@ -2,6 +2,7 @@ import { IMaterial } from "@tenon/materials";
 import { cloneDeep } from "lodash";
 import { useStore } from "vuex";
 import { TenonComponent } from "./component";
+import { TenonEventCalledHooksKey } from "./hooks/event-called";
 
 interface IDefaultEvents {
   onMounted: IEventStruct;
@@ -45,6 +46,7 @@ export const eventsMap: {
 export const callTenonEvent = async (
   tenonComp: TenonComponent, eventName: string, ...args: any[]
 ) => {
+  tenonComp.eventCalledHook.executeHook(TenonEventCalledHooksKey.onCalled, eventName, ...args);
   if (args[0]?.currentTarget && args[0]?.currentTarget !== tenonComp.ctx.$el) return;
   if (!tenonComp.events[eventName] || !tenonComp.events[eventName].executeQueue.length) return;
   const eventIds = tenonComp.events[eventName].executeQueue;
@@ -63,6 +65,7 @@ export const executeTenonEvent = async (
     const {
       $comp,
       $pageStates,
+      $args,
     } = injectMeta;
     ${eventMeta.content}
   `);

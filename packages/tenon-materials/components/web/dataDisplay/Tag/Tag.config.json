@@ -1,0 +1,82 @@
+{
+  "name": "Tag",
+  "icon": "tag",
+  "description": ["Tag是一个<提示组件>, 提供标签能力"],
+  "dependencies": [],
+  "platform": ["web"],
+  "events": {
+    "onClose": "点击关闭按钮时",
+    "onCheck": "用户选中时"
+  },
+  "schemas": [
+    {
+      "type": "object",
+      "title": "Tag组件配置",
+      "fieldName": "tagConfig",
+      "properties": {
+        "tagValue": {
+          "type": "string",
+          "title": "tag的文字",
+          "default": "一个tag"
+        },
+        "size": {
+          "type": "select",
+          "title": "tag的大小",
+          "default": "medium",
+          "options": {
+            "small": "小",
+            "medium": "中",
+            "large": "大"
+          }
+        },
+        "color": {
+          "type": "color",
+          "title": "tag的颜色",
+          "default": ""
+        },
+        "loading": {
+          "type": "boolean",
+          "title": "是否处于加载中",
+          "default": false
+        },
+        "closable": {
+          "type": "boolean",
+          "title": "是否可关闭",
+          "default": false
+        },
+        "checkable": {
+          "type": "boolean",
+          "title": "标签是否可选中",
+          "default": false
+        },
+        "checked": {
+          "type": "boolean",
+          "title": "标签是否选中（标签可选中时可用）",
+          "default": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "Tag额外配置",
+      "fieldName": "tagExtraConfig",
+      "properties": {
+        "useIcon": {
+          "type": "boolean",
+          "title": "是否使用图标",
+          "default": false
+        },
+        "useCustomCloseIcon": {
+          "type": "boolean",
+          "title": "是否使用自定义关闭图标",
+          "default": false
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "display": "inline-block"
+    }
+  }
+}

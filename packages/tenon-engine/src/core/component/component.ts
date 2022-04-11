@@ -1,4 +1,4 @@
-import { reactive, toRaw } from "vue";
+import { reactive, ref, toRaw } from "vue";
 import { createPropsBySchemas } from "../schema";
 import { getID, releaseID } from "./id";
 import { ComponentSerializeConfig, ComponentTreeNode } from "./component.interface";
@@ -9,6 +9,7 @@ import { createTenonEvents, IEventMeta, IEventsConfig } from "../events";
 import { TenonPropsBinding } from "../props-binding";
 import { TenonLifeCycleHook } from "../hooks/lifecycle";
 import { StaticHooksKey, TenonStaticHook } from "../hooks";
+import { TenonEventCalledHook } from "../hooks/event-called";
 
 export class TenonComponent implements ComponentTreeNode {
   public name!: string;
@@ -28,6 +29,7 @@ export class TenonComponent implements ComponentTreeNode {
   public handlers: string[] = [];
   public events!: IEventsConfig;
   public lifecycleHook!: TenonLifeCycleHook;
+  public eventCalledHook!: TenonEventCalledHook;
   public mounted = false;
   public el!: HTMLElement;
 
@@ -86,7 +88,7 @@ export class TenonComponent implements ComponentTreeNode {
     this.material = material;
     this.materialConfig = material.config;
     this.schemas = material.schemas;
-    this.initLifeCycle();
+    this.initHooks();
     this.initEvents();
     this.initProps(material.schemas, options.props);
     this.initSlots();
@@ -97,7 +99,16 @@ export class TenonComponent implements ComponentTreeNode {
 
 
   get tenonCompProps() {
-    return this.ctx?.tenonCompProps;
+    return this.ctx.tenonCompProps;
+  }
+
+  set tenonCompProps(value) {
+    this.ctx.tenonCompProps = value;
+  }
+
+  initHooks() {
+    this.initLifeCycle();
+    this.eventCalledHook = new TenonEventCalledHook();
   }
 
   initLifeCycle() {

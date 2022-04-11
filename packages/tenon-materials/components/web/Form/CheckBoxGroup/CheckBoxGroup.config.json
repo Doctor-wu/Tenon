@@ -1,0 +1,45 @@
+{
+  "name": "CheckBoxGroup",
+  "icon": "file",
+  "description": ["CheckBoxGroup组件"],
+  "dependencies": [],
+  "platform": [
+    "web"
+  ],
+  "events": {
+    "onChange": "值改变时"
+  },
+  "schemas": [
+    {
+      "type": "object",
+      "title": "CheckBoxGroup属性",
+      "fieldName": "checkboxGroupConfig",
+      "properties": {
+        "model-value": {
+          "type": "string",
+          "title": "checkboxGroup选中的值(数组)",
+          "internal": false,
+          "default": []
+        },
+        "direction": {
+          "type": "select",
+          "title": "复选框的排列方向",
+          "options": {
+            "vertical": "垂直",
+            "horizontal": "水平"
+          },
+          "default": "horizontal"
+        },
+        "disabled": {
+          "type": "boolean",
+          "title": "是否禁用",
+          "default": false
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+    }
+  }
+}

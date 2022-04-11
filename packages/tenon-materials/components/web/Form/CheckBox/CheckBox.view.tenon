@@ -1,0 +1,19 @@
+<ArcoCheckbox
+  t-bind="checkboxConfig"
+  style="{
+    width: '100%'
+  }"
+>
+  <span t-if="!this.checkboxConfig.useCustomCheckbox">{{this.checkboxConfig.labelValue}}</span>
+  <Compose-View
+    t-if="this.checkboxConfig.useCustomCheckbox"
+    slotKey="checkbox"
+    isSlot="true"
+    t-slot="checkbox"
+    placeholder="拖入组件生成复选框内容"
+    tenonCompProps="{{this.tenonCompProps}}"
+    composeLayout="{
+      width: '100%'
+    }"
+  ></Compose-View>
+</ArcoCheckbox>
