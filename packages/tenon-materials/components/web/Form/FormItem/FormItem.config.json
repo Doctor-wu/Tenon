@@ -1,0 +1,127 @@
+{
+  "name": "FormItem",
+  "icon": "file",
+  "description": ["FormItem组件, 提供表单相关的能力"],
+  "dependencies": [],
+  "platform": ["web"],
+  "events": {
+    "onSubmit": "提交时"
+  },
+  "schemas": [
+    {
+      "type": "object",
+      "title": "表单项属性",
+      "fieldName": "formItemConfig",
+      "properties": {
+        "field": {
+          "type": "string",
+          "title": "表单元素在数据对象中的path"
+        },
+        "label": {
+          "type": "string",
+          "title": "标签的文本",
+          "default": "标签"
+        },
+        "show-colon": {
+          "type": "boolean",
+          "title": "是否显示冒号",
+          "default": false
+        },
+        "no-style": {
+          "type": "boolean",
+          "title": "是否去除样式",
+          "default": false
+        },
+        "disabled": {
+          "type": "boolean",
+          "title": "是否禁用",
+          "default": false
+        },
+        "help": {
+          "type": "string",
+          "title": "帮助文案"
+        },
+        "extra": {
+          "type": "string",
+          "title": "额外显示的文案"
+        },
+        "required": {
+          "type": "boolean",
+          "title": "是否必须填写"
+        },
+        "rules": {
+          "type": "select",
+          "title": "表单项校验规则",
+          "options": {
+          },
+          "default": ""
+        },
+        "validate-trigger": {
+          "type": "select",
+          "title": "触发校验的事件",
+          "options": {
+            "change": "change",
+            "input": "input",
+            "focus": "focus",
+            "blur": "blur"
+          },
+          "default": "change"
+        },
+        "hide-label": {
+          "type": "boolean",
+          "title": "是否隐藏标签",
+          "default": false
+        },
+        "hide-asterisk": {
+          "type": "boolean",
+          "title": "是否隐藏星号",
+          "default": false
+        },
+        "feedback": {
+          "type": "boolean",
+          "title": "是否显示表单控件的反馈图标",
+          "default": false
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "标签元素布局选项",
+      "fieldName": "labelColProps",
+      "properties": {
+        "span": {
+          "type": "number",
+          "title": "span",
+          "default": 5
+        },
+        "offset": {
+          "type": "number",
+          "title": "offset",
+          "default": 0
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "表单控件布局选项",
+      "fieldName": "wrapperColProps",
+      "properties": {
+        "span": {
+          "type": "number",
+          "title": "span",
+          "default": 19
+        },
+        "offset": {
+          "type": "number",
+          "title": "offset",
+          "default": 0
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "box-sizing": "border-box"
+    }
+  }
+}

@@ -4,24 +4,30 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount
   } = lifeCycle;
 
+  if (!tenonComp.propsBinding.hasBinding('formConfig', 'model')) {
+    tenonComp.propsBinding.addBinding('formConfig', 'model', '$comp.states.formModel');
+  }
+  let form;
+
   onMounted(() => {
     // console.log(lifeCycle, props, ctx, tenonComp);
+    form = tenonComp.refs?.form;
   });
 
-  const add = () => {
-    tenonComp.states.count.value++;
-  }
+  const resetFields = (...args) => form.resetFields(...args);
 
-  const subtract = () => {
-    tenonComp.states.count.value--;
-  }
+  const clearValidate = (...args) => form.clearValidate(...args);
+
+  const validate = (...args) => form.clearValidate(...args);
+
+  const validateField = (...args) => form.validateField(...args);
 
   return {
-    count: {
-      value: 0,
-    },
     author: 'Doctorwu',
-    add,
-    subtract,
+    resetFields,
+    clearValidate,
+    validate,
+    validateField,
+    formModel: {}
   }
 }

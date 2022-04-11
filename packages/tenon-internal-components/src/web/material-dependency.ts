@@ -101,6 +101,7 @@ export const materialDependency: any = {
   ArcoCheckboxGroup: CheckboxGroup,
   ArcoDatePicker: DatePicker,
   ArcoForm: Form,
+  ArcoFormItem: Form.Item,
   ArcoInput: Input,
   ArcoInputNumber: InputNumber,
   ArcoInputTag: InputTag,

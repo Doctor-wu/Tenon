@@ -1,68 +1,35 @@
 {
   "name": "Form",
   "icon": "file",
-  "description": ["Button组件"],
+  "description": ["Form组件, 提供表单相关的能力"],
   "dependencies": [],
-  "platform": [
-    "web"
-  ],
+  "platform": ["web"],
   "events": {
-    "onClick": "点击时"
+    "onSubmit": "提交时"
   },
   "schemas": [
     {
       "type": "object",
-      "title": "按钮文字",
-      "fieldName": "buttonText",
+      "title": "表单属性",
+      "fieldName": "formConfig",
       "properties": {
-        "value": {
+        "model": {
           "type": "string",
-          "title": "文本内容",
-          "default": ""
-        }
-      }
-    },
-    {
-      "type": "object",
-      "title": "按钮属性",
-      "fieldName": "buttonProps",
-      "properties": {
-        "type": {
-          "type": "select",
-          "title": "按钮类型",
-          "options": {
-            "primary": "primary",
-            "secondary": "secondary",
-            "dashed": "dashed",
-            "outline": "outline",
-            "text": "text"
-          },
-          "default": "primary"
+          "title": "表单数据对象"
         },
-        "shape": {
+        "layout": {
           "type": "select",
-          "title": "按钮形状",
+          "title": "表单的布局方式",
           "options": {
-            "square": "square",
-            "round": "round",
-            "circle": "circle"
+            "horizontal": "水平",
+            "vertical": "垂直",
+            "inline": "多列"
           },
-          "default": "square"
-        },
-        "status": {
-          "type": "select",
-          "title": "按钮状态",
-          "options": {
-            "normal": "normal",
-            "warning": "warning",
-            "success": "success",
-            "danger": "danger"
-          },
-          "default": "normal"
+          "default": "horizontal"
         },
         "size": {
           "type": "select",
-          "title": "按钮大小",
+          "title": "表单尺寸",
           "options": {
             "mini": "mini",
             "small": "small",
@@ -71,30 +38,58 @@
           },
           "default": "medium"
         },
-        "long": {
-          "type": "boolean",
-          "title": "按钮的宽度是否随容器自适应",
-          "default": true
-        },
-        "loading": {
-          "type": "boolean",
-          "title": "按钮是否为加载中状态",
-          "default": false
+        "label-align": {
+          "type": "select",
+          "title": "标签的对齐方向",
+          "options": {
+            "left": "左",
+            "right": "右"
+          },
+          "default": "right"
         },
         "disabled": {
           "type": "boolean",
-          "title": "按钮是否禁用",
+          "title": "是否禁用表单",
           "default": false
         },
-        "html-type": {
-          "type": "string",
-          "title": "button的原生type属性",
-          "default": "button"
+        "auto-label-width": {
+          "type": "boolean",
+          "title": "是否开启自动标签宽度",
+          "default": true
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "标签元素布局选项",
+      "fieldName": "labelColProps",
+      "properties": {
+        "span": {
+          "type": "number",
+          "title": "span",
+          "default": 5
         },
-        "href": {
-          "type": "string",
-          "title": "跳转链接",
-          "default": null
+        "offset": {
+          "type": "number",
+          "title": "offset",
+          "default": 0
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "表单控件布局选项",
+      "fieldName": "wrapperColProps",
+      "properties": {
+        "span": {
+          "type": "number",
+          "title": "span",
+          "default": 19
+        },
+        "offset": {
+          "type": "number",
+          "title": "offset",
+          "default": 0
         }
       }
     }

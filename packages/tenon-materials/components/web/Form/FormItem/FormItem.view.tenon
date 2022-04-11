@@ -1,0 +1,13 @@
+<ArcoFormItem
+  t-bind="{{[this.formItemConfig,{ labelColProps: this.labelColProps, wrapperColProps: this.wrapperColProps}]}}"
+  ref="formItem"
+>
+  <Compose-View
+    t-slot="default"
+    slotKey="default"
+    isSlot="true"
+    placeholder="拖入表单控件生成表单内容"
+    tenonCompProps="{{this.tenonCompProps}}"
+    composeLayout="{}"
+  ></Compose-View>
+</ArcoFormItem>

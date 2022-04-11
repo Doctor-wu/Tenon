@@ -70,6 +70,10 @@ export function parseConfig2RenderFn(this: any, config) {
     }
   }
 
+  if (processedProps.ref && this.tenonComp) {
+    this.tenonComp.refs[processedProps.ref] = this.tenonComp.ctx.$.setupState[processedProps.ref] = ref();
+  }
+
   const Component = resolveDynamicComponent(el);
   if (typeof Component !== "string") {
     el = Component;

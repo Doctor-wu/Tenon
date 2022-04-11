@@ -1,18 +1,13 @@
-<ArcoButton
-  t-bind="buttonProps"
+<ArcoForm
+  t-bind="{{[this.formConfig,{ labelColProps: this.labelColProps, wrapperColProps: this.wrapperColProps}]}}"
+  ref="form"
 >
-  <span t-if="this.buttonText.value">{{this.buttonText.value}}</span>
   <Compose-View
-    t-if="this.buttonText.value === undefined || this.buttonText.value === ''"
-    slotKey="default" 
-    placeholder="拖入组件生成按钮内容"
-    tenonCompProps="{{this.tenonCompProps}}"
-    composeLayout="{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexWrap: 'wrap'
-    }"
+    t-slot="default"
+    slotKey="default"
     isSlot="true"
+    placeholder="拖入表单项生成表单内容"
+    tenonCompProps="{{this.tenonCompProps}}"
+    composeLayout="{}"
   ></Compose-View>
-</ArcoButton>
+</ArcoForm>

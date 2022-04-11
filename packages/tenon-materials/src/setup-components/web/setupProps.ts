@@ -1,4 +1,4 @@
-import { getValueByHackContext, recursiveGetValue } from "@tenon/shared";
+import { getValueByHackContext, getValueByInjectContext, recursiveGetValue } from "@tenon/shared";
 
 export function setupProps(this: any, props = {}) {
   const newProps = {};
@@ -20,7 +20,7 @@ export function setupProps(this: any, props = {}) {
       case "t-bind":
         value = value instanceof Array ? value : [value];
         value.forEach(val => {
-          const bindings = props[val] || this[val] || {};
+          const bindings = typeof val === 'string' ? getValueByInjectContext(this, val) : val;
           Object.keys(bindings).forEach((bindingKey) => {
             newProps[bindingKey] = bindings[bindingKey];
           });

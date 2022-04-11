@@ -3,18 +3,19 @@ import { IMaterial } from "@tenon/materials";
 import { ISchema } from "../schema";
 import { ITenonComponentStates } from "../states";
 import { TenonPropsBinding } from "../props-binding";
+import { TenonLifeCycleHook } from "../hooks";
+import { TenonEventCalledHook } from "../hooks/event-called";
 
 export interface ComponentTreeNode {
   name: string; // 组件名称
   id: number; // 组件id
   schemas: ISchema[]; // 组件schemas
-  // refs: any; // 引用
+  refs: any; // 引用
   events: IEventsConfig; // 组件事件
   handlers: string[];
   parent?: ComponentTreeNode; // 组件父级
   // refKey?: string;
   ctx?: any;
-  mounted: boolean;
   // textID?: string;
   // parentComponent?: ComponentTreeNode;
   props?: any;
@@ -25,6 +26,10 @@ export interface ComponentTreeNode {
   materialConfig: IMaterial['config'];
   slots: Object;
   isSlot?: boolean;
+  lifecycleHook: TenonLifeCycleHook;
+  eventCalledHook: TenonEventCalledHook;
+  mounted: boolean;
+  el: HTMLElement;
 }
 
 export interface ComponentSerializeConfig {

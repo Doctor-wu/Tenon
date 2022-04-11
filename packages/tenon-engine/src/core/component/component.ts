@@ -16,6 +16,7 @@ export class TenonComponent implements ComponentTreeNode {
   public id: number;
   public schemas: any;
   public parent?: TenonComponent;
+  refs:any = {}; // 引用
   public material: IMaterial;
   public materialConfig: IMaterial['config'];
   public states?: ITenonComponentStates;
