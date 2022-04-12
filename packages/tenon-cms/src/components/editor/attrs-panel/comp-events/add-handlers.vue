@@ -12,13 +12,15 @@
     </a-button>
   </a-card>
 </template>
-<script setup lang="ts">import { computed, ref, watchEffect } from 'vue';
+<script setup lang="ts">
+import { computed, ref, watchEffect } from 'vue';
 import { useStore } from '@/store';
 import { TenonComponent, IEventStruct, IEventMeta } from '@tenon/engine';
 
 interface propsType {
   eventConfig: IEventStruct;
   eventsKey: string;
+  deletor?: any;
 }
 
 const store = useStore();
@@ -43,11 +45,16 @@ const eventsMap = computed<Map<string, IEventMeta>>(() => {
 const addHandler = () => {
   emit('doSelect', {
     handleAddEvent,
+    eventsKey: props.eventsKey
   });
 };
 
 const deleteStockHandler = (index: number) => {
-  (activeComponent.value.events[props.eventsKey] as IEventStruct).executeQueue.splice(index, 1);
+  if (props.deletor) {
+    props.deletor(props.eventsKey, index);
+  } else {
+    (activeComponent.value.events[props.eventsKey] as IEventStruct).executeQueue.splice(index, 1);
+  }
 }
 
 const handleAddEvent = (eventItem: IEventMeta) => {

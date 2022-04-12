@@ -27,7 +27,7 @@ import { setupMaterials } from '~logic/setup-materials';
 import { useRouter } from 'vue-router';
 import { getPageInfoApi } from '@/api'
 import { Message } from '@arco-design/web-vue';
-import { config2tree, setID } from '@tenon/engine';
+import { callTenonPageEvent, config2tree, setID } from '@tenon/engine';
 
 const store = useStore();
 const panel = ref<HTMLElement>();
@@ -71,7 +71,7 @@ onBeforeMount(() => {
         store.dispatch('page/setPageInfo', data);
         setID(data.newestId);
         pageInfo.value = data;
-        console.log(pageInfo.value);
+        callTenonPageEvent(data, 'onShow');
       }
     })
     .finally(() => {
@@ -79,8 +79,10 @@ onBeforeMount(() => {
     });
 });
 
-onBeforeUnmount(() => {
+onBeforeUnmount(async () => {
   store.dispatch('viewer/clearTree');
+  const pageInfo = await store.getters['page/getPageInfo'];
+  callTenonPageEvent(pageInfo, 'onShow');
 });
 
 </script>

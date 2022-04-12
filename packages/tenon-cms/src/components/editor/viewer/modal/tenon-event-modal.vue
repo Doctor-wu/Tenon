@@ -171,7 +171,7 @@ defineExpose({ open, close });
 </script>
 <style lang="scss" scoped>
 .modal-content-container {
-  height: 568px;
+  height: 628px;
   display: flex;
   flex-direction: column;
 
@@ -188,7 +188,7 @@ defineExpose({ open, close });
 
   .modal-content-wrapper {
     display: flex;
-    height: 530px;
+    height: 590px;
     border: 1px solid #e3e3e3;
   }
 

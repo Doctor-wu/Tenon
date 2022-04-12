@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :footer="false"
-    width="968px"
+    width="568px"
     v-model:visible="visible"
     @ok="handleOk"
     @before-close="handleBeforeClose"
@@ -31,19 +31,20 @@ onUnmounted(() => {
 });
 
 const computedStates = computed(() => {
-  return [...makeDataTree(pageStates.value), {
-    data: 'extra',
-    children: makeDataTree({
-      username: 'doctorwu',
-      age: 22,
-      books: ['javascript', 'typescript'],
-      company: {
-        name: 'tencent',
-        department: 'RDGZ',
-      }
-    }),
-  }]
-})
+  return [ ...makeDataTree(pageStates.value), {
+      data: 'extra',
+      children: makeDataTree({
+        username: 'doctorwu',
+        age: 22,
+        books: ['javascript', 'typescript'],
+        company: {
+          name: 'tencent',
+          department: 'RDGZ',
+        }
+      }),
+    }
+  ]
+});
 
 const handleOk = () => {
 

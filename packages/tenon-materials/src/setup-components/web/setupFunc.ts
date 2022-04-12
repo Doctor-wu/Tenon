@@ -18,6 +18,11 @@ export function setupComponent(props, ctx, logic) {
 
   const parentComp: TenonComponent | null = findParentTenonComp(instance);
 
+  onBeforeMount(() => {
+    callTenonEvent(tenonComp, 'onBeforeMount');
+    tenonComp.lifecycleHook.executeHook(LifeCycleHooksKey.onBeforeMount);
+  });
+
   onMounted(() => {
     callTenonEvent(tenonComp, 'onMounted');
     tenonComp.lifecycleHook.executeHook(LifeCycleHooksKey.onMounted);
@@ -38,6 +43,7 @@ export function setupComponent(props, ctx, logic) {
       tenonComp.handlers.push(key);
     }
   });
+  tenonComp.lifecycleHook.executeHook(LifeCycleHooksKey.onSetup);
 
   const tenonStates = new TenonComponentStates(originStates, tenonComp);
   const setupStates = tenonStates.states;

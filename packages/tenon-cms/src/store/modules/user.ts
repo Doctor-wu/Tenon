@@ -20,6 +20,7 @@ export default {
   mutations: {
     SET_USERINFO(state, userInfo) {
       state.userInfo = userInfo;
+      console.log('[UserInfo] ', state.userInfo);
     }
   },
   actions: {
@@ -42,7 +43,6 @@ export default {
           state.userInfo = existed.userInfo;
         }
       }
-      console.log('[UserInfo] ', state.userInfo);
       return state.userInfo;
     },
   },

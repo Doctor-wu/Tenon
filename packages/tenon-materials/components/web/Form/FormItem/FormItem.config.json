@@ -52,9 +52,15 @@
         "rules": {
           "type": "select",
           "title": "表单项校验规则",
+          "reverse": true,
+          "multiple": true,
           "options": {
-          },
-          "default": ""
+            "必填": {
+              "required": true,
+              "message": "该项必填",
+              "trigger": "change"
+            }
+          }
         },
         "validate-trigger": {
           "type": "select",

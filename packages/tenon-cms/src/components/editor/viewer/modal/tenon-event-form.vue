@@ -9,6 +9,14 @@
       >
         <a-input v-model="eventData.eventName" placeholder="请输入事件名称" />
       </a-form-item>
+      <a-form-item
+        field="gather"
+        label="事件分类:"
+        :rules="rules.gather"
+        :validate-trigger="['blur']"
+      >
+        <a-input v-model="eventData.gather" placeholder="请输入事件名称" />
+      </a-form-item>
       <a-alert title="作用域变量注入">
         <section>
           <b>$pageStates</b>: 可以通过$pageStates获取页面的状态

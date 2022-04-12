@@ -21,7 +21,7 @@ export function initLanguages() {
         // const activeStr = words[words.length - 1];
         return [
           {
-            label: '$pageState',
+            label: '$pageStates',
             kind: languages.CompletionItemKind.Variable,
             documentation: '页面状态',
             insertText: '$pageState',

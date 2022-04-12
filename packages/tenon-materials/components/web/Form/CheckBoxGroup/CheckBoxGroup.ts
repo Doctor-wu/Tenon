@@ -10,8 +10,12 @@ export default (lifeCycle, props, ctx, tenonComp) => {
   onMounted(() => {
     // console.log(lifeCycle, props, ctx, tenonComp);
     tenonComp.eventCalledHook.onCalled((eventName, ...args) => {
+      // debugger;
       if (eventName === "onChange") {
-        tenonComp.states.selected = args[0];
+        // tenonComp.states.selected = args[0];
+        const bindingExpression = tenonComp.propsBinding.getBinding('checkboxGroupConfig', 'model-value');
+        const value = args[0];
+        tenonComp.exec(`${bindingExpression} = ${JSON.stringify(value)}`);
       }
     });
   });

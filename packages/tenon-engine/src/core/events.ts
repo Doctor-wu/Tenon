@@ -55,9 +55,21 @@ export const callTenonEvent = async (
   });
 }
 
+export const callTenonPageEvent = async (
+  pageInfo: any,
+  eventName: string,
+  ...args: any[]
+) => {
+  if (!pageInfo.pageLifeCycle[eventName] || !pageInfo.pageLifeCycle[eventName].executeQueue.length) return;
+  const eventIds = pageInfo.pageLifeCycle[eventName].executeQueue;
+  eventIds.forEach(async eventId => {
+    executeTenonEvent(eventsMap.value!.get(eventId)!, undefined, ...args);
+  });
+}
+
 export const executeTenonEvent = async (
   eventMeta: IEventMeta,
-  tenonComp: TenonComponent,
+  tenonComp?: TenonComponent,
   ...args: any[]
 ) => {
   const $pageStates = await TenonComponent.customConfig.getPageStates();

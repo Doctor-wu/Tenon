@@ -23,6 +23,19 @@ export const pageSchema = createSchema({
     default: {
       author: 'Doctorwu'
     },
+  },
+  pageLifeCycle: {
+    type: {},
+    default: {
+      onShow: {
+        eventLabel: "进入时",
+        executeQueue: [],
+      },
+      onHide: {
+        eventLabel: "离开时",
+        executeQueue: [],
+      },
+    }
   }
 });
 

@@ -7,7 +7,8 @@
     "web"
   ],
   "events": {
-    "onChange": "值改变时"
+    "onChange": "值改变时",
+    "update:modelValue": "值更新时"
   },
   "schemas": [
     {

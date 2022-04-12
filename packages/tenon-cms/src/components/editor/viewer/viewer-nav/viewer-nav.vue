@@ -2,7 +2,7 @@
   <section class="nav-wrapper">
     <section class="nav-scroller">
       <a-page-header
-        style="display: inline-block;"
+        style="display: inline-block;padding: 0;"
         @back="$router.push(`/page-list/${projectInfo._id}`)"
         :title="projectInfo?.projectName"
         :subtitle="pageInfo?.pageName"
@@ -31,6 +31,7 @@
       <a-divider direction="vertical" class="nav-divider"></a-divider>
       <TenonEvent></TenonEvent>
       <TenonStates></TenonStates>
+      <TenonLifecycle></TenonLifecycle>
       <a-divider direction="vertical" class="nav-divider"></a-divider>
       <Scale></Scale>
       <Deletor></Deletor>
@@ -51,6 +52,7 @@ import { saveTreeApi } from '@/api/page';
 import LoadConfig from './load-config.vue';
 import TenonEvent from './tenon-event.vue';
 import TenonStates from './tenon-states.vue';
+import TenonLifecycle from './tenon-lifecycle.vue';
 
 const store = useStore();
 const pageInfo = ref<any>({});
@@ -129,6 +131,9 @@ function deleteConfig() {
   justify-content: start;
   margin-right: 40px;
   overflow: auto hidden;
+  &::-webkit-scrollbar {
+    display: none !important; /* Chrome Safari */
+  }
 }
 
 .nav-scroller {

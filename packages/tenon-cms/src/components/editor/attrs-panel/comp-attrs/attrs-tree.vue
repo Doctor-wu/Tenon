@@ -27,13 +27,14 @@
             v-bind="getBindingsBySchemaType(properties[key].type, key)"
             v-on="getListenersBySchemaType(properties[key].type, key)"
             placeholder="please input..."
+            :multiple="!!properties[key].multiple"
             allow-clear
           >
             <template v-if="properties[key].type === 'select'">
               <a-option
-                v-for="optionsKey in Object.keys(properties[key].options)"
-                :value="optionsKey"
-              >{{ properties[key].options[optionsKey] }}</a-option>
+                v-for="optionsKey in Object.keys(properties[key].options || {})"
+                :value="properties[key].reverse ? properties[key].options[optionsKey] : optionsKey"
+              >{{ properties[key].reverse ? optionsKey : properties[key].options[optionsKey] }}</a-option>
             </template>
           </component>
         </template>
@@ -193,40 +194,40 @@ const handleBindingInput = (fieldName, key, value) => {
 
 const handleBinding = async (fieldName, key) => {
   TenonPropsBinding.trackingBinding = true;
-  activeComponent.value.propsBinding.setBinding(fieldName, key, propsBindingComposingValue.value[`${fieldName}@${key}`]);
-  const expression = activeComponent.value.propsBinding.getBinding(fieldName, key);
-  if (expression === '' || expression === undefined) return;
-  const pageInfo = await store.getters['page/getPageInfo'];
-  const trigger = new Function('injectMeta', `
-    const {
-      $comp,
-      $pageStates,
-      _editMode,
-    } = injectMeta;
-    try {
-      return (${expression});
-    } catch(e) {
-      console.error(e);
-      return '';
-    }
-  `);
-  if (activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)]) {
-    activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)]();
-  };
-  const cancel = watchEffect(async () => {
-    if (!TenonPropsBinding.trackingBinding) return;
-    try {
-      activeComponent.value.props[fieldName][key] = trigger({
-        $comp: activeComponent.value,
-        $pageStates: pageInfo.pageStates,
-        _editMode: editMode,
-      });
-    } catch (e) {
-      // Message.error(`[Expression Error]: ${e}`);
-      console.error(e);
-    }
-  });
-  activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)] = cancel;
+  activeComponent.value.propsBinding.addBinding(fieldName, key, propsBindingComposingValue.value[`${fieldName}@${key}`]);
+  // const expression = activeComponent.value.propsBinding.getBinding(fieldName, key);
+  // if (expression === '' || expression === undefined) return;
+  // const pageInfo = await store.getters['page/getPageInfo'];
+  // const trigger = new Function('injectMeta', `
+  //   const {
+  //     $comp,
+  //     $pageStates,
+  //     _editMode,
+  //   } = injectMeta;
+  //   try {
+  //     return (${expression});
+  //   } catch(e) {
+  //     console.error(e);
+  //     return '';
+  //   }
+  // `);
+  // if (activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)]) {
+  //   activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)]();
+  // };
+  // const cancel = watchEffect(async () => {
+  //   if (!TenonPropsBinding.trackingBinding) return;
+  //   try {
+  //     activeComponent.value.props[fieldName][key] = trigger({
+  //       $comp: activeComponent.value,
+  //       $pageStates: pageInfo.pageStates,
+  //       _editMode: editMode,
+  //     });
+  //   } catch (e) {
+  //     // Message.error(`[Expression Error]: ${e}`);
+  //     console.error(e);
+  //   }
+  // });
+  // activeComponent.value.runtimeBinding[activeComponent.value.propsBinding.makeKey(fieldName, key)] = cancel;
 }
 
 </script>

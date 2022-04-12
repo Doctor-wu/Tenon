@@ -30,6 +30,7 @@ import {
   Textarea,
   TimePicker,
   Tag,
+  Space,
 } from "@arco-design/web-vue";
 
 import {
@@ -112,6 +113,7 @@ export const materialDependency: any = {
   ArcoTextarea: Textarea,
   ArcoTimePicker: TimePicker,
   ArcoTag: Tag,
+  ArcoSpace: Space,
   TenonTemplate: Root,
   TenonText: Text,
   TenonAvatar: Avatar,

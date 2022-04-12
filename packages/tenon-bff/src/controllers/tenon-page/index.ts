@@ -107,6 +107,30 @@ class TenonPageController extends BaseController {
     return await this.smartResponse(ctx, next)(error, result);
   }
 
+  @Post('/updateLifeCycle', {
+    params: {
+      pageId: {
+        type: 'string',
+        required: true,
+      },
+      pageLifeCycle: {
+        type: 'object',
+        required: true,
+      }
+    }
+  })
+  async handleUpdateLifeCycle(
+    ctx,
+    next,
+    params
+  ) {
+    const {
+      pageLifeCycle, pageId,
+    } = params;
+    const [error, result] = await this.pageService.updatePageInfo(pageId, { pageLifeCycle });
+    return await this.smartResponse(ctx, next)(error, result);
+  }
+
   @Post('/saveTree', {
     params: {
       tree: {

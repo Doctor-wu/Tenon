@@ -1,0 +1,16 @@
+<ArcoSpace
+  t-bind="spaceConfig"
+>
+  <Compose-View
+    t-for="Array.from({length: this.spaceCount.count || 0})"
+    t-slot="default"
+    slotKey="{{`space-item_${this.index}`}}"
+    isSlot="true"
+    composeLayout="{
+      minWidth: '100px',
+      boxSizing: 'border-box'
+    }"
+    tenonCompProps="{{this.tenonCompProps}}"
+  >
+  </Compose-View>
+</ArcoSpace>

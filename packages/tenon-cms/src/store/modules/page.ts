@@ -1,11 +1,13 @@
-import { getTenonEventsApi } from '@/api';
+import { getPageInfoApi, getTenonEventsApi } from '@/api';
 import { getPageModel } from '@/local-db/controller/page';
 import { Message } from '@arco-design/web-vue';
 import { eventsMap, IEventMeta, TenonComponent } from '@tenon/engine';
 import { cloneDeep } from 'lodash';
+import { ref } from 'vue';
 import { Module } from 'vuex';
 import { IRootState } from '..';
 
+export const currPageInfo = ref<IPageState["pageInfo"]>();
 
 export interface IPageState {
   pageInfo: {
@@ -16,6 +18,7 @@ export interface IPageState {
     newestId: number;
     tree: any;
     events?: any[];
+    pageStates: any;
   } | null;
 }
 
@@ -28,6 +31,7 @@ export default {
   mutations: {
     SET_PAGE_INFO(state, pageInfo) {
       state.pageInfo = pageInfo;
+      currPageInfo.value = state.pageInfo;
       console.log('[PageInfo] ', pageInfo);
     }
   },
@@ -49,16 +53,26 @@ export default {
       commit('SET_PAGE_INFO', null);
       getPageModel().remove();
     },
-    async updatePageEvent({ commit, dispatch, state }) {
-      const currPageInfo = Object.assign({}, state.pageInfo);
+    async updatePageEvent({ dispatch, state }) {
+      const _currPageInfo = Object.assign({}, state.pageInfo);
       const {
         success, errorMsg, data
-      } = await getTenonEventsApi(currPageInfo?._id);
+      } = await getTenonEventsApi(_currPageInfo?._id);
       if (!success) {
         return Message.error(errorMsg!);
       }
-      currPageInfo.events = data;
-      dispatch('setPageInfo', currPageInfo);
+      _currPageInfo.events = data;
+      dispatch('setPageInfo', _currPageInfo);
+    },
+    async updatePageInfo({ dispatch, state }) {
+      const currPageInfo = state.pageInfo;
+      const {
+        success, errorMsg, data
+      } = await getPageInfoApi(currPageInfo?._id);
+      if (!success) {
+        return Message.error(errorMsg!);
+      }
+      dispatch('setPageInfo', data);
     }
   },
   getters: {
@@ -69,7 +83,7 @@ export default {
           state.pageInfo = existed.page;
         }
       }
-
+      currPageInfo.value = state.pageInfo;
       return state.pageInfo;
     },
   },

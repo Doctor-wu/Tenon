@@ -1,5 +1,6 @@
 import { getComponentsApi } from "@/api";
 import { IRootState } from "@/store";
+import { currPageInfo } from "@/store/modules/page";
 import { IMaterial, setupConfigSchemas, setupWebComponents } from "@tenon/materials";
 import { Store } from "vuex";
 import { materialDependency } from "@tenon/internal-components";
@@ -52,6 +53,34 @@ export const setupMaterials = async (store: Store<IRootState>) => {
     const pageInfo = await store.getters['page/getPageInfo'];
     const pageStates = pageInfo.pageStates;
     return pageStates;
+  }
+
+  TenonComponent._exec = (instance, expression: string) => {
+    try {
+      const pageInfo = (store.state as any).page.pageInfo;
+      // debugger; 
+      const handler = new Function('injectMeta', `
+        const {
+          $comp,
+          $pageStates,
+          _editMode,
+        } = injectMeta;
+        try {
+          return ${expression};
+        } catch(e) {
+          console.error(e);
+          return '';
+        }
+      `);
+        const injectMeta = {
+          $comp: instance,
+          $pageStates: pageInfo.pageStates,
+          _editMode: editMode,
+        };
+        handler(injectMeta);
+    } catch (e) {
+      
+    }
   }
 
 

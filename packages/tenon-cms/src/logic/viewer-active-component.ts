@@ -50,7 +50,6 @@ export const extractActiveComponentFromParent = (activeComponent) => {
     relative = grandParent;
   }
   if (!parent || !grandParent) return;
-  debugger;
   extractChild(parent, activeComponent);
   insertChild(grandParent, activeComponent, relative);
   activeComponent.parent = grandParent;

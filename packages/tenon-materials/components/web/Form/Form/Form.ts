@@ -18,7 +18,9 @@ export default (lifeCycle, props, ctx, tenonComp) => {
 
   const clearValidate = (...args) => form.clearValidate(...args);
 
-  const validate = (...args) => form.clearValidate(...args);
+  const validate = (...args) => {
+    form.validate(...args);
+  }
 
   const validateField = (...args) => form.validateField(...args);
 

@@ -142,7 +142,6 @@ let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => 
   }
   result.ctx = result.ctx || instance.ctx;
   result.ctx.tenonComp = result;
-  console.log(result);
 
   return result;
 });

@@ -34,6 +34,10 @@ export class TenonComponent implements ComponentTreeNode {
   public mounted = false;
   public el!: HTMLElement;
 
+  public exec = (expression) => TenonComponent._exec(this, expression);
+
+  static _exec: (instance: TenonComponent, expression: string) => void;
+
   static customConfig: any = {};
 
   static editMode: any;

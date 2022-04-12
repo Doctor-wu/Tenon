@@ -1,0 +1,70 @@
+{
+  "name": "Space",
+  "icon": "file",
+  "description": ["Space是一个<布局组件>，提供基础的布局间隔能力"],
+  "dependencies": [],
+  "platform": ["web"],
+  "schemas": [
+    {
+      "type": "object",
+      "title": "Space个数",
+      "fieldName": "spaceCount",
+      "properties": {
+        "count": {
+          "type": "number",
+          "title": "个数",
+          "default": 3
+        }
+      }
+    },
+    {
+      "type": "object",
+      "title": "Space属性",
+      "fieldName": "spaceConfig",
+      "properties": {
+        "align": {
+          "type": "select",
+          "title": "对齐方式",
+          "options":{
+            "start": "start",
+            "end": "end",
+            "center": "center",
+            "baseline": "baseline"
+          }
+        },
+        "direction": {
+          "type": "select",
+          "title": "间距方向",
+          "options":{
+            "vertical": "vertical",
+            "horizontal": "horizontal"
+          },
+          "default": "horizontal"
+        },
+        "size": {
+          "type": "select",
+          "title": "间距大小",
+          "options": {
+            "mini": "mini",
+            "small": "small",
+            "medium": "medium",
+            "large": "large"
+          },
+          "default": "small"
+        },
+        "wrap": {
+          "type": "boolean",
+          "title": "环绕类型",
+          "default": false
+        },
+        "fill": {
+          "type": "boolean",
+          "title": "充满整行",
+          "default": false
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+  }
+}
