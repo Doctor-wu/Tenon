@@ -1,10 +1,10 @@
 <template>
   <router-view v-slot="{ Component }">
     <template v-if="Component">
-      <keep-alive>
+      <!-- <keep-alive>
         <component :is="markRaw(Component)" v-if="$route.meta.keepAlive" />
-      </keep-alive>
-      <component :is="markRaw(Component)" v-if="!$route.meta.keepAlive" />
+      </keep-alive> -->
+      <component :is="markRaw(Component)" />
     </template>
   </router-view>
 </template>

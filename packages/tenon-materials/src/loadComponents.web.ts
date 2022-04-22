@@ -16,7 +16,7 @@ const buildComponents = async (components: IMaterialConfig) => {
   const compSource = fs.readdirSync(dirs);
   await asyncCompose(
     compSource.map.bind(compSource),
-    Promise.all.bind(Promise)
+    Promise.all.bind(Promise),
   )(async (compGroup) => {
     components[compGroup] = {};
     const compGroupItems = fs.readdirSync(path.resolve(dirs, compGroup));

@@ -1,7 +1,7 @@
 <template>
   <section class="wrapper">
     <a-empty v-if="!activeComponent || !editMode" style="margin: auto;">未选中组件</a-empty>
-    <section v-else class="attr-menus" :key="activeComponent.id">
+    <section v-else class="attr-menus">
       <a-tabs
         class="attr-menus-wrapper"
         :default-active-key="attrs[0].title"

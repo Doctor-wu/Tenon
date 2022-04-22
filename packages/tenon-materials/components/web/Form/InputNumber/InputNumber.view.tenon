@@ -1,18 +1,36 @@
-<ArcoButton
-  t-bind="buttonProps"
+<ArcoInputNumber
+  t-bind="inputNumberConfig"
 >
-  <span t-if="this.buttonText.value">{{this.buttonText.value}}</span>
-  <Compose-View
-    t-if="this.buttonText.value === undefined || this.buttonText.value === ''"
-    slotKey="default" 
-    placeholder="拖入组件生成按钮内容"
-    tenonCompProps="{{this.tenonCompProps}}"
-    composeLayout="{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexWrap: 'wrap'
-    }"
+  <!-- <Compose-View
+    t-if="this.slotConfig.showAppend"
+    t-slot="append"
     isSlot="true"
+    slotKey="append"
+    placeholder="拖入组件生成后置标签"
+    tenonCompProps="{{this.tenonCompProps}}"
   ></Compose-View>
-</ArcoButton>
+  <Compose-View
+    t-if="this.slotConfig.showPrepend"
+    t-slot="prepend"
+    isSlot="true"
+    slotKey="prepend"
+    placeholder="拖入组件生成前置标签"
+    tenonCompProps="{{this.tenonCompProps}}"
+  ></Compose-View> -->
+  <Compose-View
+    t-if="this.slotConfig.showSuffix"
+    t-slot="suffix"
+    isSlot="true"
+    slotKey="suffix"
+    placeholder="拖入组件生成后缀元素"
+    tenonCompProps="{{this.tenonCompProps}}"
+  ></Compose-View>
+  <Compose-View
+    t-if="this.slotConfig.showPrefix"
+    t-slot="prefix"
+    isSlot="true"
+    slotKey="prefix"
+    placeholder="拖入组件生成前缀元素"
+    tenonCompProps="{{this.tenonCompProps}}"
+  ></Compose-View>
+</ArcoInputNumber>
