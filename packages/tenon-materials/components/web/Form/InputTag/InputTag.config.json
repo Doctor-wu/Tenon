@@ -1,68 +1,33 @@
 {
   "name": "InputTag",
   "icon": "file",
-  "description": ["Button组件"],
+  "description": ["InputTag组件"],
   "dependencies": [],
   "platform": [
     "web"
   ],
   "events": {
-    "onClick": "点击时"
+    "onInputValueChange": "输入值改变时",
+    "onChange": "值发生改变时",
+    "onPressEnter": "按下回车时",
+    "onRemove": "删除标签时",
+    "onClear": "用户点击清除按钮时",
+    "onFocus": "获取焦点时",
+    "onBlur": "失去焦点时"
   },
   "schemas": [
     {
       "type": "object",
-      "title": "按钮文字",
-      "fieldName": "buttonText",
+      "title": "输入标签属性",
+      "fieldName": "inputTagConfig",
       "properties": {
-        "value": {
+        "model-value": {
           "type": "string",
-          "title": "文本内容",
-          "default": ""
-        }
-      }
-    },
-    {
-      "type": "object",
-      "title": "按钮属性",
-      "fieldName": "buttonProps",
-      "properties": {
-        "type": {
-          "type": "select",
-          "title": "按钮类型",
-          "options": {
-            "primary": "primary",
-            "secondary": "secondary",
-            "dashed": "dashed",
-            "outline": "outline",
-            "text": "text"
-          },
-          "default": "primary"
-        },
-        "shape": {
-          "type": "select",
-          "title": "按钮形状",
-          "options": {
-            "square": "square",
-            "round": "round",
-            "circle": "circle"
-          },
-          "default": "square"
-        },
-        "status": {
-          "type": "select",
-          "title": "按钮状态",
-          "options": {
-            "normal": "normal",
-            "warning": "warning",
-            "success": "success",
-            "danger": "danger"
-          },
-          "default": "normal"
+          "title": "输入标签绑定值"
         },
         "size": {
           "type": "select",
-          "title": "按钮大小",
+          "title": "输入标签大小",
           "options": {
             "mini": "mini",
             "small": "small",
@@ -71,30 +36,51 @@
           },
           "default": "medium"
         },
-        "long": {
-          "type": "boolean",
-          "title": "按钮的宽度是否随容器自适应",
-          "default": true
+        "placeholder":{
+          "type": "string",
+          "title": "提示文字"
         },
-        "loading": {
+        "max-tag-count":{
+          "type": "number",
+          "title": "最多展示的标签个数, 0表示不限制",
+          "default": 0
+        },
+        "allow-clear": {
           "type": "boolean",
-          "title": "按钮是否为加载中状态",
+          "title": "是否允许清空",
           "default": false
+        },
+        "unique-value": {
+          "type": "boolean",
+          "title": "是否仅创建唯一值",
+          "default": true
         },
         "disabled": {
           "type": "boolean",
-          "title": "按钮是否禁用",
+          "title": "是否禁用",
           "default": false
         },
-        "html-type": {
-          "type": "string",
-          "title": "button的原生type属性",
-          "default": "button"
+        "readonly": {
+          "type": "boolean",
+          "title": "是否为只读",
+          "default": false
         },
-        "href": {
+        "error": {
+          "type": "boolean",
+          "title": "是否为错误状态",
+          "default": false
+        }
+      }
+    },
+    {
+      "type": "custom",
+      "title": "标签选择器样式",
+      "fieldName": "customElementStyle",
+      "properties": {
+        "width": {
           "type": "string",
-          "title": "跳转链接",
-          "default": null
+          "title": "宽度",
+          "default": "100%"
         }
       }
     }

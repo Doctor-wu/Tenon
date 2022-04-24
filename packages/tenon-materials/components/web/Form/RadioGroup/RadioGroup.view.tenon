@@ -1,0 +1,12 @@
+<ArcoRadioGroup
+  t-bind="radioGroupConfig"
+  style="customElementStyle"
+>
+  <Compose-View
+    slotKey="default"
+    placeholder="拖入radio"
+    tenonCompProps="{{this.tenonCompProps}}"
+    useTeleport="{{true}}"
+    isSlot="true"
+  ></Compose-View>
+</ArcoRadioGroup>

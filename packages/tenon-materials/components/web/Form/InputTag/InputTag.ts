@@ -4,24 +4,35 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount
   } = lifeCycle;
 
+  if (!tenonComp.propsBinding.hasBinding('inputTagConfig', 'model-value')) {
+    tenonComp.propsBinding.addBinding('inputTagConfig', 'model-value', '$comp.states.inputValue');
+  };
+
   onMounted(() => {
-    // console.log(lifeCycle, props, ctx, tenonComp);
+    tenonComp.eventCalledHook.onCalled((eventName, ...args) => {
+      if (eventName === "onChange") {
+        tenonComp.states.inputValue = args[0];
+
+        const bindingExpression = tenonComp.propsBinding.getBinding('inputTagConfig', 'model-value');
+        const value = args[0];
+        tenonComp.exec(`${bindingExpression} = ${JSON.stringify(value)}`);
+      }
+      if (eventName === "onRemove") {
+        tenonComp.states.inputValue = args[0];
+
+        const bindingExpression = tenonComp.propsBinding.getBinding('inputTagConfig', 'model-value');
+        const value = args[0];
+        tenonComp.exec(`${bindingExpression} = ${bindingExpression}.filter(i => i !== '${value}')`);
+      }
+      if (eventName === "onClear") {
+        const bindingExpression = tenonComp.propsBinding.getBinding('inputTagConfig', 'model-value');
+        tenonComp.exec(`${bindingExpression} = []`);
+      }
+    });
   });
 
-  const add = () => {
-    tenonComp.states.count.value++;
-  }
-
-  const subtract = () => {
-    tenonComp.states.count.value--;
-  }
-
   return {
-    count: {
-      value: 0,
-    },
+    inputValue: [],
     author: 'Doctorwu',
-    add,
-    subtract,
   }
 }

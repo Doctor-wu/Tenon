@@ -39,11 +39,22 @@
           "default": false
         }
       }
+    },
+    {
+      "type": "custom",
+      "title": "日期选择器样式",
+      "fieldName": "customElementStyle",
+      "properties": {
+        "width": {
+          "type": "string",
+          "title": "宽度",
+          "default": "100%"
+        }
+      }
     }
   ],
   "tenonProps": {
     "containerStyle": {
-      "display": "inline-block",
       "box-sizing": "border-box"
     }
   }

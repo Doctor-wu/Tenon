@@ -1,4 +1,5 @@
 <ArcoDatePicker
   t-bind="datePickerConfig"
+  style="customElementStyle"
 >
 </ArcoDatePicker>

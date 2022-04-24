@@ -4,24 +4,23 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount
   } = lifeCycle;
 
+  if (!tenonComp.propsBinding.hasBinding('radioConfig', 'model-value')) {
+    tenonComp.propsBinding.addBinding('radioConfig', 'model-value', '$comp.states.selectValue');
+  }
+
   onMounted(() => {
-    // console.log(lifeCycle, props, ctx, tenonComp);
+    tenonComp.eventCalledHook.onCalled((eventName, ...args) => {
+      if (eventName === "onChange") {
+        tenonComp.states.selectValue = args[0];
+        if (tenonComp.tenonCompProps.scopeSlotArgs) {
+          tenonComp.tenonCompProps.scopeSlotArgs.checked = args[0];
+        }
+      }
+    });
   });
 
-  const add = () => {
-    tenonComp.states.count.value++;
-  }
-
-  const subtract = () => {
-    tenonComp.states.count.value--;
-  }
-
   return {
-    count: {
-      value: 0,
-    },
+    selectValue: '',
     author: 'Doctorwu',
-    add,
-    subtract,
   }
 }

@@ -4,13 +4,14 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount
   } = lifeCycle;
 
-  if (!tenonComp.propsBinding.hasBinding('checkboxGroupConfig', 'model-value')) {
-    tenonComp.propsBinding.addBinding('checkboxGroupConfig', 'model-value', '$comp.states.selected');
+  if (!tenonComp.propsBinding.hasBinding('radioGroupConfig', 'model-value')) {
+    tenonComp.propsBinding.addBinding('radioGroupConfig', 'model-value', '$comp.states.selectValue');
   }
   onMounted(() => {
     tenonComp.eventCalledHook.onCalled((eventName, ...args) => {
       if (eventName === "onChange") {
-        const bindingExpression = tenonComp.propsBinding.getBinding('checkboxGroupConfig', 'model-value');
+        debugger;
+        const bindingExpression = tenonComp.propsBinding.getBinding('radioGroupConfig', 'model-value');
         const value = args[0];
         tenonComp.exec(`${bindingExpression} = ${JSON.stringify(value)}`);
       }
@@ -18,7 +19,7 @@ export default (lifeCycle, props, ctx, tenonComp) => {
   });
 
   return {
-    selected: [],
+    selectValue: '',
     author: 'Doctorwu',
   }
 }

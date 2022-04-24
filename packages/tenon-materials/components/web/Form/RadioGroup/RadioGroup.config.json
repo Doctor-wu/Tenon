@@ -1,0 +1,76 @@
+{
+  "name": "RadioGroup",
+  "icon": "file",
+  "description": ["RadioGroup组件"],
+  "dependencies": [],
+  "platform": [
+    "web"
+  ],
+  "events": {
+    "onChange": "值改变时"
+  },
+  "schemas": [
+    {
+      "type": "object",
+      "title": "单选框组属性",
+      "fieldName": "radioGroupConfig",
+      "properties": {
+        "model-value": {
+          "type": "string",
+          "title": "单选框组绑定值"
+        },
+        "type": {
+          "type": "select",
+          "title": "单选框组类型",
+          "options": {
+            "radio": "radio",
+            "button": "button"
+          },
+          "default": "radio"
+        },
+        "size": {
+          "type": "select",
+          "title": "单选框组大小",
+          "options": {
+            "mini": "mini",
+            "small": "small",
+            "medium": "medium",
+            "large": "large"
+          },
+          "default": "medium"
+        },
+        "direction": {
+          "type": "select",
+          "title": "单选框组方向",
+          "options": {
+            "horizontal": "horizontal",
+            "vertical": "vertical"
+          },
+          "default": "horizontal"
+        },
+        "disabled": {
+          "type": "boolean",
+          "title": "单选框组是否禁用",
+          "default": false
+        }
+      }
+    },
+    {
+      "type": "custom",
+      "title": "单选框组样式",
+      "fieldName": "customElementStyle",
+      "properties": {
+        "width": {
+          "type": "string",
+          "title": "宽度",
+          "default": "100%"
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "box-sizing": "border-box"
+    }
+  }
+}

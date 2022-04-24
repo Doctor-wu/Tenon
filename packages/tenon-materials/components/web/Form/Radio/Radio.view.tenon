@@ -1,18 +1,9 @@
-<ArcoButton
-  t-bind="buttonProps"
+<ArcoRadio
+  t-bind="radioConfig"
 >
-  <span t-if="this.buttonText.value">{{this.buttonText.value}}</span>
-  <Compose-View
-    t-if="this.buttonText.value === undefined || this.buttonText.value === ''"
-    slotKey="default" 
-    placeholder="拖入组件生成按钮内容"
-    tenonCompProps="{{this.tenonCompProps}}"
-    composeLayout="{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexWrap: 'wrap'
+  <Text
+    textValue="{
+      value: '{{this.radioConfig.content}}'
     }"
-    isSlot="true"
-  ></Compose-View>
-</ArcoButton>
+  ></Text>
+</ArcoRadio>
