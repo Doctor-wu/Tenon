@@ -4,24 +4,24 @@ export default (lifeCycle, props, ctx, tenonComp) => {
     onMounted, onUpdated, onBeforeUnmount, onBeforeMount
   } = lifeCycle;
 
+  if (!tenonComp.propsBinding.hasBinding('switchConfig', 'model-value')) {
+    tenonComp.propsBinding.addBinding('switchConfig', 'model-value', '$comp.states.switchValue');
+  };
+
   onMounted(() => {
-    // console.log(lifeCycle, props, ctx, tenonComp);
+    tenonComp.eventCalledHook.onCalled((eventName, ...args) => {
+      if (eventName === "onChange") {
+        tenonComp.states.inputValue = args[0];
+
+        const bindingExpression = tenonComp.propsBinding.getBinding('switchConfig', 'model-value');
+        const value = args[0];
+        tenonComp.exec(`${bindingExpression} = ${JSON.stringify(value)}`);
+      }
+    });
   });
 
-  const add = () => {
-    tenonComp.states.count.value++;
-  }
-
-  const subtract = () => {
-    tenonComp.states.count.value--;
-  }
-
   return {
-    count: {
-      value: 0,
-    },
+    switchValue: false,
     author: 'Doctorwu',
-    add,
-    subtract,
   }
 }

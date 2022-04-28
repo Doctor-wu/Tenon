@@ -2,12 +2,8 @@
   <section class="attrs-wrapper">
     <section>
       <a-form :model="activeComponent.props" layout="vertical">
-        <a-menu
-          :style="{ borderRadius: '4px' }"
-          theme="vertical"
-          :collapsed="false"
-          :level-indent="0"
-        >
+        <a-menu :key="activeComponent.id" :style="{ borderRadius: '4px' }" theme="vertical" :collapsed="false"
+          :level-indent="0">
           <template v-for="(schema, index) in schemas">
             <a-sub-menu :title="schema.title">
               <CustomAttrs v-if="schema.type === 'custom'" :schema="schema"></CustomAttrs>

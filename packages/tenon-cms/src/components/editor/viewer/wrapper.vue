@@ -19,6 +19,7 @@
     @mouseover.capture="() => choosingWrapper = tenonComp.id"
     @mouseleave="() => choosingWrapper = -1"
     @click="(e) => handleSelectComponent(e, tenonComp)"
+    @mousedown="(e) => editMode && e.stopPropagation()"
     :draggable="editMode"
   >
     <slot></slot>

@@ -111,6 +111,7 @@ export const materialDependency: any = {
   ArcoRadioGroup: RadioGroup,
   ArcoRate: Rate,
   ArcoSelect: Select,
+  ArcoOption: Select.Option,
   ArcoSwitch: Switch,
   ArcoTextarea: Textarea,
   ArcoTimePicker: TimePicker,

@@ -1,0 +1,4 @@
+<ArcoOption
+  t-bind="selectOptionConfig"
+>
+</ArcoOption>

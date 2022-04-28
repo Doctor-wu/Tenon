@@ -1,18 +1,36 @@
-<ArcoButton
-  t-bind="buttonProps"
+<ArcoSwitch
+  t-bind="switchConfig"
 >
-  <span t-if="this.buttonText.value">{{this.buttonText.value}}</span>
   <Compose-View
-    t-if="this.buttonText.value === undefined || this.buttonText.value === ''"
-    slotKey="default" 
-    placeholder="拖入组件生成按钮内容"
-    tenonCompProps="{{this.tenonCompProps}}"
-    composeLayout="{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexWrap: 'wrap'
-    }"
+    t-if="this.switchSlots.useCheckedIcon"
+    t-slot="checked-icon"
+    slotKey="checked-icon"
     isSlot="true"
+    placeholder="拖入组件生成选中时按钮"
+    tenonCompProps="{{this.tenonCompProps}}"
   ></Compose-View>
-</ArcoButton>
+  <Compose-View
+    t-if="this.switchSlots.useUnCheckedIcon"
+    t-slot="unchecked-icon"
+    slotKey="unchecked-icon"
+    isSlot="true"
+    placeholder="拖入组件生成未选中时按钮"
+    tenonCompProps="{{this.tenonCompProps}}"
+  ></Compose-View>
+  <Compose-View
+    t-if="this.switchSlots.useChecked"
+    t-slot="checked"
+    slotKey="checked"
+    isSlot="true"
+    placeholder="拖入组件生成选中时文字"
+    tenonCompProps="{{this.tenonCompProps}}"
+  ></Compose-View>
+  <Compose-View
+    t-if="this.switchSlots.useUnChecked"
+    t-slot="unchecked"
+    slotKey="unchecked"
+    isSlot="true"
+    placeholder="拖入组件生成未选中时文字"
+    tenonCompProps="{{this.tenonCompProps}}"
+  ></Compose-View>
+</ArcoSwitch>

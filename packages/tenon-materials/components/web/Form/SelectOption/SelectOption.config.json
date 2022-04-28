@@ -1,0 +1,39 @@
+{
+  "name": "SelectOption",
+  "icon": "file",
+  "description": ["SelectOption组件"],
+  "dependencies": [],
+  "platform": [
+    "web"
+  ],
+  "events": {},
+  "schemas": [
+    {
+      "type": "object",
+      "title": "选择项属性",
+      "fieldName": "selectOptionConfig",
+      "properties": {
+        "value": {
+          "type": "string",
+          "title": "选项值",
+          "default": "option"
+        },
+        "label": {
+          "type": "string",
+          "title": "选项标签",
+          "default": "label"
+        },
+        "disabled": {
+          "type": "boolean",
+          "title": "是否禁用",
+          "default": false
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "box-sizing": "border-box"
+    }
+  }
+}

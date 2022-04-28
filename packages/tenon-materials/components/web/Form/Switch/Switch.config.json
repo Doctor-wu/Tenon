@@ -1,107 +1,106 @@
 {
-  "name": "Switch",
-  "icon": "file",
-  "description": ["Button组件"],
-  "dependencies": [],
-  "platform": [
-    "web"
-  ],
-  "events": {
-    "onClick": "点击时"
-  },
-  "schemas": [
-    {
-      "type": "object",
-      "title": "按钮文字",
-      "fieldName": "buttonText",
-      "properties": {
-        "value": {
-          "type": "string",
-          "title": "文本内容",
-          "default": ""
-        }
-      }
+    "name": "Switch",
+    "icon": "file",
+    "description": ["Switch组件"],
+    "dependencies": [],
+    "platform": ["web"],
+    "events": {
+        "onChange": "值改变时"
     },
-    {
-      "type": "object",
-      "title": "按钮属性",
-      "fieldName": "buttonProps",
-      "properties": {
-        "type": {
-          "type": "select",
-          "title": "按钮类型",
-          "options": {
-            "primary": "primary",
-            "secondary": "secondary",
-            "dashed": "dashed",
-            "outline": "outline",
-            "text": "text"
-          },
-          "default": "primary"
+    "schemas": [{
+            "type": "object",
+            "title": "开关属性",
+            "fieldName": "switchConfig",
+            "properties": {
+                "model-value": {
+                    "type": "string",
+                    "title": "绑定值"
+                },
+                "default-checked": {
+                    "type": "string",
+                    "title": "默认选中状态",
+                    "boolean": false
+                },
+                "disabled": {
+                    "type": "boolean",
+                    "title": "是否禁用",
+                    "default": false
+                },
+                "loading": {
+                    "type": "boolean",
+                    "title": "是否为加载中状态",
+                    "default": false
+                },
+                "type": {
+                    "type": "select",
+                    "title": "开关类型",
+                    "options": {
+                        "circle": "circle",
+                        "round": "round",
+                        "line": "line"
+                    },
+                    "default": "circle"
+                },
+                "size": {
+                    "type": "select",
+                    "title": "开关大小",
+                    "options": {
+                        "small": "small",
+                        "medium": "medium"
+                    },
+                    "default": "medium"
+                },
+                "checked-value": {
+                    "type": "string",
+                    "title": "选中时的值",
+                    "default": true
+                },
+                "unchecked-value": {
+                    "type": "string",
+                    "title": "未选中时的值",
+                    "default": false
+                },
+                "checked-color": {
+                    "type": "color",
+                    "title": "选中时的颜色"
+                },
+                "unchecked-color": {
+                    "type": "color",
+                    "title": "未选中时的颜色"
+                }
+            }
         },
-        "shape": {
-          "type": "select",
-          "title": "按钮形状",
-          "options": {
-            "square": "square",
-            "round": "round",
-            "circle": "circle"
-          },
-          "default": "square"
-        },
-        "status": {
-          "type": "select",
-          "title": "按钮状态",
-          "options": {
-            "normal": "normal",
-            "warning": "warning",
-            "success": "success",
-            "danger": "danger"
-          },
-          "default": "normal"
-        },
-        "size": {
-          "type": "select",
-          "title": "按钮大小",
-          "options": {
-            "mini": "mini",
-            "small": "small",
-            "medium": "medium",
-            "large": "large"
-          },
-          "default": "medium"
-        },
-        "long": {
-          "type": "boolean",
-          "title": "按钮的宽度是否随容器自适应",
-          "default": true
-        },
-        "loading": {
-          "type": "boolean",
-          "title": "按钮是否为加载中状态",
-          "default": false
-        },
-        "disabled": {
-          "type": "boolean",
-          "title": "按钮是否禁用",
-          "default": false
-        },
-        "html-type": {
-          "type": "string",
-          "title": "button的原生type属性",
-          "default": "button"
-        },
-        "href": {
-          "type": "string",
-          "title": "跳转链接",
-          "default": null
+        {
+            "type": "object",
+            "title": "开关插槽",
+            "fieldName": "switchSlots",
+            "properties": {
+                "useCheckedIcon": {
+                    "type": "boolean",
+                    "title": "选中时的图标",
+                    "default": false
+                },
+                "useUnCheckedIcon": {
+                    "type": "boolean",
+                    "title": "未选中时的图标",
+                    "default": false
+                },
+                "useChecked": {
+                    "type": "boolean",
+                    "title": "选中时的文案",
+                    "default": false
+                },
+                "useUnChecked": {
+                    "type": "boolean",
+                    "title": "未选中时的文案",
+                    "default": false
+                }
+            }
         }
-      }
+    ],
+    "tenonProps": {
+        "containerStyle": {
+            "box-sizing": "border-box"
+        }
     }
-  ],
-  "tenonProps": {
-    "containerStyle": {
-      "box-sizing": "border-box"
-    }
-  }
 }

@@ -94,7 +94,7 @@ export const createPropsBySchemas = (
             default:
               propValue[propertyKey] = sourceKeysSet.has(propertyKey)
                 ? source?.[fieldName]?.[propertyKey]
-                : properties?.[propertyKey]?.default;
+                : getPropUnitDefault(propValue, properties?.[propertyKey])
               break;
           }
         });
@@ -110,4 +110,11 @@ export const createPropsBySchemas = (
   });
 
   return props;
+}
+
+function getPropUnitDefault(propValue, propUnit) {
+  // if (propUnit?.default && typeof propUnit?.default === "string" && /^\{\{\[^{}]+}\}$/.test(propUnit?.default)) {
+    
+  // }
+  return propUnit?.default;
 }

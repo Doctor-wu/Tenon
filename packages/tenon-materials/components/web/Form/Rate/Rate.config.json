@@ -1,100 +1,58 @@
 {
   "name": "Rate",
   "icon": "file",
-  "description": ["Button组件"],
+  "description": ["Rate组件"],
   "dependencies": [],
   "platform": [
     "web"
   ],
   "events": {
-    "onClick": "点击时"
+    "onChange": "值改变时"
   },
   "schemas": [
     {
       "type": "object",
-      "title": "按钮文字",
-      "fieldName": "buttonText",
+      "title": "评分属性",
+      "fieldName": "rateConfig",
       "properties": {
-        "value": {
+        "model-value": {
           "type": "string",
-          "title": "文本内容",
-          "default": ""
-        }
-      }
-    },
-    {
-      "type": "object",
-      "title": "按钮属性",
-      "fieldName": "buttonProps",
-      "properties": {
-        "type": {
-          "type": "select",
-          "title": "按钮类型",
-          "options": {
-            "primary": "primary",
-            "secondary": "secondary",
-            "dashed": "dashed",
-            "outline": "outline",
-            "text": "text"
-          },
-          "default": "primary"
+          "title": "评分绑定值"
         },
-        "shape": {
-          "type": "select",
-          "title": "按钮形状",
-          "options": {
-            "square": "square",
-            "round": "round",
-            "circle": "circle"
-          },
-          "default": "square"
+        "count": {
+          "type": "number",
+          "title": "评分的总数",
+          "default": 5
         },
-        "status": {
-          "type": "select",
-          "title": "按钮状态",
-          "options": {
-            "normal": "normal",
-            "warning": "warning",
-            "success": "success",
-            "danger": "danger"
-          },
-          "default": "normal"
+        "default-value": {
+          "type": "number",
+          "title": "评分的默认值",
+          "default": 3
         },
-        "size": {
-          "type": "select",
-          "title": "按钮大小",
-          "options": {
-            "mini": "mini",
-            "small": "small",
-            "medium": "medium",
-            "large": "large"
-          },
-          "default": "medium"
-        },
-        "long": {
+        "allow-half": {
           "type": "boolean",
-          "title": "按钮的宽度是否随容器自适应",
-          "default": true
+          "title": "是否允许半选",
+          "default": false
         },
-        "loading": {
+        "allow-clear": {
           "type": "boolean",
-          "title": "按钮是否为加载中状态",
+          "title": "是否允许清除",
+          "default": false
+        },
+        "grading": {
+          "type": "boolean",
+          "title": "是否开启笑脸分级",
+          "default": false
+        },
+        "readonly": {
+          "type": "boolean",
+          "title": "是否为只读状态",
           "default": false
         },
         "disabled": {
           "type": "boolean",
           "title": "按钮是否禁用",
           "default": false
-        },
-        "html-type": {
-          "type": "string",
-          "title": "button的原生type属性",
-          "default": "button"
-        },
-        "href": {
-          "type": "string",
-          "title": "跳转链接",
-          "default": null
         }
       }
     }

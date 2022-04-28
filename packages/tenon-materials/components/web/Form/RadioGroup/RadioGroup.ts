@@ -10,7 +10,6 @@ export default (lifeCycle, props, ctx, tenonComp) => {
   onMounted(() => {
     tenonComp.eventCalledHook.onCalled((eventName, ...args) => {
       if (eventName === "onChange") {
-        debugger;
         const bindingExpression = tenonComp.propsBinding.getBinding('radioGroupConfig', 'model-value');
         const value = args[0];
         tenonComp.exec(`${bindingExpression} = ${JSON.stringify(value)}`);

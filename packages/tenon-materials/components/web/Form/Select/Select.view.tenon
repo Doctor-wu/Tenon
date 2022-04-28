@@ -1,18 +1,27 @@
-<ArcoButton
-  t-bind="buttonProps"
+<ArcoSelect
+  t-bind="selectConfig"
 >
-  <span t-if="this.buttonText.value">{{this.buttonText.value}}</span>
-  <Compose-View
-    t-if="this.buttonText.value === undefined || this.buttonText.value === ''"
-    slotKey="default" 
-    placeholder="拖入组件生成按钮内容"
-    tenonCompProps="{{this.tenonCompProps}}"
-    composeLayout="{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexWrap: 'wrap'
+  <SelectOption
+    t-for="this.selectValue.value"
+    selectOptionConfig="{
+      label: '{{String(this.item.label || this.item)}}',
+      value: '{{String(this.item.value || this.item)}}'
     }"
-    isSlot="true"
-  ></Compose-View>
-</ArcoButton>
+  ></SelectOption>
+  <!-- <Compose-View
+  t-if="this.selectSlots.useFooter"
+  slotKey="footer"
+  t-slot="footer"
+  isSlot="true"
+  placeholder="拖入组件生成下拉框页脚"
+  tenonCompProps="{{this.tenonCompProps}}"
+></Compose-View>
+  <Compose-View
+  t-if="this.selectSlots.useLabel"
+  slotKey="label"
+  t-slot="label"
+  isSlot="true"
+  placeholder="拖入组件生成选择框显示内容"
+  tenonCompProps="{{this.tenonCompProps}}"
+></Compose-View> -->
+</ArcoSelect>

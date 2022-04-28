@@ -60,6 +60,10 @@ onBeforeMount(() => {
       }
       else {
         const config = data.tree;
+        store.dispatch('page/setPageInfo', data);
+        pageInfo.value = data;
+        callTenonPageEvent(data, 'onShow');
+        setID(data.newestId);
         if (data.tree) {
           store.dispatch(
             'viewer/setTree',
@@ -68,10 +72,6 @@ onBeforeMount(() => {
             )(config),
           );
         }
-        store.dispatch('page/setPageInfo', data);
-        setID(data.newestId);
-        pageInfo.value = data;
-        callTenonPageEvent(data, 'onShow');
       }
     })
     .finally(() => {
