@@ -1,107 +1,85 @@
 {
-  "name": "TimePicker",
-  "icon": "file",
-  "description": ["Button组件"],
-  "dependencies": [],
-  "platform": [
-    "web"
-  ],
-  "events": {
-    "onClick": "点击时"
-  },
-  "schemas": [
-    {
-      "type": "object",
-      "title": "按钮文字",
-      "fieldName": "buttonText",
-      "properties": {
-        "value": {
-          "type": "string",
-          "title": "文本内容",
-          "default": ""
-        }
-      }
+    "name": "TimePicker",
+    "icon": "file",
+    "description": ["TimePicker组件, 提供时间选择的能力"],
+    "dependencies": [],
+    "platform": [
+        "web"
+    ],
+    "events": {
+        "onChange": "选择时间时",
+        "onClear": "点击清除时"
     },
-    {
-      "type": "object",
-      "title": "按钮属性",
-      "fieldName": "buttonProps",
-      "properties": {
-        "type": {
-          "type": "select",
-          "title": "按钮类型",
-          "options": {
-            "primary": "primary",
-            "secondary": "secondary",
-            "dashed": "dashed",
-            "outline": "outline",
-            "text": "text"
-          },
-          "default": "primary"
+    "schemas": [{
+            "type": "object",
+            "title": "时间选择组件属性",
+            "fieldName": "timePickerConfig",
+            "properties": {
+                "model-value": {
+                    "type": "string",
+                    "title": "绑定值"
+                },
+                "type": {
+                    "type": "select",
+                    "title": "时间选择器类型",
+                    "options": {
+                        "time": "time",
+                        "time-range": "time-range"
+                    },
+                    "default": "time"
+                },
+                "default-value": {
+                    "type": "string",
+                    "title": "默认值"
+                },
+                "disabled": {
+                    "type": "boolean",
+                    "title": "是否禁用",
+                    "default": false
+                },
+                "allow-clear": {
+                    "type": "boolean",
+                    "title": "是否允许清空",
+                    "default": true
+                },
+                "readonly": {
+                    "type": "boolean",
+                    "title": "是否为只读",
+                    "default": false
+                },
+                "error": {
+                    "type": "boolean",
+                    "title": "是否为错误状态",
+                    "default": false
+                },
+                "format": {
+                    "type": "string",
+                    "title": "格式",
+                    "default": "HH:mm:ss"
+                },
+                "placeholder": {
+                    "type": "string",
+                    "title": "提示文案",
+                    "default": "请选择时间"
+                }
+            }
         },
-        "shape": {
-          "type": "select",
-          "title": "按钮形状",
-          "options": {
-            "square": "square",
-            "round": "round",
-            "circle": "circle"
-          },
-          "default": "square"
-        },
-        "status": {
-          "type": "select",
-          "title": "按钮状态",
-          "options": {
-            "normal": "normal",
-            "warning": "warning",
-            "success": "success",
-            "danger": "danger"
-          },
-          "default": "normal"
-        },
-        "size": {
-          "type": "select",
-          "title": "按钮大小",
-          "options": {
-            "mini": "mini",
-            "small": "small",
-            "medium": "medium",
-            "large": "large"
-          },
-          "default": "medium"
-        },
-        "long": {
-          "type": "boolean",
-          "title": "按钮的宽度是否随容器自适应",
-          "default": true
-        },
-        "loading": {
-          "type": "boolean",
-          "title": "按钮是否为加载中状态",
-          "default": false
-        },
-        "disabled": {
-          "type": "boolean",
-          "title": "按钮是否禁用",
-          "default": false
-        },
-        "html-type": {
-          "type": "string",
-          "title": "button的原生type属性",
-          "default": "button"
-        },
-        "href": {
-          "type": "string",
-          "title": "跳转链接",
-          "default": null
+        {
+            "type": "custom",
+            "title": "时间选择器样式",
+            "fieldName": "customElementStyle",
+            "properties": {
+                "width": {
+                    "type": "string",
+                    "title": "宽度",
+                    "default": "100%"
+                }
+            }
         }
-      }
+    ],
+    "tenonProps": {
+        "containerStyle": {
+            "box-sizing": "border-box"
+        }
     }
-  ],
-  "tenonProps": {
-    "containerStyle": {
-      "box-sizing": "border-box"
-    }
-  }
 }

@@ -23,6 +23,9 @@
     slotKey="checked"
     isSlot="true"
     placeholder="拖入组件生成选中时文字"
+    composeLayout="{
+      display: 'inline-block'
+    }"
     tenonCompProps="{{this.tenonCompProps}}"
   ></Compose-View>
   <Compose-View
@@ -31,6 +34,9 @@
     slotKey="unchecked"
     isSlot="true"
     placeholder="拖入组件生成未选中时文字"
+    composeLayout="{
+      display: 'inline-block'
+    }"
     tenonCompProps="{{this.tenonCompProps}}"
   ></Compose-View>
 </ArcoSwitch>

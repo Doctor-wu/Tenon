@@ -1,107 +1,88 @@
 {
-  "name": "TextArea",
-  "icon": "file",
-  "description": ["Button组件"],
-  "dependencies": [],
-  "platform": [
-    "web"
-  ],
-  "events": {
-    "onClick": "点击时"
-  },
-  "schemas": [
-    {
-      "type": "object",
-      "title": "按钮文字",
-      "fieldName": "buttonText",
-      "properties": {
-        "value": {
-          "type": "string",
-          "title": "文本内容",
-          "default": ""
-        }
-      }
+    "name": "TextArea",
+    "icon": "file",
+    "description": ["TextArea组件"],
+    "dependencies": [],
+    "platform": [
+        "web"
+    ],
+    "events": {
+        "onInput": "输入时",
+        "onChange": "仅在文本框失焦时",
+        "onClear": "用户点击清除按钮时",
+        "onFocus": "获取焦点时",
+        "onBlur": "失去焦点时"
     },
-    {
-      "type": "object",
-      "title": "按钮属性",
-      "fieldName": "buttonProps",
-      "properties": {
-        "type": {
-          "type": "select",
-          "title": "按钮类型",
-          "options": {
-            "primary": "primary",
-            "secondary": "secondary",
-            "dashed": "dashed",
-            "outline": "outline",
-            "text": "text"
-          },
-          "default": "primary"
+    "schemas": [{
+            "type": "object",
+            "title": "文本域配置",
+            "fieldName": "textareaConfig",
+            "properties": {
+                "model-value": {
+                    "type": "string",
+                    "title": "文本域绑定值"
+                },
+                "placeholder": {
+                    "type": "string",
+                    "title": "提示文字"
+                },
+                "auto-size": {
+                    "type": "boolean",
+                    "title": "是否让文本框自适应内容高度",
+                    "default": false
+                },
+                "max-length": {
+                    "type": "number",
+                    "title": "最大长度"
+                },
+                "allow-clear": {
+                    "type": "boolean",
+                    "title": "是否允许清空文本域",
+                    "default": false
+                },
+                "disabled": {
+                    "type": "boolean",
+                    "title": "是否禁用",
+                    "default": false
+                },
+                "readonly": {
+                    "type": "boolean",
+                    "title": "是否为只读",
+                    "default": false
+                },
+                "error": {
+                    "type": "boolean",
+                    "title": "是否为错误状态",
+                    "default": false
+                },
+                "show-word-limit": {
+                    "type": "boolean",
+                    "title": "是否显示字数统计",
+                    "default": false
+                }
+            }
         },
-        "shape": {
-          "type": "select",
-          "title": "按钮形状",
-          "options": {
-            "square": "square",
-            "round": "round",
-            "circle": "circle"
-          },
-          "default": "square"
-        },
-        "status": {
-          "type": "select",
-          "title": "按钮状态",
-          "options": {
-            "normal": "normal",
-            "warning": "warning",
-            "success": "success",
-            "danger": "danger"
-          },
-          "default": "normal"
-        },
-        "size": {
-          "type": "select",
-          "title": "按钮大小",
-          "options": {
-            "mini": "mini",
-            "small": "small",
-            "medium": "medium",
-            "large": "large"
-          },
-          "default": "medium"
-        },
-        "long": {
-          "type": "boolean",
-          "title": "按钮的宽度是否随容器自适应",
-          "default": true
-        },
-        "loading": {
-          "type": "boolean",
-          "title": "按钮是否为加载中状态",
-          "default": false
-        },
-        "disabled": {
-          "type": "boolean",
-          "title": "按钮是否禁用",
-          "default": false
-        },
-        "html-type": {
-          "type": "string",
-          "title": "button的原生type属性",
-          "default": "button"
-        },
-        "href": {
-          "type": "string",
-          "title": "跳转链接",
-          "default": null
+        {
+            "type": "object",
+            "title": "文本域插槽配置",
+            "fieldName": "slotConfig",
+            "properties": {
+                "showSuffix": {
+                    "type": "boolean",
+                    "title": "是否显示后缀元素插槽",
+                    "default": false
+                },
+                "showPrefix": {
+                    "type": "boolean",
+                    "title": "是否显示前缀元素插槽",
+                    "default": false
+                }
+            }
         }
-      }
+    ],
+    "tenonProps": {
+        "containerStyle": {
+            "box-sizing": "border-box"
+        }
     }
-  ],
-  "tenonProps": {
-    "containerStyle": {
-      "box-sizing": "border-box"
-    }
-  }
 }
