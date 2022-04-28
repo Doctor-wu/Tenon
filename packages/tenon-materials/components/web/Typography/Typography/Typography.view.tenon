@@ -1,0 +1,8 @@
+<ArcoTypography>
+  <Compose-View
+    slotKey="default"
+    isSlot="true"
+    placeholder="拖入组件生成排版内容"
+    tenonCompProps="{{this.tenonCompProps}}"
+  ></Compose-View>
+</ArcoTypography>

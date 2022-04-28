@@ -1,0 +1,55 @@
+{
+    "name": "TypographyParagraph",
+    "icon": "file",
+    "description": [
+        "TypographyParagraph是一个<排版组件>，提供基础的排版段落能力"
+    ],
+    "dependencies": [],
+    "platform": ["web"],
+    "events": {
+        "onEditStart": "编辑开始时",
+        "onChange": "编辑内容变化时",
+        "onEditEnd": "编辑结束时",
+        "onCopy": "复制时"
+    },
+    "schemas": [{
+            "type": "object",
+            "title": "排版段落配置",
+            "fieldName": "typoParagraph",
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "title": "段落文本",
+                    "default": ""
+                },
+                "blockquote": {
+                    "type": "boolean",
+                    "title": "引用段落",
+                    "default": false
+                },
+                "spacing": {
+                    "type": "select",
+                    "title": "段落间距",
+                    "options": {
+                        "default": "默认",
+                        "close": "近"
+                    },
+                    "default": "default"
+                }
+            }
+        },
+        {
+            "type": "internal",
+            "key": "typoCommon",
+            "title": "基础排版配置",
+            "fieldName": "typoCommonConfig"
+        },
+        {
+            "type": "internal",
+            "key": "typoEllipsis",
+            "title": "排版溢出省略配置",
+            "fieldName": "typoEllipsisConfig"
+        }
+    ],
+    "tenonProps": {}
+}

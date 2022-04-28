@@ -186,8 +186,7 @@ export class TenonComponent implements ComponentTreeNode {
       originThis.children = undefined;
 
       if (originThis?.ctx?.tenonComp) {
-        originThis.ctx.tenonComp;
-        originThis.ctx.$el = null;
+        originThis.ctx.tenonComp = null;
       }
       originThis.ctx = undefined;
       originThis.parent = undefined;

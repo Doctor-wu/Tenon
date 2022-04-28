@@ -72,7 +72,7 @@ class PageService extends BaseService {
       return {
         ...result,
         tree: tree?.tree,
-        newestId: tree?.newestId || 1000,
+        newestId: tree?.newestId || 1,
       };
     });
   }

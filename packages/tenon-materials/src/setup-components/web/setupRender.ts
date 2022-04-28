@@ -57,7 +57,7 @@ export function parseConfig2RenderFn(this: any, config) {
     return function _custom_if_render(this: any) {
       const subConfig = cloneDeep(config);
       subConfig._processedIF = true;
-      return renderCondition.value ? h(Fragment, [parseConfig2RenderFn.call(this, subConfig).call(this)]) : null;
+      return renderCondition.value ? h(Fragment, { key: Math.random() }, [parseConfig2RenderFn.call(this, subConfig).call(this)]) : null;
     }
   }
 

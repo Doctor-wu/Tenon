@@ -4,6 +4,8 @@ export default (lifeCycle, props, ctx, tenonComp) => {
   } = lifeCycle;
   onMounted(() => {
     // console.log(lifeCycle, props, ctx, tenonComp);
+    console.log(123);
+    
   });
 
   return {

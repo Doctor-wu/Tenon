@@ -1,0 +1,17 @@
+<ArcoTypographyParagraph
+  t-bind="{{[this.typoCommonConfig, this.typoEllipsisConfig, this.typoParagraph]}}"
+>
+  <Compose-View
+    t-if="!this.typoParagraph.text"
+    t-slot="default"
+    slotKey="default"
+    isSlot="true"
+    placeholder="拖入组件生成排版内容"
+    tenonCompProps="{{this.tenonCompProps}}"
+  ></Compose-View>
+  <TenonGhostText
+    t-slot="default"
+    t-if="this.typoParagraph.text"
+    value="{{this.typoParagraph.text}}">
+  </TenonGhostText>
+</ArcoTypographyParagraph>

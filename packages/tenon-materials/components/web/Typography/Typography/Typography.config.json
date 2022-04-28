@@ -1,0 +1,29 @@
+{
+    "name": "Typography",
+    "icon": "file",
+    "description": [
+        "Typography是一个<排版组件>，提供基础的排版能力"
+    ],
+    "dependencies": [],
+    "platform": ["web"],
+    "events": {
+        "onEditStart": "编辑开始时",
+        "onChange": "编辑内容变化时",
+        "onEditEnd": "编辑结束时",
+        "onCopy": "复制时"
+    },
+    "schemas": [{
+            "type": "internal",
+            "key": "typoCommon",
+            "title": "基础排版配置",
+            "fieldName": "typoCommonConfig"
+        },
+        {
+            "type": "internal",
+            "key": "typoEllipsis",
+            "title": "排版溢出省略配置",
+            "fieldName": "typoEllipsisConfig"
+        }
+    ],
+    "tenonProps": {}
+}

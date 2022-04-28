@@ -120,8 +120,9 @@ let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => 
   let result: any = props.tenonComp;
   if (props.isSlot) {
     const rootComp = findParentTenonComp(instance)!;
-    const rootSlots = rootComp.slots;
-    if (rootSlots[props.slotKey]) {
+    // if(!rootComp) return;
+    const rootSlots = rootComp?.slots;
+    if (rootSlots?.[props.slotKey]) {
       result = rootSlots[props.slotKey];
     } else {
       const materialsMap = store.getters['materials/getMaterialsMap'];

@@ -103,7 +103,7 @@ function applyTree(tree) {
       { materialsMap: store.getters['materials/getMaterialsMap'] }
     )(config),
   );
-  setID(tree.newestId || 1000);
+  setID(tree.newestId || 1);
   Message.success('应用成功');
 }
 

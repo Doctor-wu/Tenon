@@ -4,12 +4,13 @@ importers:
 
   .:
     specifiers:
-      '@arco-design/web-vue': ^2.23.0
+      '@arco-design/web-vue': ^2.24.0
       '@types/execa': ^2.0.0
       '@types/inquirer': ^8.1.3
       '@types/lodash': ^4.14.178
       '@vitejs/plugin-vue': ^1.9.3
       axios: ^0.26.0
+      chokidar: ^3.5.3
       dayjs: ^1.11.0
       execa: ^5.1.1
       inquirer: ^8.2.0
@@ -20,11 +21,12 @@ importers:
       vue-router: '4'
       vuex: ^4.0.2
     dependencies:
-      '@arco-design/web-vue': 2.23.0_vue@3.2.31
+      '@arco-design/web-vue': 2.25.2_vue@3.2.31
       '@types/execa': 2.0.0
       '@types/inquirer': 8.2.0
       '@vitejs/plugin-vue': 1.10.2_vite@2.8.6
       axios: 0.26.1
+      chokidar: 3.5.3
       dayjs: 1.11.0
       execa: 5.1.1
       inquirer: 8.2.1
@@ -223,8 +225,8 @@ packages:
       color: 3.2.1
     dev: false
 
-  /@arco-design/web-vue/2.23.0_vue@3.2.31:
-    resolution: {integrity: sha512-NaCSpN+vlv/wp96ITP9a+18lseEvdYlPvl6qTB3Uxpcv3wXl1jJ7HQDUngQ7zTn40YlcY+9+xEQC2rK8FVntnw==}
+  /@arco-design/web-vue/2.25.2_vue@3.2.31:
+    resolution: {integrity: sha512-VZ3SbzzFPkzTGzbbr8a4u9bS0DI8AhNxduEaKLywt1koewyHBS25YFgnkDlk7GfzWcHuHZ8sv33riruq3EIewQ==}
     peerDependencies:
       vue: ^3.1.0
     dependencies:

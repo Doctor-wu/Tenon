@@ -5,6 +5,7 @@ import Text from "./Text.vue";
 import Icon from "./Icon.vue";
 import Table from "./Table.vue";
 import For from "./For.vue";
+import GhostText from "./GhostText.vue";
 
 import {
   Image,
@@ -32,6 +33,7 @@ import {
   TimePicker,
   Tag,
   Space,
+  Typography,
 } from "@arco-design/web-vue";
 
 import {
@@ -117,8 +119,13 @@ export const materialDependency: any = {
   ArcoTimePicker: TimePicker,
   ArcoTag: Tag,
   ArcoSpace: Space,
+  ArcoTypography: Typography,
+  ArcoTypographyParagraph: Typography.Paragraph,
+  ArcoTypographyText: Typography.Text,
+  ArcoTypographyTitle: Typography.Title,
   TenonTemplate: Root,
   TenonText: Text,
+  TenonGhostText: GhostText,
   TenonAvatar: Avatar,
   TenonIcon: Icon,
   TenonTable: Table,
