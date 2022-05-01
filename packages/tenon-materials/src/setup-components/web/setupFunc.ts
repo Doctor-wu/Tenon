@@ -14,6 +14,11 @@ export function setupComponent(props, ctx, logic) {
 
   tenonComp.ctx = (instance as any)?.ctx;
   tenonComp.ctx.tenonComp = tenonComp.ctx.tenonComp || tenonComp;
+  tenonComp.vueInstance = instance;
+  tenonComp.ctx.tenonCompProps = tenonComp.ctx.tenonCompProps || tenonComp.vueInstance.props.tenonCompProps || {};
+  // console.log(tenonComp.name, tenonComp, tenonComp.vueInstance.props);
+  
+  // tenonComp.ctx.tenonCompProps = tenonComp.ctx.tenonCompProps || {};
   Object.assign(tenonComp.ctx, tenonComp.props, tenonComp.states);
 
   const parentComp: TenonComponent | null = findParentTenonComp(instance);
@@ -50,6 +55,7 @@ export function setupComponent(props, ctx, logic) {
   tenonComp.states = tenonStates;
 
   tenonComp.ctx._isTenonComp = true;
+  // tenonComp.tenonCompProps = tenonComp.tenonCompProps || {};
 
   return setupStates;
 }

@@ -46,8 +46,9 @@ export const eventsMap: {
 export const callTenonEvent = async (
   tenonComp: TenonComponent, eventName: string, ...args: any[]
 ) => {
+  // debugger;
   tenonComp.eventCalledHook.executeHook(TenonEventCalledHooksKey.onCalled, eventName, ...args);
-  if (args[0]?.currentTarget && args[0]?.currentTarget !== tenonComp.ctx.$el) return;
+  if (args[0]?.currentTarget && args[0]?.currentTarget !== tenonComp.vueInstance.vnode.el) return;
   if (!tenonComp.events[eventName] || !tenonComp.events[eventName].executeQueue.length) return;
   const eventIds = tenonComp.events[eventName].executeQueue;
   eventIds.forEach(async eventId => {
@@ -62,8 +63,8 @@ export const callTenonPageEvent = async (
 ) => {
   if (!pageInfo.pageLifeCycle[eventName] || !pageInfo.pageLifeCycle[eventName].executeQueue.length) return;
   const eventIds = pageInfo.pageLifeCycle[eventName].executeQueue;
-  eventIds.forEach(async eventId => {
-    executeTenonEvent(eventsMap.value!.get(eventId)!, undefined, ...args);
+  await eventIds.forEach(async eventId => {
+    await executeTenonEvent(eventsMap.value!.get(eventId)!, undefined, ...args);
   });
 }
 

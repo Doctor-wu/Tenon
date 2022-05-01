@@ -3,11 +3,8 @@
   "compilerOptions": {
     "composite": true, // 用于帮助 TypeScript 快速确定引用工程的输出文件位置
     "outDir": "dist",
-    "resolveJsonModule": true,
-    "paths": {
-      "@compiler": ["../tenon-materials/src/compiler"],
-      "@compiler/*": ["../tenon-materials/src/compiler/*"]
-    }
+    "rootDir": "src",
+    "resolveJsonModule": true
   },
-  "include": ["src", "scripts/client.ts"]
+  "include": ["src", "src/**/*.json"]
 }

@@ -6,7 +6,7 @@ import './style/index.scss';
 import '@arco-design/web-vue/dist/arco.css';
 // import { ColorPicker } from 'vue-color-kit'
 // stylesheet
-import 'vue-color-kit/dist/vue-color-kit.css'
+import 'vue-color-kit/dist/vue-color-kit.css';
 
 import { setupStore } from './store';
 import { setupRouter } from './router';

@@ -2,5 +2,6 @@
   t-bind="ForConfig"
   composeLayout="{{this.composeLayout}}" 
   composeBackground="{{this.composeBackground}}"
+  tenonCompProps="{{this.tenonCompProps}}"
 >
 </TenonFor>

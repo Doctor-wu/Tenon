@@ -44,7 +44,7 @@ const buildFlow = [
     name: PhaseName.BUILD_MATERIALS,
     handler: () => {
       console.log('\n>> Compiling Materials...\n');
-      execa.command(`pnpm run build`, materialCommandOptions);
+      execa.command(`pnpm run dev`, materialCommandOptions);
     },
     phase: PhaseName.BUILD_MATERIALS,
   },

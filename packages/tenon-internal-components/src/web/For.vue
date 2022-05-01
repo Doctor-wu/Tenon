@@ -5,12 +5,14 @@
 import { computed, h, reactive } from 'vue';
 import { useStore } from 'vuex';
 import { Message } from '@arco-design/web-vue';
+import { TenonComponent } from '@tenon/engine';
 const store = useStore();
 
 const props = defineProps<{
   loop: any[];
   composeLayout: any;
   composeBackground: any;
+  tenonCompProps: any;
 }>();
 
 const internalLoop = computed(() => {
@@ -24,11 +26,10 @@ const internalLoop = computed(() => {
 
 const renderList = computed(() => {
   const loop = internalLoop.value;
-  console.log(loop);
   const childrenBucket = { value: undefined };
   return () => loop?.map((item, index) => {
-    const materialsMap = store.getters['materials/getMaterialsMap'];
-    const factory = materialsMap.get('Compose-View');
+    const materialsMap = TenonComponent.materialsMap;
+    const factory = materialsMap.get('Compose-View')!;
     const material = factory();
     const vnode =  h(material.component, {
       key: item,
@@ -36,6 +37,7 @@ const renderList = computed(() => {
       attach: index !==0,
       slotKey: `__loop__`,
       tenonCompProps: {
+        ...props.tenonCompProps,
         item,
         index,
       },
@@ -45,8 +47,6 @@ const renderList = computed(() => {
       // useTeleport: true,
       disabled: index !== 0,
     });
-
-    console.log(vnode);
     return vnode;
   });
 });

@@ -33,8 +33,11 @@ export class TenonComponent implements ComponentTreeNode {
   public eventCalledHook!: TenonEventCalledHook;
   public mounted = false;
   public el!: HTMLElement;
-
+  public vueInstance: any;
+  
   public exec = (expression) => TenonComponent._exec(this, expression);
+  
+  static materialsMap: Map<string, () => IMaterial>;
 
   static _exec: (instance: TenonComponent, expression: string) => void;
 
@@ -104,11 +107,11 @@ export class TenonComponent implements ComponentTreeNode {
 
 
   get tenonCompProps() {
-    return this.ctx.tenonCompProps;
+    return this.vueInstance.props.tenonCompProps || {};
   }
 
   set tenonCompProps(value) {
-    this.ctx.tenonCompProps = value;
+    this.vueInstance.props.tenonCompProps = value;
   }
 
   initHooks() {
@@ -141,6 +144,9 @@ export class TenonComponent implements ComponentTreeNode {
       schemas,
       Object.assign({}, this.material?.config?.tenonProps, source || {})
     );
+    if (this.name === 'If') {
+      this.props.IfConfig.render = true;
+    }
     this.propsBinding = new TenonPropsBinding(this);
   }
 

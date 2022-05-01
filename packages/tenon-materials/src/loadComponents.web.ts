@@ -4,10 +4,34 @@ import { asyncCompose } from "@tenon/shared";
 import { compiler } from "./compiler";
 import { IMaterialConfig, IMaterialMeta, IViewConfig } from "./type";
 import { setupMaterialView } from "./setup-components/web";
+import webMaterialConfig from "../components-dist/web.json";
+export { webMaterialConfig };
+// export webMaterialConfig
+
+export const materialsChanged = {
+  value: false
+};
+
+const loadWebComponentsJsonCache = () => {
+  const cachePath = path.resolve(__dirname, "../components-dist/web.json");
+  if (fs.existsSync(cachePath)) {
+    return JSON.parse(fs.readFileSync(cachePath, "utf-8"));
+  }
+  return undefined;
+}
 
 export const loadWebComponents = async () => {
+  // if (!materialsChanged.value) {
+  //   let cache = loadWebComponentsJsonCache();
+  //   if (cache) {
+  //     return cache;
+  //   }
+  // };
   const components: IMaterialConfig = {};
   await buildComponents(components);
+  const cachePath = path.resolve(__dirname, "../components-dist/web.json");
+  fs.writeFileSync(cachePath, JSON.stringify(components));
+  materialsChanged.value = false;
   return components;
 };
 

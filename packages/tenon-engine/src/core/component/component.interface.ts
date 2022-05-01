@@ -30,6 +30,7 @@ export interface ComponentTreeNode {
   eventCalledHook: TenonEventCalledHook;
   mounted: boolean;
   el: HTMLElement;
+  vueInstance: any;
 }
 
 export interface ComponentSerializeConfig {

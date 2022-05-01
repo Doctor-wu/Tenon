@@ -64,6 +64,9 @@ export function parseConfig2RenderFn(this: any, config) {
   let processedProps: any = setupProps.call(this.tenonComp.ctx, props) || {};
 
   if (props["_scopeSlotArgs"]) {
+    // if (processedProps["t-if"] === "this.checkboxConfig.useCustomCheckbox") debugger;
+    // if (!processedProps.tenonCompProps) debugger;
+    // processedProps.tenonCompProps = processedProps.tenonCompProps || {};
     processedProps.tenonCompProps.scopeSlotArgs = props["_scopeSlotArgs"];
     if (this.tenonComp) {
       this.tenonComp.tenonCompProps.scopeSlotArgs = props["_scopeSlotArgs"];
@@ -71,7 +74,7 @@ export function parseConfig2RenderFn(this: any, config) {
   }
 
   if (processedProps.ref && this.tenonComp) {
-    this.tenonComp.refs[processedProps.ref] = this.tenonComp.ctx.$.setupState[processedProps.ref] = ref();
+    this.tenonComp.refs[processedProps.ref] = this.tenonComp.vueInstance.setupState[processedProps.ref] = ref();
   }
 
   const Component = resolveDynamicComponent(el);

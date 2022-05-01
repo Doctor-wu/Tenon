@@ -1,9 +1,19 @@
-import { BaseController, Controller, RequestContext, RequestNext, io, useRouter, Get } from "@tenon/node-framework";
+import { BaseController, Controller, RequestContext, RequestNext, io, useRouter, Get, useService } from "@tenon/node-framework";
+import fs from 'fs';
+import path from 'path';
+import { PageService, TenonEventService } from "../services";
+import { SERVICE_NAME } from "../services/constant";
 
 @Controller({
   prefixPath: '',
 })
 class RootController extends BaseController {
+
+  @useService(SERVICE_NAME.page)
+  private pageService!: PageService;
+
+  @useService(SERVICE_NAME.tenonEvent)
+  private tenonEventService!: TenonEventService;
 
   @useRouter
   async getHandler(
@@ -30,6 +40,49 @@ class RootController extends BaseController {
     next: RequestNext,
   ) {
     this.response(ctx, next)("<h1>Tenon --Doctorwu</h1>");
+  }
+
+  @Get('/getSDKScript')
+  async getSDKScript(
+    ctx: RequestContext,
+    next: RequestNext,
+  ) {
+    const script = fs.readFileSync(path.resolve(__dirname, '../../../tenon-sdk/src/web/dist/tenon-web-sdk.umd.js'), 'utf-8');
+    ctx.body = script;
+  }
+
+  @Get('/getSDKStyle')
+  async getSDKStyle(
+    ctx: RequestContext,
+    next: RequestNext,
+  ) {
+    const script = fs.readFileSync(path.resolve(__dirname, '../../../tenon-sdk/src/web/dist/style.css'), 'utf-8');
+    ctx.body = script;
+  }
+
+  @Get('/getSDKPageInfo', {
+    params: {
+      pageId: {
+        type: 'string',
+        required: true,
+      }
+    }
+  })
+  async getSDKPageInfo(
+    ctx: RequestContext,
+    next: RequestNext,
+    params: any,
+  ) {
+    const { pageId } = params;
+    const [error, result] = await this.pageService.getPageInfo(pageId);
+    const [eventError, eventResult] = await this.tenonEventService.getEvents({
+      belongPageId: pageId,
+    });
+    if (eventError) return await this.smartResponse(ctx, next)(eventError, eventResult);
+    else {
+      result.events = eventResult;
+    }
+    ctx.body = result;
   }
 }
 

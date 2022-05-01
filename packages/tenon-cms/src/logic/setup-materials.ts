@@ -49,6 +49,8 @@ export const setupMaterials = async (store: Store<IRootState>) => {
   store.dispatch('viewer/setTree', cloneDeep(defaultTree));
   store.dispatch('viewer/setDefaultTree', defaultTree);
 
+  TenonComponent.materialsMap = componentsMap;
+
   TenonComponent.customConfig.getPageStates = async () => {
     const pageInfo = await store.getters['page/getPageInfo'];
     const pageStates = pageInfo.pageStates;

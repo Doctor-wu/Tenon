@@ -4,7 +4,7 @@
     slotKey="default"
     placeholder="拖入组件生成组件内容"
     isSlot="true"
-    composeLayout="{{this.composeLayout}}" 
+    composeLayout="{{this.composeLayout}}"
     composeBackground="{{this.composeBackground}}"
     tenonCompProps="{{this.tenonCompProps}}"
   ></Compose-View>

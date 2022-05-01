@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SDK-TEST</title>
+    <script src="/getSDKScript"></script>
+    <script>
+        fetch("/getSDKStyle")
+            .then((res) => res.text())
+            .then((text) => {
+                let style = document.createElement("style");
+                style.innerHTML = text;
+                document.head.appendChild(style);
+                const bootstrap = async() => {
+                    TenonWebSDK.createTenonApp({
+                        SDKKey: "6227143df259daae88cc8794",
+                        el: "#root",
+                        // homePageId: '626aadde3201f4b72518e3bd',
+                        homePageId: "625134839bbf0e536d331684",
+                    });
+                };
+                bootstrap();
+            });
+    </script>
+    <style>
+        #root {
+            width: 365px;
+            margin: 0 auto;
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+    <section id="root"></section>
+    <script></script>
+</body>
+
+</html>

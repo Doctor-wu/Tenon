@@ -15,6 +15,8 @@ const props = defineProps<{
 }>();
 
 const computedColumns = computed(() => {
+  const materialsMap = TenonComponent.materialsMap;
+  const factory = materialsMap.get('Compose-View')!;
   const childrenBucket = { value: undefined };
   if (!props.op) return props.columns;
   const store = useStore();
@@ -25,8 +27,6 @@ const computedColumns = computed(() => {
     fixed: 'right',
     align: 'center',
     render: ({ record, column, rowIndex }) => {
-      const materialsMap = store.getters['materials/getMaterialsMap'];
-      const factory = materialsMap.get('Compose-View');
       const material = factory();
       return h(material.component, {
         isSlot: true,
