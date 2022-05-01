@@ -34,7 +34,6 @@
 </template>
 
 <script lang="ts" setup>
-import { useStore } from 'vuex';
 import {
   toRaw,
   computed,
@@ -131,17 +130,12 @@ if (instance.attrs.childrenBucket) {
   if (!instance.attrs.childrenBucket.value) {
     instance.attrs.childrenBucket.value = tenonTreeNode.value.children;
   } else {
-    const cancel = watchEffect(() => {
-      tenonTreeNode.value.children?.forEach(c => c.destroy());
-      tenonTreeNode.value.children = instance.attrs.childrenBucket.value.map(i => {
-        const cInstance = i.clone();
-        // 防止If组件render为false直接不渲染
-        if (cInstance.props.IfConfig) cInstance.props.IfConfig.render = true;
-        return cInstance;
-      });
-    }, { flush: 'post' });
-    (tenonTreeNode.value as TenonComponent).lifecycleHook.onBeforeUnmount(() => {
-      cancel();
+    tenonTreeNode.value.children?.forEach(c => c.destroy());
+    tenonTreeNode.value.children = instance.attrs.childrenBucket.value.map(i => {
+      const cInstance = i.clone();
+      // 防止If组件render为false直接不渲染
+      if (cInstance.props.IfConfig) cInstance.props.IfConfig.render = true;
+      return cInstance;
     });
   }
 }

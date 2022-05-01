@@ -41,7 +41,7 @@
 <script setup lang="ts">
 import { editMode, toggleEditMode } from '~logic/viewer-status';
 import TextToggle from '~components/shared/text-toggle.vue';
-import { useStore } from '@/store';
+import { useStore } from 'vuex';
 import { computed, h, ref, watchEffect } from 'vue';
 import { Message, Modal } from '@arco-design/web-vue';
 import AnimateButton from '~components/shared/animate-button.vue';
@@ -59,7 +59,6 @@ const pageInfo = ref<any>({});
 const projectInfo = ref<any>({});
 
 watchEffect(() => {
-  const store = useStore();
   store.getters['page/getPageInfo'].then((data) => {
     pageInfo.value = data;
   });
@@ -68,7 +67,6 @@ watchEffect(() => {
 });
 
 watchEffect(() => {
-  const store = useStore();
   store.getters['project/getProjectInfo'].then((data) => {
     projectInfo.value = data;
   });

@@ -17,20 +17,16 @@ export class TenonWebSDKRenderer {
     this.vm = createApp({
       render: () => {
         if (this.renderFunc.value) return this.renderFunc.value();
-        // <a-skeleton :animation="animation">
-        //   <a-space direction="vertical" :style="{width:'100%'}" size="large">
-        //     <a-skeleton-line :rows="3" />
-        //     <a-skeleton-shape />
-        //   </a-space>
-        // </a-skeleton>
         return h(Skeleton, {
           animation: true,
           style: {
-            display: 'flex',
+            // display: 'flex',
             height: '100vh',
             width: '100%',
-            alignItems: 'center',
-            justifyContent: 'center',
+            padding: '12px',
+            boxSizing: 'border-box',
+            // alignItems: 'center',
+            // justifyContent: 'center',
           }
         }, h(Space, {
           direction: 'vertical',
@@ -39,14 +35,14 @@ export class TenonWebSDKRenderer {
           },
           size: 'large',
         }, [
-          h(SkeletonLine, {rows: 3}),
+          h(SkeletonLine, { rows: 3 }),
+          h(Space, [h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape)]),
+          h(SkeletonLine, { rows: 2 }),
           h(SkeletonShape),
-          h(SkeletonLine, {rows: 2}),
-          h(SkeletonShape),
-          h(SkeletonShape),
-          h(SkeletonLine, {rows: 3}),
-          h(SkeletonShape),
-          h(SkeletonLine, {rows: 4}),
+          h(Space, [h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape)]),
+          h(SkeletonLine, { rows: 3 }),
+          h(Space, [h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape), h(SkeletonShape, { shape: 'circle' })]),
+          h(SkeletonLine, { rows: 4 }),
           h(SkeletonShape),
         ]));
       }

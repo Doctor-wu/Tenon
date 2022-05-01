@@ -15,6 +15,7 @@
         "rollup": "^2.33.1",
         "rollup-plugin-copy": "^3.4.0",
         "rollup-plugin-monaco-editor": "^0.2.1",
+        "vite-plugin-monaco-editor-nls": "^1.0.8",
         "vue-color-kit": "^1.0.5"
     },
     "author": "Doctor wu",

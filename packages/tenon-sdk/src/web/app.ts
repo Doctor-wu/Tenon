@@ -92,18 +92,15 @@ export class TenonWebSDK {
         };
         handler(injectMeta);
       } catch (e) {
-
+        console.error(e);
       }
     }
 
     TenonPropsBinding.staticHook.afterAddingBinding((instance: TenonComponent, fieldName, propsKey, expression) => {
-      // if (!TenonPropsBinding.trackingBinding) return;
       const trigger = async () => {
-        // console.log(instance, fieldName, propsKey, expression);
         if (instance.runtimeBinding[instance.propsBinding.makeKey(fieldName, propsKey)]) {
           instance.runtimeBinding[instance.propsBinding.makeKey(fieldName, propsKey)]();
         }
-        // debugger;
         try {
           const handler = new Function('injectMeta', `
         const {
@@ -124,7 +121,6 @@ export class TenonWebSDK {
             _editMode: false,
           };
           const cancel = watchEffect(() => {
-            // if (!TenonPropsBinding.trackingBinding) return;
             try {
               instance.props[fieldName][propsKey] = handler(injectMeta);
             } catch (e) {

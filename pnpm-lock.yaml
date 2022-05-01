@@ -114,6 +114,7 @@ importers:
       sass: ^1.43.4
       typescript: ^4.4.3
       vite: ^2.6.4
+      vite-plugin-monaco-editor-nls: ^1.0.8
       vue-color-kit: ^1.0.5
       vue-tsc: ^0.3.0
     dependencies:
@@ -122,6 +123,7 @@ importers:
       rollup: 2.70.1
       rollup-plugin-copy: 3.4.0
       rollup-plugin-monaco-editor: 0.2.1_377fd77e8fb171e713ae1dacf04da9d6
+      vite-plugin-monaco-editor-nls: 1.0.8_vite@2.8.6
       vue-color-kit: 1.0.5_vue@3.2.31
     devDependencies:
       '@tenon/bff': link:../tenon-bff
@@ -3301,6 +3303,14 @@ packages:
   /vary/1.1.2:
     resolution: {integrity: sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=}
     engines: {node: '>= 0.8'}
+    dev: false
+
+  /vite-plugin-monaco-editor-nls/1.0.8_vite@2.8.6:
+    resolution: {integrity: sha512-5mwbwrTYUPvhlWuZLUkFOEV7C9Q47gbtAghl3rKAkhs+Ed4n9Bo8rOK8vAID8ZBKO8eUhqiCypXKCNuoTHXyGQ==}
+    peerDependencies:
+      vite: '>=2.3.0'
+    dependencies:
+      vite: 2.8.6_sass@1.49.9
     dev: false
 
   /vite/2.8.6:
