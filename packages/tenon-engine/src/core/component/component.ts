@@ -35,11 +35,11 @@ export class TenonComponent implements ComponentTreeNode {
   public el!: HTMLElement;
   public vueInstance: any;
   
-  public exec = (expression) => TenonComponent._exec(this, expression);
+  public exec = (expression, ...args: any[]) => TenonComponent._exec(this, expression, ...args);
   
   static materialsMap: Map<string, () => IMaterial>;
 
-  static _exec: (instance: TenonComponent, expression: string) => void;
+  static _exec: (instance: TenonComponent, expression: string, ...args: any[]) => void;
 
   static customConfig: any = {};
 

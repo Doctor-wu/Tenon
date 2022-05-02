@@ -10,6 +10,7 @@ import { cloneDeep } from "lodash";
 import { ISchema, TenonComponent, TenonPropsBinding } from "@tenon/engine";
 import { watchEffect } from "vue";
 import { editMode } from "./viewer-status";
+import { Message } from "@arco-design/web-vue";
 
 
 let initd = false;
@@ -57,16 +58,23 @@ export const setupMaterials = async (store: Store<IRootState>) => {
     return pageStates;
   }
 
-  TenonComponent._exec = (instance, expression: string) => {
+  TenonComponent._exec = (instance, expression: string, ...args: any[]) => {
+    let executeEvent = args[0] === '__tenon-event__';
     try {
       const pageInfo = (store.state as any).page.pageInfo;
       // debugger; 
-      const handler = new Function('injectMeta', `
-        const {
-          $comp,
-          $pageStates,
-          _editMode,
-        } = injectMeta;
+      const handler = executeEvent
+        ? new Function('injectMeta', `
+        const {$comp, $pageStates, $redirect, $args, _editMode} = injectMeta;
+        try {
+          ${expression}
+        } catch(e) {
+          console.error(e);
+          return '';
+        }
+      `)
+        : new Function('injectMeta', `
+        const {$comp, $pageStates, $redirect, $args, _editMode} = injectMeta;
         try {
           return ${expression};
         } catch(e) {
@@ -74,14 +82,18 @@ export const setupMaterials = async (store: Store<IRootState>) => {
           return '';
         }
       `);
-        const injectMeta = {
-          $comp: instance,
-          $pageStates: pageInfo.pageStates,
-          _editMode: editMode,
-        };
-        handler(injectMeta);
+      const injectMeta = {
+        $comp: instance,
+        $pageStates: pageInfo.pageStates,
+        $redirect: (...args) => Message.success(`redirect to ${args[0]}`),
+        $args: executeEvent ? args.slice(1) : args,
+        _editMode: editMode,
+      };
+      handler(injectMeta);
     } catch (e) {
-      
+      console.error(expression);
+
+      console.error(e);
     }
   }
 

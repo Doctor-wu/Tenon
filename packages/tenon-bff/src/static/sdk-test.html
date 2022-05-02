@@ -15,12 +15,15 @@
                 style.innerHTML = text;
                 document.head.appendChild(style);
                 const bootstrap = async() => {
-                    TenonWebSDK.createTenonApp({
+                    const app = TenonWebSDK.createTenonApp({
                         SDKKey: "6227143df259daae88cc8794",
                         el: "#root",
                         // homePageId: '626aadde3201f4b72518e3bd',
-                        homePageId: "62682a8774663bf2d6f44e2b",
+                        homePageId: "626fbf51ed38e601a7e9fb61",
                     });
+                    // setTimeout(() => {
+                    //     app.page.changePage('626fa22973d6d21b6e5cf0cf');
+                    // }, 5000)
                 };
                 bootstrap();
             });

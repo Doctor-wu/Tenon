@@ -24,13 +24,19 @@ export function initLanguages() {
             label: '$pageStates',
             kind: languages.CompletionItemKind.Variable,
             documentation: '页面状态',
-            insertText: '$pageState',
+            insertText: '$pageStates',
           },
           {
             label: '$comp',
             kind: languages.CompletionItemKind.Variable,
             documentation: '组件实例',
             insertText: '$comp',
+          },
+          {
+            label: '$redirect',
+            kind: languages.CompletionItemKind.Variable,
+            documentation: '路由方法',
+            insertText: '$redirect',
           },
           {
             label: '$events',

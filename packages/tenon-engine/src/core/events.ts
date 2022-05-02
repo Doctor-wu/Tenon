@@ -73,20 +73,7 @@ export const executeTenonEvent = async (
   tenonComp?: TenonComponent,
   ...args: any[]
 ) => {
-  const $pageStates = await TenonComponent.customConfig.getPageStates();
-  const trigger = new Function('injectMeta', `
-    const {
-      $comp,
-      $pageStates,
-      $args,
-    } = injectMeta;
-    ${eventMeta.content}
-  `);
-  trigger({
-    $comp: tenonComp,
-    $pageStates,
-    $args: args,
-  });
+  TenonComponent._exec(tenonComp!, eventMeta.content, '__tenon-event__', ...args);
 }
 
 export function createTenonEvents(material: IMaterial): IEventsConfig {

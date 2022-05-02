@@ -5,9 +5,10 @@
   </AnimateButton>
   <a-drawer popup-container=".view-container" v-model:visible="drawerVisible" title="选择版本" :width="300" :footer="false"
     style="z-index: 2;">
-    <a-upload @change="getTreeConfigByImportFile" ref="uploader" :auto-upload="false" tip="可以通过之前在系统导出的JSON文件还原页面">
+    <a-upload :show-file-list="false" @change="getTreeConfigByImportFile" ref="uploader" :auto-upload="false"
+      tip="可以通过之前在系统导出的JSON文件还原页面">
       <template #upload-button>
-        <a-button type="primary" long>
+        <a-button :loading="uploading" type="primary" long>
           <icon-download></icon-download> 通过文件导入
         </a-button>
       </template>
@@ -60,10 +61,12 @@ const drawerVisible = ref(false);
 const trees = ref<any>([]);
 const loading = ref(true);
 const uploader = ref();
+const uploading = ref(false);
 
-function getTreeConfigByImportFile(fileList: FileItem[], fileItem: FileItem) {
+function getTreeConfigByImportFile(_fileList: FileItem[], fileItem: FileItem) {
+  uploading.value = true;
   // get file content from File
-  if(!fileItem.file) return;
+  if (!fileItem.file) return;
   const file = fileItem.file!;
   const reader = new FileReader();
   reader.readAsText(file);
@@ -74,9 +77,11 @@ function getTreeConfigByImportFile(fileList: FileItem[], fileItem: FileItem) {
     const treeConfig = config2tree({
       materialsMap: store.getters['materials/getMaterialsMap'],
     })(tree);
-    
+
+    _fileList.length = 0;
     store.dispatch('viewer/setTree', treeConfig);
-    Message.success('导入成功')
+    Message.success('导入成功');
+    uploading.value = false;
   };
   // e.stopPropagation();
   // uploader.value.submit();

@@ -4,7 +4,7 @@ import { materialDependency } from '@tenon/internal-components';
 import ComposeViewConfig from './components/Compose-View/Compose-View.config.json';
 import ComposeViewVue from './components/Compose-View/Compose-View.vue';
 import { cloneDeep } from 'lodash';
-import TenonSDKPage from './page';
+import TenonSDKPage, { SDKPageEvents } from './page';
 import { createApp, watchEffect } from 'vue';
 import { TenonWebSDKRenderer } from './render';
 
@@ -17,13 +17,15 @@ export interface ITenonWebSDKConfig {
 export class TenonWebSDK {
   public componentsMap: Map<string, () => IMaterial> = new Map();
   public componentsGroup: Map<string, Array<() => IMaterial>> = new Map();
-  private page = new TenonSDKPage();
-  private renderer: TenonWebSDKRenderer;
+  public page: TenonSDKPage;
+  public renderer: TenonWebSDKRenderer;
   public config: ITenonWebSDKConfig;
 
   constructor(config: ITenonWebSDKConfig) {
     this.config = config;
     this.renderer = new TenonWebSDKRenderer(this);
+    this.page = new TenonSDKPage(this);
+    this.initEvents();
     this.init();
   }
 
@@ -33,6 +35,12 @@ export class TenonWebSDK {
     await this.initTenonComponent();
     await this.renderer.render(this.page.pageInfo!);
   }
+
+  initEvents() {
+    this.page.emitter.on(SDKPageEvents.PageInfo_Changed, () => {
+      window.scrollTo(0, 0);
+    });
+  };
 
   private async initTenonComponent() {
     TenonComponent.editMode = false;
@@ -66,32 +74,43 @@ export class TenonWebSDK {
 
     TenonComponent.customConfig.getPageStates = async () => {
       const pageInfo = this.page.pageInfo;
-      const pageStates = pageInfo.pageStates;
+      const pageStates = pageInfo.value.pageStates;
       return pageStates;
     }
 
-    TenonComponent._exec = (instance, expression: string) => {
+    TenonComponent._exec = (instance, expression: string, ...args: any[]) => {
+      let executeEvent = args[0] === '__tenon-event__';
       try {
-        const handler = new Function('injectMeta', `
-        const {
-          $comp,
-          $pageStates,
-          _editMode,
-        } = injectMeta;
-        try {
-          return ${expression};
-        } catch(e) {
-          console.error(e);
-          return '';
-        }
-      `);
+        const handler = executeEvent
+          ? new Function('injectMeta', `
+              const {$comp, $pageStates, $redirect, $args, _editMode} = injectMeta;
+              try {
+                ${expression}
+              } catch(e) {
+                console.error(e);
+                return '';
+              }
+            `)
+          : new Function('injectMeta', `
+              const {$comp, $pageStates, $redirect, $args, _editMode} = injectMeta;
+              try {
+                return ${expression};
+              } catch(e) {
+                console.error(e);
+                return '';
+              }
+            `);
         const injectMeta = {
           $comp: instance,
-          $pageStates: this.page.pageInfo.pageStates,
+          $pageStates: this.page.pageInfo.value.pageStates,
+          $args: executeEvent ? args.slice(1) : args,
+          $redirect: (pageId: string) => this.page.changePage(pageId),
           _editMode: false,
         };
         handler(injectMeta);
       } catch (e) {
+        console.error(expression);
+
         console.error(e);
       }
     }
@@ -117,7 +136,7 @@ export class TenonWebSDK {
       `);
           const injectMeta = {
             $comp: instance,
-            $pageStates: this.page.pageInfo.pageStates,
+            $pageStates: this.page.pageInfo.value.pageStates,
             _editMode: false,
           };
           const cancel = watchEffect(() => {

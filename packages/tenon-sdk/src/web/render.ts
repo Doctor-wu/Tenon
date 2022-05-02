@@ -1,5 +1,5 @@
 import { callTenonPageEvent, eventsMap, IEventMeta, TenonComponent } from "@tenon/engine";
-import { App, createApp, h, reactive, Ref, ref } from "vue";
+import { App, createApp, effect, h, reactive, Ref, ref, watch } from "vue";
 import { ITenonWebSDKConfig, TenonWebSDK } from "./app";
 import { ITenonWebSDKPageInfo } from "./page";
 import ComposeView from './components/Compose-View/Compose-View.vue';
@@ -17,64 +17,71 @@ export class TenonWebSDKRenderer {
     this.vm = createApp({
       render: () => {
         if (this.renderFunc.value) return this.renderFunc.value();
-        return h(Skeleton, {
-          animation: true,
-          style: {
-            // display: 'flex',
-            height: '100vh',
-            width: '100%',
-            padding: '12px',
-            boxSizing: 'border-box',
-            // alignItems: 'center',
-            // justifyContent: 'center',
-          }
-        }, h(Space, {
-          direction: 'vertical',
-          style: {
-            width: '100%',
-          },
-          size: 'large',
-        }, [
-          h(SkeletonLine, { rows: 3 }),
-          h(Space, [h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape)]),
-          h(SkeletonLine, { rows: 2 }),
-          h(SkeletonShape),
-          h(Space, [h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape)]),
-          h(SkeletonLine, { rows: 3 }),
-          h(Space, [h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape), h(SkeletonShape, { shape: 'circle' })]),
-          h(SkeletonLine, { rows: 4 }),
-          h(SkeletonShape),
-        ]));
       }
     });
     this.vm.use(ArcoVue);
     this.vm.use(ArcoVueIcon);
+    this.setLoading();
     setTimeout(() => {
       this.vm.mount(this.app.config.el);
     });
   }
 
-  async render(pageInfo: ITenonWebSDKPageInfo) {
-    const { el } = this.app.config;
-    const { tree } = pageInfo;
-    console.log(321, tree, this.app.componentsMap);
-    const rootComponent = TenonComponent.createInstanceByDeserialize(tree, this.app.componentsMap);
-    console.log(123, rootComponent);
-    // TenonComponent.staticHook.
-    eventsMap.value = (() => {
-      const map = new Map<string, IEventMeta>();
-      (pageInfo.events || []).forEach(eventItem => {
-        map.set(eventItem._id, eventItem);
-      });
-      return map;
-    })();
-    await callTenonPageEvent(pageInfo, 'onShow');
-    console.log(eventsMap.value);
-    console.log(pageInfo);
+  setLoading() {
+    this.renderFunc.value = () => h(Skeleton, {
+      animation: true,
+      style: {
+        // display: 'flex',
+        height: '100vh',
+        width: '100%',
+        padding: '12px',
+        boxSizing: 'border-box',
+        // alignItems: 'center',
+        // justifyContent: 'center',
+      }
+    }, h(Space, {
+      direction: 'vertical',
+      style: {
+        width: '100%',
+      },
+      size: 'large',
+    }, [
+      h(SkeletonLine, { rows: 3 }),
+      h(Space, [h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape)]),
+      h(SkeletonLine, { rows: 2 }),
+      h(SkeletonShape),
+      h(Space, [h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape)]),
+      h(SkeletonLine, { rows: 3 }),
+      h(Space, [h(SkeletonShape, { shape: 'circle' }), h(SkeletonShape), h(SkeletonShape, { shape: 'circle' })]),
+      h(SkeletonLine, { rows: 4 }),
+      h(SkeletonShape),
+    ]));
+  }
 
-    this.renderFunc.value = () => h(ComposeView, {
-      tenonComp: rootComponent,
-      tenonCompProps: {},
-    });
+  async render(pageInfo: Ref<ITenonWebSDKPageInfo>) {
+    // const { tree } = pageInfo;
+    watch(pageInfo, async () => {
+      console.log(321, pageInfo.value.tree, this.app.componentsMap);
+      const rootComponent = TenonComponent.createInstanceByDeserialize(pageInfo.value.tree, this.app.componentsMap);
+      console.log(123, rootComponent);
+      // TenonComponent.staticHook.
+      eventsMap.value = (() => {
+        const map = new Map<string, IEventMeta>();
+        (pageInfo.value.events || []).forEach(eventItem => {
+          map.set(eventItem._id, eventItem);
+        });
+        return map;
+      })();
+      await callTenonPageEvent(pageInfo.value, 'onShow');
+      console.log(eventsMap.value);
+      console.log(pageInfo);
+
+      this.renderFunc.value = () => h(ComposeView, {
+        tenonComp: rootComponent,
+        tenonCompProps: {},
+      });
+    }, {
+      immediate: true,
+    })
   }
 }

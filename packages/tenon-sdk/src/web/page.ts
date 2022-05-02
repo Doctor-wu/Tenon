@@ -1,8 +1,9 @@
 import { Subscribe } from "@tenon/shared";
 import { ComponentSerializeConfig, IEventMeta } from "@tenon/engine";
-import { reactive } from "vue";
+import { reactive, Ref, ref } from "vue";
+import { TenonWebSDK } from "./app";
 
-enum SDKPageEvents {
+export enum SDKPageEvents {
   PageInfo_Changed = "pageInfo_changed",
 }
 
@@ -15,12 +16,17 @@ export interface ITenonWebSDKPageInfo {
 
 class TenonSDKPage {
   private SDKKey?: string;
-  public pageInfo!: ITenonWebSDKPageInfo;
+  public pageInfo: Ref<ITenonWebSDKPageInfo> = ref({} as any);
   public emitter = new Subscribe();
+  private app: TenonWebSDK;
+  constructor(app: TenonWebSDK) {
+    this.app = app;
+  }
 
   async changePage(pageId: string) {
+    this.app.renderer.setLoading();
     const pageInfo = await this.getPageInfoFromRemote(pageId);
-    this.pageInfo = reactive(pageInfo);
+    this.pageInfo.value = pageInfo;
     console.log('changed!!!!');
     
     this.emitter.emit(SDKPageEvents.PageInfo_Changed, this.pageInfo);
