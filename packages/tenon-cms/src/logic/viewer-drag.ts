@@ -3,7 +3,7 @@ import { extractChild, insertChild, insertNewComponent, isAncestor } from "./tre
 import { nextTick, ref } from 'vue';
 import { Notification } from "@arco-design/web-vue";
 import { findParentTenonComp } from "@tenon/materials";
-import { TenonComponent } from "@tenon/engine";
+import { releaseID, TenonComponent } from "@tenon/engine";
 
 
 
@@ -91,9 +91,13 @@ export const deleteDraggingComponent = (ev: DragEvent) => {
   ev.preventDefault();
   ev.stopPropagation();
   const store = useStore();
-  let draggingComponent: any = store.getters['viewer/getDraggingComponent'];
+  let draggingComponent: TenonComponent = store.getters['viewer/getDraggingComponent'];
   if (draggingComponent.parent) {
     extractChild(draggingComponent.parent, draggingComponent);
+    if (store.getters['viewer/getActiveComponent'] === draggingComponent) {
+      store.dispatch('viewer/setActiveComponent', null);
+    };
+    draggingComponent.destroy();
   }
 }
 

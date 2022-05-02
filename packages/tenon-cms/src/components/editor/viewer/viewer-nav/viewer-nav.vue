@@ -24,8 +24,12 @@
       </AnimateButton>
       <a-divider direction="vertical" class="nav-divider"></a-divider>
       <AnimateButton info="保存页面配置" @click="saveTree">
-        <icon-upload size="18" class="nav-item-icon" />
+        <icon-save size="18" class="nav-item-icon" />
         <span>存</span>
+      </AnimateButton>
+      <AnimateButton info="导出页面配置" @click="exportTree">
+        <icon-upload size="18" class="nav-item-icon" />
+        <span>导</span>
       </AnimateButton>
       <LoadConfig></LoadConfig>
       <a-divider direction="vertical" class="nav-divider"></a-divider>
@@ -45,7 +49,7 @@ import { useStore } from 'vuex';
 import { computed, h, ref, watchEffect } from 'vue';
 import { Message, Modal } from '@arco-design/web-vue';
 import AnimateButton from '~components/shared/animate-button.vue';
-import { tree2config, getID } from '@tenon/engine';
+import { tree2config, getID, TenonComponent } from '@tenon/engine';
 import Deletor from '../deletor.vue';
 import Scale from './scale.vue';
 import { saveTreeApi } from '@/api/page';
@@ -113,6 +117,19 @@ function deleteConfig() {
     cancelText: '取消',
     onOk: run,
   });
+}
+
+function exportTree() {
+  const tree:TenonComponent = store.getters['viewer/getTree'];
+  // create a new blob with the data from the tree
+  const blob = new Blob([JSON.stringify(tree2config(tree))], { type: 'application/json' });
+  // create a link to the blob
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  // trigger the link
+  link.href = url;
+  link.download = 'tenon-components-tree.json';
+  link.click();
 }
 </script>
 

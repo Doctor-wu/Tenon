@@ -3,59 +3,44 @@
     <icon-download class="nav-item-icon" />
     <span>读</span>
   </AnimateButton>
-  <a-drawer
-    popup-container=".view-container"
-    v-model:visible="drawerVisible"
-    title="选择版本"
-    :width="300"
-    :footer="false"
-    style="z-index: 2;"
-  >
+  <a-drawer popup-container=".view-container" v-model:visible="drawerVisible" title="选择版本" :width="300" :footer="false"
+    style="z-index: 2;">
+    <a-upload @change="getTreeConfigByImportFile" ref="uploader" :auto-upload="false" tip="可以通过之前在系统导出的JSON文件还原页面">
+      <template #upload-button>
+        <a-button type="primary" long>
+          <icon-download></icon-download> 通过文件导入
+        </a-button>
+      </template>
+    </a-upload>
     <a-spin style="display: block;text-align: center;" v-if="loading" dot></a-spin>
     <a-empty v-else-if="!trees.length">暂无在线版本</a-empty>
     <template v-else>
       <section class="tree-version" v-for="(tree, index) in trees">
         <a-card hoverable :style="{ width: '100%' }">
-          <div
-            :style="{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-            }"
-          >
+          <div :style="{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }">
             <span :style="{ display: 'flex', alignItems: 'center', color: '#1D2129' }">
               <a-typography-text>
                 <span class="version">版本{{ tree.version }}</span>
               </a-typography-text>
               <a-typography-text>
-                <span
-                  class="create-time"
-                >{{ day(parseInt(tree.createTime)).format('YYYY/MM/DD HH:mm:ss') }}</span>
+                <span class="create-time">{{ day(parseInt(tree.createTime)).format('YYYY/MM/DD HH:mm:ss') }}</span>
               </a-typography-text>
             </span>
           </div>
-          <div
-            :style="{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'flex-end',
-              marginTop: '10px',
-              gap: '6px'
-            }"
-          >
-            <a-button
-              @click="() => deleteTree(tree, index)"
-              size="mini"
-              status="danger"
-              type="primary"
-              class="apply-button"
-            >删除</a-button>
-            <a-button
-              @click="() => applyTree(tree)"
-              size="mini"
-              type="primary"
-              class="apply-button"
-            >应用</a-button>
+          <div :style="{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            marginTop: '10px',
+            gap: '6px'
+          }">
+            <a-button @click="() => deleteTree(tree, index)" size="mini" status="danger" type="primary"
+              class="apply-button">删除</a-button>
+            <a-button @click="() => applyTree(tree)" size="mini" type="primary" class="apply-button">应用</a-button>
           </div>
         </a-card>
       </section>
@@ -66,13 +51,36 @@
 import { deleteTreeApi, getPageTreesApi } from '@/api';
 import AnimateButton from '@/components/shared/animate-button.vue';
 import { useStore } from '@/store';
-import { Message } from '@arco-design/web-vue';
+import { FileItem, Message } from '@arco-design/web-vue';
 import { ref } from 'vue';
+const store = useStore();
 import day from 'dayjs';
 import { config2tree, setID } from '@tenon/engine';
 const drawerVisible = ref(false);
 const trees = ref<any>([]);
 const loading = ref(true);
+const uploader = ref();
+
+function getTreeConfigByImportFile(fileList: FileItem[], fileItem: FileItem) {
+  // get file content from File
+  if(!fileItem.file) return;
+  const file = fileItem.file!;
+  const reader = new FileReader();
+  reader.readAsText(file);
+  reader.onload = () => {
+    // debugger;
+    const content = reader.result;
+    const tree = JSON.parse(content as string);
+    const treeConfig = config2tree({
+      materialsMap: store.getters['materials/getMaterialsMap'],
+    })(tree);
+    
+    store.dispatch('viewer/setTree', treeConfig);
+    Message.success('导入成功')
+  };
+  // e.stopPropagation();
+  // uploader.value.submit();
+}
 
 
 async function loadConfig() {
@@ -117,8 +125,8 @@ async function deleteTree(tree, index) {
   deleteTreeApi({
     version,
     pageId: pageId,
-  }).then(({success, data, errorMsg}) => {
-    if(!success) {
+  }).then(({ success, data, errorMsg }) => {
+    if (!success) {
       Message.error(errorMsg!);
     } else {
       Message.success(data);
@@ -128,6 +136,10 @@ async function deleteTree(tree, index) {
 }
 </script>
 <style lang="scss" scoped>
+:deep(.arco-upload) {
+  width: 100%;
+}
+
 .tree-version {
   display: flex;
   justify-content: space-between;
@@ -139,6 +151,7 @@ async function deleteTree(tree, index) {
   font-size: 16px;
   font-weight: bold;
 }
+
 .create-time {
   font-size: 12px;
   color: #333;

@@ -73,6 +73,7 @@ export default {
       return context.state.compId;
     },
     clearTree(context) {
+      context.state.tree?.destroy();
       context.commit('SET_TREE', context.getters['getDefaultTree']?.clone());
       context.commit('SET_ACTIVE_COMPONENT', null);
       context.commit('SET_COMP_ID', 0);

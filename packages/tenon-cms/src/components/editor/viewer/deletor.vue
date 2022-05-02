@@ -48,6 +48,7 @@ const displayDeletor = computed(() => {
 <style lang="scss" scoped>
 .delete-comp {
   position: absolute;
+  top: 0;
   right: 0;
 }
 

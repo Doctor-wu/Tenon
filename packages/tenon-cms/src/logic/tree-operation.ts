@@ -85,24 +85,6 @@ export const recursiveInsertNewComponent = (comp, parent, relative, insertFromFr
 }
 
 export const copyComponentTreeNode = (comp: TenonComponent, options: any = {}): TenonComponent => {
-  // const store = useStore();
-  // const beInsert = store.getters['materials/getMaterialsMap'].get(comp.name)();
-  // const expressedComponent = createTenonComponent(beInsert, options.parent, {
-  //   props: comp.props,
-  //   slots: comp.slots,
-  //   isSlot: options.isSlot,
-  //   schemas: comp.schemas,
-  // });
-  // if (comp.children) {
-  //   comp.children.forEach((child) => {
-  //     expressedComponent.children?.push(copyComponentTreeNode(child, { parent: expressedComponent }));
-  //   });
-  // }
-  // if (comp.slots) {
-  //   Object.keys(comp.slots).forEach(slotKey => {
-  //     expressedComponent.slots[slotKey] = (copyComponentTreeNode(comp.slots[slotKey], { isSlot: true }));
-  //   });
-  // }
   return comp.clone();
 }
 
