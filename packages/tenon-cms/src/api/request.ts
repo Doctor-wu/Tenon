@@ -2,7 +2,7 @@ import { useRouter } from "@/router";
 import { useStore } from "@/store";
 import axios, { AxiosRequestConfig } from "axios";
 
-const prefixUrl = import.meta.env.PROD ? "https://doctorwu.club/tenon" : "http://localhost:9847";
+const prefixUrl = import.meta.env.PROD ? "https://doctorwu.club/tenonbff" : "http://localhost:9847";
 
 const networkConfig: AxiosRequestConfig = {
   headers: {
