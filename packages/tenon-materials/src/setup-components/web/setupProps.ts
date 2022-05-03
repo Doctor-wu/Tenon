@@ -1,12 +1,13 @@
 import { getValueByHackContext, getValueByInjectContext, recursiveGetValue } from "@tenon/shared";
 
 export function setupProps(this: any, props = {}) {
+  const propsKey = Object.keys(props);
   const newProps = {};
-  Object.keys(props).forEach(key => {
+  propsKey.forEach(key => {
     injectDynamicPropsValue.call(this, props, key);
   });
 
-  Object.keys(props).forEach(key => {
+  propsKey.forEach(key => {
     key = key.trim();
     let value = props[key];
     switch (key) {

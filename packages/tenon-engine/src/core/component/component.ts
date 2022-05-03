@@ -258,9 +258,6 @@ export const createTenonComponent =
   (material: IMaterial, parent: TenonComponent | undefined = undefined, options: any = {}): TenonComponent => {
     const {
       props,
-      slots,
-      isSlot,
-      schemas,
     } = options;
 
     return new TenonComponent(material, {

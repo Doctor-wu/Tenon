@@ -62,7 +62,9 @@ export class TenonWebSDKRenderer {
     // const { tree } = pageInfo;
     watch(pageInfo, async () => {
       console.log(321, pageInfo.value.tree, this.app.componentsMap);
+      console.time('deserialize');
       const rootComponent = TenonComponent.createInstanceByDeserialize(pageInfo.value.tree, this.app.componentsMap);
+      console.timeEnd('deserialize');
       console.log(123, rootComponent);
       // TenonComponent.staticHook.
       eventsMap.value = (() => {
@@ -79,6 +81,7 @@ export class TenonWebSDKRenderer {
       this.renderFunc.value = () => h(ComposeView, {
         tenonComp: rootComponent,
         tenonCompProps: {},
+        root: true,
       });
     }, {
       immediate: true,

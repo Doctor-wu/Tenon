@@ -84,8 +84,18 @@ const props = defineProps({
   useTeleport: {
     type: Boolean,
     default: false
+  },
+  root: {
+    type: Boolean,
+    default: false
   }
 });
+if(props.root) {
+  console.time('mount');
+  onMounted(() => {
+    console.timeEnd('mount');
+  });
+}
 const instance: any = getCurrentInstance();
 let tenonTreeNode: ComputedRef<TenonComponent> = computed<TenonComponent>(() => {
   let result: any = props.tenonComp;
@@ -139,6 +149,7 @@ if (instance.attrs.childrenBucket) {
     });
   }
 }
+
 </script>
 <style lang="scss" scoped>
 .compose-view-container {

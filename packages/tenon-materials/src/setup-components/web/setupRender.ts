@@ -64,9 +64,6 @@ export function parseConfig2RenderFn(this: any, config) {
   let processedProps: any = setupProps.call(this.tenonComp.ctx, props) || {};
 
   if (props["_scopeSlotArgs"]) {
-    // if (processedProps["t-if"] === "this.checkboxConfig.useCustomCheckbox") debugger;
-    // if (!processedProps.tenonCompProps) debugger;
-    // processedProps.tenonCompProps = processedProps.tenonCompProps || {};
     processedProps.tenonCompProps.scopeSlotArgs = props["_scopeSlotArgs"];
     if (this.tenonComp) {
       this.tenonComp.tenonCompProps.scopeSlotArgs = props["_scopeSlotArgs"];
@@ -89,10 +86,9 @@ export function parseConfig2RenderFn(this: any, config) {
       const material = compFactory();
       const source = cloneDeep(processedProps);
       const tenonComp = createTenonComponent(material, undefined, {
-        isSlot: !!source.props?.isSlot,
         props: source,
       });
-      if (el !== "Compose-View" || !source.isSlot) {
+      if (!(el === "Compose-View" && source.isSlot)) {
         processedProps = {
           tenonComp,
           ...tenonComp.props
@@ -102,36 +98,34 @@ export function parseConfig2RenderFn(this: any, config) {
     }
   }
 
-  function _custom_render(this: any) {
-    const defaultArray: any[] = [];
-    const injectChildren: any = {
-      default: () => defaultArray,
-    };
+  setupComponentEvents(this.tenonComp, processedProps);
 
-    children.forEach(child => {
-      const isSlot = child.props?.["t-slot"] !== undefined;
-      const slotKey = child.props?.["t-slot"] || "default";
-      if (isSlot) {
-        const slotConfig = child;
-        if (slotKey === "default") {
-          defaultArray.push(parseConfig2RenderFn.call(this, slotConfig).call(this));
-        } else {
-          injectChildren[slotKey] =
-            (scope) => {
-              if (scope && Object.keys(scope).length) {
-                slotConfig.props = slotConfig.props || {};
-                slotConfig.props['_scopeSlotArgs'] = scope;
-              }
-              return parseConfig2RenderFn.call(this, slotConfig).call(this);
+  const defaultArray: any[] = [];
+  const injectChildren: any = {
+    default: () => defaultArray,
+  };
+  children.forEach(child => {
+    const isSlot = child.props?.["t-slot"] !== undefined;
+    const slotKey = child.props?.["t-slot"] || "default";
+    if (isSlot) {
+      const slotConfig = child;
+      if (slotKey === "default") {
+        defaultArray.push(parseConfig2RenderFn.call(this, slotConfig).call(this));
+      } else {
+        injectChildren[slotKey] = (scope) => {
+            if (scope && Object.keys(scope).length) {
+              slotConfig.props = slotConfig.props || {};
+              slotConfig.props['_scopeSlotArgs'] = scope;
             }
-        }
+            return parseConfig2RenderFn.call(this, slotConfig).call(this);
+          }
       }
-      else
-        defaultArray.push(parseConfig2RenderFn.call(this, child).call(this));
-    });
+    }
+    else
+      defaultArray.push(parseConfig2RenderFn.call(this, child).call(this));
+  });
 
-    setupComponentEvents(this.tenonComp, processedProps);
-
+  function _custom_render(this: any) {
     return h(el, processedProps, injectChildren);
   };
 
