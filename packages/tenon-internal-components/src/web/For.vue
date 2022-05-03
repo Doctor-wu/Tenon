@@ -1,12 +1,21 @@
 <template>
-  <component :is="renderList"></component>
+  <template v-for="(item, index) in internalLoop" :key="getKeyByItem(item, index)">
+    <ComposeView
+      :isSlot="index === 0"
+      :attach="index !== 0"
+      slotKey="__loop__"
+      :tenonCompProps="{...tenonCompProps, item, index}"
+      :composeLayout="composeLayout"
+      :composeBackground="composeBackground"
+      :childrenBucket="childrenBucket"
+      :disabled="index !== 0"
+    ></ComposeView>
+  </template>
 </template>
 <script setup lang="ts">
-import { computed, h, reactive } from 'vue';
-import { useStore } from 'vuex';
+import { computed } from 'vue';
 import { Message } from '@arco-design/web-vue';
 import { TenonComponent } from '@tenon/engine';
-const store = useStore();
 
 const props = defineProps<{
   loop: any[];
@@ -14,6 +23,24 @@ const props = defineProps<{
   composeBackground: any;
   tenonCompProps: any;
 }>();
+
+const materialsMap = TenonComponent.materialsMap;
+const factory = materialsMap.get('Compose-View')!;
+const material = factory();
+const ComposeView = material.component;
+
+function getKeyByItem(item, index) {
+  if(!item) return index;
+  switch (typeof item) {
+    case "number":
+    case "string":
+      return item;
+    case "object":
+      return item.id || index;
+    default:
+      break;
+  }
+}
 
 const internalLoop = computed(() => {
   try {
@@ -23,34 +50,7 @@ const internalLoop = computed(() => {
     return [1];
   }
 });
-
-const renderList = computed(() => {
-  const loop = internalLoop.value;
-  const childrenBucket = { value: undefined };
-  return () => loop?.map((item, index) => {
-    const materialsMap = TenonComponent.materialsMap;
-    const factory = materialsMap.get('Compose-View')!;
-    const material = factory();
-    const vnode =  h(material.component, {
-      key: item,
-      isSlot: index === 0,
-      attach: index !==0,
-      slotKey: `__loop__`,
-      tenonCompProps: {
-        ...props.tenonCompProps,
-        item,
-        index,
-      },
-      composeLayout: props.composeLayout,
-      composeBackground: props.composeBackground,
-      childrenBucket,
-      // useTeleport: true,
-      disabled: index !== 0,
-    });
-    return vnode;
-  });
-});
-
+const childrenBucket = { value: undefined };
 </script>
 
 <style lang="scss" scoped>

@@ -160,14 +160,14 @@ if (instance.attrs.childrenBucket) {
     instance.attrs.childrenBucket.value = tenonTreeNode.value.children;
   } else {
     const cancel = watchEffect(() => {
-        tenonTreeNode.value.children?.forEach(c => c.destroy());
+        // tenonTreeNode.value.children?.forEach(c => c.destroy());
         tenonTreeNode.value.children = instance.attrs.childrenBucket.value.map(i => {
           const cInstance = i.clone();
           // 防止If组件render为false直接不渲染
           if(cInstance.props.IfConfig) cInstance.props.IfConfig.render = true;
           return cInstance;
         });
-    }, { flush: 'post' });
+    }, { flush: 'pre' });
     (tenonTreeNode.value as TenonComponent).lifecycleHook.onBeforeUnmount(() => {
       cancel();
     });
