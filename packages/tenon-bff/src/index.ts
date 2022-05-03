@@ -60,9 +60,11 @@ const bootstrap = async () => {
   });
 
   server.start();
-  server.once('launched', () => {
-    setPhase(createClient(), PhaseName.RUN_CMS);
-  });
+  if (process.argv[2] !== "prod") {
+    server.once('launched', () => {
+      setPhase(createClient(), PhaseName.RUN_CMS);
+    });
+  }
 }
 
 
