@@ -11,7 +11,7 @@
         <span>{{ editMode ? '编辑' : '预览' }}</span>
       </TextToggle>
       <AnimateButton info="真机预览" @click="realMachinePreview">
-        <icon-computer size="18" class="nav-item-icon" />
+        <icon-desktop size="18" class="nav-item-icon" />
         <span>真机</span>
       </AnimateButton>
       <AnimateButton info="清空页面配置" @click="deleteConfig" color="#f53f3f">
