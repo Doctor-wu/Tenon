@@ -1,5 +1,5 @@
 <template>
-  <section ref="editorRef" class="editor-container"></section>
+  <section v-bind="$attrs" ref="editorRef" class="editor-container"></section>
 </template>
 
 <script setup lang="ts">
@@ -10,10 +10,10 @@
 //按需引入
 import {
   editor as monacoEditor,
-} from 'monaco-editor/esm/vs/editor/editor.api'
-import 'monaco-editor/esm/vs/basic-languages/html/html.contribution'
-import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution'
-import 'monaco-editor/esm/vs/basic-languages/css/css.contribution'
+} from 'monaco-editor/esm/vs/editor/editor.api';
+import 'monaco-editor/esm/vs/basic-languages/html/html.contribution';
+import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution';
+import 'monaco-editor/esm/vs/basic-languages/css/css.contribution';
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
@@ -42,6 +42,8 @@ import { initLanguages } from './languages';
 
 const props = defineProps<{
   modelValue?: string;
+  language?: string;
+  readOnly?: boolean;
 }>();
 
 const $emit = defineEmits(['update:modelValue']);
@@ -56,11 +58,11 @@ let cancelWatch = watch(props, () => {
 initLanguages();
 onMounted(() => {
   editor = monacoEditor.create(editorRef.value, {
-    language: 'javascript',
+    language: props.language || 'javascript',
     theme: 'vs-dark',
     value: props.modelValue,
     selectOnLineNumbers: true,//显示行号
-    readOnly: false, // 只读
+    readOnly: props.readOnly ?? false, // 只读
     cursorStyle: 'line', //光标样式
     automaticLayout: true, //自动布局
     fontSize: 15, //字体大小

@@ -1,18 +1,15 @@
 <template>
-  <a-modal
-    :footer="false"
-    width="568px"
-    v-model:visible="visible"
-    @ok="handleOk"
-    @before-close="handleBeforeClose"
-  >
+  <a-modal :footer="false" width="968px" v-model:visible="visible" @ok="handleOk" @before-close="handleBeforeClose">
     <template #title>页面状态管理</template>
+    <monaca-editor :read-only="true" language="json" :style="{ height: '500px' }"
+      :model-value="JSON.stringify(pageStates, null, 2)"></monaca-editor>
     <a-table :columns="columns" :data="computedStates" />
   </a-modal>
 </template>
 <script setup lang="ts">
 import { computed, onUnmounted, ref, watchEffect } from 'vue';
 import { useStore } from 'vuex';
+import MonacaEditor from '@/components/web-code/MonacaEditor.vue';
 const store = useStore();
 
 const $emit = defineEmits([]);
@@ -31,18 +28,18 @@ onUnmounted(() => {
 });
 
 const computedStates = computed(() => {
-  return [ ...makeDataTree(pageStates.value), {
-      data: 'extra',
-      children: makeDataTree({
-        username: 'doctorwu',
-        age: 22,
-        books: ['javascript', 'typescript'],
-        company: {
-          name: 'tencent',
-          department: 'RDGZ',
-        }
-      }),
-    }
+  return [...makeDataTree(pageStates.value), {
+    data: 'extra',
+    children: makeDataTree({
+      username: 'doctorwu',
+      age: 22,
+      books: ['javascript', 'typescript'],
+      company: {
+        name: 'tencent',
+        department: 'RDGZ',
+      }
+    }),
+  }
   ]
 });
 
