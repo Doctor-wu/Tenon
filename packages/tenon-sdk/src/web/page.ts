@@ -8,6 +8,7 @@ export enum SDKPageEvents {
 }
 
 export interface ITenonWebSDKPageInfo {
+  belongProjectId: string;
   pageName: string;
   tree: ComponentSerializeConfig;
   events: IEventMeta[];

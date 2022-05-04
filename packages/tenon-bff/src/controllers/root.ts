@@ -1,7 +1,7 @@
 import { BaseController, Controller, RequestContext, RequestNext, io, useRouter, Get, useService } from "@tenon/node-framework";
 import fs from 'fs';
 import path from 'path';
-import { PageService, TenonEventService } from "../services";
+import type { PageService, ProjectService, TenonEventService } from "../services";
 import { SERVICE_NAME } from "../services/constant";
 
 @Controller({
@@ -11,6 +11,9 @@ class RootController extends BaseController {
 
   @useService(SERVICE_NAME.page)
   private pageService!: PageService;
+
+  @useService(SERVICE_NAME.project)
+  private projectService!: ProjectService;
 
   @useService(SERVICE_NAME.tenonEvent)
   private tenonEventService!: TenonEventService;
@@ -59,6 +62,24 @@ class RootController extends BaseController {
     const script = fs.readFileSync(path.resolve(__dirname, '../../../tenon-sdk/src/web/dist/style.css'), 'utf-8');
     ctx.body = script;
   }
+
+  @Get('/getSDKProjectInfo', {
+    params: {
+      projectId: {
+        type: 'string',
+        required: true,
+      }
+    }
+  })
+  async getSDKProjectInfo(
+    ctx: RequestContext,
+    next: RequestNext,
+    params: any,
+  ) {
+    const projectId = params.projectId;
+    const pageInfo = await this.projectService.getProjectInfo(projectId);
+    ctx.body = pageInfo;
+  };
 
   @Get('/getSDKPageInfo', {
     params: {

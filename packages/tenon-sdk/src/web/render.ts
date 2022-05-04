@@ -61,6 +61,10 @@ export class TenonWebSDKRenderer {
   async render(pageInfo: Ref<ITenonWebSDKPageInfo>) {
     // const { tree } = pageInfo;
     watch(pageInfo, async () => {
+      const el: HTMLElement | null = typeof this.app.config.el === "string" ? document.querySelector(this.app.config.el) : this.app.config.el;
+      console.log(el, this.app.project);
+      el!.style.width = this.app.project.projectInfo?.userConfig.screenWidth + 'px';
+      // el!.style.width = pageInfo.value;
       console.log(321, pageInfo.value.tree, this.app.componentsMap);
       console.time('deserialize');
       const rootComponent = TenonComponent.createInstanceByDeserialize(pageInfo.value.tree, this.app.componentsMap);

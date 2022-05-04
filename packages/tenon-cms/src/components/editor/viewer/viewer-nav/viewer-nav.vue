@@ -1,23 +1,19 @@
 <template>
   <section class="nav-wrapper">
     <section class="nav-scroller">
-      <a-page-header
-        style="display: inline-block;padding: 0;"
-        @back="$router.push(`/page-list/${projectInfo._id}`)"
-        :title="projectInfo?.projectName"
-        :subtitle="pageInfo?.pageName"
-      ></a-page-header>
+      <a-page-header style="display: inline-block;padding: 0;" @back="$router.push(`/page-list/${projectInfo._id}`)"
+        :title="projectInfo?.projectName" :subtitle="pageInfo?.pageName"></a-page-header>
       <a-divider direction="vertical"></a-divider>
-      <TextToggle
-        :value="editMode"
-        @change="(...args: any[]) => toggleEditMode(...args)"
-        :info="editMode ? '编辑模式' : '预览模式'"
-        :color="editMode ? '#1693ef' : '#00b42a'"
-      >
+      <TextToggle :value="editMode" @change="(...args: any[]) => toggleEditMode(...args)"
+        :info="editMode ? '编辑模式' : '预览模式'" :color="editMode ? '#1693ef' : '#00b42a'">
         <icon-edit size="18" v-if="editMode" class="nav-item-icon" />
         <icon-eye size="18" v-else class="nav-item-icon" />
         <span>{{ editMode ? '编辑' : '预览' }}</span>
       </TextToggle>
+      <AnimateButton info="真机预览" @click="realMachinePreview">
+        <icon-computer size="18" class="nav-item-icon" />
+        <span>真机</span>
+      </AnimateButton>
       <AnimateButton info="清空页面配置" @click="deleteConfig" color="#f53f3f">
         <icon-eraser size="18" class="nav-item-icon" />
         <span>清</span>
@@ -57,10 +53,12 @@ import LoadConfig from './load-config.vue';
 import TenonEvent from './tenon-event.vue';
 import TenonStates from './tenon-states.vue';
 import TenonLifecycle from './tenon-lifecycle.vue';
+import { IPageState } from '@/store/modules/page';
+import { IProjectState } from '@/store/modules/project';
 
 const store = useStore();
-const pageInfo = ref<any>({});
-const projectInfo = ref<any>({});
+const pageInfo = ref<IPageState["pageInfo"]>({} as any);
+const projectInfo = ref<IProjectState["projectInfo"]>({} as any);
 
 watchEffect(() => {
   store.getters['page/getPageInfo'].then((data) => {
@@ -78,13 +76,22 @@ watchEffect(() => {
   flush: 'post'
 });
 
+function realMachinePreview() {
+  window.open(
+    import.meta.env.PROD
+      ? `/tenonbff/sdk-test.html?pageId=${pageInfo.value?._id}`
+      : `http://localhost:9847/sdk-test.html?pageId=${pageInfo.value?._id}`,
+    '_blank'
+  );
+}
+
 async function saveTree() {
   const tree = store.getters['viewer/getTree'];
   const config = tree2config(tree);
   saveTreeApi({
     tree: config,
-    version: pageInfo.value.newestVersion + 1,
-    belongPageId: pageInfo.value._id,
+    version: pageInfo.value!.newestVersion + 1,
+    belongPageId: pageInfo.value!._id,
     newestId: getID(),
   }).then(({ success, errorMsg, successText }) => {
     if (!success) {
@@ -93,7 +100,7 @@ async function saveTree() {
       Message.success(successText);
       store.dispatch('page/setPageInfo', {
         ...pageInfo.value,
-        newestVersion: pageInfo.value.newestVersion + 1
+        newestVersion: pageInfo.value!.newestVersion + 1
       });
     }
   });
@@ -120,7 +127,7 @@ function deleteConfig() {
 }
 
 function exportTree() {
-  const tree:TenonComponent = store.getters['viewer/getTree'];
+  const tree: TenonComponent = store.getters['viewer/getTree'];
   // create a new blob with the data from the tree
   const blob = new Blob([JSON.stringify(tree2config(tree))], { type: 'application/json' });
   // create a link to the blob
@@ -137,6 +144,7 @@ function exportTree() {
 :deep(.arco-page-header-wrapper) {
   padding: 0;
 }
+
 .nav-wrapper {
   height: 100%;
   display: flex;
@@ -146,8 +154,10 @@ function exportTree() {
   justify-content: start;
   margin-right: 40px;
   overflow: auto hidden;
+
   &::-webkit-scrollbar {
-    display: none !important; /* Chrome Safari */
+    // display: none !important;
+    /* Chrome Safari */
   }
 }
 

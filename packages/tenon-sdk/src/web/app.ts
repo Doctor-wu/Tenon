@@ -7,6 +7,7 @@ import { cloneDeep } from 'lodash';
 import TenonSDKPage, { SDKPageEvents } from './page';
 import { createApp, watchEffect } from 'vue';
 import { TenonWebSDKRenderer } from './render';
+import { TenonSDKProject } from './project';
 
 export interface ITenonWebSDKConfig {
   SDKKey: string;
@@ -18,6 +19,7 @@ export class TenonWebSDK {
   public componentsMap: Map<string, () => IMaterial> = new Map();
   public componentsGroup: Map<string, Array<() => IMaterial>> = new Map();
   public page: TenonSDKPage;
+  public project: TenonSDKProject;
   public renderer: TenonWebSDKRenderer;
   public config: ITenonWebSDKConfig;
 
@@ -25,6 +27,7 @@ export class TenonWebSDK {
     this.config = config;
     this.renderer = new TenonWebSDKRenderer(this);
     this.page = new TenonSDKPage(this);
+    this.project = new TenonSDKProject(this);
     this.initEvents();
     this.init();
   }
@@ -32,6 +35,7 @@ export class TenonWebSDK {
   async init() {
     this.page.setSDKKey(this.config.SDKKey);
     await this.page.changePage(this.config.homePageId);
+    await this.project.init();
     await this.initTenonComponent();
     await this.renderer.render(this.page.pageInfo!);
   }
