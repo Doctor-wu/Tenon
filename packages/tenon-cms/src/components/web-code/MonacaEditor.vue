@@ -11,14 +11,14 @@
 import {
   editor as monacoEditor,
 } from 'monaco-editor/esm/vs/editor/editor.api';
-import 'monaco-editor/esm/vs/basic-languages/html/html.contribution';
+// import 'monaco-editor/esm/vs/basic-languages/html/html.contribution';
 import 'monaco-editor/esm/vs/basic-languages/javascript/javascript.contribution';
-import 'monaco-editor/esm/vs/basic-languages/css/css.contribution';
+// import 'monaco-editor/esm/vs/basic-languages/css/css.contribution';
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker';
 import jsonWorker from 'monaco-editor/esm/vs/language/json/json.worker?worker';
-import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
-import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
+// import cssWorker from 'monaco-editor/esm/vs/language/css/css.worker?worker';
+// import htmlWorker from 'monaco-editor/esm/vs/language/html/html.worker?worker';
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker';
 import { initLanguages } from './languages';
 
@@ -28,10 +28,10 @@ import { initLanguages } from './languages';
       return new jsonWorker()
     }
     if (label === 'css' || label === 'scss' || label === 'less') {
-      return new cssWorker()
+      // return new cssWorker()
     }
     if (label === 'html' || label === 'handlebars' || label === 'razor') {
-      return new htmlWorker()
+      // return new htmlWorker()
     }
     if (label === 'typescript' || label === 'javascript') {
       return new tsWorker()
