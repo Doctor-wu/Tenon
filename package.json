@@ -4,7 +4,7 @@
     "description": "personal lowCode platform",
     "scripts": {
         "dev:mix": "ts-node scripts/dev-mix.ts",
-        "build": "ts-node scripts/build.ts"
+        "build": "node -r ts-node/register --max-old-space-size=4096 scripts/build.ts"
     },
     "keywords": [
         "lowCode",
@@ -30,6 +30,7 @@
     },
     "devDependencies": {
         "@types/lodash": "^4.14.178",
-        "lodash": "^4.17.21"
+        "lodash": "^4.17.21",
+        "ts-node": "^10.7.0"
     }
 }

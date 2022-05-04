@@ -5,7 +5,7 @@
     "module": "src/index.ts",
     "scripts": {
         "dev:mix": "ts-node src/dev.ts",
-        "build": "ts-node src/build.ts"
+        "build": "node -r ts-node/register --max-old-space-size=4096 src/build.ts"
     },
     "author": "Doctor wu",
     "license": "MIT",
