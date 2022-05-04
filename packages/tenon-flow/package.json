@@ -1,17 +1,18 @@
 {
-  "name": "@tenon/flow",
-  "version": "1.0.0",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
-  "scripts": {
-    "dev:mix": "ts-node src/dev.ts"
-  },
-  "author": "Doctor wu",
-  "license": "MIT",
-  "devDependencies": {
-    "@tenon/shared": "workspace:*",
-    "@tenon/node-framework": "workspace:*"
-  },
-  "dependencies": {},
-  "description": ""
+    "name": "@tenon/flow",
+    "version": "1.0.0",
+    "main": "src/index.ts",
+    "module": "src/index.ts",
+    "scripts": {
+        "dev:mix": "ts-node src/dev.ts",
+        "build": "ts-node src/build.ts"
+    },
+    "author": "Doctor wu",
+    "license": "MIT",
+    "devDependencies": {
+        "@tenon/shared": "workspace:*",
+        "@tenon/node-framework": "workspace:*"
+    },
+    "dependencies": {},
+    "description": ""
 }

@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
-import monacoEditorPlugin from "rollup-plugin-monaco-editor";
 import path from "path";
 import MonacoEditorNlsPlugin, {
   esbuildPluginMonacoEditorNls,
@@ -11,10 +10,7 @@ import MonacoEditorNlsPlugin, {
 export default defineConfig({
   plugins: [
     vue(),
-      MonacoEditorNlsPlugin({locale: Languages.zh_hans}),
-    // monacoEditorPlugin(
-    //   { languages: ['javascript'] }
-    // ),
+    MonacoEditorNlsPlugin({locale: Languages.zh_hans}),
   ],
   build: {
     sourcemap: true,

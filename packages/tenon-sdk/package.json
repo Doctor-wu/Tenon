@@ -4,7 +4,7 @@
     "main": "src/web/dist/tenon-web-sdk.umd.js",
     "module": "src/web/dist/tenon-web-sdk.es.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "build": "ts-node src/scripts/build-web.ts"
     },
     "author": "Doctor wu",
     "license": "MIT",
@@ -12,6 +12,7 @@
     "dependencies": {
         "@tenon/internal-components": "workspace: *",
         "@tenon/engine": "workspace:*",
+        "@tenon/flow": "workspace:*",
         "@tenon/cms": "workspace:*",
         "@tenon/materials": "workspace:*",
         "@tenon/shared": "workspace:*",

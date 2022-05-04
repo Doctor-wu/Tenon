@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "main": "src/index.ts",
     "scripts": {
-        "dev": "ts-node scripts/dev.ts"
+        "dev": "ts-node scripts/dev.ts",
+        "build": "ts-node scripts/build.ts"
     },
     "author": "Doctor wu",
     "license": "MIT",

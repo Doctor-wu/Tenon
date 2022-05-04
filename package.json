@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "description": "personal lowCode platform",
     "scripts": {
-        "dev:mix": "ts-node scripts/dev-mix.ts"
+        "dev:mix": "ts-node scripts/dev-mix.ts",
+        "build": "ts-node scripts/build.ts"
     },
     "keywords": [
         "lowCode",

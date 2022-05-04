@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "scripts": {
         "dev": "vite",
-        "build": "vue-tsc --noEmit && vite build",
+        "build": "ts-node scripts/build.ts",
         "nocheck-build": "vite build",
         "serve": "vite preview"
     },
@@ -21,6 +21,7 @@
     "author": "Doctor wu",
     "devDependencies": {
         "@tenon/bff": "workspace:*",
+        "@tenon/flow": "workspace:*",
         "@tenon/cms": "workspace:*",
         "@tenon/engine": "workspace:*",
         "@tenon/internal-components": "workspace:*",

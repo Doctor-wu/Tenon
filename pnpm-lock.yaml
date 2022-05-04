@@ -103,6 +103,7 @@ importers:
       '@tenon/bff': workspace:*
       '@tenon/cms': workspace:*
       '@tenon/engine': workspace:*
+      '@tenon/flow': workspace:*
       '@tenon/internal-components': workspace:*
       '@tenon/materials': workspace:*
       '@tenon/shared': workspace:*
@@ -129,6 +130,7 @@ importers:
       '@tenon/bff': link:../tenon-bff
       '@tenon/cms': 'link:'
       '@tenon/engine': link:../tenon-engine
+      '@tenon/flow': link:../tenon-flow
       '@tenon/internal-components': link:../tenon-internal-components
       '@tenon/materials': link:../tenon-materials
       '@tenon/shared': link:../shared
@@ -223,6 +225,7 @@ importers:
     specifiers:
       '@tenon/cms': workspace:*
       '@tenon/engine': workspace:*
+      '@tenon/flow': workspace:*
       '@tenon/internal-components': 'workspace: *'
       '@tenon/materials': workspace:*
       '@tenon/shared': workspace:*
@@ -234,6 +237,7 @@ importers:
     dependencies:
       '@tenon/cms': link:../tenon-cms
       '@tenon/engine': link:../tenon-engine
+      '@tenon/flow': link:../tenon-flow
       '@tenon/internal-components': link:../tenon-internal-components
       '@tenon/materials': link:../tenon-materials
       '@tenon/shared': link:../shared

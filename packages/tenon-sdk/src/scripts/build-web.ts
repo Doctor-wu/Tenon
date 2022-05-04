@@ -1,5 +1,9 @@
 import path from 'path';
 import { build } from 'vite';
+import { BuildPhaseName, setPhase } from '@tenon/flow';
+import { createClient } from './client';
+
+const client = createClient();
 
 (async () => {
   await build({
@@ -15,5 +19,6 @@ import { build } from 'vite';
         // ...
       }
     }
-  })
+  });
+  setPhase(createClient(), BuildPhaseName.RESTART_BFF);
 })();
