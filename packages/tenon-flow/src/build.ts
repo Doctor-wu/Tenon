@@ -91,7 +91,7 @@ const buildFlow = [
     handler: () => {
       console.log('\n>> RESTART_BFF...\n');
       execa.commandSync(`forever stop src/index.ts`, bffCommandOptions);
-      execa.command(`forever start -c ts-node src/index.ts prod`, bffCommandOptions);
+      execa.commandSync(`forever start -c ts-node src/index.ts prod`, bffCommandOptions);
       setPhase(createClient(), BuildPhaseName.END);
       // execa.command(`pnpm run build`, sdkCommandOptions);
     },
