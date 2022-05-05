@@ -9,6 +9,7 @@ const packagesPath = path.join(rootPath, 'packages');
 const cmsPath = path.join(packagesPath, 'tenon-cms');
 const materialsPath = path.join(packagesPath, 'tenon-materials');
 const sdkPath = path.join(packagesPath, 'tenon-sdk');
+const bffPath = path.join(packagesPath, 'tenon-bff');
 
 const serverTenonPath = '/www/wwwroot/source/Tenon';
 const serverBFFPath = path.join(serverTenonPath, 'packages/tenon-bff');
@@ -21,6 +22,11 @@ const cmsCommandOptions: SyncOptions<string> = {
 
 const materialCommandOptions: SyncOptions<string> = {
   cwd: `${materialsPath}`,
+  stdio: 'inherit',
+}
+
+const bffCommandOptions: Options = {
+  cwd: `${bffPath}`,
   stdio: 'inherit',
 }
 
@@ -65,8 +71,8 @@ const buildFlow = [
     name: BuildPhaseName.TRANSFORM_CMS_DIST,
     handler: () => {
       console.log('\n>> TRANSFORM_CMS_DIST...\n');
-      execa.commandSync(`rm -rf ${serverFrontendPath}`);
-      execa.commandSync(`cp -r ${cmsPath}/dist ${serverFrontendPath}`);
+      // execa.commandSync(`rm -rf ${serverFrontendPath}`);
+      // execa.commandSync(`cp -r ${cmsPath}/dist ${serverFrontendPath}`);
       setPhase(createClient(), BuildPhaseName.BUILD_SDK);
       // execa.command(`pnpm run build`, cmsCommandOptions);
     },
@@ -84,8 +90,8 @@ const buildFlow = [
     name: BuildPhaseName.RESTART_BFF,
     handler: () => {
       console.log('\n>> RESTART_BFF...\n');
-      execa.commandSync(`forever stop ${serverBFFPath}/src/index.ts`);
-      execa.commandSync(`forever start -c ts-node ${serverBFFPath}/src/index.ts prod`);
+      execa.command(`forever stop src/index.ts`, bffCommandOptions);
+      execa.command(`forever start -c ts-node src/index.ts prod`, bffCommandOptions);
       setPhase(createClient(), BuildPhaseName.END);
       // execa.command(`pnpm run build`, sdkCommandOptions);
     },
