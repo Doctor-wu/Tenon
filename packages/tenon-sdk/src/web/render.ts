@@ -1,5 +1,5 @@
 import { callTenonPageEvent, eventsMap, IEventMeta, TenonComponent } from "@tenon/engine";
-import { App, createApp, effect, h, reactive, Ref, ref, watch } from "vue";
+import { App, createApp, h, Ref, ref, watch } from "vue";
 import { ITenonWebSDKConfig, TenonWebSDK } from "./app";
 import { ITenonWebSDKPageInfo } from "./page";
 import ComposeView from './components/Compose-View/Compose-View.vue';
@@ -22,9 +22,7 @@ export class TenonWebSDKRenderer {
     this.vm.use(ArcoVue);
     this.vm.use(ArcoVueIcon);
     this.setLoading();
-    setTimeout(() => {
-      this.vm.mount(this.app.config.el);
-    });
+    this.vm.mount(this.app.config.el);
   }
 
   setLoading() {
