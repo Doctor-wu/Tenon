@@ -25,7 +25,7 @@ const materialCommandOptions: SyncOptions<string> = {
   stdio: 'inherit',
 }
 
-const bffCommandOptions: Options = {
+const bffCommandOptions: SyncOptions = {
   cwd: `${bffPath}`,
   stdio: 'inherit',
 }
@@ -90,7 +90,7 @@ const buildFlow = [
     name: BuildPhaseName.RESTART_BFF,
     handler: () => {
       console.log('\n>> RESTART_BFF...\n');
-      execa.command(`forever stop src/index.ts`, bffCommandOptions);
+      execa.commandSync(`forever stop src/index.ts`, bffCommandOptions);
       execa.command(`forever start -c ts-node src/index.ts prod`, bffCommandOptions);
       setPhase(createClient(), BuildPhaseName.END);
       // execa.command(`pnpm run build`, sdkCommandOptions);
