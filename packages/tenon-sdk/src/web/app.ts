@@ -13,6 +13,7 @@ export interface ITenonWebSDKConfig {
   SDKKey: string;
   homePageId: string;
   el: string | HTMLElement;
+  mode?: 'prod' | 'dev';
 }
 
 export class TenonWebSDK {
@@ -25,6 +26,7 @@ export class TenonWebSDK {
 
   constructor(config: ITenonWebSDKConfig) {
     this.config = config;
+    this.config.mode = this.config.mode || 'prod';
     this.renderer = new TenonWebSDKRenderer(this);
     this.page = new TenonSDKPage(this);
     this.project = new TenonSDKProject(this);

@@ -39,7 +39,9 @@ class TenonSDKPage {
 
   async getPageInfoFromRemote(pageId) {
     if (!this.SDKKey) return console.error('SDKKey is not set');
-    const res = await (await fetch(`getSDKPageInfo?pageId=${pageId}&SDKKey=${this.SDKKey}`)).json();
+    const res = await (
+      await fetch(`${this.app.config.mode === 'prod' ? '' : 'http://localhost:9847/'}getSDKPageInfo?pageId=${pageId}&SDKKey=${this.SDKKey}`)
+    ).json();
     return res;
   }
 

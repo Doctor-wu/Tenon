@@ -26,6 +26,7 @@
         "@tenon/engine": "workspace:*",
         "@tenon/internal-components": "workspace:*",
         "@tenon/materials": "workspace:*",
+        "@tenon/sdk": "workspace:*",
         "@tenon/shared": "workspace:*",
         "lodash": "^4.17.21",
         "sass": "^1.43.4",

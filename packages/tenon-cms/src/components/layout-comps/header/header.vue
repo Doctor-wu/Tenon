@@ -51,7 +51,7 @@ const navs = [
   },
   {
     name: '关于',
-    path: '/',
+    path: '/about',
     key: 'ABOUT',
   },
   {

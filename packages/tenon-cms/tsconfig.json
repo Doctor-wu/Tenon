@@ -6,7 +6,7 @@
     "rootDir": "src",
     "target": "esnext",
     "useDefineForClassFields": true,
-    "module": "commonjs",
+    "module": "esnext",
     "jsx": "preserve",
     "sourceMap": true,
     "moduleResolution": "node",

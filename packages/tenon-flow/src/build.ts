@@ -54,8 +54,10 @@ const buildFlow = [
     name: BuildPhaseName.BUILD_CMS,
     handler: () => {
       console.log('\n>> Building CMS...\n');
-      execa.command(`pnpm run build`, cmsCommandOptions);
-      // setPhase(createClient(), BuildPhaseName.BUILD_MATERIALS);
+      console.log('服务器性能原因，手动上传产物');
+      
+      // execa.command(`pnpm run build`, cmsCommandOptions);
+      setPhase(createClient(), BuildPhaseName.TRANSFORM_CMS_DIST);
     },
     phase: BuildPhaseName.BUILD_CMS,
   },

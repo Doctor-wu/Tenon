@@ -93,6 +93,16 @@ export const setupRouter = (app) => {
         }
       },
       {
+        path: '/about',
+        name: 'about',
+        component: createDynamicLoadingComponent(
+          () => import('@/views/About.vue')
+        ),
+        meta: {
+          layout: () => import('@/layout/OnlyHeaderLayout.vue'),
+        }
+      },
+      {
         path: '/:catchAll(.*)',
         name: 'shim',
         component: createDynamicLoadingComponent(

@@ -3,7 +3,7 @@ import { build } from 'vite';
 import { BuildPhaseName, setPhase } from '@tenon/flow';
 import { createClient } from './client';
 
-const client = createClient();
+// const client = createClient();
 
 (async () => {
   await build({
@@ -20,5 +20,5 @@ const client = createClient();
       }
     }
   });
-  setPhase(createClient(), BuildPhaseName.RESTART_BFF);
+  // setPhase(createClient(), BuildPhaseName.RESTART_BFF);
 })();
