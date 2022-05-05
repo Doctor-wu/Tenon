@@ -44,7 +44,6 @@ class TenonSDKPage {
     ).json();
     return res;
   }
-
 }
 
 export default TenonSDKPage;

@@ -63,8 +63,8 @@ export class TenonWebSDKRenderer {
     watch(pageInfo, async () => {
       const el: HTMLElement | null = typeof this.app.config.el === "string" ? document.querySelector(this.app.config.el) : this.app.config.el;
       console.log(el, this.app.project);
-      el!.style.minWidth = this.app.project.projectInfo?.userConfig.screenWidth + 'px';
-      el!.style.maxWidth = this.app.project.projectInfo?.userConfig.screenWidth! + 150 + 'px';
+      el!.style.minWidth = this.app.project.projectInfo?.userConfig.screenWidth! - 50  + 'px';
+      el!.style.maxWidth = this.app.project.projectInfo?.userConfig.screenWidth! + 50 + 'px';
       // el!.style.width = pageInfo.value;
       console.log(321, pageInfo.value.tree, this.app.componentsMap);
       console.time('deserialize');
