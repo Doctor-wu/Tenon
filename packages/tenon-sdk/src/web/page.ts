@@ -1,4 +1,4 @@
-import { Subscribe } from "@tenon/shared";
+import { createSleepFunc, Subscribe } from "@tenon/shared";
 import { ComponentSerializeConfig, IEventMeta } from "@tenon/engine";
 import { reactive, Ref, ref } from "vue";
 import { TenonWebSDK } from "./app";
@@ -30,9 +30,9 @@ class TenonSDKPage {
     this.app.renderer.setLoading();
     const pageInfo = await this.getPageInfoFromRemote(pageId);
     this.pageInfo.value = pageInfo;
-    console.log('changed!!!!');
-    
+  
     this.emitter.emit(SDKPageEvents.PageInfo_Changed, this.pageInfo);
+    console.log('changed!!!!');
   }
 
   setSDKKey(key: string) {
@@ -41,7 +41,10 @@ class TenonSDKPage {
 
   async getPageInfoFromRemote(pageId) {
     if (!this.SDKKey) return console.error('SDKKey is not set');
-    if(this.pageInfoCache.has(pageId)) return this.pageInfoCache.get(pageId);
+    if(this.pageInfoCache.has(pageId)) {
+      await createSleepFunc(300)();
+      return this.pageInfoCache.get(pageId);
+    };
     const res = await (
       await fetch(`${this.app.config.mode === 'prod' ? 'https://doctorwu.club/tenonbff/' : 'http://localhost:9847/'}getSDKPageInfo?pageId=${pageId}&SDKKey=${this.SDKKey}`)
     ).json();
