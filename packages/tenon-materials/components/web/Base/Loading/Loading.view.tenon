@@ -1,0 +1,11 @@
+<TenonLoading
+  t-bind="loadingConfig"
+>
+  <Compose-View
+    isSlot="true"
+    slotKey="default"
+    t-slot="default"
+    placeholder="拖入组件生成加载完成后内容"
+    tenonCompProps="{{this.tenonCompProps}}"
+  ></Compose-View>
+</TenonLoading>

@@ -1,0 +1,37 @@
+{
+  "name": "Loading",
+  "icon": "loading",
+  "description": ["Loading组件, 提供展示加载能力"],
+  "dependencies": [],
+  "platform": ["web"],
+  "events": {
+  },
+  "schemas": [
+    {
+      "type": "object",
+      "title": "加载组件属性",
+      "fieldName": "loadingConfig",
+      "properties": {
+        "loading": {
+          "type": "boolean",
+          "title": "是否为加载中状态",
+          "default": false
+        },
+        "loadType": {
+          "type": "select",
+          "title": "加载类型",
+          "options": {
+            "spin": "spin加载",
+            "skeleton": "骨架屏"
+          },
+          "default": "spin"
+        }
+      }
+    }
+  ],
+  "tenonProps": {
+    "containerStyle": {
+      "box-sizing": "border-box"
+    }
+  }
+}

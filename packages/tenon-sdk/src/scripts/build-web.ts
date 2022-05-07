@@ -2,23 +2,30 @@ import path from 'path';
 import { build } from 'vite';
 import { BuildPhaseName, setPhase } from '@tenon/flow';
 import { createClient } from './client';
-
-const client = createClient();
+import {execSync} from 'child_process';
+import { Socket } from 'net';
 
 (async () => {
   await build({
     root: path.resolve(__dirname, '../web'),
     base: '/',
     build: {
+      sourcemap: true,
       lib: {
         entry: path.resolve(__dirname, '../web/index.ts'),
         name: 'TenonWebSDK',
         fileName: (format) => `tenon-web-sdk.${format}.js`,
       },
+      // minify: 'terser',
       rollupOptions: {
         // ...
       }
     }
   });
-  setPhase(createClient(), BuildPhaseName.RESTART_BFF);
+  execSync('tsc');
+  console.log('tsc completed');
+
+  let socket: Socket;
+  setPhase(socket = createClient(), BuildPhaseName.RESTART_BFF);
+  socket.end();
 })();

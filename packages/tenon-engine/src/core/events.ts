@@ -51,9 +51,11 @@ export const callTenonEvent = async (
   if (args[0]?.currentTarget && args[0]?.currentTarget !== tenonComp.vueInstance.vnode.el) return;
   if (!tenonComp.events[eventName] || !tenonComp.events[eventName].executeQueue.length) return;
   const eventIds = tenonComp.events[eventName].executeQueue;
-  eventIds.forEach(async eventId => {
-    executeTenonEvent(eventsMap.value!.get(eventId)!, tenonComp, ...args);
-  });
+  for(let i = 0; i < eventIds.length; i++) {
+    const eventId = eventIds[i];
+    const result = await executeTenonEvent(eventsMap.value!.get(eventId)!, tenonComp, ...args);
+    if(result === false) break;
+  }
 }
 
 export const callTenonPageEvent = async (
@@ -73,7 +75,7 @@ export const executeTenonEvent = async (
   tenonComp?: TenonComponent,
   ...args: any[]
 ) => {
-  TenonComponent._exec(tenonComp!, eventMeta.content, '__tenon-event__', ...args);
+  return TenonComponent._exec(tenonComp!, eventMeta.content, '__tenon-event__', ...args);
 }
 
 export function createTenonEvents(material: IMaterial): IEventsConfig {

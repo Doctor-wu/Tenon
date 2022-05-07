@@ -1,7 +1,7 @@
 <template>
   <section
     class="wrapper-container"
-    v-if="shouldRender"
+    v-show="shouldRender"
   >
     <slot></slot>
   </section>
@@ -19,7 +19,6 @@ const shouldRender = computed(() => {
   if(!props.tenonComp.props.IfConfig.render) return false;
   return true;
 });
-
 
 </script>
 <style lang="scss" scoped>

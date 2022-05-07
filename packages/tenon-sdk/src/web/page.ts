@@ -42,11 +42,11 @@ class TenonSDKPage {
   async getPageInfoFromRemote(pageId) {
     if (!this.SDKKey) return console.error('SDKKey is not set');
     if(this.pageInfoCache.has(pageId)) {
-      await createSleepFunc(300)();
+      // await createSleepFunc(300)();
       return this.pageInfoCache.get(pageId);
     };
     const res = await (
-      await fetch(`${this.app.config.mode === 'prod' ? 'https://doctorwu.club/tenonbff/' : 'http://localhost:9847/'}getSDKPageInfo?pageId=${pageId}&SDKKey=${this.SDKKey}`)
+      await fetch(`${this.app.config.mode === 'prod' ? 'https://doctorwu.club/tenonbff/' : (this.app.config.prefix || '/')}getSDKPageInfo?pageId=${pageId}&SDKKey=${this.SDKKey}`)
     ).json();
     this.pageInfoCache.set(pageId, cloneDeep(res));
     return res;

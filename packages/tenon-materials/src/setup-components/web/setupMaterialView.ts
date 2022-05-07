@@ -1,4 +1,4 @@
-import { Transform } from "@compiler/transform";
+import { Transform } from "../../compiler/transform";
 import { IViewConfig } from "../../type";
 
 export const setupMaterialView = (view: Transform.JSXElement): IViewConfig | string => {

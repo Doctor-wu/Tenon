@@ -6,6 +6,7 @@ import Icon from "./Icon.vue";
 import Table from "./Table.vue";
 import For from "./For.vue";
 import GhostText from "./GhostText.vue";
+import Loading from "./Loading.vue";
 
 import {
   Image,
@@ -35,6 +36,35 @@ import {
   Space,
   Typography,
 } from "@arco-design/web-vue";
+
+export const arcoDep = [
+  Image,
+  Card,
+  Grid,
+  Button,
+  Carousel,
+  Menu,
+  Alert,
+  Step,
+  Steps,
+  Checkbox,
+  CheckboxGroup,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  InputTag,
+  Radio,
+  RadioGroup,
+  Rate,
+  Select,
+  Switch,
+  Textarea,
+  TimePicker,
+  Tag,
+  Space,
+  Typography,
+]
 
 import {
   IconArrowDown,
@@ -85,6 +115,7 @@ import {
   IconRefresh,
   IconReply,
   IconSearch,
+  IconPlayCircle,
 } from '@arco-design/web-vue/es/icon';
 
 export const materialDependency: any = {
@@ -130,6 +161,7 @@ export const materialDependency: any = {
   TenonIcon: Icon,
   TenonTable: Table,
   TenonFor: For,
+  TenonLoading: Loading,
   DynamicComponent: DynamicComponent,
 }
 
@@ -165,6 +197,7 @@ export const IconTypes = {
   stop: IconStop,
   heartFill: IconHeartFill,
   starFill: IconStarFill,
+  playCircle: IconPlayCircle,
   thumbDown: IconThumbDownFill,
   thumbUp: IconThumbUpFill,
   at: IconAt,

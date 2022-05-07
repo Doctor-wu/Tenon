@@ -39,7 +39,7 @@ export class TenonComponent implements ComponentTreeNode {
   
   static materialsMap: Map<string, () => IMaterial>;
 
-  static _exec: (instance: TenonComponent, expression: string, ...args: any[]) => void;
+  static _exec: (instance: TenonComponent, expression: string, ...args: any[]) => any;
 
   static customConfig: any = {};
 

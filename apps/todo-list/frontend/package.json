@@ -1,0 +1,17 @@
+{
+    "name": "todo-list",
+    "version": "1.0.0",
+    "description": "Tenon App -- todo list",
+    "main": "src/index.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "@tenon/sdk": "workspace:*"
+    },
+    "keywords": [
+        "lowcode"
+    ],
+    "author": "Doctorwu",
+    "license": "ISC"
+}

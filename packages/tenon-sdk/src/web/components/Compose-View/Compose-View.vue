@@ -1,9 +1,9 @@
 <template>
-  <section v-if="!(!editMode && !tenonTreeNode?.children?.length)" class="compose-view-container" ref="selfRef" :style="[
+  <section v-if="tenonTreeNode?.children?.length" class="compose-view-container" ref="selfRef" :style="[
     ($attrs as any).composeLayout || {},
     ($attrs as any).composeBackground || {},
     ($attrs as any).composeTextStyle || {},
-    ((tenonTreeNode?.children?.length && useTeleport) || !(editMode || tenonTreeNode?.children?.length))
+    ((tenonTreeNode?.children?.length && useTeleport) || !tenonTreeNode?.children?.length)
       ? { display: 'none' }
       : {},
   ]">
@@ -27,9 +27,6 @@
         </template>
       </template>
     </template>
-    <section v-else-if="editMode" class="default-tip">{{ placeholder }}</section>
-    <section v-if="disabled && editMode" class="disable-mask" @dragenter.stop="() => { }" @dragover.stop="() => { }"
-      @drop.stop="() => { }"></section>
   </section>
 </template>
 
@@ -90,7 +87,7 @@ const props = defineProps({
     default: false
   }
 });
-if(props.root) {
+if (props.root) {
   console.time('mount');
   onMounted(() => {
     console.timeEnd('mount');

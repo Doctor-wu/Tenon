@@ -10,7 +10,7 @@
         && !store?.getters['viewer/getDraggingComponent'],
       active: editMode && !dragging && store?.getters['viewer/getActiveComponent'] === tenonComp
     }"
-    v-if="shouldRender"
+    v-show="shouldRender"
     @dragstart.capture="(e) => handleMaterialDragStart(e, tenonComp, false)"
     @dragend="(e) => handleMaterialDragEnd(e, tenonComp)"
     @dragover.prevent="() => { }"

@@ -5,15 +5,18 @@ import ComposeViewConfig from './components/Compose-View/Compose-View.config.jso
 import ComposeViewVue from './components/Compose-View/Compose-View.vue';
 import { cloneDeep } from 'lodash';
 import TenonSDKPage, { SDKPageEvents } from './page';
-import { createApp, watchEffect } from 'vue';
+import { createApp, reactive, watchEffect } from 'vue';
 import { TenonWebSDKRenderer } from './render';
 import { TenonSDKProject } from './project';
+import { Message } from '@arco-design/web-vue';
 
 export interface ITenonWebSDKConfig {
   SDKKey: string;
   homePageId: string;
   el: string | HTMLElement;
   mode?: 'prod' | 'dev';
+  request: any;
+  prefix?: string;
 }
 
 export class TenonWebSDK {
@@ -23,6 +26,7 @@ export class TenonWebSDK {
   public project: TenonSDKProject;
   public renderer: TenonWebSDKRenderer;
   public config: ITenonWebSDKConfig;
+  public store = reactive({});
 
   constructor(config: ITenonWebSDKConfig) {
     this.config = config;
@@ -89,7 +93,7 @@ export class TenonWebSDK {
       try {
         const handler = executeEvent
           ? new Function('injectMeta', `
-              const {$comp, $pageStates, $redirect, $args, _editMode} = injectMeta;
+              const {$comp, $pageStates, $redirect, $args, $request, $message, $store, _editMode} = injectMeta;
               try {
                 ${expression}
               } catch(e) {
@@ -98,7 +102,7 @@ export class TenonWebSDK {
               }
             `)
           : new Function('injectMeta', `
-              const {$comp, $pageStates, $redirect, $args, _editMode} = injectMeta;
+              const {$comp, $pageStates, $redirect, $args, $request, $message, $store, _editMode} = injectMeta;
               try {
                 return ${expression};
               } catch(e) {
@@ -111,6 +115,9 @@ export class TenonWebSDK {
           $pageStates: this.page.pageInfo.value.pageStates,
           $args: executeEvent ? args.slice(1) : args,
           $redirect: (pageId: string) => this.page.changePage(pageId),
+          $request: this.config.request,
+          $message: Message,
+          $store: this.store,
           _editMode: false,
         };
         handler(injectMeta);

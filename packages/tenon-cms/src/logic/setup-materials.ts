@@ -8,9 +8,13 @@ import ComposeViewConfig from "@/components/editor/viewer/Compose-View/Compose-V
 import ComposeViewVue from '@/components/editor/viewer/Compose-View/Compose-View.vue';
 import { cloneDeep } from "lodash";
 import { ISchema, TenonComponent, TenonPropsBinding } from "@tenon/engine";
-import { watchEffect } from "vue";
+import { reactive, watchEffect } from "vue";
 import { editMode } from "./viewer-status";
 import { Message } from "@arco-design/web-vue";
+import axios from "axios";
+
+const injectRequest = axios.create();
+const store = reactive({});
 
 
 let initd = false;
@@ -65,7 +69,7 @@ export const setupMaterials = async (store: Store<IRootState>) => {
       // debugger; 
       const handler = executeEvent
         ? new Function('injectMeta', `
-        const {$comp, $pageStates, $redirect, $args, _editMode} = injectMeta;
+        const {$comp, $pageStates, $redirect, $args, $request, $message, $store, _editMode} = injectMeta;
         try {
           ${expression}
         } catch(e) {
@@ -74,7 +78,7 @@ export const setupMaterials = async (store: Store<IRootState>) => {
         }
       `)
         : new Function('injectMeta', `
-        const {$comp, $pageStates, $redirect, $args, _editMode} = injectMeta;
+        const {$comp, $pageStates, $redirect, $args, $request, $message, $store, _editMode} = injectMeta;
         try {
           return ${expression};
         } catch(e) {
@@ -87,6 +91,9 @@ export const setupMaterials = async (store: Store<IRootState>) => {
         $pageStates: pageInfo.pageStates,
         $redirect: (...args) => Message.success(`redirect to ${args[0]}`),
         $args: executeEvent ? args.slice(1) : args,
+        $request: injectRequest,
+        $message: Message,
+        $store: store,
         _editMode: editMode,
       };
       handler(injectMeta);

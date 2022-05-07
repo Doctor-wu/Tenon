@@ -45,10 +45,22 @@ export function initLanguages() {
             insertText: '$events',
           },
           {
-            label: '$router',
+            label: '$redirect',
             kind: languages.CompletionItemKind.Variable,
-            documentation: '路由',
-            insertText: '$router',
+            documentation: '重定向',
+            insertText: '$redirect',
+          },
+          {
+            label: '$request',
+            kind: languages.CompletionItemKind.Variable,
+            documentation: '网络请求',
+            insertText: '$request',
+          },
+          {
+            label: '$message',
+            kind: languages.CompletionItemKind.Variable,
+            documentation: '消息提醒',
+            insertText: '$message',
           },
         ];
       };

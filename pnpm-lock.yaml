@@ -45,6 +45,22 @@ importers:
       lodash: 4.17.21
       ts-node: 10.7.0_4ed6ec92113418d09c4213ba524af150
 
+  apps/todo-list/frontend:
+    specifiers:
+      '@tenon/sdk': workspace:*
+    dependencies:
+      '@tenon/sdk': link:../../../packages/tenon-sdk
+
+  apps/todo-list/server:
+    specifiers:
+      '@tenon/node-framework': workspace:*
+      nodemon: ^2.0.15
+      svg-captcha: ^1.4.0
+    dependencies:
+      '@tenon/node-framework': link:../../../packages/tenon-node-framework
+      nodemon: 2.0.15
+      svg-captcha: 1.4.0
+
   packages/shared:
     specifiers: {}
 

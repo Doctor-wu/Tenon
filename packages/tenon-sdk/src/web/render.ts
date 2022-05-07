@@ -1,12 +1,12 @@
 import { callTenonPageEvent, eventsMap, IEventMeta, TenonComponent } from "@tenon/engine";
+import { arcoDep } from "@tenon/internal-components";
 import { App, createApp, h, Ref, ref, watch } from "vue";
-import { ITenonWebSDKConfig, TenonWebSDK } from "./app";
+import { TenonWebSDK } from "./app";
 import { ITenonWebSDKPageInfo } from "./page";
 import ComposeView from './components/Compose-View/Compose-View.vue';
-import ArcoVue, { Skeleton, SkeletonLine, SkeletonShape, Space, Spin } from "@arco-design/web-vue";
-import ArcoVueIcon from "@arco-design/web-vue/es/icon";
+import { Skeleton, SkeletonLine, SkeletonShape, Space } from "@arco-design/web-vue";
+// import ArcoVueIcon from "@arco-design/web-vue/es/icon";
 import '@arco-design/web-vue/dist/arco.css';
-// import 'vue-color-kit/dist/vue-color-kit.css';
 export class TenonWebSDKRenderer {
   private app: TenonWebSDK;
   private vm: App<Element>;
@@ -17,10 +17,13 @@ export class TenonWebSDKRenderer {
     this.vm = createApp({
       render: () => {
         if (this.renderFunc.value) return this.renderFunc.value();
-      }
+      },
     });
-    this.vm.use(ArcoVue);
-    this.vm.use(ArcoVueIcon);
+    arcoDep.forEach(dep => {
+      this.vm.use(dep as any);
+    });
+    // this.vm.use(ArcoVue);
+    // this.vm.use(ArcoVueIcon);
     this.setLoading();
     this.vm.mount(this.app.config.el);
   }
@@ -61,7 +64,7 @@ export class TenonWebSDKRenderer {
     watch(pageInfo, async () => {
       const el: HTMLElement | null = typeof this.app.config.el === "string" ? document.querySelector(this.app.config.el) : this.app.config.el;
       console.log(el, this.app.project);
-      el!.style.minWidth = this.app.project.projectInfo?.userConfig.screenWidth! - 50  + 'px';
+      el!.style.minWidth = this.app.project.projectInfo?.userConfig.screenWidth! - 50 + 'px';
       el!.style.maxWidth = this.app.project.projectInfo?.userConfig.screenWidth! + 50 + 'px';
       // el!.style.width = pageInfo.value;
       console.log(321, pageInfo.value.tree, this.app.componentsMap);

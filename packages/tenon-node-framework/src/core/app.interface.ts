@@ -19,9 +19,9 @@ export interface IServerConfig {
     /** 连接地址 */
     address?: string;
     /** 用户名 */
-    username: string;
+    username?: string;
     /** 密码 */
-    password: string;
+    password?: string;
   },
   /** 控制器 */
   controllers?: { new(...args: any[]): BaseController }[],

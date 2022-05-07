@@ -22,13 +22,16 @@
           <b>$pageStates</b>: 可以通过$pageStates获取页面的状态
         </section>
         <section>
-          <b>$comp</b>: 可以通过$comp获取组件实例，可以从中获取组件状态和组件props，也可以调用组件的一些内部方法
+          <b>$comp</b>: 可以通过$comp获取组件实例, 可以从中获取组件状态和组件props, 也可以调用组件的一些内部方法
         </section>
         <section>
           <b>$events</b>: 可以通过$events获取页面的事件
         </section>
         <section>
-          <b>$router</b>: 可以通过$router路由页面
+          <b>$redirect</b>: 可以通过$redirect路由页面
+        </section>
+        <section>
+          <b>$request</b>: 可以通过$request发送网络请求
         </section>
       </a-alert>
       <section class="code-mirror-block">

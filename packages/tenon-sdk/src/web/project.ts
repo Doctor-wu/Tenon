@@ -20,7 +20,7 @@ export class TenonSDKProject {
   }
 
   async getProjectInfoFromRemote() {
-    const res = await (await fetch(`${this.app.config.mode === 'prod' ? 'https://doctorwu.club/tenonbff/' : 'http://localhost:9847/'}getSDKProjectInfo?projectId=${this.app.page.pageInfo.value.belongProjectId}`)).json();
+    const res = await (await fetch(`${this.app.config.mode === 'prod' ? 'https://doctorwu.club/tenonbff/' : (this.app.config.prefix || '/')}getSDKProjectInfo?projectId=${this.app.page.pageInfo.value.belongProjectId}`)).json();
     return res.filter(Boolean)[0];
   }
 }

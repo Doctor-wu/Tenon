@@ -1,5 +1,4 @@
 <template>
-  <SelectEventModal ref="eventSelector" @choose="handleSelectEvent"></SelectEventModal>
   <a-modal
     width="568px"
     v-model:visible="visible"
@@ -23,6 +22,7 @@
       ></AddHandlers>
     </template>
   </a-modal>
+  <SelectEventModal ref="eventSelector" @choose="handleSelectEvent"></SelectEventModal>
 </template>
 <script lang="ts" setup>
 import AddHandlers from '@/components/editor/attrs-panel/comp-events//add-handlers.vue';

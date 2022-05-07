@@ -1,0 +1,19 @@
+{
+    "name": "todo-list-server",
+    "version": "1.0.0",
+    "description": "Tenon App -- todo list server",
+    "main": "src/index.ts",
+    "scripts": {
+        "start": "nodemon --watch src -e ts --exec ts-node src/index.ts"
+    },
+    "dependencies": {
+        "@tenon/node-framework": "workspace:*",
+        "nodemon": "^2.0.15",
+        "svg-captcha": "^1.4.0"
+    },
+    "keywords": [
+        "lowcode"
+    ],
+    "author": "Doctorwu",
+    "license": "ISC"
+}
