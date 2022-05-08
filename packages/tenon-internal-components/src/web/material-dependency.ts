@@ -75,6 +75,7 @@ export const arcoDep: {
   Typography,
   Spin,
   Skeleton,
+  IconUser,
 ]
 
 import {
@@ -127,6 +128,7 @@ import {
   IconReply,
   IconSearch,
   IconPlayCircle,
+  IconUser,
 } from '@arco-design/web-vue/es/icon';
 
 export const materialDependency: any = {
