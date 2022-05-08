@@ -30,13 +30,13 @@ const material = factory();
 const ComposeView = material.component;
 
 function getKeyByItem(item, index) {
-  if(!item) return index;
+  if(item === undefined || item === null) return index;
   switch (typeof item) {
     case "number":
     case "string":
-      return item;
+      return `${item}-${index}`;
     case "object":
-      return item.id || index;
+      return `${item.id || index}-${index}`;
     default:
       break;
   }
