@@ -19,6 +19,7 @@ export interface IPageState {
     tree: any;
     events?: any[];
     pageStates: any;
+    pageLifeCycle: string[];
   } | null;
 }
 

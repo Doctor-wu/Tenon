@@ -35,9 +35,13 @@ import {
   Tag,
   Space,
   Typography,
+  Spin,
+  Skeleton,
 } from "@arco-design/web-vue";
 
-export const arcoDep = [
+export const arcoDep: {
+  install: any;
+}[] = [
   Image,
   Card,
   Grid,
@@ -45,17 +49,17 @@ export const arcoDep = [
   Carousel,
   Menu,
   Alert,
-  Step,
+  // Step,
   Steps,
   Checkbox,
-  CheckboxGroup,
+  // CheckboxGroup,
   DatePicker,
   Form,
   Input,
   InputNumber,
   InputTag,
   Radio,
-  RadioGroup,
+  // RadioGroup,
   Rate,
   Select,
   Switch,
@@ -64,6 +68,8 @@ export const arcoDep = [
   Tag,
   Space,
   Typography,
+  Spin,
+  Skeleton,
 ]
 
 import {

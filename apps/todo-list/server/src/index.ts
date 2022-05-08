@@ -23,7 +23,7 @@ const bootstrap = async () => {
       path: path.resolve(__dirname, "../static"),
     },
     session: {
-      key: 'tenon-todo:ssid',
+      key: 'tenon:todo:ssid',
       sameSite: true,
       maxAge: 6 * 3600 * 1000,
     },

@@ -42,7 +42,7 @@ class TenonSDKPage {
   async getPageInfoFromRemote(pageId) {
     if (!this.SDKKey) return console.error('SDKKey is not set');
     if(this.pageInfoCache.has(pageId)) {
-      // await createSleepFunc(300)();
+      await createSleepFunc(200)();
       return this.pageInfoCache.get(pageId);
     };
     const res = await (

@@ -45,7 +45,7 @@ import { useStore } from 'vuex';
 import { computed, h, ref, watchEffect } from 'vue';
 import { Message, Modal } from '@arco-design/web-vue';
 import AnimateButton from '~components/shared/animate-button.vue';
-import { tree2config, getID, TenonComponent } from '@tenon/engine';
+import { tree2config, getID, TenonComponent, eventsMap } from '@tenon/engine';
 import Deletor from '../deletor.vue';
 import Scale from './scale.vue';
 import { saveTreeApi } from '@/api/page';
@@ -79,7 +79,7 @@ watchEffect(() => {
 function realMachinePreview() {
   window.open(
     import.meta.env.PROD
-      ? `/tenonbff/sdk-test.html?pageId=${pageInfo.value?._id}`
+      ? `/tenonbff/sdk-build.html?pageId=${pageInfo.value?._id}`
       : `http://localhost:9847/sdk-test.html?pageId=${pageInfo.value?._id}`,
     '_blank'
   );
@@ -127,9 +127,13 @@ function deleteConfig() {
 }
 
 function exportTree() {
-  const tree: TenonComponent = store.getters['viewer/getTree'];
+  const pageConfig = {
+    tree: tree2config(store.getters['viewer/getTree']),
+    events: pageInfo.value?.events,
+    pageLifeCycle: pageInfo.value?.pageLifeCycle,
+  };
   // create a new blob with the data from the tree
-  const blob = new Blob([JSON.stringify(tree2config(tree))], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify(pageConfig)], { type: 'application/json' });
   // create a link to the blob
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');

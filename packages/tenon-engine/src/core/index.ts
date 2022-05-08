@@ -5,3 +5,4 @@ export * from './schema';
 export * from './hooks';
 export * from './props-binding';
 export * from './config-transform';
+export * from './store';

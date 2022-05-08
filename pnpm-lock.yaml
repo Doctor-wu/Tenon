@@ -168,10 +168,12 @@ importers:
     specifiers:
       '@tenon/engine': workspace:*
       '@tenon/materials': workspace:*
+      '@tenon/sdk': workspace:*
       '@tenon/shared': workspace:*
     devDependencies:
       '@tenon/engine': 'link:'
       '@tenon/materials': link:../tenon-materials
+      '@tenon/sdk': link:../tenon-sdk
       '@tenon/shared': link:../shared
 
   packages/tenon-flow:

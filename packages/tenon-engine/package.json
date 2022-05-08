@@ -11,6 +11,7 @@
   "license": "MIT",
   "devDependencies": {
     "@tenon/engine": "workspace:*",
+    "@tenon/sdk": "workspace:*",
     "@tenon/materials": "workspace:*",
     "@tenon/shared": "workspace:*"
   }

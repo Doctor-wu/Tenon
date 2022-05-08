@@ -7,14 +7,14 @@ import { materialDependency } from "@tenon/internal-components";
 import ComposeViewConfig from "@/components/editor/viewer/Compose-View/Compose-View.config.json";
 import ComposeViewVue from '@/components/editor/viewer/Compose-View/Compose-View.vue';
 import { cloneDeep } from "lodash";
-import { ISchema, TenonComponent, TenonPropsBinding } from "@tenon/engine";
+import { ISchema, TenonComponent, TenonPropsBinding, TenonStore } from "@tenon/engine";
 import { reactive, watchEffect } from "vue";
 import { editMode } from "./viewer-status";
 import { Message } from "@arco-design/web-vue";
 import axios from "axios";
 
 const injectRequest = axios.create();
-const store = reactive({});
+const tenonStore = new TenonStore();
 
 
 let initd = false;
@@ -93,7 +93,7 @@ export const setupMaterials = async (store: Store<IRootState>) => {
         $args: executeEvent ? args.slice(1) : args,
         $request: injectRequest,
         $message: Message,
-        $store: store,
+        $store: tenonStore,
         _editMode: editMode,
       };
       handler(injectMeta);

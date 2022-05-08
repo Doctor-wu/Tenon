@@ -9,6 +9,7 @@ import { createApp, reactive, watchEffect } from 'vue';
 import { TenonWebSDKRenderer } from './render';
 import { TenonSDKProject } from './project';
 import { Message } from '@arco-design/web-vue';
+import { TenonStore } from '@tenon/engine';
 
 export interface ITenonWebSDKConfig {
   SDKKey: string;
@@ -26,7 +27,7 @@ export class TenonWebSDK {
   public project: TenonSDKProject;
   public renderer: TenonWebSDKRenderer;
   public config: ITenonWebSDKConfig;
-  public store = reactive({});
+  public store = new TenonStore();
 
   constructor(config: ITenonWebSDKConfig) {
     this.config = config;

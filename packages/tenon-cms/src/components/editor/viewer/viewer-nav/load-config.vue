@@ -49,7 +49,7 @@
   </a-drawer>
 </template>
 <script setup lang="ts">
-import { deleteTreeApi, getPageTreesApi } from '@/api';
+import { addTenonEventApi, deleteTreeApi, getPageTreesApi, updatePageLifeCycleApi } from '@/api';
 import AnimateButton from '@/components/shared/animate-button.vue';
 import { useStore } from '@/store';
 import { FileItem, Message } from '@arco-design/web-vue';
@@ -63,24 +63,44 @@ const loading = ref(true);
 const uploader = ref();
 const uploading = ref(false);
 
-function getTreeConfigByImportFile(_fileList: FileItem[], fileItem: FileItem) {
+async function getTreeConfigByImportFile(_fileList: FileItem[], fileItem: FileItem) {
+const pageInfo = await store.getters['page/getPageInfo'];
   uploading.value = true;
   // get file content from File
   if (!fileItem.file) return;
   const file = fileItem.file!;
   const reader = new FileReader();
   reader.readAsText(file);
-  reader.onload = () => {
-    // debugger;
+  reader.onload = async () => {
     const content = reader.result;
-    const tree = JSON.parse(content as string);
+    const pageConfig = JSON.parse(content as string);
+    const {
+      tree,
+      events,
+      pageLifeCycle,
+    } = pageConfig;
+    await events.forEach(async (event) => {
+      const {
+        content,
+        eventName,
+        gather,
+      } = event;
+      await addTenonEventApi({
+        content,
+        eventName,
+        gather,
+        pageId: pageInfo._id,
+      });
+    });
+    store.dispatch('page/updatePageEvent');
+    Message.success('事件导入成功');
     const treeConfig = config2tree({
       materialsMap: store.getters['materials/getMaterialsMap'],
     })(tree);
 
     _fileList.length = 0;
     store.dispatch('viewer/setTree', treeConfig);
-    Message.success('导入成功');
+    Message.success('组件树导入成功');
     uploading.value = false;
   };
   // e.stopPropagation();
