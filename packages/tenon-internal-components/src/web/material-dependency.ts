@@ -1,9 +1,9 @@
 import DynamicComponent from "./dynamic-component.vue";
 import Root from "./Root.vue";
-import Avatar from "./Avatar.vue";
-import Text from "./Text.vue";
-import Icon from "./Icon.vue";
-import Table from "./Table.vue";
+import TenonAvatar from "./Avatar.vue";
+import TenonText from "./Text.vue";
+import TenonIcon from "./Icon.vue";
+import TenonTable from "./Table.vue";
 import For from "./For.vue";
 import GhostText from "./GhostText.vue";
 import Loading from "./Loading.vue";
@@ -37,6 +37,8 @@ import {
   Typography,
   Spin,
   Skeleton,
+  Avatar,
+  Table,
 } from "@arco-design/web-vue";
 
 export const arcoDep: {
@@ -49,6 +51,9 @@ export const arcoDep: {
   Carousel,
   Menu,
   Alert,
+  Avatar,
+  Table,
+  
   // Step,
   Steps,
   Checkbox,
@@ -161,11 +166,11 @@ export const materialDependency: any = {
   ArcoTypographyText: Typography.Text,
   ArcoTypographyTitle: Typography.Title,
   TenonTemplate: Root,
-  TenonText: Text,
+  TenonText: TenonText,
   TenonGhostText: GhostText,
-  TenonAvatar: Avatar,
-  TenonIcon: Icon,
-  TenonTable: Table,
+  TenonAvatar: TenonAvatar,
+  TenonIcon: TenonIcon,
+  TenonTable: TenonTable,
   TenonFor: For,
   TenonLoading: Loading,
   DynamicComponent: DynamicComponent,
