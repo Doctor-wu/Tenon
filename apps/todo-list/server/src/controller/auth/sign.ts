@@ -5,6 +5,7 @@ import {
 import { SERVICE_NAME } from "../../service/constant";
 import { UserService } from "../../service";
 import { confusePwd } from "./util";
+import { AuthMiddleWare } from "../../middlewares/auth-middleware";
 
 @Controller({
   prefixPath: '',
@@ -94,12 +95,27 @@ export class SignController extends BaseController {
   }
 
   @Get("/signOut")
+  @MiddleWare(AuthMiddleWare)
   async handlerSignOut(
     ctx,
     next,
   ) {
     ctx.session = null;
     this.responseJson(ctx, next)("登出成功");
+  }
+
+  @Get("/isSignIn")
+  async handleIsSignIn(
+    ctx: RequestContext,
+    next: RequestNext,
+  ) {
+    if (ctx.session.user) {
+      await this.responseJson(ctx, next)({
+        isSignIn: true
+      });
+    } else {
+      await this.responseJson(ctx, next)({ isSignIn: false });
+    }
   }
 
   getDisplayUserInfo(userInfo: any) {

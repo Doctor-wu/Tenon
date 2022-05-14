@@ -1,3 +1,4 @@
+import { AuthMiddleWare } from '../../middlewares/auth-middleware';
 import { BaseController, Controller } from "@tenon/node-framework";
 import { UserController } from "./user";
 
@@ -10,7 +11,8 @@ import { UserController } from "./user";
       
       ctx.session.visitCount = (ctx.session.visitCount || 0) + 1;
       return [true];
-    }]
+    },
+  ],
 })
 class AuthController extends BaseController {
 

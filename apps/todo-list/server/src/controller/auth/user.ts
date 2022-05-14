@@ -1,8 +1,9 @@
-import { BaseController, Controller, Get, Post, RequestNext, RequestContext, useService } from "@tenon/node-framework";
+import { BaseController, Controller, Get, Post, RequestNext, RequestContext, useService, MiddleWare } from "@tenon/node-framework";
 import { SERVICE_NAME } from "../../service/constant";
 import { UserService } from "../../service";
 import crypto from "crypto";
 import { SignController } from "./sign";
+import { AuthMiddleWare } from "../../middlewares/auth-middleware";
 
 @Controller({
   prefixPath: "/user"
@@ -15,6 +16,7 @@ class UserController extends BaseController {
 
   @Get("/getUser")
   @Get("/getUser/:username")
+  @MiddleWare(AuthMiddleWare)
   async getUser(
     ctx: RequestContext,
     next: RequestNext,
@@ -45,6 +47,7 @@ class UserController extends BaseController {
       }
     }
   })
+  @MiddleWare(AuthMiddleWare)
   async updateUser(
     ctx: RequestContext,
     next: RequestNext,

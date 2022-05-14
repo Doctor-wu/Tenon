@@ -9,8 +9,8 @@ const bootstrap = async () => {
       port: 4897,
     },
     mongodb: {
-      // username: 'doctorwu',
-      // password: '123456',
+      username: 'doctorwu-todo',
+      password: '123456',
       address: 'mongodb://localhost:27017/todo',
     },
     controllers: [
@@ -25,7 +25,8 @@ const bootstrap = async () => {
     session: {
       key: 'tenon:todo:ssid',
       sameSite: true,
-      maxAge: 6 * 3600 * 1000,
+      maxAge: 60 * 1000,
+      renew: false,
     },
     logger: {
       path: path.resolve(__dirname, "../log"),

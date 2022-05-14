@@ -1,3 +1,4 @@
+import { Message } from '@arco-design/web-vue';
 import { createTenonApp } from '@tenon/sdk';
 import '@tenon/sdk/src/web/dist/style.css';
 import axios from 'axios';
@@ -29,7 +30,8 @@ request.interceptors.request.use(
     if (code === 403) {
       // TODO 登陆态失效
       app.store.remove('user');
-      app.page.changePage('登陆页');
+      app.page.changePage('627a22f2549f6c71194c78ec');
+      Message.warning('登录过期, 请重新登录');
     }
     return Promise.reject(error);
   }
@@ -38,9 +40,8 @@ request.interceptors.request.use(
 const app = createTenonApp({
   el: '#app',
   mode: (import.meta as any).env.PROD ? 'prod' : 'dev',
-  SDKKey: '123',
-  // homePageId: (import.meta as any).env.PROD ? '' : '6274cf734d60b49bb67d4687',
-  homePageId: (import.meta as any).env.PROD ? '' : '6274cf734d60b49bb67d4687',
+  SDKKey: '627a7ed3549f6c71194c7b33',
+  homePageId: (import.meta as any).env.PROD ? '' : '627a7ed3549f6c71194c7b33',
   request,
-  prefix: (import.meta as any).env.PROD ? '' : 'http://192.168.31.133:9847/',
+  prefix: (import.meta as any).env.PROD ? '' : 'http://192.168.3.210:9847/',
 });

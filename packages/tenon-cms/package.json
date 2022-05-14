@@ -21,9 +21,9 @@
     "author": "Doctor wu",
     "devDependencies": {
         "@tenon/bff": "workspace:*",
-        "@tenon/flow": "workspace:*",
         "@tenon/cms": "workspace:*",
         "@tenon/engine": "workspace:*",
+        "@tenon/flow": "workspace:*",
         "@tenon/internal-components": "workspace:*",
         "@tenon/materials": "workspace:*",
         "@tenon/sdk": "workspace:*",

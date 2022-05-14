@@ -32,7 +32,7 @@ class TenonSDKPage {
     this.pageInfo.value = pageInfo;
   
     this.emitter.emit(SDKPageEvents.PageInfo_Changed, this.pageInfo);
-    console.log('changed!!!!');
+    console.log('changed!!!!', this.pageInfo);
   }
 
   setSDKKey(key: string) {
@@ -41,14 +41,14 @@ class TenonSDKPage {
 
   async getPageInfoFromRemote(pageId) {
     if (!this.SDKKey) return console.error('SDKKey is not set');
-    if(this.pageInfoCache.has(pageId)) {
-      await createSleepFunc(200)();
-      return this.pageInfoCache.get(pageId);
-    };
+    // if(this.pageInfoCache.has(pageId)) {
+    //   await createSleepFunc(200)();
+    //   return this.pageInfoCache.get(pageId);
+    // };
     const res = await (
       await fetch(`${this.app.config.mode === 'prod' ? 'https://doctorwu.club/tenonbff/' : (this.app.config.prefix || '/')}getSDKPageInfo?pageId=${pageId}&SDKKey=${this.SDKKey}`)
     ).json();
-    this.pageInfoCache.set(pageId, cloneDeep(res));
+    // this.pageInfoCache.set(pageId, cloneDeep(res));
     return res;
   }
 }

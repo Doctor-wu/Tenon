@@ -13,7 +13,7 @@
   </template>
 </template>
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, reactive } from 'vue';
 import { Message } from '@arco-design/web-vue';
 import { TenonComponent } from '@tenon/engine';
 
@@ -50,7 +50,7 @@ const internalLoop = computed(() => {
     return [1];
   }
 });
-const childrenBucket = { value: undefined };
+const childrenBucket = reactive({ value: undefined });
 </script>
 
 <style lang="scss" scoped>

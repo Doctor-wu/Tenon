@@ -129,6 +129,7 @@ import {
   IconSearch,
   IconPlayCircle,
   IconUser,
+  IconLock,
 } from '@arco-design/web-vue/es/icon';
 
 export const materialDependency: any = {
@@ -228,4 +229,6 @@ export const IconTypes = {
   refresh: IconRefresh,
   reply: IconReply,
   search: IconSearch,
+  user: IconUser,
+  lock: IconLock,
 };

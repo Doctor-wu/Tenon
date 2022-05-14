@@ -5,7 +5,7 @@ import ComposeViewConfig from './components/Compose-View/Compose-View.config.jso
 import ComposeViewVue from './components/Compose-View/Compose-View.vue';
 import { cloneDeep } from 'lodash';
 import TenonSDKPage, { SDKPageEvents } from './page';
-import { createApp, reactive, watchEffect } from 'vue';
+import { watchEffect } from 'vue';
 import { TenonWebSDKRenderer } from './render';
 import { TenonSDKProject } from './project';
 import { Message } from '@arco-design/web-vue';
