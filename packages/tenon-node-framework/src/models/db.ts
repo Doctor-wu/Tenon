@@ -7,10 +7,10 @@ export const establishDBConnection = (config: IServerConfig): Promise<Mongoose> 
   return new Promise((resolve, reject) => {
     if (!config.mongodb) return reject('lack mongodb config');
     const DB_ADDRESS = CONSTANT.defaultServerAddress;
-    mongoose.connect(config.mongodb.address || DB_ADDRESS, {
+    mongoose.connect(config.mongodb.address || DB_ADDRESS, config.mongodb.username && config.mongodb.password ? {
       user: config.mongodb.username,
       pass: config.mongodb.password,
-    }, err => {
+    } : {}, err => {
       if (err) {
         io.error(JSON.stringify({ msg: '[Mongoose] database connect failed!', err }));
         reject(err);
