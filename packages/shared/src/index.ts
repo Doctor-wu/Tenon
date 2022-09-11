@@ -1,3 +1,4 @@
+export * from './di';
 export * from './pattern';
 export * from './utils';
 export * from './type';

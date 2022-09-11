@@ -62,7 +62,10 @@ importers:
       svg-captcha: 1.4.0
 
   packages/shared:
-    specifiers: {}
+    specifiers:
+      '@tenon/shared': workspace:*
+    dependencies:
+      '@tenon/shared': 'link:'
 
   packages/tenon-bff:
     specifiers:
@@ -272,6 +275,9 @@ importers:
       typescript: 4.6.2
       vite: 2.8.6_sass@1.49.9
       vue-tsc: 0.3.0_typescript@4.6.2
+
+  packages/tenon-workbench:
+    specifiers: {}
 
 packages:
 
@@ -586,7 +592,6 @@ packages:
 
   /@types/node/17.0.31:
     resolution: {integrity: sha512-AR0x5HbXGqkEx9CadRH3EBYx/VkiUgZIhP4wvPn/+5KIsgpNoyFaRlVe0Zlx9gRtg8fA06a9tskE2MSN7TcG4Q==}
-    dev: false
 
   /@types/qs/6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}

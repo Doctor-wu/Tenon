@@ -1,5 +1,5 @@
 {
-  "name": "@tenon/shared",
+  "name": "@tenon/workbench",
   "version": "1.0.0",
   "main": "src/index.ts",
   "module": "src/index.ts",
@@ -9,8 +9,6 @@
   "author": "Doctor wu",
   "license": "MIT",
   "devDependencies": {},
-  "dependencies": {
-    "@tenon/shared": "workspace:*"
-  },
+  "dependencies": {},
   "description": ""
 }
