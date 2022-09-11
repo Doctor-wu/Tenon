@@ -24,8 +24,8 @@ const bootstrap = async () => {
       port: 9847,
     },
     mongodb: {
-      username: 'doctorwu',
-      password: '123456',
+      // username: 'doctorwu',
+      // password: '123456',
       address: 'mongodb://localhost:27017/tenon',
     },
     controllers: [
