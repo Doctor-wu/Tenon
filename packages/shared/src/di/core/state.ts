@@ -5,16 +5,22 @@ import { ServiceTag } from "../decorators";
 export class DIState {
   static services = new Map<string, IService<any>>();
   static instance?: DIState;
+  static depsStack: string[] = [];
 
   static getInstance = () => {
     if (!this.instance) this.instance = new DIState;
     return this.instance;
   }
 
-  static getDeps(service: IService, ...args: unknown[]): any {
+  static getDeps(service: IService, ...args: any[]): any {
+    if (this.depsStack.includes(service.name)) {
+      this.depsStack.push(service.name);
+      throw new Error(`[Circle Deps] ${this.depsStack.join(' -> ')}`);
+    }
+    this.depsStack.push(service.name);
     const deps: any[] = [];
     const target = service.loader();
-    const depsMap = target[ServiceTag];
+    const depsMap = target[ServiceTag].deps;
     const argsLen = target.length;
     let otherArgsIndex = 0;
     for (let i = 0; i < argsLen; i++) {
@@ -31,7 +37,7 @@ export class DIState {
     return deps;
   }
 
-  static initService<T extends newable<unknown[], T>>(service: IService<T>, ...args: unknown[]): T {
+  static initService<T extends newable<any[], T>>(service: IService<T>, ...args: any[]): T {
     const deps = DIState.getDeps(service as unknown as IService, ...args);
     const {
       loader,
@@ -46,7 +52,7 @@ export class DIState {
     return service.instance;
   }
 
-  static getServiceInstance(serviceName: string) {
+  static getServiceInstance<T>(serviceName: string): T | undefined {
     const service = this.services.get(serviceName);
     if (!service) {
       console.warn('service is not injected');
@@ -57,7 +63,7 @@ export class DIState {
     }
   }
 
-  static mount(serviceName: string, ...args: unknown[]){
+  static mount(serviceName: string, ...args: unknown[]) {
     if (!this.services.has(serviceName)) {
       console.warn('service is not injected');
     } else {

@@ -1,4 +1,5 @@
 import { DIState } from '../core';
+import { InjectTag } from './inject';
 type ServiceType = (params: {
   name: string;
 }) => ClassDecorator;
@@ -14,7 +15,8 @@ export const Service: ServiceType = ({
       loader: () => target,
     });
     target[ServiceTag] = {
-      deps: new Map<number, string>(),
+      deps: new Map<number, string>(target[InjectTag] || undefined),
+      name,
     };
   }
 }
