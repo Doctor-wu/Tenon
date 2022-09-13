@@ -1,4 +1,4 @@
 build-cache
 dist
 typings
-components-dist
+# components-dist
