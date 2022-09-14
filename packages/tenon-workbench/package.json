@@ -1,15 +1,17 @@
 {
   "name": "@tenon/workbench",
   "version": "1.0.0",
-  "main": "src/index.ts",
-  "module": "src/index.ts",
+  "main": "lib/tenon-workbench.umd.js",
+  "module": "lib/tenon-workbench.es.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "ts-node scripts/build.ts"
   },
   "author": "Doctor wu",
   "license": "MIT",
+  "types": "typings",
   "devDependencies": {
-    "@tenon/shared": "workspace: *"
+    "@tenon/shared": "workspace:*",
+    "@tenon/workbench": "workspace:*"
   },
   "dependencies": {},
   "description": ""

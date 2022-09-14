@@ -2,6 +2,7 @@ import { workbenchDIState } from "../../core/di-state";
 import { FeatureTag } from "./feature";
 
 export const LoaderTag = Symbol('Loader');
+
 export type IDynamicFeature<T> = {
   getInstance: () => Promise<T>;
   instance?: T;

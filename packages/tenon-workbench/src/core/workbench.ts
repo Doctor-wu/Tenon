@@ -1,14 +1,22 @@
+import { FeatureNameKey } from '../di';
+import { workbenchDIState } from './di-state';
 import { DynamicFeatureTag, SyncFeatureTag } from "./tag";
 
 export interface IWorkbenchConfig {
+  el: HTMLElement;
   // editor adapter
   adapter: any;
 
   // feature tags
-  syncTags: SyncFeatureTag[];
+  // syncTags: SyncFeatureTag[];
+  syncFeatures: any[];
   dynamicTags: DynamicFeatureTag[];
+
+  // 用于配置头部栏，工具栏，底部栏
+  actionControllers: any[];
+  uiControllers: any[];
   
-  // 头部栏，工具栏，底部栏配置
+  // 注册头部栏，工具栏，底部栏配置
   headBarConfig: any;
   toolBarConfig: any;
   footBarConfig: any;
@@ -23,7 +31,8 @@ export interface IWorkbenchConfig {
 export class Workbench<Editor extends unknown> {
   private editor?: Editor;
 
-  private syncTags: Set<SyncFeatureTag> = new Set();
+  // private syncTags: Set<SyncFeatureTag> = new Set();
+  private syncFeatures: any[] = [];
   private dynamicTags: Set<DynamicFeatureTag> = new Set();
 
   public keyBoardService: any;
@@ -32,14 +41,17 @@ export class Workbench<Editor extends unknown> {
 
   constructor(config: IWorkbenchConfig) {
     const {
-      syncTags,
+      syncFeatures,
       dynamicTags,
     } = config;
-    this.initFeatureTags(syncTags, dynamicTags);
+    this.initFeatureTags(syncFeatures, dynamicTags);
   }
 
-  initFeatureTags(syncTags: SyncFeatureTag[], dynamicTags: DynamicFeatureTag[]) {
-    syncTags.forEach(tag => this.syncTags.add(tag));
-    dynamicTags.forEach(tag => this.syncTags.add(tag));
+  initFeatureTags(syncFeatures: any[], dynamicTags: DynamicFeatureTag[]) {
+    this.syncFeatures = syncFeatures;
+    dynamicTags.forEach(tag => this.dynamicTags.add(tag));
+    syncFeatures.forEach(feature => {
+      workbenchDIState.mount(feature[FeatureNameKey]);
+    });
   }
 }
