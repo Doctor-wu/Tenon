@@ -8,7 +8,9 @@
   },
   "author": "Doctor wu",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "@tenon/shared": "workspace: *"
+  },
   "dependencies": {},
   "description": ""
 }
