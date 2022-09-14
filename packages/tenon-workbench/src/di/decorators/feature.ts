@@ -8,12 +8,15 @@ export interface IFeatureParams {
 
 export type FeatureTag = DynamicFeatureTag | SyncFeatureTag;
 
+export const FeatureNameKey = Symbol('FeatureNameKey');
+
 const Service = createServiceDecorator(workbenchDIState);
 
 export const Feature: (params: IFeatureParams) => ClassDecorator = (params: IFeatureParams) => (target) => {
   const {
     name,
   } = params;
+  target[FeatureNameKey] = name;
 
   Service({name})(target);
 };

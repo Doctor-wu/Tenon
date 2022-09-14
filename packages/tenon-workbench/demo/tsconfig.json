@@ -1,0 +1,6 @@
+{
+  "extends": "../../../tsconfig.json", // 继承根目录下通用配置
+  "compilerOptions": {
+  },
+  "include": ["src"]
+}

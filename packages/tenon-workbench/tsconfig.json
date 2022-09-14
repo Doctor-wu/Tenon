@@ -3,7 +3,14 @@
   "compilerOptions": {
     "composite": true, // 用于帮助 TypeScript 快速确定引用工程的输出文件位置
     "outDir": "dist",
-    "rootDir": "src"
+    "rootDir": "src",
+    "noEmit": false,
+    "resolveJsonModule": true,
+    "jsx": "preserve",
+    "declarationDir": "typings",
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+    "emitDeclarationOnly": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["demo"]
 }

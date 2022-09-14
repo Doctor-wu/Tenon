@@ -46,10 +46,10 @@ export class DIState {
     return service.instance;
   }
 
-  protected getServiceInstance<T>(serviceName: any): T | undefined {
+  public getServiceInstance<T>(serviceName: any): T | undefined {
     const service = this.services.get(serviceName);
     if (!service) {
-      console.warn('service is not injected');
+      // console.warn(`service ${serviceName.toString()} is not injected`);
     } else {
       if (service.instance) return service.instance;
       this.mount(serviceName);
@@ -57,7 +57,7 @@ export class DIState {
     }
   }
 
-  protected mount(serviceName: any, ...args: unknown[]) {
+  public mount(serviceName: any, ...args: unknown[]) {
     if (!this.services.has(serviceName)) {
       console.warn('service is not injected');
     } else {
