@@ -1,5 +1,5 @@
-import { Service } from "../../decorators";
 import { Inject } from "../../decorators/inject";
+import { Service } from "../di-state";
 import type ServiceB from "./service-b";
 
 @Service({
