@@ -3,11 +3,10 @@ import { newable } from "@tenon/shared";
 import { ServiceTag } from "../decorators";
 
 export class DIState {
-  services = new Map<string, IService<any>>();
-  instance?: DIState;
+  services = new Map<any, IService<any>>();
   depsStack: string[] = [];
 
-  getDeps(service: IService, ...args: any[]): any {
+  protected getDeps(service: IService, ...args: any[]): any {
     if (this.depsStack.includes(service.name)) {
       this.depsStack.push(service.name);
       throw new Error(`[Circle Deps] ${this.depsStack.join(' -> ')}`);
@@ -32,7 +31,7 @@ export class DIState {
     return deps;
   }
 
-  initService<T extends newable<any[], T>>(service: IService<T>, ...args: any[]): T {
+  protected initService<T extends newable<any[], T>>(service: IService<T>, ...args: any[]): T {
     const deps = this.getDeps(service as unknown as IService, ...args);
     const {
       loader,
@@ -41,13 +40,13 @@ export class DIState {
     const Type = loader();
     service.instance = new Type(...deps);
     if (onLoad) {
-      onLoad(service);
+      onLoad(service.instance!);
     }
     this.services.set(service.name, service);
     return service.instance;
   }
 
-  getServiceInstance<T>(serviceName: string): T | undefined {
+  protected getServiceInstance<T>(serviceName: any): T | undefined {
     const service = this.services.get(serviceName);
     if (!service) {
       console.warn('service is not injected');
@@ -58,7 +57,7 @@ export class DIState {
     }
   }
 
-  mount(serviceName: string, ...args: unknown[]) {
+  protected mount(serviceName: any, ...args: unknown[]) {
     if (!this.services.has(serviceName)) {
       console.warn('service is not injected');
     } else {
@@ -67,5 +66,13 @@ export class DIState {
       if (service.instance) return;
       this.initService(service, ...args);
     }
+  }
+
+  protected regisService<T extends unknown>(serviceName: any, loader: () => T, onLoad?: (instance:T) => void) {
+    this.services.set(serviceName, {
+      name: serviceName,
+      loader,
+      onLoad,
+    });
   }
 }
