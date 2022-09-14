@@ -3,16 +3,11 @@ import { newable } from "@tenon/shared";
 import { ServiceTag } from "../decorators";
 
 export class DIState {
-  static services = new Map<string, IService<any>>();
-  static instance?: DIState;
-  static depsStack: string[] = [];
+  services = new Map<string, IService<any>>();
+  instance?: DIState;
+  depsStack: string[] = [];
 
-  static getInstance = () => {
-    if (!this.instance) this.instance = new DIState;
-    return this.instance;
-  }
-
-  static getDeps(service: IService, ...args: any[]): any {
+  getDeps(service: IService, ...args: any[]): any {
     if (this.depsStack.includes(service.name)) {
       this.depsStack.push(service.name);
       throw new Error(`[Circle Deps] ${this.depsStack.join(' -> ')}`);
@@ -37,8 +32,8 @@ export class DIState {
     return deps;
   }
 
-  static initService<T extends newable<any[], T>>(service: IService<T>, ...args: any[]): T {
-    const deps = DIState.getDeps(service as unknown as IService, ...args);
+  initService<T extends newable<any[], T>>(service: IService<T>, ...args: any[]): T {
+    const deps = this.getDeps(service as unknown as IService, ...args);
     const {
       loader,
       onLoad,
@@ -52,7 +47,7 @@ export class DIState {
     return service.instance;
   }
 
-  static getServiceInstance<T>(serviceName: string): T | undefined {
+  getServiceInstance<T>(serviceName: string): T | undefined {
     const service = this.services.get(serviceName);
     if (!service) {
       console.warn('service is not injected');
@@ -63,7 +58,7 @@ export class DIState {
     }
   }
 
-  static mount(serviceName: string, ...args: unknown[]) {
+  mount(serviceName: string, ...args: unknown[]) {
     if (!this.services.has(serviceName)) {
       console.warn('service is not injected');
     } else {
@@ -73,5 +68,4 @@ export class DIState {
       this.initService(service, ...args);
     }
   }
-
 }

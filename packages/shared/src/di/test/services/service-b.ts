@@ -1,4 +1,4 @@
-import { Service } from "../../decorators";
+import { Service } from "../di-state";
 
 @Service({
   name: 'service-b',

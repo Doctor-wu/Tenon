@@ -6,11 +6,11 @@ type ServiceType = (params: {
 
 export const ServiceTag = Symbol('Service');
 
-export const Service: ServiceType = ({
+export const createServiceDecorator = (state: DIState) => ({
   name,
 }) => {
   return (target) => {
-    DIState.services.set(name, {
+    state.services.set(name, {
       name,
       loader: () => target,
     });
