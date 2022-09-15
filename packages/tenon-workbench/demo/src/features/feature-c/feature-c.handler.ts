@@ -6,7 +6,7 @@ import { FeatureCFeature } from "./feature-c.interface";
   name: FeatureCFeature
 })
 // @ts-ignore
-export class FeatureCHandler {
+export class FeatureCHandler implements FeatureCFeature{
 
   constructor() {
     console.log('C is coming!')

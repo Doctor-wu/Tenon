@@ -6,11 +6,18 @@ import { FeatureAFeature } from "./feature-a.interface";
 @Feature({
   name: FeatureAFeature
 })
-export class FeatureAHandler {
+export class FeatureAHandler implements FeatureAFeature {
   constructor(
     @Inject(FeatureBFeature) private featureB: FeatureBFeature,
   ) {
     console.log(featureB);
-    featureB.invokeB();
+    this.invokeA();
+    setTimeout(() => {
+      this.featureB.invokeB();
+    }, 1500);
+  }
+
+  invokeA() {
+    console.log('invoke A!');
   }
 }
