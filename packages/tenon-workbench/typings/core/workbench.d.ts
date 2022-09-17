@@ -1,7 +1,6 @@
-import { DynamicFeatureTag } from "./tag";
+import { Subscribe } from '@tenon/shared';
+import { DynamicFeatureTag } from './tag';
 export interface IWorkbenchConfig {
-    el: HTMLElement;
-    adapter: any;
     syncFeatures: any[];
     dynamicTags: DynamicFeatureTag[];
     actionControllers: any[];
@@ -9,15 +8,19 @@ export interface IWorkbenchConfig {
     headBarConfig: any;
     toolBarConfig: any;
     footBarConfig: any;
-    editorGrid: any;
     keyBoardConfig: any;
 }
-export declare class Workbench<Editor extends unknown> {
-    private editor?;
-    private syncFeatures;
-    private dynamicTags;
-    keyBoardService: any;
-    contextService: any;
-    constructor(config: IWorkbenchConfig);
-    initFeatureTags(syncFeatures: any[], dynamicTags: DynamicFeatureTag[]): void;
-}
+export declare const inheritFromWorkbench: (Target: any, config: IWorkbenchConfig) => {
+    new (...args: any[]): {
+        [x: string]: any;
+        syncFeatures: any[];
+        dynamicTags: Set<DynamicFeatureTag>;
+        keyBoardService: any;
+        contextService: any;
+        eventEmitter: Subscribe;
+        initFeatureTags(syncFeatures: any[], dynamicTags: DynamicFeatureTag[]): void;
+        initEvents(): void;
+        onLoad(el: HTMLElement): void;
+    };
+    [x: string]: any;
+};

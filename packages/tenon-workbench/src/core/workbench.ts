@@ -1,11 +1,12 @@
-import { FeatureNameKey } from '../di';
+import { Subscribe } from '@tenon/shared';
+import { FeatureNameKey } from '../decorators';
 import { workbenchDIState } from './di-state';
-import { DynamicFeatureTag, SyncFeatureTag } from "./tag";
-
+import { WorkbenchEvents } from './events';
+import { DynamicFeatureTag } from './tag';
 export interface IWorkbenchConfig {
-  el: HTMLElement;
+  // el: HTMLElement;
   // editor adapter
-  adapter: any;
+  // adapter: any;
 
   // feature tags
   // syncTags: SyncFeatureTag[];
@@ -15,43 +16,55 @@ export interface IWorkbenchConfig {
   // 用于配置头部栏，工具栏，底部栏
   actionControllers: any[];
   uiControllers: any[];
-  
+
   // 注册头部栏，工具栏，底部栏配置
   headBarConfig: any;
   toolBarConfig: any;
   footBarConfig: any;
 
-  // 编辑区域grid配置
-  editorGrid: any;
-
   // 键盘事件管理服务
   keyBoardConfig: any;
-}
+};
 
-export class Workbench<Editor extends unknown> {
-  private editor?: Editor;
+// @ts-ignore
+export const inheritFromWorkbench = (Target: any, config: IWorkbenchConfig) => {
+  const {
+    syncFeatures,
+    dynamicTags,
+  } = config;
 
-  // private syncTags: Set<SyncFeatureTag> = new Set();
-  private syncFeatures: any[] = [];
-  private dynamicTags: Set<DynamicFeatureTag> = new Set();
+  return class Workbench extends Target {
 
-  public keyBoardService: any;
-  public contextService: any;
+    public syncFeatures: any[] = [];
+    public dynamicTags: Set<DynamicFeatureTag> = new Set();
 
+    public keyBoardService: any;
+    public contextService: any;
+    public eventEmitter = new Subscribe();
 
-  constructor(config: IWorkbenchConfig) {
-    const {
-      syncFeatures,
-      dynamicTags,
-    } = config;
-    this.initFeatureTags(syncFeatures, dynamicTags);
-  }
+    constructor(...args: any[]) {
+      super(...args);
+      this.initEvents();
+    }
 
-  initFeatureTags(syncFeatures: any[], dynamicTags: DynamicFeatureTag[]) {
-    this.syncFeatures = syncFeatures;
-    dynamicTags.forEach(tag => this.dynamicTags.add(tag));
-    syncFeatures.forEach(feature => {
-      workbenchDIState.mount(feature[FeatureNameKey]);
-    });
-  }
+    public initFeatureTags(syncFeatures: any[], dynamicTags: DynamicFeatureTag[]) {
+      this.syncFeatures = syncFeatures;
+      dynamicTags.forEach(tag => this.dynamicTags.add(tag));
+      this.syncFeatures.forEach(feature => {
+        workbenchDIState.mount(feature[FeatureNameKey]);
+      });
+    }
+
+    public initEvents() {
+      this.eventEmitter.on(
+        WorkbenchEvents.Load,
+        this.onLoad.bind(this),
+      );
+    }
+
+    public onLoad(el: HTMLElement) {
+      console.log('workbench load', el);
+      this.initFeatureTags(syncFeatures, dynamicTags);
+    }
+  };
 }

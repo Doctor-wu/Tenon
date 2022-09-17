@@ -4,6 +4,7 @@ import { ServiceTag } from "../decorators";
 
 export class DIState {
   services = new Map<any, IService<any>>();
+  instances = new Map<any, any>();
   depsStack: string[] = [];
 
   protected getDeps(service: IService, ...args: any[]): any {
@@ -43,6 +44,7 @@ export class DIState {
       onLoad(service.instance!);
     }
     this.services.set(service.name, service);
+    this.instances.set(service.name, service.instance!);
     return service.instance;
   }
 

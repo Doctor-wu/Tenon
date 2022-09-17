@@ -1,4 +1,4 @@
-import { workbenchDIState } from "../../core/di-state";
+import { workbenchDIState } from "../core/di-state";
 import { FeatureTag } from "./feature";
 
 export const LoaderTag = Symbol('Loader');
@@ -8,6 +8,9 @@ export type IDynamicFeature<T> = {
   instance?: T;
 }
 
+/**
+ * loader 既支持同步依赖也支持异步依赖
+ */
 export const Loader: (tag: FeatureTag) => PropertyDecorator = (tag: FeatureTag) => {
   return (target, propertyKey) => {
     let instance;
