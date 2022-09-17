@@ -1,6 +1,6 @@
 import { createServiceDecorator } from "@tenon/shared";
-import { DynamicFeatureTag, SyncFeatureTag } from "../../core";
-import { workbenchDIState } from "../../core/di-state";
+import { DynamicFeatureTag, SyncFeatureTag } from "../core";
+import { workbenchDIState } from "../core/di-state";
 
 export interface IFeatureParams {
   name: FeatureTag;

@@ -1,4 +1,4 @@
-import { workbenchDIState } from './../../core/di-state';
+import { workbenchDIState } from '../core/di-state';
 import { FeatureTag } from './feature';
 
 
@@ -14,7 +14,7 @@ export const awaitLoad: awaitLoadType = (...tags: FeatureTag[]) => {
         }),
       ).then(() => {
         oldInvoke.call(target, ...args);
-      })
+      });
     } as any;
   }
 }

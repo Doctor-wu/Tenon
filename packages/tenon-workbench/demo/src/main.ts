@@ -1,11 +1,9 @@
-import { Workbench } from "@tenon/workbench";
+import { WorkbenchLoader, WorkbenchSettings } from "@tenon/workbench";
 import { FeatureBHandler, FeatureCFeature, FeatureAHandler } from "./features";
 
 const root = document.getElementById('workbench-root')!;
 
-const wb = new Workbench({
-  el: root,
-  adapter: null,
+@WorkbenchSettings({
   dynamicTags: [
     FeatureCFeature,
   ],
@@ -15,11 +13,13 @@ const wb = new Workbench({
   ],
   uiControllers: [],
   actionControllers: [],
-  editorGrid: null,
   footBarConfig: null,
   headBarConfig: null,
   keyBoardConfig: null,
   toolBarConfig: null,
-});
+})
+class App extends WorkbenchLoader {
+}
 
-console.log(wb);
+const app = new App();
+app.load(root);

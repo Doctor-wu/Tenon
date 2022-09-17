@@ -13,6 +13,9 @@
     "@tenon/shared": "workspace:*",
     "@tenon/workbench": "workspace:*"
   },
-  "dependencies": {},
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "tdesign-vue-next": "^0.21.0",
+    "vue": "^3.2.31"
+  }
 }
