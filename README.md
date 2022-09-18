@@ -38,7 +38,7 @@
   - [ ] 改造为docker项目
   - [ ] 改造 tenon-node-framework
 - [ ] 新增workbench系统
-  - [ ] 参考vscode使用workbench来连接编辑器与feature
+  - [x] 参考vscode使用workbench来连接编辑器与feature
   - [x] DI
   - [ ] 可注册widget
   - [ ] 可注册键盘事件
