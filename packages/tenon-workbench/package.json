@@ -2,7 +2,7 @@
   "name": "@tenon/workbench",
   "version": "1.0.0",
   "main": "lib/tenon-workbench.umd.js",
-  "module": "src/index.ts",
+  "module": "lib/tenon-workbench.es.js",
   "scripts": {
     "build": "ts-node scripts/build.ts"
   },
