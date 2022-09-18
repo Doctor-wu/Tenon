@@ -2,6 +2,7 @@ import { IWorkbenchAdapter, WorkbenchLoader, WorkbenchSettings } from "@tenon/wo
 import { headerBarConfig } from "./configs/header-bar-config";
 import { FeatureBHandler, FeatureCFeature, FeatureAHandler } from "./features";
 import { HeaderBarController } from "./features/headerbar/headerbar.controller";
+import "@tenon/workbench/lib/style.css";
 import "./index.css";
 
 const root = document.getElementById('workbench-root')!;

@@ -1,4 +1,4 @@
-import { Controller, ActionController } from "@tenon/workbench";
+import { ActionController } from "@tenon/workbench";
 
 export class HeaderBarController {
 
