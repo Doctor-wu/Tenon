@@ -1,3 +1,4 @@
 export declare enum WorkbenchEvents {
-    Load = "Load"
+    Load = "Load",
+    EditorRootMount = "EditorRootMount"
 }

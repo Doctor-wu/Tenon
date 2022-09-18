@@ -9,8 +9,7 @@
     "jsx": "preserve",
     "declarationDir": "typings",
     "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
-    "emitDeclarationOnly": true
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.json"],
   "exclude": ["demo"]
 }

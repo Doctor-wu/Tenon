@@ -10,6 +10,8 @@ export class WorkbenchDIState extends DIState {
       const instance = await dynamicLoaderRegistry.get(serviceName)?.load();
       this.regisService(serviceName, () => instance);
       return this.initService(this.services.get(serviceName)!, ...args);
+    } else {
+      console.warn(`${serviceName} has not been injected`);
     }
   }
 };
