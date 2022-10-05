@@ -11,6 +11,7 @@ export enum IHeaderBarType {
 export interface IHeaderBarBaseItem<BarType extends IHeaderBarType> {
   name: string;
   type: BarType,
+  hidden?: boolean;
 };
 
 export interface IHeaderBarInfoItem extends IHeaderBarBaseItem<IHeaderBarType.Info> {
@@ -20,7 +21,6 @@ export interface IHeaderBarInfoItem extends IHeaderBarBaseItem<IHeaderBarType.In
 export interface IHeaderBarOperatorItem extends IHeaderBarBaseItem<IHeaderBarType.Operator> {
   popupText?: string;
   iconName?: string;
-  subConfigs?: IHeaderBarOperatorItem[];
   render?: () => VNode;
 }
 
