@@ -14,6 +14,7 @@ export type IDynamicFeature<T> = {
 export const Loader: (tag: FeatureTag) => PropertyDecorator = (tag: FeatureTag) => {
   return (target, propertyKey) => {
     let instance;
+    target[LoaderTag] = target[LoaderTag] || {};
     target[propertyKey] = {
       getInstance: async () => {
         if (instance) return instance;
@@ -22,5 +23,6 @@ export const Loader: (tag: FeatureTag) => PropertyDecorator = (tag: FeatureTag) 
         return instance;
       }
     }
+    target[LoaderTag][tag] = target[propertyKey];
   }
 }

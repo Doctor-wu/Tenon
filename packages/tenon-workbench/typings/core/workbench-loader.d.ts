@@ -4,7 +4,7 @@ import { BarConfig } from "./config";
 import { DynamicFeatureTag } from "./tag";
 import { IWorkbench } from "./workbench";
 export declare class WorkbenchLoader implements IWorkbench {
-    actionControllers: any[];
+    controllers: any[];
     eventEmitter: Subscribe;
     app: App;
     syncFeatures: any[];

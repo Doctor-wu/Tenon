@@ -7,7 +7,7 @@ import { IWorkbench } from "./workbench";
 
 
 export class WorkbenchLoader implements IWorkbench{
-  actionControllers!: any[];
+  controllers!: any[];
   eventEmitter!: Subscribe;
   app!: App;
   syncFeatures!: any[];

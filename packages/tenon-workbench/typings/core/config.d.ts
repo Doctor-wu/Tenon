@@ -23,10 +23,26 @@ export declare class BarConfig {
         [props: string]: Function[];
     }>;
     config: UnwrapNestedRefs<{
-        headerBarConfig: any;
+        headerBarConfig: HeaderBarConfig;
     }>;
     constructor(headerBarConfig: HeaderBarConfig);
-    get headerBarConfig(): any;
+    get headerBarConfig(): ({
+        render: () => VNode<import("vue").RendererNode, import("vue").RendererElement, {
+            [key: string]: any;
+        }>;
+        name: string;
+        type: IHeaderBarType.Info;
+    } | {
+        popupText?: string | undefined;
+        iconName?: string | undefined;
+        subConfigs?: any[] | undefined;
+        render?: (() => VNode<import("vue").RendererNode, import("vue").RendererElement, {
+            [key: string]: any;
+        }>) | undefined;
+        name: string;
+        type: IHeaderBarType.Operator;
+    })[];
     regisAction(name: any, action: string, cb: Function): void;
     emitAction(name: any, action: string, ...args: any[]): void;
+    updateUIConfig(name: any, partial: Partial<IHeaderBarItem>): void;
 }

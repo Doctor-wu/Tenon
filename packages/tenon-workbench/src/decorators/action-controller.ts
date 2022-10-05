@@ -4,10 +4,10 @@ export const ActionControllerKey = Symbol('ActionController');
 
 export const ActionController: ActionControllerType = (name: any, action: string) => {
   return (target, propertyKey, desc) => {
-    const oldValue = desc.value;
+    const oldValue: any = desc.value;
     target[ActionControllerKey] = target[ActionControllerKey] || {};
     target[ActionControllerKey][name] = target[ActionControllerKey][name] || {};
     target[ActionControllerKey][name][action] = target[ActionControllerKey][name][action] || [];
-    target[ActionControllerKey][name][action].push(oldValue);
+    target[ActionControllerKey][name][action].push(() => oldValue.call(target));
   }
 }
