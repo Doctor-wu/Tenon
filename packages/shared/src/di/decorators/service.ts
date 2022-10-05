@@ -6,7 +6,7 @@ type ServiceType = (params: {
 
 export const ServiceTag = Symbol('Service');
 
-export const createServiceDecorator = (state: DIState) => ({
+export const createServiceDecorator = (state: DIState, tagName: any = ServiceTag) => ({
   name,
 }) => {
   return (target) => {
@@ -14,7 +14,7 @@ export const createServiceDecorator = (state: DIState) => ({
       name,
       loader: () => target,
     });
-    target[ServiceTag] = {
+    target[tagName] = {
       deps: new Map<number, string>(target[InjectTag] || undefined),
       name,
     };

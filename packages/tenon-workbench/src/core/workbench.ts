@@ -8,13 +8,13 @@ import { WorkbenchLoader } from './workbench-loader';
 import { App, createApp, h } from 'vue';
 import WorkbenchComponent from '../components/workbench.vue';
 import { BarConfig, HeaderBarConfig } from './config';
+import { UIControllerKey } from '../decorators/ui-controller';
 export interface IWorkbenchConfig {
   syncFeatures: any[];
   dynamicTags: DynamicFeatureTag[];
 
   // 用于配置头部栏，工具栏，底部栏
-  actionControllers: any[];
-  uiControllers: any[];
+  controllers: any[];
 
   // 注册头部栏，工具栏，底部栏配置
   headerBarConfig: HeaderBarConfig;
@@ -29,7 +29,7 @@ export interface IWorkbench {
   app: App;
   syncFeatures: any[];
   dynamicTags: Set<DynamicFeatureTag>;
-  actionControllers: any[];
+  controllers: any[];
   eventEmitter: Subscribe;
   barConfig: BarConfig;
 }
@@ -42,16 +42,16 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
     syncFeatures,
     dynamicTags,
     headerBarConfig,
-    actionControllers,
+    controllers,
   } = config;
 
-  return class Workbench extends Target implements IWorkbench{
+  return class Workbench extends Target implements IWorkbench {
     public app!: App;
 
     public syncFeatures: any[] = [];
     public dynamicTags: Set<DynamicFeatureTag> = new Set();
 
-    public actionControllers: any[] = actionControllers;
+    public controllers = controllers;
 
     public keyBoardService: any;
     public contextService: any;
@@ -75,7 +75,7 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
     }
 
     public initControllers() {
-      this.actionControllers.forEach(controller => {
+      this.controllers.forEach(controller => {
         console.log(controller);
         Object.keys(controller.prototype[ActionControllerKey]).forEach(nameKey => {
           Object.keys(controller.prototype[ActionControllerKey][nameKey]).forEach(actionKey => {
@@ -83,6 +83,9 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
               this.barConfig.regisAction(nameKey, actionKey, cb);
             });
           });
+        });
+        Object.keys(controller.prototype[UIControllerKey]).forEach(nameKey => {
+          controller.prototype[UIControllerKey][nameKey](this);
         });
       });
     }

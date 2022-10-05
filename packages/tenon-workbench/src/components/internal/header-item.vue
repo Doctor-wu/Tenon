@@ -7,7 +7,7 @@
     :show-arrow="false"
     placement="bottom"
   >
-    <Button v-if="!operateConfig.render" :onClick="(...args) =>emitAction('onClick', ...args)" variant="text">
+    <Button :onClick="(...args) =>emitAction('onClick', ...args)" variant="text">
       <Icon size="25px" :name="operateConfig.iconName"></Icon>
     </Button>
   </Popup>

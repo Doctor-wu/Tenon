@@ -1,6 +1,6 @@
 import { IWorkbenchAdapter, WorkbenchLoader, WorkbenchSettings } from "@tenon/workbench";
 import { headerBarConfig } from "./configs/header-bar-config";
-import { FeatureBHandler, FeatureCFeature, FeatureAHandler } from "./features";
+import { FeatureBHandler, FeatureCFeature, FeatureAHandler, HeaderBarHandler } from "./features";
 import { HeaderBarController } from "./features/headerbar/headerbar.controller";
 import "@tenon/workbench/lib/style.css";
 import "./index.css";
@@ -14,9 +14,9 @@ const root = document.getElementById('workbench-root')!;
   syncFeatures: [
     FeatureAHandler,
     FeatureBHandler,
+    HeaderBarHandler,
   ],
-  uiControllers: [],
-  actionControllers: [
+  controllers: [
     HeaderBarController,
   ],
   footBarConfig: null,

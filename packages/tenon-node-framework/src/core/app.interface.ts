@@ -63,7 +63,7 @@ export interface IServerConfig {
   }
 }
 
-export type tenonAppType = Koa<Koa.DefaultState, Koa.DefaultContext> & {
+export interface tenonAppType extends Koa<Koa.DefaultState, Koa.DefaultContext> {
   start: () => Promise<any>;
   $config: IServerConfig;
   $router?: RouterModule;
