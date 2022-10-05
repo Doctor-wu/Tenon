@@ -25,6 +25,13 @@
                         mode: 'dev',
                         homePageId: pageId || "626fbf51ed38e601a7e9fb61",
                     });
+                    TenonWebSDK.createTenonApp({
+                        SDKKey: "6227143df259daae88cc8794",
+                        el: "#root2",
+                        mode: 'dev',
+                        // homePageId: '626aadde3201f4b72518e3bd',
+                        homePageId: pageId || "626fbf51ed38e601a7e9fb61",
+                    }); 
                     // setTimeout(() => {
                     //     app.page.changePage('626fa22973d6d21b6e5cf0cf');
                     // }, 5000)
@@ -33,17 +40,22 @@
             });
     </script>
     <style>
-        #root {
+        #root,#root2 {
             width: 100%;
             /* width: 365px; */
             margin: 0 auto;
             -webkit-tap-highlight-color: transparent;
+        }
+        body {
+            display: flex;
+            justify-content: space-evenly;
         }
     </style>
 </head>
 
 <body>
     <section id="root"></section>
+    <section id="root2"></section>
     <script></script>
 </body>
 

@@ -7,8 +7,7 @@ import { BarConfig, HeaderBarConfig } from './config';
 export interface IWorkbenchConfig {
     syncFeatures: any[];
     dynamicTags: DynamicFeatureTag[];
-    actionControllers: any[];
-    uiControllers: any[];
+    controllers: any[];
     headerBarConfig: HeaderBarConfig;
     toolBarConfig: any;
     footBarConfig: any;
@@ -18,7 +17,7 @@ export interface IWorkbench {
     app: App;
     syncFeatures: any[];
     dynamicTags: Set<DynamicFeatureTag>;
-    actionControllers: any[];
+    controllers: any[];
     eventEmitter: Subscribe;
     barConfig: BarConfig;
 }
@@ -28,7 +27,7 @@ export declare const inheritFromWorkbench: (Target: newable<any, WorkbenchType>,
         app: App;
         syncFeatures: any[];
         dynamicTags: Set<DynamicFeatureTag>;
-        actionControllers: any[];
+        controllers: any[];
         keyBoardService: any;
         contextService: any;
         eventEmitter: Subscribe;

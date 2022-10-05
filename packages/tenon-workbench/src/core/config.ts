@@ -30,7 +30,7 @@ export type IHeaderBarItem = IHeaderBarInfoItem | IHeaderBarOperatorItem;
 export class BarConfig {
   actionMap: Map<any, { [props: string]: Function[] }> = new Map;
   config: UnwrapNestedRefs<{
-    headerBarConfig,
+    headerBarConfig: HeaderBarConfig;
   }>;
 
   constructor(
@@ -60,5 +60,13 @@ export class BarConfig {
     this.actionMap.get(name)![action].forEach(cb => {
       cb(...args);
     });
+  }
+
+  updateUIConfig(name: any, partial: Partial<IHeaderBarItem>) {
+    const idx = this.config.headerBarConfig.findIndex(config => config.name === name);
+    if (idx === -1) {
+      return console.error('updateUIConfig failed, config', name, 'is not exist');
+    }; 
+    Object.assign(this.config.headerBarConfig[idx], partial);
   }
 }
