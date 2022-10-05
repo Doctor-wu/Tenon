@@ -1,37 +1,36 @@
 <template>
   <component v-if="operateConfig.render" :is="operateConfig.render"></component>
   <Popup
-    v-else-if="!operateConfig.subConfigs"
+    v-else
     :content="operateConfig.popupText"
     theme="light"
     :show-arrow="false"
     placement="bottom"
   >
-    <Button :onClick="(...args) =>emitAction('onClick', ...args)" variant="text">
+    <Button
+      :onClick="(...args) => emitAction(ActionType.onClick, ...args)"
+      variant="text"
+    >
       <Icon size="25px" :name="operateConfig.iconName"></Icon>
     </Button>
-  </Popup>
-  <Popup v-else>
-    <template #content> tree </template>
   </Popup>
 </template>
 <script setup lang="ts">
 import { Popup, Button, Icon } from "tdesign-vue-next";
 import { inject, VNode } from "vue";
 import { IHeaderBarOperatorItem, WorkbenchType } from "../../core";
+import { ActionType } from "../../decorators";
 
-const {
-  operateConfig,
-} = defineProps<{
+const { operateConfig } = defineProps<{
   operateConfig: IHeaderBarOperatorItem;
 }>();
 
-console.log( operateConfig)
+console.log(operateConfig);
 
 const workbench = inject<WorkbenchType>("workbench");
 const barConfig = workbench?.barConfig;
 
-const emitAction = (action: string, ...args) => {
+const emitAction = (action: ActionType, ...args) => {
   barConfig?.emitAction(operateConfig.name, action, ...args);
 };
 </script>
