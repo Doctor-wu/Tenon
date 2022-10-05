@@ -7,6 +7,7 @@ export declare enum IHeaderBarType {
 export interface IHeaderBarBaseItem<BarType extends IHeaderBarType> {
     name: string;
     type: BarType;
+    hidden?: boolean;
 }
 export interface IHeaderBarInfoItem extends IHeaderBarBaseItem<IHeaderBarType.Info> {
     render: () => VNode;
@@ -14,7 +15,6 @@ export interface IHeaderBarInfoItem extends IHeaderBarBaseItem<IHeaderBarType.In
 export interface IHeaderBarOperatorItem extends IHeaderBarBaseItem<IHeaderBarType.Operator> {
     popupText?: string;
     iconName?: string;
-    subConfigs?: IHeaderBarOperatorItem[];
     render?: () => VNode;
 }
 export declare type IHeaderBarItem = IHeaderBarInfoItem | IHeaderBarOperatorItem;
@@ -32,15 +32,16 @@ export declare class BarConfig {
         }>;
         name: string;
         type: IHeaderBarType.Info;
+        hidden?: boolean | undefined;
     } | {
         popupText?: string | undefined;
         iconName?: string | undefined;
-        subConfigs?: any[] | undefined;
         render?: (() => VNode<import("vue").RendererNode, import("vue").RendererElement, {
             [key: string]: any;
         }>) | undefined;
         name: string;
         type: IHeaderBarType.Operator;
+        hidden?: boolean | undefined;
     })[];
     regisAction(name: any, action: string, cb: Function): void;
     emitAction(name: any, action: string, ...args: any[]): void;

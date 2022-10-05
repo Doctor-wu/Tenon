@@ -1,8 +1,12 @@
-type ActionControllerType = (name: any, action: string) => MethodDecorator;
+type ActionControllerType = (name: any, action: ActionType) => MethodDecorator;
 
 export const ActionControllerKey = Symbol('ActionController');
 
-export const ActionController: ActionControllerType = (name: any, action: string) => {
+export enum ActionType {
+  onClick = 'onClick',
+}
+
+export const ActionController: ActionControllerType = (name: any, action: ActionType) => {
   return (target, propertyKey, desc) => {
     const oldValue: any = desc.value;
     target[ActionControllerKey] = target[ActionControllerKey] || {};

@@ -1,12 +1,12 @@
 <template>
   <section id="workbench-header">
     <section class="header-info">
-      <template v-for="render in infoRenders">
-        <component :is="render"></component>
+      <template :key="item.name" v-for="item in (infoRenders as any)">
+        <component :is="item.render"></component>
       </template>
     </section>
     <section class="header-operator">
-      <section v-for="item in (operatorItems as any)" class="operator-item">
+      <section :key="item.name" v-for="item in (operatorItems as any)" class="operator-item">
         <HeaderItem :operateConfig="item"></HeaderItem>
       </section>
     </section>
@@ -21,11 +21,11 @@ const { config } = defineProps<{
 }>();
 
 const infoRenders = computed(() => {
-  return config.filter((item) => item.type === IHeaderBarType.Info).map(item => item.render!());
+  return config.filter((item) => item.type === IHeaderBarType.Info && !item.hidden);
 });
 
 const operatorItems = computed(() => {
-  return config.filter((item) => item.type === IHeaderBarType.Operator);
+  return config.filter((item) => item.type === IHeaderBarType.Operator && !item.hidden);
 });
 
 </script>
