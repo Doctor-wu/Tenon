@@ -1,4 +1,4 @@
-import { WorkbenchDIServiceCore } from '../core';
+import { WorkbenchDIServiceCore } from "../services";
 import { FeatureTag } from "./feature";
 
 export const LoaderTag = Symbol('Loader');

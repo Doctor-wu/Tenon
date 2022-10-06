@@ -1,7 +1,7 @@
 import { Subscribe } from "@tenon/shared";
 import { App } from "vue";
 import { BarConfig } from "./config";
-import { DynamicFeatureTag } from "./tag";
+import { DynamicFeatureTag } from "../services/tag";
 import { IWorkbench } from "./workbench";
 export declare class WorkbenchLoader implements IWorkbench {
     controllers: any[];

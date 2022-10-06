@@ -1,5 +1,5 @@
 import { Inject as _inject } from "@tenon/shared";
-import { SyncFeatureTag } from "../core";
+import { SyncFeatureTag } from "../services";
 
 type WorkbenchInject = (name: SyncFeatureTag) => ParameterDecorator;
 

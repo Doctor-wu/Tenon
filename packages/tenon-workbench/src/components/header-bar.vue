@@ -14,18 +14,18 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
-import { HeaderBarConfig, IHeaderBarType } from "../core";
+import { HeaderBarConfig, HeaderBarType } from "../configs";
 import HeaderItem from "./internal/header-item.vue";
 const { config } = defineProps<{
   config: HeaderBarConfig,
 }>();
 
 const infoRenders = computed(() => {
-  return config.filter((item) => item.type === IHeaderBarType.Info && !item.hidden);
+  return config.filter((item) => item.type === HeaderBarType.Info && !item.hidden);
 });
 
 const operatorItems = computed(() => {
-  return config.filter((item) => item.type === IHeaderBarType.Operator && !item.hidden);
+  return config.filter((item) => item.type === HeaderBarType.Operator && !item.hidden);
 });
 
 </script>
@@ -39,6 +39,11 @@ const operatorItems = computed(() => {
   align-items: center;
   padding: 0 12px;
   box-sizing: border-box;
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
 }
 
 .main-title {

@@ -2,7 +2,7 @@ import { Subscribe } from "@tenon/shared";
 import { App } from "vue";
 import { BarConfig } from "./config";
 import { WorkbenchEvents } from "./events";
-import { DynamicFeatureTag } from "./tag";
+import { DynamicFeatureTag } from "../services/tag";
 import { IWorkbench } from "./workbench";
 
 

@@ -1,4 +1,4 @@
-import { ServiceTag } from '../core';
+import { ServiceTag } from '../services';
 export declare const ServiceHandler: ({ name, }: {
     name: any;
 }) => (target: any) => void;

@@ -1,4 +1,5 @@
-import { IHeaderBarItem, WorkbenchType } from "../core";
+import { IHeaderBarItem } from "../configs";
+import { WorkbenchType } from "../core";
 
 export type UIControllerResult = Promise<Partial<IHeaderBarItem>>;
 

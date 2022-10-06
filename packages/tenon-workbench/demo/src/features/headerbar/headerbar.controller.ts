@@ -4,10 +4,11 @@ import {
   Loader, UIControllerResult,
   ActionType,
 } from "@tenon/workbench";
-import { HeaderBarName } from "../../configs/header-bar-config";
+import { HeaderBarName, MoreItemName } from "../../configs/header-bar-config";
 import { HeaderBarFeature } from "./headerbar.interface";
 import SubTitle from "../../components/sub-title.vue";
 import { h } from "vue";
+import { MessagePlugin } from "tdesign-vue-next";
 
 export class HeaderBarController {
 
@@ -20,6 +21,10 @@ export class HeaderBarController {
     window.open(this.headerBar.instance!.getGitHubHref(), '_blank');
   }
 
+  @ActionController(MoreItemName.More, ActionType.onClick)
+  handleMoreClick() {
+    MessagePlugin.success('点击更多');
+  }
 
   @UIController(HeaderBarName.GithubIcon)
   async updateGithubItemConfig(): Promise<UIControllerResult> {
@@ -41,6 +46,10 @@ export class HeaderBarController {
       render: () => h(SubTitle, {
         text: 'Workbench副标题 (updated)',
         key: Math.random(),
+        style: {
+          alignSelf: 'flex-end',
+          marginBottom: '5px',
+        },
       }),
     };
   }

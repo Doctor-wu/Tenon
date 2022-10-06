@@ -1,4 +1,4 @@
-import { DynamicFeatureTag, SyncFeatureTag } from "./tag";
+import { DynamicFeatureTag, SyncFeatureTag } from "../services/tag";
 
 export interface IDynamicLoader<T extends unknown> {
   load: () => Promise<T>,

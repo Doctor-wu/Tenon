@@ -1,41 +1,9 @@
-import { createServiceTag } from '../services/tag';
-import { VNode } from "vue";
-import {  Service } from "../decorators";
+import { Service } from "../decorators";
 import { Singleton } from '@tenon/shared';
-import { ContextServiceCore } from '../services/context';
+import { createServiceTag, ContextServiceCore } from "../services";
+import { HeaderBarConfig, IHeaderBarItem } from "./header-bar-config";
 
-export type HeaderBarConfig = IHeaderBarItem[];
-
-export enum HeaderBarType {
-  Info = 'Info',
-  Operator = 'Operator',
-  ListTree = 'ListTree',
-};
-
-export interface IHeaderBarBaseItem<BarType extends HeaderBarType> {
-  name: string;
-  type: BarType,
-  hidden?: boolean;
-};
-
-export interface IHeaderBarInfoItem extends IHeaderBarBaseItem<HeaderBarType.Info> {
-  render: () => VNode;
-}
-
-export interface IHeaderBarOperatorItem extends IHeaderBarBaseItem<HeaderBarType.Operator> {
-  popupText?: string;
-  iconName?: string;
-  listTree?: IListTree[];
-  render?: () => VNode;
-}
-
-export interface IListTree extends IHeaderBarBaseItem<HeaderBarType.ListTree> {
-  text?: string;
-  render?: () => VNode;
-  children?: IListTree[];
-}
-
-export type IHeaderBarItem = IHeaderBarInfoItem | IHeaderBarOperatorItem;
+export * from "./header-bar-config";
 
 export const BarService = createServiceTag('BarService');
 
@@ -45,9 +13,6 @@ export const BarService = createServiceTag('BarService');
 @Singleton
 export class BarConfig {
   actionMap: Map<any, { [props: string]: Function[] }> = new Map;
-  // config: UnwrapNestedRefs<{
-  //   headerBarConfig: HeaderBarConfig;
-  // }>;
 
   contextService = new ContextServiceCore();
 
