@@ -70,7 +70,7 @@ export class DIState {
     }
   }
 
-  protected regisService<T extends unknown>(serviceName: any, loader: () => T, onLoad?: (instance:T) => void) {
+  public regisService<T extends unknown>(serviceName: any, loader: () => T, onLoad?: (instance:T) => void) {
     this.services.set(serviceName, {
       name: serviceName,
       loader,

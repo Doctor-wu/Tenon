@@ -1,4 +1,8 @@
-export const Singleton = (cls: { new(...args: any[]): any }) => {
+import { newable } from '@tenon/shared';
+
+type SingletonType = <T extends { new(...args: any[]): any }>(cls: T) => T;
+
+export const Singleton: SingletonType = <T extends newable<any, any>>(cls: T) => {
   let instance: any;
   return class extends cls {
     constructor(...args: any[]) {
@@ -7,6 +11,6 @@ export const Singleton = (cls: { new(...args: any[]): any }) => {
         instance = this;
       }
       return instance;
-    }
-  };
-}
+    };
+  } as T;
+};

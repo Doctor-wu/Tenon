@@ -1,4 +1,4 @@
-import { workbenchDIState } from "../core/di-state";
+import { WorkbenchDIServiceCore } from '../core';
 import { FeatureTag } from "./feature";
 
 export const LoaderTag = Symbol('Loader');
@@ -18,7 +18,7 @@ export const Loader: (tag: FeatureTag) => PropertyDecorator = (tag: FeatureTag) 
     target[propertyKey] = {
       getInstance: async () => {
         if (instance) return instance;
-        instance = await workbenchDIState.get(tag);
+        instance = await new WorkbenchDIServiceCore().get(tag);
         target[propertyKey].instance = instance;
         return instance;
       }

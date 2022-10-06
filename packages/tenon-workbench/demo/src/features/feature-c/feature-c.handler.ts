@@ -1,4 +1,7 @@
-import { Feature } from "@tenon/workbench";
+import { 
+  Feature, Inject, WorkbenchDIService, WorkbenchDIServiceCore,
+  WorkbenchService, WorkbenchType, BarService, BarConfig
+  } from "@tenon/workbench";
 import { FeatureCFeature } from "./feature-c.interface";
 
 
@@ -8,8 +11,13 @@ import { FeatureCFeature } from "./feature-c.interface";
 // @ts-ignore
 export class FeatureCHandler implements FeatureCFeature{
 
-  constructor() {
-    console.log('C is coming!')
+  constructor(
+    @Inject(WorkbenchService) workbenchService: WorkbenchType,
+    @Inject(WorkbenchDIService) workbenchDIService: WorkbenchDIServiceCore,
+    @Inject(BarService) barService: BarConfig,
+  ) {
+    console.log('C is coming!');
+    console.log(workbenchService, workbenchDIService, barService);
   }
 
   invokeC() {
