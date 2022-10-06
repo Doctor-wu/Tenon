@@ -1,64 +1,142 @@
-import { HeaderBarConfig, IHeaderBarType } from "@tenon/workbench";
+import { HeaderBarConfig, HeaderBarType } from "@tenon/workbench";
 import Title from "../components/title.vue";
 import SubTitle from "../components/sub-title.vue";
 import { h } from "vue";
-import { Avatar, Divider } from "tdesign-vue-next";
+import { Avatar, Button, Divider, Icon } from "tdesign-vue-next";
 
-const createDividerItem = <BarType extends IHeaderBarType>(type: BarType) => ({
+const createDividerItem = <BarType extends HeaderBarType>(
+  type: BarType,
+  layoutType: 'vertical' | 'horizontal' = 'vertical',
+  options = {}
+) => ({
   name: 'title',
   type,
   render: () => h(Divider, {
-    layout: 'vertical',
+    layout: layoutType,
+    ...options,
   }),
 });
 
 export enum HeaderBarName {
+  Home = 'Home',
   Title = 'title',
   SubTitle = 'sub-title',
   GithubIcon = 'github-icon',
   DocIcon = 'doc-icon',
   MoreIcon = 'more-icon',
   Avatar = 'Avatar',
+};
+
+export enum MoreItemName {
+  More = 'More',
 }
 
 export const headerBarConfig: HeaderBarConfig = [
   {
+    name: HeaderBarName.Home,
+    type: HeaderBarType.Info,
+    render: () => h(Button, {
+      variant: 'text',
+      style: {
+        width: '40px',
+        height: '40px',
+        cursor: 'unset'
+      }
+    }, {
+      default: () => h(Icon, {
+        name: 'home',
+        style: {
+          fontSize: '24px'
+        }
+      }),
+    }),
+  },
+  createDividerItem(HeaderBarType.Info),
+  {
     name: HeaderBarName.Title,
-    type: IHeaderBarType.Info,
+    type: HeaderBarType.Info,
     render: () => h(Title, {
       text: 'Workbench主标题'
     }),
   },
-  createDividerItem(IHeaderBarType.Info),
+  // createDividerItem(HeaderBarType.Info),
   {
     name: HeaderBarName.SubTitle,
-    type: IHeaderBarType.Info,
+    type: HeaderBarType.Info,
     render: () => h(SubTitle, {
-      text: 'Workbench副标题'
+      text: 'Workbench副标题',
+      style: {
+        alignSelf: 'flex-end',
+        marginBottom: '5px',
+      }
     }),
   },
   {
     name: HeaderBarName.GithubIcon,
-    type: IHeaderBarType.Operator,
+    type: HeaderBarType.Operator,
     popupText: 'Github',
     iconName: 'logo-github-filled'
   },
   {
     name: HeaderBarName.DocIcon,
-    type: IHeaderBarType.Operator,
+    type: HeaderBarType.Operator,
     popupText: '文档',
     iconName: 'root-list'
   },
   {
     name: HeaderBarName.MoreIcon,
-    type: IHeaderBarType.Operator,
+    type: HeaderBarType.Operator,
     popupText: '更多',
-    iconName: 'view-list'
+    iconName: 'view-list',
+    listTree: [
+      {
+        name: MoreItemName.More,
+        type: HeaderBarType.ListTree,
+        text: '更多',
+        children: [
+          {
+            name: MoreItemName.More,
+            type: HeaderBarType.ListTree,
+            text: '更多',
+          },
+          createDividerItem(HeaderBarType.ListTree, 'horizontal', {
+            style: {
+              margin: '3px 0'
+            }
+          }),
+          {
+            name: MoreItemName.More,
+            type: HeaderBarType.ListTree,
+            text: '更多内容',
+          },
+          {
+            name: MoreItemName.More,
+            type: HeaderBarType.ListTree,
+            text: '更多更多内容',
+          },
+        ]
+      },
+      createDividerItem(HeaderBarType.ListTree, 'horizontal', {
+        style: {
+          margin: '3px 0'
+        }
+      }),
+      {
+        name: MoreItemName.More,
+        type: HeaderBarType.ListTree,
+        text: '更多内容',
+      },
+      {
+        name: MoreItemName.More,
+        type: HeaderBarType.ListTree,
+        text: '更多更多内容',
+      },
+    ],
   },
-  createDividerItem(IHeaderBarType.Operator),
+  createDividerItem(HeaderBarType.Operator),
   {
     name: HeaderBarName.Avatar,
-    type: IHeaderBarType.Operator,
+    type: HeaderBarType.Operator,
     render: () => h(Avatar, {
       size: '40px',
       image: 'https://tdesign.gtimg.com/site/avatar.jpg',

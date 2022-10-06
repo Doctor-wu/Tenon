@@ -1,4 +1,4 @@
-import { DynamicFeatureTag, SyncFeatureTag, WorkbenchDIService, WorkbenchDIServiceCore } from "../core";
+import { DynamicFeatureTag, SyncFeatureTag } from "../services";
 import { ServiceHandler } from "./service";
 
 export interface IFeatureParams {

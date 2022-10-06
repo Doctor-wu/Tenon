@@ -1,4 +1,4 @@
-import { DynamicFeatureTag, SyncFeatureTag } from "../core";
+import { DynamicFeatureTag, SyncFeatureTag } from "../services";
 export interface IFeatureParams {
     name: FeatureTag;
 }

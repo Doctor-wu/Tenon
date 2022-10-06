@@ -1,6 +1,6 @@
-import { WorkbenchDIServiceCore } from '../core/di-state';
+import { WorkbenchDIServiceCore } from '../services/di-service';
 import { createServiceDecorator } from "@tenon/shared";
-import { ServiceTag } from '../core';
+import { ServiceTag } from '../services';
 
 
 export const ServiceHandler = createServiceDecorator(

@@ -1,5 +1,5 @@
-import { WorkbenchDIService, WorkbenchDIServiceCore } from "./core";
 import { Service } from "./decorators";
+import { WorkbenchDIService, WorkbenchDIServiceCore } from "./services";
 
 @Service({ name: WorkbenchDIService })
 class PreloadWorkbenchService {

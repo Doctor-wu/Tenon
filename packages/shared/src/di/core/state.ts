@@ -17,7 +17,6 @@ export class DIState {
     const target = service.loader();
     const depsMap = target[ServiceTag].deps;
     const argsLen = target.length;
-    let otherArgsIndex = 0;
     for (let i = 0; i < argsLen; i++) {
       if (depsMap.has(i)) {
         deps[i] = this.getServiceInstance(depsMap.get(i));
@@ -29,7 +28,7 @@ export class DIState {
         }
       }
     };
-    return deps;
+    return [...deps, ...args];
   }
 
   protected initService<T extends newable<any[], T>>(service: IService<T>, ...args: any[]): T {
@@ -48,13 +47,13 @@ export class DIState {
     return service.instance;
   }
 
-  public getServiceInstance<T>(serviceName: any): T | undefined {
+  public getServiceInstance<T>(serviceName: any, ...args: any[]): T | undefined {
     const service = this.services.get(serviceName);
     if (!service) {
       // console.warn(`service ${serviceName.toString()} is not injected`);
     } else {
       if (service.instance) return service.instance;
-      this.mount(serviceName);
+      this.mount(serviceName, ...args);
       return service.instance;
     }
   }

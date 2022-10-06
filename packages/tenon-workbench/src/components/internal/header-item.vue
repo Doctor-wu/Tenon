@@ -1,10 +1,10 @@
 <template>
   <component v-if="operateConfig.render" :is="operateConfig.render"></component>
   <Popup
-    v-else
+    v-else-if="!operateConfig.listTree"
     :content="operateConfig.popupText"
-    theme="light"
     :show-arrow="false"
+    theme="light"
     placement="bottom"
   >
     <Button
@@ -14,12 +14,33 @@
       <Icon size="25px" :name="operateConfig.iconName"></Icon>
     </Button>
   </Popup>
+  <Popup
+    v-else
+    theme="light"
+    trigger="click"
+    :show-arrow="false"
+    placement="bottom-right"
+    :visible="popupVisible"
+    :overlayInnerStyle="{padding: '6px 0', borderRadius: 0}"
+  >
+    <Button
+      :onClick="togglePopupVisible"
+      :class="{'popup-visible': popupVisible}"
+      variant="text"
+    >
+      <Icon size="25px" :name="operateConfig.iconName"></Icon>
+    </Button>
+    <template #content>
+      <ListTree :list="operateConfig.listTree"></ListTree>
+    </template>
+  </Popup>
 </template>
 <script setup lang="ts">
 import { Popup, Button, Icon } from "tdesign-vue-next";
-import { inject, VNode } from "vue";
+import { inject, ref, VNode } from "vue";
 import { IHeaderBarOperatorItem, WorkbenchType } from "../../core";
 import { ActionType } from "../../decorators";
+import ListTree from "./list-tree.vue";
 
 const { operateConfig } = defineProps<{
   operateConfig: IHeaderBarOperatorItem;
@@ -31,6 +52,9 @@ const barConfig = workbench?.barConfig;
 const emitAction = (action: ActionType, ...args) => {
   barConfig?.emitAction(operateConfig.name, action, ...args);
 };
+
+const popupVisible = ref(false);
+const togglePopupVisible = () => popupVisible.value = !popupVisible.value;
 </script>
 <style lang="scss" scoped>
 .t-button--variant-text {
@@ -38,5 +62,9 @@ const emitAction = (action: ActionType, ...args) => {
   height: 40px;
   width: 40px;
   cursor: unset;
+}
+
+.popup-visible {
+  background-color: #f1f1f1;
 }
 </style>

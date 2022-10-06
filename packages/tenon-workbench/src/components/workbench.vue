@@ -9,8 +9,8 @@ import HeaderBar from './header-bar.vue';
 import ToolBar from './tool-bar.vue';
 import FootBar from './foot-bar.vue';
 import { onMounted, provide, ref } from 'vue';
-import { HeaderBarConfig, IWorkbenchAdapter, WorkbenchLoader } from '../core';
-import { WorkbenchEvents } from '../core/events';
+import { IWorkbenchAdapter, WorkbenchLoader, WorkbenchEvents } from '../core';
+import { HeaderBarConfig } from '../configs';
 const editorRoot = ref(null);
 const {
   workbenchInstance,

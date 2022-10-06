@@ -1,4 +1,4 @@
-import { SyncFeatureTag } from "../core";
+import { SyncFeatureTag } from "../services";
 declare type WorkbenchInject = (name: SyncFeatureTag) => ParameterDecorator;
 /**
  * Inject 只允许注入同步依赖

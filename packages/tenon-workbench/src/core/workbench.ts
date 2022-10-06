@@ -1,14 +1,16 @@
-import { WorkbenchDIServiceCore } from './di-state';
-import { FeatureNameKey, ActionControllerKey, Feature, Service } from '../decorators';
+import { WorkbenchDIServiceCore } from '../services/di-service';
+import { FeatureNameKey, ActionControllerKey, Service } from '../decorators';
 import { IWorkbenchAdapter } from './adapter';
-import { newable, Singleton, Subscribe } from '@tenon/shared';
+import { newable, Singleton } from '@tenon/shared';
 import { WorkbenchEvents } from './events';
-import { createServiceTag, createSyncFeatureTag, DynamicFeatureTag } from './tag';
+import { createServiceTag, DynamicFeatureTag } from '../services/tag';
 import { WorkbenchLoader } from './workbench-loader';
 import { App, createApp, h } from 'vue';
 import WorkbenchComponent from '../components/workbench.vue';
 import { BarConfig, HeaderBarConfig } from './config';
 import { UIControllerKey } from '../decorators/ui-controller';
+import { EventEmitterCore } from '../services/event-emitter';
+
 export interface IWorkbenchConfig {
   syncFeatures: any[];
   dynamicTags: DynamicFeatureTag[];
@@ -30,7 +32,7 @@ export interface IWorkbench {
   syncFeatures: any[];
   dynamicTags: Set<DynamicFeatureTag>;
   controllers: any[];
-  eventEmitter: Subscribe;
+  eventEmitter: EventEmitterCore;
   barConfig: BarConfig;
 }
 
@@ -61,13 +63,11 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
 
     public keyBoardService: any;
     public contextService: any;
-    public eventEmitter = new Subscribe();
+    public eventEmitter = new EventEmitterCore();
 
     public workbenchDIState = new WorkbenchDIServiceCore();
 
-    public barConfig = new BarConfig(
-      headerBarConfig,
-    );
+    public barConfig: BarConfig = new BarConfig(headerBarConfig);
 
     constructor(
       ...args: any[]
