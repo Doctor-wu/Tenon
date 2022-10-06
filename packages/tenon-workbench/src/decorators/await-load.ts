@@ -1,4 +1,4 @@
-import { workbenchDIState } from '../core/di-state';
+import { WorkbenchDIServiceCore } from '../core';
 import { FeatureTag } from './feature';
 import { LoaderTag } from './loader';
 
@@ -11,7 +11,7 @@ export const awaitLoad: awaitLoadType = (...tags: FeatureTag[]) => {
     desc.value = function(...args) {
       Promise.all(
         tags.map(tag => {
-          return workbenchDIState.get(tag);
+          return new WorkbenchDIServiceCore().get(tag);
         }),
       ).then(async () => {
         for (let featureKey of Object.getOwnPropertySymbols(target[LoaderTag] || {})) {

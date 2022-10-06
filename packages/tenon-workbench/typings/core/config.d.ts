@@ -18,6 +18,7 @@ export interface IHeaderBarOperatorItem extends IHeaderBarBaseItem<IHeaderBarTyp
     render?: () => VNode;
 }
 export declare type IHeaderBarItem = IHeaderBarInfoItem | IHeaderBarOperatorItem;
+export declare const BarService: symbol;
 export declare class BarConfig {
     actionMap: Map<any, {
         [props: string]: Function[];

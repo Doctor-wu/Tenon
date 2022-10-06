@@ -1,9 +1,9 @@
+import { WorkbenchDIServiceCore } from './di-state';
+import { FeatureNameKey, ActionControllerKey, Feature, Service } from '../decorators';
 import { IWorkbenchAdapter } from './adapter';
-import { newable, Subscribe } from '@tenon/shared';
-import { FeatureNameKey, ActionControllerKey } from '../decorators';
-import { workbenchDIState } from './di-state';
+import { newable, Singleton, Subscribe } from '@tenon/shared';
 import { WorkbenchEvents } from './events';
-import { DynamicFeatureTag } from './tag';
+import { createServiceTag, createSyncFeatureTag, DynamicFeatureTag } from './tag';
 import { WorkbenchLoader } from './workbench-loader';
 import { App, createApp, h } from 'vue';
 import WorkbenchComponent from '../components/workbench.vue';
@@ -36,6 +36,8 @@ export interface IWorkbench {
 
 export type WorkbenchType = IWorkbenchAdapter & WorkbenchLoader & IWorkbench;
 
+export const WorkbenchService = createServiceTag('WorkbenchService');
+
 // @ts-ignore
 export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config: IWorkbenchConfig) => {
   const {
@@ -45,7 +47,11 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
     controllers,
   } = config;
 
-  return class Workbench extends Target implements IWorkbench {
+  @Service({
+    name: WorkbenchService,
+  })
+  @Singleton
+  class Workbench extends Target implements IWorkbench {
     public app!: App;
 
     public syncFeatures: any[] = [];
@@ -57,11 +63,15 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
     public contextService: any;
     public eventEmitter = new Subscribe();
 
+    public workbenchDIState = new WorkbenchDIServiceCore();
+
     public barConfig = new BarConfig(
       headerBarConfig,
     );
 
-    constructor(...args: any[]) {
+    constructor(
+      ...args: any[]
+    ) {
       super(...args);
       this.initEvents();
     }
@@ -70,13 +80,12 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
       this.syncFeatures = syncFeatures;
       dynamicTags.forEach(tag => this.dynamicTags.add(tag));
       this.syncFeatures.forEach(feature => {
-        workbenchDIState.mount(feature[FeatureNameKey]);
+        this.workbenchDIState.mount(feature[FeatureNameKey]);
       });
     }
 
     public initControllers() {
       this.controllers.forEach(controller => {
-        console.log(controller);
         Object.keys(controller.prototype[ActionControllerKey]).forEach(nameKey => {
           Object.keys(controller.prototype[ActionControllerKey][nameKey]).forEach(actionKey => {
             controller.prototype[ActionControllerKey][nameKey][actionKey].forEach(cb => {
@@ -118,4 +127,6 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
       this.app.mount(el);
     };
   };
+
+  return Workbench;
 }

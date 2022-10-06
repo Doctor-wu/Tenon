@@ -1,3 +1,4 @@
+import { WorkbenchDIServiceCore } from './di-state';
 import { IWorkbenchAdapter } from './adapter';
 import { newable, Subscribe } from '@tenon/shared';
 import { DynamicFeatureTag } from './tag';
@@ -22,6 +23,7 @@ export interface IWorkbench {
     barConfig: BarConfig;
 }
 export declare type WorkbenchType = IWorkbenchAdapter & WorkbenchLoader & IWorkbench;
+export declare const WorkbenchService: symbol;
 export declare const inheritFromWorkbench: (Target: newable<any, WorkbenchType>, config: IWorkbenchConfig) => {
     new (...args: any[]): {
         app: App;
@@ -31,6 +33,7 @@ export declare const inheritFromWorkbench: (Target: newable<any, WorkbenchType>,
         keyBoardService: any;
         contextService: any;
         eventEmitter: Subscribe;
+        workbenchDIState: WorkbenchDIServiceCore;
         barConfig: BarConfig;
         initFeatureTags(syncFeatures: any[], dynamicTags: DynamicFeatureTag[]): void;
         initControllers(): void;

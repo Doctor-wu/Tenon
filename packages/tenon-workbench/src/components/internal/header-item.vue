@@ -25,8 +25,6 @@ const { operateConfig } = defineProps<{
   operateConfig: IHeaderBarOperatorItem;
 }>();
 
-console.log(operateConfig);
-
 const workbench = inject<WorkbenchType>("workbench");
 const barConfig = workbench?.barConfig;
 

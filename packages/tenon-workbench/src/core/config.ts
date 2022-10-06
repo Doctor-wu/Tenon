@@ -1,5 +1,7 @@
-import { Subscribe } from "@tenon/shared";
-import { reactive, UnwrapNestedRefs, VNode, VueElement } from "vue";
+import { createServiceTag } from './tag';
+import { reactive, UnwrapNestedRefs, VNode } from "vue";
+import {  Service } from "../decorators";
+import { Singleton } from '@tenon/shared';
 
 export type HeaderBarConfig = IHeaderBarItem[];
 
@@ -26,7 +28,12 @@ export interface IHeaderBarOperatorItem extends IHeaderBarBaseItem<IHeaderBarTyp
 
 export type IHeaderBarItem = IHeaderBarInfoItem | IHeaderBarOperatorItem;
 
+export const BarService = createServiceTag('BarService');
 
+@Service({
+  name: BarService,
+})
+@Singleton
 export class BarConfig {
   actionMap: Map<any, { [props: string]: Function[] }> = new Map;
   config: UnwrapNestedRefs<{
