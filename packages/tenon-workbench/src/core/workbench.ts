@@ -5,22 +5,22 @@ import { newable, Singleton } from '@tenon/shared';
 import { WorkbenchEvents } from './events';
 import { createServiceTag, DynamicFeatureTag } from '../services/tag';
 import { WorkbenchLoader } from './workbench-loader';
-import { App, createApp, h } from 'vue';
-import WorkbenchComponent from '../components/workbench.vue';
-import { BarConfig, HeaderBarConfig } from './config';
+import { type App, createApp, h } from 'vue';
 import { UIControllerKey } from '../decorators/ui-controller';
 import { EventEmitterCore } from '../services/event-emitter';
+import { BarConfig, HeaderBarConfig, ToolBarConfig } from '../configs';
+import WorkbenchComponent from '../components/workbench.vue';
 
 export interface IWorkbenchConfig {
-  syncFeatures: any[];
+  syncFeatures: newable<any, any>[];
   dynamicTags: DynamicFeatureTag[];
 
   // 用于配置头部栏，工具栏，底部栏
-  controllers: any[];
+  controllers: newable<any, any>[];
 
   // 注册头部栏，工具栏，底部栏配置
   headerBarConfig: HeaderBarConfig;
-  toolBarConfig: any;
+  toolBarConfig: ToolBarConfig;
   footBarConfig: any;
 
   // 键盘事件管理服务
@@ -29,9 +29,9 @@ export interface IWorkbenchConfig {
 
 export interface IWorkbench {
   app: App;
-  syncFeatures: any[];
+  syncFeatures: newable<any, any>[];
   dynamicTags: Set<DynamicFeatureTag>;
-  controllers: any[];
+  controllers: newable<any, any>[];
   eventEmitter: EventEmitterCore;
   barConfig: BarConfig;
 }
@@ -46,6 +46,7 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
     syncFeatures,
     dynamicTags,
     headerBarConfig,
+    toolBarConfig,
     controllers,
   } = config;
 
@@ -56,7 +57,7 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
   class Workbench extends Target implements IWorkbench {
     public app!: App;
 
-    public syncFeatures: any[] = [];
+    public syncFeatures: newable<any, any>[] = [];
     public dynamicTags: Set<DynamicFeatureTag> = new Set();
 
     public controllers = controllers;
@@ -65,9 +66,9 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
     public contextService: any;
     public eventEmitter = new EventEmitterCore();
 
-    public workbenchDIState = new WorkbenchDIServiceCore();
+    public workbenchDIService = new WorkbenchDIServiceCore();
 
-    public barConfig: BarConfig = new BarConfig(headerBarConfig);
+    public barConfig: BarConfig = new BarConfig(headerBarConfig, toolBarConfig);
 
     constructor(
       ...args: any[]
@@ -80,7 +81,7 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
       this.syncFeatures = syncFeatures;
       dynamicTags.forEach(tag => this.dynamicTags.add(tag));
       this.syncFeatures.forEach(feature => {
-        this.workbenchDIState.mount(feature[FeatureNameKey]);
+        this.workbenchDIService.mount(feature.prototype[FeatureNameKey]);
       });
     }
 
@@ -122,6 +123,7 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
         render: () => h(WorkbenchComponent, {
           workbenchInstance: this,
           headerBarConfig: this.barConfig.headerBarConfig,
+          toolBarConfig: this.barConfig.toolBarConfig,
         }),
       });
       this.app.mount(el);

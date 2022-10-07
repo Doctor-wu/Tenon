@@ -4,18 +4,18 @@ import SubTitle from "../components/sub-title.vue";
 import { h } from "vue";
 import { Avatar, Button, Divider, Icon } from "tdesign-vue-next";
 
-const createDividerItem = <BarType extends HeaderBarType>(
-  type: BarType,
+export const createDividerItem = <BarType extends HeaderBarType>(
+  type: BarType | undefined,
   layoutType: 'vertical' | 'horizontal' = 'vertical',
   options = {}
 ) => ({
   name: 'title',
-  type,
   render: () => h(Divider, {
     layout: layoutType,
     ...options,
   }),
-});
+  ...(type ? {type} : {}),
+}) as any;
 
 export enum HeaderBarName {
   Home = 'Home',
@@ -91,44 +91,38 @@ export const headerBarConfig: HeaderBarConfig = [
     listTree: [
       {
         name: MoreItemName.More,
-        type: HeaderBarType.ListTree,
         text: '更多',
         children: [
           {
             name: MoreItemName.More,
-            type: HeaderBarType.ListTree,
             text: '更多',
           },
-          createDividerItem(HeaderBarType.ListTree, 'horizontal', {
+          createDividerItem(undefined, 'horizontal', {
             style: {
               margin: '3px 0'
             }
           }),
           {
             name: MoreItemName.More,
-            type: HeaderBarType.ListTree,
             text: '更多内容',
           },
           {
             name: MoreItemName.More,
-            type: HeaderBarType.ListTree,
             text: '更多更多内容',
           },
         ]
       },
-      createDividerItem(HeaderBarType.ListTree, 'horizontal', {
+      createDividerItem(undefined, 'horizontal', {
         style: {
           margin: '3px 0'
         }
       }),
       {
         name: MoreItemName.More,
-        type: HeaderBarType.ListTree,
         text: '更多内容',
       },
       {
         name: MoreItemName.More,
-        type: HeaderBarType.ListTree,
         text: '更多更多内容',
       },
     ],

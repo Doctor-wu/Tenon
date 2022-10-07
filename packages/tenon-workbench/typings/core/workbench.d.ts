@@ -3,23 +3,23 @@ import { IWorkbenchAdapter } from './adapter';
 import { newable } from '@tenon/shared';
 import { DynamicFeatureTag } from '../services/tag';
 import { WorkbenchLoader } from './workbench-loader';
-import { App } from 'vue';
-import { BarConfig, HeaderBarConfig } from './config';
+import { type App } from 'vue';
 import { EventEmitterCore } from '../services/event-emitter';
+import { BarConfig, HeaderBarConfig, ToolBarConfig } from '../configs';
 export interface IWorkbenchConfig {
-    syncFeatures: any[];
+    syncFeatures: newable<any, any>[];
     dynamicTags: DynamicFeatureTag[];
-    controllers: any[];
+    controllers: newable<any, any>[];
     headerBarConfig: HeaderBarConfig;
-    toolBarConfig: any;
+    toolBarConfig: ToolBarConfig;
     footBarConfig: any;
     keyBoardConfig: any;
 }
 export interface IWorkbench {
     app: App;
-    syncFeatures: any[];
+    syncFeatures: newable<any, any>[];
     dynamicTags: Set<DynamicFeatureTag>;
-    controllers: any[];
+    controllers: newable<any, any>[];
     eventEmitter: EventEmitterCore;
     barConfig: BarConfig;
 }
@@ -28,13 +28,13 @@ export declare const WorkbenchService: symbol;
 export declare const inheritFromWorkbench: (Target: newable<any, WorkbenchType>, config: IWorkbenchConfig) => {
     new (...args: any[]): {
         app: App;
-        syncFeatures: any[];
+        syncFeatures: newable<any, any>[];
         dynamicTags: Set<DynamicFeatureTag>;
-        controllers: any[];
+        controllers: newable<any, any>[];
         keyBoardService: any;
         contextService: any;
         eventEmitter: EventEmitterCore;
-        workbenchDIState: WorkbenchDIServiceCore;
+        workbenchDIService: WorkbenchDIServiceCore;
         barConfig: BarConfig;
         initFeatureTags(syncFeatures: any[], dynamicTags: DynamicFeatureTag[]): void;
         initControllers(): void;

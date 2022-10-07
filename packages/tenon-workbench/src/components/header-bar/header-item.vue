@@ -31,16 +31,17 @@
       <Icon size="25px" :name="operateConfig.iconName"></Icon>
     </Button>
     <template #content>
-      <ListTree :list="operateConfig.listTree"></ListTree>
+      <ListTree :list="operateConfig.listTree" @click="handleListTreeClick"></ListTree>
     </template>
   </Popup>
 </template>
 <script setup lang="ts">
 import { Popup, Button, Icon } from "tdesign-vue-next";
 import { inject, ref, VNode } from "vue";
-import { IHeaderBarOperatorItem, WorkbenchType } from "../../core";
+import { IHeaderBarOperatorItem } from "../../configs";
+import { WorkbenchType } from "../../core";
 import { ActionType } from "../../decorators";
-import ListTree from "./list-tree.vue";
+import ListTree from "../list-tree.vue";
 
 const { operateConfig } = defineProps<{
   operateConfig: IHeaderBarOperatorItem;
@@ -55,6 +56,10 @@ const emitAction = (action: ActionType, ...args) => {
 
 const popupVisible = ref(false);
 const togglePopupVisible = () => popupVisible.value = !popupVisible.value;
+
+const handleListTreeClick = () => {
+  popupVisible.value = false;
+};
 </script>
 <style lang="scss" scoped>
 .t-button--variant-text {

@@ -1,7 +1,7 @@
 <template>
   <section id="workbench-header">
     <section class="header-info">
-      <template :key="item.name" v-for="item in (infoRenders as any)">
+      <template v-for="(item) in infoRenders" :key="item.name">
         <component :is="item.render"></component>
       </template>
     </section>
@@ -14,8 +14,8 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
-import { HeaderBarConfig, HeaderBarType } from "../configs";
-import HeaderItem from "./internal/header-item.vue";
+import { HeaderBarConfig, HeaderBarType } from "../../configs";
+import HeaderItem from "./header-item.vue";
 const { config } = defineProps<{
   config: HeaderBarConfig,
 }>();
@@ -35,6 +35,7 @@ const operatorItems = computed(() => {
   width: 100%;
   justify-content: space-between;
   border-bottom: 1px solid #ddd;
+  background-color: #fff;
   height: 60px;
   align-items: center;
   padding: 0 12px;

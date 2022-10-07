@@ -15,7 +15,7 @@ export class DIState {
     this.depsStack.push(service.name);
     const deps: any[] = [];
     const target = service.loader();
-    const depsMap = target[ServiceTag].deps;
+    const depsMap = target.prototype[ServiceTag].deps;
     const argsLen = target.length;
     for (let i = 0; i < argsLen; i++) {
       if (depsMap.has(i)) {
@@ -28,10 +28,12 @@ export class DIState {
         }
       }
     };
+    this.depsStack.pop();
     return [...deps, ...args];
   }
 
   protected initService<T extends newable<any[], T>>(service: IService<T>, ...args: any[]): T {
+    this.depsStack.length = 0;
     const deps = this.getDeps(service as unknown as IService, ...args);
     const {
       loader,

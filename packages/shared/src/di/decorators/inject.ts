@@ -3,12 +3,12 @@ import { ServiceTag } from "./service"
 export const InjectTag = Symbol('Inject');
 
 export const Inject: (injectionName: any) => ParameterDecorator = (injectionName: string) => {
-  return (target, propertyKey, parameterIndex) => {
-    if (!target[ServiceTag]) {
-      target[InjectTag] = target[InjectTag] || new Map<number, string>();
-      target[InjectTag].set(parameterIndex, injectionName);
+  return (target: any, propertyKey, parameterIndex) => {
+    if (!target.prototype[ServiceTag]) {
+      target.prototype[InjectTag] = target.prototype[InjectTag] || new Map<number, string>();
+      target.prototype[InjectTag].set(parameterIndex, injectionName);
     } else {
-      const deps = target[ServiceTag].deps;
+      const deps = target.prototype[ServiceTag].deps;
       deps.set(parameterIndex, injectionName);
     }
   }

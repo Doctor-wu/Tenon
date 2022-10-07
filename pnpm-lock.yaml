@@ -288,9 +288,11 @@ importers:
       '@tenon/workbench': workspace:*
       tdesign-vue-next: ^0.21.0
       vue: ^3.2.31
+      vue-material-design-icons: ^5.1.2
     dependencies:
       tdesign-vue-next: 0.21.0_vue@3.2.31
       vue: 3.2.31
+      vue-material-design-icons: 5.1.2
     devDependencies:
       '@tenon/shared': link:../shared
       '@tenon/workbench': 'link:'
@@ -4309,6 +4311,10 @@ packages:
       vue: ^3.0.5
     dependencies:
       vue: 3.2.31
+    dev: false
+
+  /vue-material-design-icons/5.1.2:
+    resolution: {integrity: sha512-nD1qFM2qAkMlVoe23EfNKIeMfYl6YjHZjSty9q0mwc2gXmPmvEhixywJQhM+VF5KVBI1zAkVTNLoUEERPY10pA==}
     dev: false
 
   /vue-router/4.0.14_vue@3.2.31:

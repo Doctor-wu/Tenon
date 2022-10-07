@@ -16,6 +16,7 @@
   "description": "",
   "dependencies": {
     "tdesign-vue-next": "^0.21.0",
-    "vue": "^3.2.31"
+    "vue": "^3.2.31",
+    "vue-material-design-icons": "^5.1.2"
   }
 }

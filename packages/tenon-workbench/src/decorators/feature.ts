@@ -13,7 +13,7 @@ export const Feature: (params: IFeatureParams) => ClassDecorator = (params: IFea
   const {
     name,
   } = params;
-  target[FeatureNameKey] = name;
+  target.prototype[FeatureNameKey] = name;
 
   ServiceHandler({name})(target);
 };

@@ -2,11 +2,10 @@ import { VNode } from "vue";
 export declare type HeaderBarConfig = IHeaderBarItem[];
 export declare enum HeaderBarType {
     Info = "Info",
-    Operator = "Operator",
-    ListTree = "ListTree"
+    Operator = "Operator"
 }
 export interface IHeaderBarBaseItem<BarType extends HeaderBarType> {
-    name: string;
+    name: any;
     type: BarType;
     hidden?: boolean;
 }
@@ -19,7 +18,10 @@ export interface IHeaderBarOperatorItem extends IHeaderBarBaseItem<HeaderBarType
     listTree?: IListTree[];
     render?: () => VNode;
 }
-export interface IListTree extends IHeaderBarBaseItem<HeaderBarType.ListTree> {
+export interface IListTree {
+    name: string;
+    hidden?: boolean;
+    disabled?: boolean;
     text?: string;
     render?: () => VNode;
     children?: IListTree[];
