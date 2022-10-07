@@ -2,3 +2,9 @@ body, html {
   padding: 0;
   margin: 0;
 }
+
+.material-design-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

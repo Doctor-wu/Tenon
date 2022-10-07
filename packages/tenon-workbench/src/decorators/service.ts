@@ -17,7 +17,7 @@ export const Service: (params: IServiceParams) => ClassDecorator = (params: ISer
   const {
     name,
   } = params;
-  target[ServiceNameKey] = name;
+  target.prototype[ServiceNameKey] = name;
 
   ServiceHandler({name})(target);
 };

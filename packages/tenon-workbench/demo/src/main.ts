@@ -4,6 +4,7 @@ import { FeatureBHandler, FeatureCFeature, FeatureAHandler, HeaderBarHandler } f
 import { HeaderBarController } from "./features/headerbar/headerbar.controller";
 import "@tenon/workbench/lib/style.css";
 import "./index.css";
+import { toolBarConfig } from "./configs/tool-bar-config";
 
 const root = document.getElementById('workbench-root')!;
 
@@ -22,7 +23,7 @@ const root = document.getElementById('workbench-root')!;
   footBarConfig: null,
   headerBarConfig: headerBarConfig,
   keyBoardConfig: null,
-  toolBarConfig: null,
+  toolBarConfig: toolBarConfig,
 })
 class App extends WorkbenchLoader implements IWorkbenchAdapter{
   attachEditor(dom: HTMLElement) {

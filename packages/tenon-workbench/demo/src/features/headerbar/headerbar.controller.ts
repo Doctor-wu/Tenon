@@ -9,6 +9,7 @@ import { HeaderBarFeature } from "./headerbar.interface";
 import SubTitle from "../../components/sub-title.vue";
 import { h } from "vue";
 import { MessagePlugin } from "tdesign-vue-next";
+import { ToolBarName } from "../../configs/tool-bar-config";
 
 export class HeaderBarController {
 
@@ -26,7 +27,7 @@ export class HeaderBarController {
     MessagePlugin.success('点击更多');
   }
 
-  @UIController(HeaderBarName.GithubIcon)
+  @UIController(HeaderBarName.GithubIcon, 'headerBarConfig')
   async updateGithubItemConfig(): Promise<UIControllerResult> {
     await new Promise((resolve) => {
       setTimeout(resolve, 3000);
@@ -37,7 +38,7 @@ export class HeaderBarController {
     };
   }
 
-  @UIController(HeaderBarName.SubTitle)
+  @UIController(HeaderBarName.SubTitle, 'headerBarConfig')
   async updateSubTitle(): Promise<UIControllerResult> {
     await new Promise((resolve) => {
       setTimeout(resolve, 3000);
@@ -52,5 +53,15 @@ export class HeaderBarController {
         },
       }),
     };
+  }
+
+  @UIController(ToolBarName.SaveConfig, 'toolBarConfig')
+  async updateMode():Promise<UIControllerResult> {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 3000);
+    });
+    return {
+      disabled: true,
+    }; 
   }
 }
