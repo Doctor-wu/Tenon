@@ -1,14 +1,12 @@
-import { WorkbenchDIServiceCore } from '../services/di-service';
+import { WorkbenchDIServiceCore, BarConfig, EventEmitterCore, createServiceTag, DynamicFeatureTag } from '../services';
 import { FeatureNameKey, ActionControllerKey, Service } from '../decorators';
 import { IWorkbenchAdapter } from './adapter';
 import { newable, Singleton } from '@tenon/shared';
 import { WorkbenchEvents } from './events';
-import { createServiceTag, DynamicFeatureTag } from '../services/tag';
 import { WorkbenchLoader } from './workbench-loader';
 import { type App, createApp, h } from 'vue';
-import { UIControllerKey } from '../decorators/ui-controller';
-import { EventEmitterCore } from '../services/event-emitter';
-import { BarConfig, HeaderBarConfig, ToolBarConfig } from '../configs';
+import { UIControllerKey } from '../decorators/bar-controller';
+import { HeaderBarConfig, ToolBarConfig } from '../configs';
 import WorkbenchComponent from '../components/workbench.vue';
 
 export interface IWorkbenchConfig {

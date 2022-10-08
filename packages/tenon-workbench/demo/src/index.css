@@ -3,8 +3,8 @@ body, html {
   margin: 0;
 }
 
-.material-design-icon {
-  display: flex;
+/* .material-design-icon {
+  display: inline-flex;
   flex-direction: column;
   justify-content: center;
-}
+} */

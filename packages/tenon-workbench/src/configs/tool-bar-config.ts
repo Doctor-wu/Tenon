@@ -1,9 +1,18 @@
 import { VNode } from "vue";
-import { IListTree } from "./header-bar-config";
+import { IListTree } from "./list-tree";
 
-export interface IToolBarBaseConfig {
+export enum ToolBarFlag {
+  /** 开关作用 */
+  Switch = 'Switch',
+  /** 按钮作用 */
+  Button = 'Button',
+  /** 下拉列表作用 */
+  DropDown = 'DropDown',
+};
+
+export interface IToolBarBaseConfig<Flag extends ToolBarFlag> {
   name: any;
-  flag: number;
+  flag: Flag;
   text?: string;
   hidden?: boolean;
   disabled?: boolean;
@@ -17,32 +26,22 @@ export interface IToolBarIconConfig {
   iconSize?: number;
 }
 
-export interface IToolBarSwitchConfig extends IToolBarBaseConfig {
-  switchStatus?: boolean;
+export interface IToolBarSwitchConfig extends IToolBarBaseConfig<ToolBarFlag.Switch> {
+  active: boolean;
 };
 
-export interface IToolBarButtonConfig extends IToolBarBaseConfig {
-
+export interface IToolBarButtonConfig extends IToolBarBaseConfig<ToolBarFlag.Button> {
 };
 
-export interface IToolBarDropDownConfig extends IToolBarBaseConfig {
+export interface IToolBarDropDownConfig extends IToolBarBaseConfig<ToolBarFlag.DropDown> {
   listTree?: IListTree[];
   dropDownRender?: () => VNode;
   dropDownWidth?: string;
 };
 
-export type ToolBarConfigType = IToolBarButtonConfig & IToolBarSwitchConfig & IToolBarDropDownConfig;
+export type ToolBarConfigType = IToolBarButtonConfig | IToolBarSwitchConfig | IToolBarDropDownConfig;
 
 export type ToolBarConfig = {
   config: ToolBarConfigType[][];
   alignment: 'left' | 'center' | 'right';
-};
-
-export const ToolBarFlag = {
-  /** 开关作用 */
-  Switch: 1 << 0,
-  /** 按钮作用 */
-  Button: 1 << 1,
-  /** 下拉列表作用 */
-  DropDown: 1 << 2,
 };

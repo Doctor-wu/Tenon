@@ -18,14 +18,12 @@
     v-else
     theme="light"
     trigger="click"
+    ref="popupRef"
     :show-arrow="false"
     placement="bottom-right"
-    :visible="popupVisible"
     :overlayInnerStyle="{padding: '6px 0', borderRadius: 0}"
   >
     <Button
-      :onClick="togglePopupVisible"
-      :class="{'popup-visible': popupVisible}"
       variant="text"
     >
       <Icon size="25px" :name="operateConfig.iconName"></Icon>
@@ -54,11 +52,12 @@ const emitAction = (action: ActionType, ...args) => {
   barConfig?.emitAction(operateConfig.name, action, ...args);
 };
 
-const popupVisible = ref(false);
-const togglePopupVisible = () => popupVisible.value = !popupVisible.value;
+// const popupVisible = ref(false);
+// const togglePopupVisible = () => popupVisible.value = !popupVisible.value;
+const popupRef = ref<any>(null);
 
 const handleListTreeClick = () => {
-  popupVisible.value = false;
+  popupRef.value?.handleClose();
 };
 </script>
 <style lang="scss" scoped>
