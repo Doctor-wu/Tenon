@@ -1,11 +1,9 @@
-import { WorkbenchDIServiceCore } from '../services/di-service';
+import { WorkbenchDIServiceCore, BarConfig, EventEmitterCore, DynamicFeatureTag } from '../services';
 import { IWorkbenchAdapter } from './adapter';
 import { newable } from '@tenon/shared';
-import { DynamicFeatureTag } from '../services/tag';
 import { WorkbenchLoader } from './workbench-loader';
 import { type App } from 'vue';
-import { EventEmitterCore } from '../services/event-emitter';
-import { BarConfig, HeaderBarConfig, ToolBarConfig } from '../configs';
+import { HeaderBarConfig, ToolBarConfig } from '../configs';
 export interface IWorkbenchConfig {
     syncFeatures: newable<any, any>[];
     dynamicTags: DynamicFeatureTag[];

@@ -1,4 +1,5 @@
 import { VNode } from "vue";
+import { IListTree } from "./list-tree";
 
 export type HeaderBarConfig = IHeaderBarItem[];
 
@@ -25,13 +26,5 @@ export interface IHeaderBarOperatorItem extends IHeaderBarBaseItem<HeaderBarType
   render?: () => VNode;
 };
 
-export interface IListTree{
-  name: string;
-  hidden?: boolean;
-  disabled?: boolean;
-  text?: string;
-  render?: () => VNode;
-  children?: IListTree[];
-};
 
 export type IHeaderBarItem = IHeaderBarInfoItem | IHeaderBarOperatorItem;

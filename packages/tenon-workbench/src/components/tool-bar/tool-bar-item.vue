@@ -1,23 +1,25 @@
 <template>
   <section class="toolbar-item-container">
-    <Popup :overlayInnerStyle="{padding: '6px 0'}" trigger="click" ref="popupRef" v-if="config.listTree" :show-arrow="false"
-      theme="light" placement="bottom">
-      <Button :onClick="(...args) => emitAction(ActionType.onClick, ...args)" variant="text"
-        :disabled="config.disabled">
-        <Icon v-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></Icon>
+    <Popup :overlayInnerStyle="{padding: '6px 0'}" trigger="click" ref="popupRef"
+      v-if="config.flag === ToolBarFlag.DropDown && config.listTree" :show-arrow="false" theme="light"
+      placement="bottom">
+      <Button :onClick="(...args) => emitAction(...args)" variant="text" :disabled="config.disabled">
+        <component v-if="config.icon?.iconRender" :is="config.icon?.iconRender"></component>
+        <Icon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></Icon>
         <span class="item-text" v-if="config.text"> {{config.text}} </span>
-        <Icon v-if="config.flag & ToolBarFlag.DropDown" name="caret-down-small"></Icon>
+        <Icon v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></Icon>
       </Button>
       <template #content>
-        <ListTree :list="config.listTree" :width="config.dropDownWidth || '90px'" @click="handleListTreeClick"></ListTree>
+        <ListTree :list="config.listTree" :width="config.dropDownWidth || '90px'" @click="handleListTreeClick">
+        </ListTree>
       </template>
     </Popup>
-    <Button :onClick="(...args) => emitAction(ActionType.onClick, ...args)" variant="text" :disabled="config.disabled"
-      v-else>
-      <Icon class="toolbar-icon" v-if="config.icon" :name="config.icon.iconName"
-        :size="(config.icon.iconSize || 16) + 'px'"></Icon>
+    <Button :onClick="(...args) => emitAction(...args)" variant="text" :disabled="config.disabled"
+      :class="{active: (config.flag === ToolBarFlag.Switch && !!config.active)}" v-else>
+      <component v-if="config.icon?.iconRender" :is="config.icon?.iconRender"></component>
+      <Icon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></Icon>
       <span class="item-text" v-if="config.text"> {{config.text}} </span>
-      <Icon v-if="config.flag & ToolBarFlag.DropDown" name="caret-down-small"></Icon>
+      <Icon v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></Icon>
     </Button>
   </section>
 </template>
@@ -38,8 +40,20 @@ const barConfig = workbench?.barConfig;
 
 const popupRef = ref<any>(null);
 
-const emitAction = (action: ActionType, ...args) => {
-  if (!(props.config.flag & ToolBarFlag.Button)) return;
+const emitAction = (...args) => {
+  let action: ActionType | undefined;
+  if (props.config.flag === ToolBarFlag.Button) action = ActionType.onClick;
+  if (props.config.flag === ToolBarFlag.Switch) {
+    if (props.config.active) {
+      action = ActionType.onDeActive;
+    } else {
+      action = ActionType.onActive;
+    }
+    barConfig?.updateToolBarConfig(props.config.name, {
+      active: !props.config.active,
+    });
+  }
+  if (!action) return;
   barConfig?.emitAction(props.config.name, action, ...args);
 };
 
@@ -55,7 +69,17 @@ const handleListTreeClick = () => {
   height: 30px;
   min-width: 30px;
   cursor: unset;
+
+  .t-button__text {
+    display: flex;
+    align-items: center;
+  }
+
+  &.active {
+    background-color: #44444416;
+  }
 }
+
 
 ::v-deep(.list-container) {
   width: auto;

@@ -1,5 +1,7 @@
 import { ToolBarConfig, ToolBarFlag } from "@tenon/workbench";
-import { createDividerItem } from "./header-bar-config";
+import FileTree from "vue-material-design-icons/FamilyTree.vue";
+import PaletteSwatch from "vue-material-design-icons/PaletteSwatch.vue";
+import { h } from "vue";
 
 export enum ToolBarName {
   Undo = 'Undo',
@@ -13,6 +15,8 @@ export enum ToolBarName {
   Events = 'Events',
   PageStatus = 'PageStatus',
   PageLifeCycle = 'PageLifeCycle',
+  MaterialSwitch = 'MaterialSwitch',
+  ComponentTreeSwitch = 'ComponentTreeSwitch',
 }
 
 export const toolBarConfig: ToolBarConfig = {
@@ -52,11 +56,6 @@ export const toolBarConfig: ToolBarConfig = {
             name: 'edit',
             text: '编辑模式',
           },
-          createDividerItem(undefined, 'horizontal', {
-            style: {
-              margin: '3px 0'
-            }
-          }),
           {
             name: 'preview',
             text: '预览模式',
@@ -76,7 +75,7 @@ export const toolBarConfig: ToolBarConfig = {
       {
         name: ToolBarName.RealPreview,
         flag: ToolBarFlag.Button,
-        text: '清空',
+        text: '清空页面',
         icon: {
           iconName: 'clear',
           iconSize: 16,
@@ -118,7 +117,7 @@ export const toolBarConfig: ToolBarConfig = {
     ],
     [
       {
-        name: ToolBarName.LoadConfig,
+        name: ToolBarName.Events,
         flag: ToolBarFlag.Button,
         text: '事件',
         icon: {
@@ -146,6 +145,32 @@ export const toolBarConfig: ToolBarConfig = {
           iconSize: 16,
         },
         popupText: '管理页面生命周期',
+      },
+    ],
+    [
+      {
+        name: ToolBarName.MaterialSwitch,
+        flag: ToolBarFlag.Switch,
+        text: '物料面板',
+        icon: {
+          iconRender: () => h(PaletteSwatch, {
+            size: 16,
+          }),
+        },
+        active: true,
+        popupText: '展示物料面板',
+      },
+      {
+        name: ToolBarName.ComponentTreeSwitch,
+        flag: ToolBarFlag.Switch,
+        text: '组件树面板',
+        icon: {
+          iconRender: () => h(FileTree, {
+            size: 16,
+          }),
+        },
+        active: false,
+        popupText: '展示组件树面板',
       },
     ]
   ],

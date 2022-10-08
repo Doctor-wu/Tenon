@@ -84,6 +84,11 @@ export default {
   &:hover {
     background-color: #f8f8f8;
   }
+
+  &.disabled {
+    color: #d3d3d3;
+    cursor: not-allowed;
+  }
 }
 
 .sub-root-icon {

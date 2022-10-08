@@ -3,7 +3,7 @@ import { App } from "vue";
 import { WorkbenchEvents } from "./events";
 import { DynamicFeatureTag } from "../services/tag";
 import { IWorkbench } from "./workbench";
-import { BarConfig } from "../configs";
+import { BarConfig } from "../services";
 
 
 export class WorkbenchLoader implements IWorkbench{

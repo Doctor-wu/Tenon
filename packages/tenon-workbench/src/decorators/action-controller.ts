@@ -4,6 +4,8 @@ export const ActionControllerKey = Symbol('ActionController');
 
 export enum ActionType {
   onClick = 'onClick',
+  onActive = 'onActive',
+  onDeActive = 'onDeActive',
 }
 
 export const ActionController: ActionControllerType = (name: any, action: ActionType) => {

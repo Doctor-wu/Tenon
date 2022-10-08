@@ -1,8 +1,10 @@
 import {
-  ActionController, UIController,
+  ActionController, HeaderBarController, ToolBarController,
   awaitLoad, IDynamicFeature,
   Loader, UIControllerResult,
   ActionType,
+  BarService,
+  BarConfig,
 } from "@tenon/workbench";
 import { HeaderBarName, MoreItemName } from "../../configs/header-bar-config";
 import { HeaderBarFeature } from "./headerbar.interface";
@@ -11,10 +13,13 @@ import { h } from "vue";
 import { MessagePlugin } from "tdesign-vue-next";
 import { ToolBarName } from "../../configs/tool-bar-config";
 
-export class HeaderBarController {
+export class HeaderBarsController {
 
   @Loader(HeaderBarFeature)
   headerBar: IDynamicFeature<HeaderBarFeature>;
+
+  @Loader(BarService)
+  barService: IDynamicFeature<BarConfig>
 
   @ActionController(HeaderBarName.GithubIcon, ActionType.onClick)
   @awaitLoad(HeaderBarFeature)
@@ -27,7 +32,7 @@ export class HeaderBarController {
     MessagePlugin.success('点击更多');
   }
 
-  @UIController(HeaderBarName.GithubIcon, 'headerBarConfig')
+  @HeaderBarController(HeaderBarName.GithubIcon)
   async updateGithubItemConfig(): Promise<UIControllerResult> {
     await new Promise((resolve) => {
       setTimeout(resolve, 3000);
@@ -38,7 +43,7 @@ export class HeaderBarController {
     };
   }
 
-  @UIController(HeaderBarName.SubTitle, 'headerBarConfig')
+  @HeaderBarController(HeaderBarName.SubTitle)
   async updateSubTitle(): Promise<UIControllerResult> {
     await new Promise((resolve) => {
       setTimeout(resolve, 3000);
@@ -55,13 +60,41 @@ export class HeaderBarController {
     };
   }
 
-  @UIController(ToolBarName.SaveConfig, 'toolBarConfig')
-  async updateMode():Promise<UIControllerResult> {
+  @ToolBarController(ToolBarName.SaveConfig)
+  async updateMode(): Promise<UIControllerResult> {
     await new Promise((resolve) => {
       setTimeout(resolve, 3000);
     });
     return {
       disabled: true,
-    }; 
+    };
+  }
+
+  @ToolBarController('preview')
+  async updatePreview(): Promise<UIControllerResult> {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 3000);
+    });
+    return {
+      disabled: true,
+    };
+  }
+
+  @ActionController(ToolBarName.MaterialSwitch, ActionType.onActive)
+  @awaitLoad(BarService)
+  handleMaterialActive() {
+    const barService = this.barService.instance!;
+    barService.updateToolBarConfig(ToolBarName.ComponentTreeSwitch, {
+      active: false,
+    });
+  }
+
+  @ActionController(ToolBarName.ComponentTreeSwitch, ActionType.onActive)
+  @awaitLoad(BarService)
+  handleComponentTreeActive() {
+    const barService = this.barService.instance!;
+    barService.updateToolBarConfig(ToolBarName.MaterialSwitch, {
+      active: false,
+    });
   }
 }

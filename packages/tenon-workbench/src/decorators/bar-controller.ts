@@ -5,13 +5,24 @@ export type UIControllerResult = Promise<Partial<IHeaderBarItem> | Partial<ToolB
 
 export const UIControllerKey = Symbol('UIController');
 
-export const UIController = (name: any, bar: 'headerBarConfig' | 'toolBarConfig') => {
+export const HeaderBarController = (name: any) => {
   return (target, propertyKey, desc: TypedPropertyDescriptor<() => Promise<UIControllerResult>>) => {
     const cb = desc.value!;
     target[UIControllerKey] = target[UIControllerKey] || {};
     target[UIControllerKey][name] = async function (workbench: WorkbenchType) {
       const config = await cb.call(target);
-      workbench.barConfig.updateUIConfig(name, bar, config);
+      workbench.barConfig.updateHeaderBarConfig(name, config);
+    }
+  }
+};
+
+export const ToolBarController = (name: any) => {
+  return (target, propertyKey, desc: TypedPropertyDescriptor<() => Promise<UIControllerResult>>) => {
+    const cb = desc.value!;
+    target[UIControllerKey] = target[UIControllerKey] || {};
+    target[UIControllerKey][name] = async function (workbench: WorkbenchType) {
+      const config = await cb.call(target);
+      workbench.barConfig.updateToolBarConfig(name, config);
     }
   }
 }

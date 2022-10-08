@@ -4,5 +4,5 @@ export * from "./inject";
 export * from "./await-load";
 export * from "./workbench-settings";
 export * from "./action-controller";
-export * from "./ui-controller";
+export * from "./bar-controller";
 export * from "./service";

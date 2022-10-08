@@ -4,13 +4,16 @@
       <template v-for="(group, index) in props.config.config" :key="index">
         <section class="toolbar-group">
           <template v-for="(item) in group" :key="item.name">
-            <Popup v-if="item.popupText" :show-arrow="false" theme="light" placement="bottom">
-              <ToolBarItem class="toolbar-item" :config="item"></ToolBarItem>
-              <template #content>
-                <span class="toolbar-item-popup">{{item.popupText}}</span>
-              </template>
-            </Popup>
-            <ToolBarItem v-else class="toolbar-item" :config="item"></ToolBarItem>
+            <template v-if="!item.hidden">
+              <Popup v-if="item.popupText && (item.flag !== ToolBarFlag.DropDown || !item.listTree)" :show-arrow="false"
+                theme="light" placement="bottom">
+                <ToolBarItem class="toolbar-item" :config="item"></ToolBarItem>
+                <template #content>
+                  <span class="toolbar-item-popup">{{item.popupText}}</span>
+                </template>
+              </Popup>
+              <ToolBarItem v-else class="toolbar-item" :config="item"></ToolBarItem>
+            </template>
           </template>
         </section>
         <Divider v-if="index !== props.config.config.length - 1" layout="vertical"></Divider>
@@ -20,7 +23,7 @@
 </template>
 <script setup lang="ts">
 import { Divider, Popup } from 'tdesign-vue-next';
-import { ToolBarConfig } from '../../configs/tool-bar-config';
+import { ToolBarConfig, ToolBarFlag } from '../../configs/tool-bar-config';
 import ToolBarItem from './tool-bar-item.vue';
 
 const props = defineProps<{
@@ -36,6 +39,11 @@ const alignmentMap = {
 const toolbarStyle = {
   justifyContent: alignmentMap[props.config.alignment],
 };
+
+const stopPopupEvent = (e: Event, disabled) => {
+  disabled && e.stopPropagation();
+}
+
 </script>
 <style lang="scss" scoped>
 #workbench-toolbar {
@@ -46,6 +54,7 @@ const toolbarStyle = {
   align-items: center;
   padding: 6px 12px;
   box-sizing: border-box;
+  transition: all ease .3s;
 }
 
 .toolbar-container {
