@@ -8,7 +8,7 @@ type awaitLoadType = (...tags: FeatureTag[]) => MethodDecorator;
 export const awaitLoad: awaitLoadType = (...tags: FeatureTag[]) => {
   return (target, propertyKey, desc) => {
     const oldInvoke = desc.value! as unknown as Function;
-    desc.value = function(this: any, ...args) {
+    desc.value = function (this: any, ...args) {
       Promise.all(
         tags.map(tag => {
           return new WorkbenchDIServiceCore().get(tag);

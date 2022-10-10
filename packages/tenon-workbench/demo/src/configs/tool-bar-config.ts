@@ -1,6 +1,7 @@
 import { ToolBarConfig, ToolBarFlag } from "@tenon/workbench";
 import FileTree from "vue-material-design-icons/FamilyTree.vue";
 import PaletteSwatch from "vue-material-design-icons/PaletteSwatch.vue";
+import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
 import { h } from "vue";
 
 export enum ToolBarName {
@@ -17,6 +18,7 @@ export enum ToolBarName {
   PageLifeCycle = 'PageLifeCycle',
   MaterialSwitch = 'MaterialSwitch',
   ComponentTreeSwitch = 'ComponentTreeSwitch',
+  CopyComponent = 'CopyComponent',
 }
 
 export const toolBarConfig: ToolBarConfig = {
@@ -172,7 +174,20 @@ export const toolBarConfig: ToolBarConfig = {
         active: false,
         popupText: '展示组件树面板',
       },
-    ]
+    ],
+    [
+      {
+        name: ToolBarName.CopyComponent,
+        flag: ToolBarFlag.Button,
+        text: '复制',
+        icon: {
+          iconRender: () => h(ContentCopy, {
+            size: 16,
+          }),
+        },
+        popupText: '复制组件',
+      },
+    ],
   ],
   alignment: 'center',
 };

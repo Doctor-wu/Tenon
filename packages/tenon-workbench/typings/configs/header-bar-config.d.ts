@@ -1,6 +1,8 @@
 import { VNode } from "vue";
 import { IListTree } from "./list-tree";
-export declare type HeaderBarConfig = IHeaderBarItem[];
+export declare type HeaderBarConfig = {
+    config: IHeaderBarItem[];
+};
 export declare enum HeaderBarType {
     Info = "Info",
     Operator = "Operator"

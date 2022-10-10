@@ -2,28 +2,31 @@
   <section :style="toolbarStyle" id="workbench-toolbar">
     <section class="toolbar-container">
       <template v-for="(group, index) in props.config.config" :key="index">
-        <section class="toolbar-group">
-          <template v-for="(item) in group" :key="item.name">
-            <template v-if="!item.hidden">
-              <Popup v-if="item.popupText && (item.flag !== ToolBarFlag.DropDown || !item.listTree)" :show-arrow="false"
-                theme="light" placement="bottom">
-                <ToolBarItem class="toolbar-item" :config="item"></ToolBarItem>
-                <template #content>
-                  <span class="toolbar-item-popup">{{item.popupText}}</span>
-                </template>
-              </Popup>
-              <ToolBarItem v-else class="toolbar-item" :config="item"></ToolBarItem>
+        <template v-if="group.length">
+          <section class="toolbar-group">
+            <template v-for="(item) in group" :key="item.name">
+              <template v-if="!item.hidden">
+                <Popup v-if="item.popupText && (item.flag !== ToolBarFlag.DropDown || !item.listTree)"
+                  :show-arrow="false" theme="light" placement="bottom">
+                  <ToolBarItem class="toolbar-item" :config="item"></ToolBarItem>
+                  <template #content>
+                    <span class="toolbar-item-popup">{{item.popupText}}</span>
+                  </template>
+                </Popup>
+                <ToolBarItem v-else class="toolbar-item" :config="item"></ToolBarItem>
+              </template>
             </template>
-          </template>
-        </section>
-        <Divider v-if="index !== props.config.config.length - 1" layout="vertical"></Divider>
+          </section>
+          <Divider v-if="!isLastNonEmptyGroup(group)"
+            layout="vertical"></Divider>
+        </template>
       </template>
     </section>
   </section>
 </template>
 <script setup lang="ts">
 import { Divider, Popup } from 'tdesign-vue-next';
-import { ToolBarConfig, ToolBarFlag } from '../../configs/tool-bar-config';
+import { ToolBarConfig, ToolBarConfigType, ToolBarFlag } from '../../configs/tool-bar-config';
 import ToolBarItem from './tool-bar-item.vue';
 
 const props = defineProps<{
@@ -40,8 +43,13 @@ const toolbarStyle = {
   justifyContent: alignmentMap[props.config.alignment],
 };
 
-const stopPopupEvent = (e: Event, disabled) => {
-  disabled && e.stopPropagation();
+const isLastNonEmptyGroup = (group: ToolBarConfigType[]) => {
+  for (let i = props.config.config.length -1; i >= 0; i --) {
+    const groupItem = props.config.config[i];
+    if (!groupItem.length) continue;
+    return groupItem === group;
+  };
+  return true;
 }
 
 </script>

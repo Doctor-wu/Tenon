@@ -7,7 +7,7 @@ import { HeaderBarFeature } from "./headerbar.interface";
 })
 export class HeaderBarHandler implements HeaderBarFeature {
 
-  public getGitHubHref () {
+  public getGitHubHref() {
     return 'https://github.com/Doctor-wu/Tenon';
   }
 }

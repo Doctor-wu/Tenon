@@ -7,7 +7,8 @@
           @click="(...args) => !item.disabled && emitAction(ActionType.onClick, item.name, ...args)">
           <span> {{item.text}} </span>
         </section>
-        <Popup v-else placement="left-bottom" :ref="el => popups.push(el)" :overlayInnerStyle="{padding: '6px 0', borderRadius: 0}">
+        <Popup v-else placement="left-bottom" :ref="el => popups.push(el)"
+          :overlayInnerStyle="{padding: '6px 0', borderRadius: 0}">
           <section class="list-item sub-root" :class="{disabled: item.disabled}"
             @click="(...args) => !item.disabled && emitAction(ActionType.onClick, item.name, ...args)">
             <span> {{item.text}} </span>
@@ -27,10 +28,12 @@ import { Icon, Popup } from 'tdesign-vue-next';
 import { IListTree } from '../configs';
 import { WorkbenchType } from '../core';
 import { ActionType } from '../decorators';
+import { InternalUIService } from '../services';
 
 const props = defineProps<{
   list: IListTree[],
   width?: string;
+  from: InternalUIService;
 }>();
 
 const workbench = inject<WorkbenchType>("workbench");
@@ -40,16 +43,16 @@ const $emit = defineEmits(['click']);
 
 const emitAction = (action: ActionType, name: any, ...args) => {
   if (action === ActionType.onClick) {
-    emitClick();
+    emitClick(...args);
   }
-  barConfig?.emitAction(name, action, ...args);
+  barConfig?.emitAction(name, action, props.from);
 };
 
 const popups = ref<any>([]);
 
-const emitClick = () => {
+const emitClick = (...args) => {
   popups.value.forEach(popup => popup?.handleClose());
-  $emit('click');
+  $emit('click', ...args);
 };
 
 </script>

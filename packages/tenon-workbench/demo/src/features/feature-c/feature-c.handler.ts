@@ -19,7 +19,7 @@ export class FeatureCHandler implements FeatureCFeature{
   ) {
     console.log('C is coming!');
     console.log(workbenchService, workbenchDIService, barService);
-    barService.updateToolBarConfig(ToolBarName.Events, {
+    barService.updateToolBarConfig(ToolBarName.CopyComponent, {
       disabled: true,
     });
   }
