@@ -5,6 +5,7 @@ import { HeaderBarConfig, HeaderBarType, IHeaderBarItem } from "../configs/heade
 import { ToolBarConfig, ToolBarConfigType, ToolBarFlag } from "../configs/tool-bar-config";
 import { IListTree } from "../configs/list-tree";
 import { WorkbenchEvents } from "../core";
+import { InternalUIService } from './action-info-service';
 
 export const BarService = createServiceTag('BarService');
 
@@ -39,7 +40,7 @@ export class BarConfig {
   }
 
   private recursiveHeaderBar(configs: HeaderBarConfig) {
-    configs.forEach(config => {
+    configs.config.forEach(config => {
       this.headerBarNameMap.set(config.name, config);
       if (config.type === HeaderBarType.Operator && config.listTree) {
         this.recursiveListTree(config.listTree, this.headerBarNameMap);
@@ -88,10 +89,12 @@ export class BarConfig {
   }
 
   @awaitLoad(EventEmitterService)
-  emitAction(name: any, action: string, ...args: any[]) {
-    this.eventEmitter.instance?.emit(WorkbenchEvents.emitAction, name, action, ...args);
+  emitAction(name: any, action: string, from: InternalUIService, ...args: any[]) {
+    this.eventEmitter.instance?.emit(WorkbenchEvents.emitAction, {
+      name, action, from,
+    });
     if (!this.actionMap.get(name)) return;
-    this.actionMap.get(name)![action].forEach(cb => {
+    this.actionMap.get(name)![action]?.forEach(cb => {
       cb(...args);
     });
   }

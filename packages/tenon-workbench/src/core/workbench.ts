@@ -1,4 +1,4 @@
-import { WorkbenchDIServiceCore, BarConfig, EventEmitterCore, createServiceTag, DynamicFeatureTag } from '../services';
+import { WorkbenchDIServiceCore, BarConfig, EventEmitterCore, createServiceTag, DynamicFeatureTag, ActionInfo } from '../services';
 import { FeatureNameKey, ActionControllerKey, Service } from '../decorators';
 import { IWorkbenchAdapter } from './adapter';
 import { newable, Singleton } from '@tenon/shared';
@@ -107,6 +107,7 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
         WorkbenchEvents.EditorRootMount,
         this.attachEditor.bind(this),
       );
+      new ActionInfo(this.eventEmitter);
     }
 
     public onLoad(el: HTMLElement) {

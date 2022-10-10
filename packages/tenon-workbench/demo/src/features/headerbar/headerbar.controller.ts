@@ -5,6 +5,10 @@ import {
   ActionType,
   BarService,
   BarConfig,
+  InjectBarService,
+  ProvideService,
+  InjectActionInfoService,
+  ActionInfo,
 } from "@tenon/workbench";
 import { HeaderBarName, MoreItemName } from "../../configs/header-bar-config";
 import { HeaderBarFeature } from "./headerbar.interface";
@@ -23,13 +27,31 @@ export class HeaderBarsController {
 
   @ActionController(HeaderBarName.GithubIcon, ActionType.onClick)
   @awaitLoad(HeaderBarFeature)
+  @ProvideService
   handleGithubIconClick() {
     window.open(this.headerBar.instance!.getGitHubHref(), '_blank');
   }
 
+  @ActionController(HeaderBarName.DocIcon, ActionType.onClick)
+  @ProvideService
+  handleDocIconClick(
+    @InjectBarService() barService: BarConfig,
+    @InjectActionInfoService() actionInfo: ActionInfo,
+  ) {
+    console.log(barService, actionInfo);
+  }
+
   @ActionController(MoreItemName.More, ActionType.onClick)
-  handleMoreClick() {
-    MessagePlugin.success('点击更多');
+  @ActionController('edit', ActionType.onClick)
+  @ProvideService
+  handleMoreClick(@InjectActionInfoService() actionInfo: ActionInfo) {
+    console.log(actionInfo);
+
+    if (actionInfo.name === MoreItemName.More) {
+      MessagePlugin.success('点击更多');
+    } else if(actionInfo.name === 'edit') {
+      MessagePlugin.success('切换为编辑模式');
+    }
   }
 
   @HeaderBarController(HeaderBarName.GithubIcon)
@@ -82,7 +104,11 @@ export class HeaderBarsController {
 
   @ActionController(ToolBarName.MaterialSwitch, ActionType.onActive)
   @awaitLoad(BarService)
-  handleMaterialActive() {
+  @ProvideService
+  handleMaterialActive(
+    @InjectActionInfoService() actionInfo: ActionInfo,
+  ) {
+    console.log(actionInfo);
     const barService = this.barService.instance!;
     barService.updateToolBarConfig(ToolBarName.ComponentTreeSwitch, {
       active: false,

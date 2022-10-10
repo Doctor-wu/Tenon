@@ -21,11 +21,11 @@ const { config } = defineProps<{
 }>();
 
 const infoRenders = computed(() => {
-  return config.filter((item) => item.type === HeaderBarType.Info && !item.hidden);
+  return config.config.filter((item) => item.type === HeaderBarType.Info && !item.hidden);
 });
 
 const operatorItems = computed(() => {
-  return config.filter((item) => item.type === HeaderBarType.Operator && !item.hidden);
+  return config.config.filter((item) => item.type === HeaderBarType.Operator && !item.hidden);
 });
 
 </script>

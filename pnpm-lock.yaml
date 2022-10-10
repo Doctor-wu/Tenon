@@ -286,11 +286,19 @@ importers:
     specifiers:
       '@tenon/shared': workspace:*
       '@tenon/workbench': workspace:*
+      sass: ^1.43.4
       tdesign-vue-next: ^0.21.0
+      typescript: ^4.4.3
+      vite: ^2.8.6
+      vite-plugin-external: ^1.2.5
       vue: ^3.2.31
       vue-material-design-icons: ^5.1.2
     dependencies:
+      sass: 1.49.9
       tdesign-vue-next: 0.21.0_vue@3.2.31
+      typescript: 4.6.2
+      vite: 2.8.6_sass@1.49.9
+      vite-plugin-external: 1.2.5
       vue: 3.2.31
       vue-material-design-icons: 5.1.2
     devDependencies:
@@ -4142,6 +4150,12 @@ packages:
   /vary/1.1.2:
     resolution: {integrity: sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=}
     engines: {node: '>= 0.8'}
+    dev: false
+
+  /vite-plugin-external/1.2.5:
+    resolution: {integrity: sha512-movscmWZsbUPxcVjXtEFgV+RAa15Mn3TqYXVPWJVIi/6wnfjpBLhx+m81kndUpiYrivfZLcnWOt/EWpwJ0a4SQ==}
+    dependencies:
+      fs-extra: 10.1.0
     dev: false
 
   /vite-plugin-monaco-editor-nls/1.0.8_vite@2.8.6:

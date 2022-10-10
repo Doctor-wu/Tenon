@@ -7,10 +7,11 @@
         <component v-if="config.icon?.iconRender" :is="config.icon?.iconRender"></component>
         <Icon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></Icon>
         <span class="item-text" v-if="config.text"> {{config.text}} </span>
-        <Icon v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></Icon>
+        <Icon class="dropdown-arrow" v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></Icon>
       </Button>
       <template #content>
-        <ListTree :list="config.listTree" :width="config.dropDownWidth || '90px'" @click="handleListTreeClick">
+        <ListTree :from="InternalUIService.ToolBar" :list="config.listTree" :width="config.dropDownWidth || '90px'"
+          @click="handleListTreeClick">
         </ListTree>
       </template>
     </Popup>
@@ -19,7 +20,7 @@
       <component v-if="config.icon?.iconRender" :is="config.icon?.iconRender"></component>
       <Icon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></Icon>
       <span class="item-text" v-if="config.text"> {{config.text}} </span>
-      <Icon v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></Icon>
+      <Icon class="dropdown-arrow" v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></Icon>
     </Button>
   </section>
 </template>
@@ -29,6 +30,7 @@ import { inject, ref } from 'vue';
 import { ToolBarConfigType, ToolBarFlag } from '../../configs/tool-bar-config';
 import { WorkbenchType } from '../../core';
 import { ActionType } from '../../decorators';
+import { InternalUIService } from '../../services';
 import ListTree from '../list-tree.vue';
 
 const props = defineProps<{
@@ -54,7 +56,7 @@ const emitAction = (...args) => {
     });
   }
   if (!action) return;
-  barConfig?.emitAction(props.config.name, action, ...args);
+  barConfig?.emitAction(props.config.name, action, InternalUIService.ToolBar);
 };
 
 const handleListTreeClick = () => {
@@ -87,6 +89,10 @@ const handleListTreeClick = () => {
 
 .toolbar-item-container {
   display: inline-flex;
+}
+
+.dropdown-arrow {
+  color: #3d3d3d;
 }
 
 .item-text {

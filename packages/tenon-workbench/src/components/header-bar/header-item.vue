@@ -1,44 +1,29 @@
 <template>
   <component v-if="operateConfig.render" :is="operateConfig.render"></component>
-  <Popup
-    v-else-if="!operateConfig.listTree"
-    :content="operateConfig.popupText"
-    :show-arrow="false"
-    theme="light"
-    placement="bottom"
-  >
-    <Button
-      :onClick="(...args) => emitAction(ActionType.onClick, ...args)"
-      variant="text"
-    >
+  <Popup v-else-if="!operateConfig.listTree" :content="operateConfig.popupText" :show-arrow="false" theme="light"
+    placement="bottom">
+    <Button :onClick="(...args) => emitAction(...args)" variant="text">
       <Icon size="25px" :name="operateConfig.iconName"></Icon>
     </Button>
   </Popup>
-  <Popup
-    v-else
-    theme="light"
-    trigger="click"
-    ref="popupRef"
-    :show-arrow="false"
-    placement="bottom-right"
-    :overlayInnerStyle="{padding: '6px 0', borderRadius: 0}"
-  >
-    <Button
-      variant="text"
-    >
+  <Popup v-else theme="light" trigger="click" ref="popupRef" :show-arrow="false" placement="bottom-right"
+    :overlayInnerStyle="{padding: '6px 0', borderRadius: 0}">
+    <Button variant="text">
       <Icon size="25px" :name="operateConfig.iconName"></Icon>
     </Button>
     <template #content>
-      <ListTree :list="operateConfig.listTree" @click="handleListTreeClick"></ListTree>
+      <ListTree :from="InternalUIService.HeaderBar" :list="operateConfig.listTree" @click="handleListTreeClick">
+      </ListTree>
     </template>
   </Popup>
 </template>
 <script setup lang="ts">
 import { Popup, Button, Icon } from "tdesign-vue-next";
 import { inject, ref, VNode } from "vue";
-import { IHeaderBarOperatorItem } from "../../configs";
+import { HeaderBarType, IHeaderBarOperatorItem } from "../../configs";
 import { WorkbenchType } from "../../core";
 import { ActionType } from "../../decorators";
+import { InternalUIService } from "../../services";
 import ListTree from "../list-tree.vue";
 
 const { operateConfig } = defineProps<{
@@ -48,12 +33,13 @@ const { operateConfig } = defineProps<{
 const workbench = inject<WorkbenchType>("workbench");
 const barConfig = workbench?.barConfig;
 
-const emitAction = (action: ActionType, ...args) => {
-  barConfig?.emitAction(operateConfig.name, action, ...args);
+const emitAction = (...args) => {
+  let action: ActionType | undefined;
+  if (operateConfig.type === HeaderBarType.Operator) action = ActionType.onClick;
+  if (!action) return;
+  barConfig?.emitAction(operateConfig.name, action, InternalUIService.HeaderBar);
 };
 
-// const popupVisible = ref(false);
-// const togglePopupVisible = () => popupVisible.value = !popupVisible.value;
 const popupRef = ref<any>(null);
 
 const handleListTreeClick = () => {

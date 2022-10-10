@@ -1,15 +1,22 @@
 import path from 'path';
 import { build } from 'vite';
-import fs from 'fs';
 import { execSync } from 'child_process';
 import vue from '@vitejs/plugin-vue';
+import createExternal from 'vite-plugin-external';
 
 
 (async () => {
   await build({
     root: path.resolve(__dirname, '../'),
     base: '/',
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      createExternal({
+        externals: {
+          vue: 'Vue',
+        },
+      })
+    ],
     build: {
       sourcemap: true,
       outDir: path.resolve(__dirname, '../lib'),
