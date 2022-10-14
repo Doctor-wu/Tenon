@@ -1,7 +1,7 @@
 import {
   ActionController, HeaderBarController, ToolBarController,
-  awaitLoad, IDynamicFeature,
-  Loader, UIControllerResult,
+  awaitLoad, IDynamicFeature, Loader,
+  HeaderBarControllerResult, ToolBarControllerResult,
   ActionType,
   BarService,
   BarConfig,
@@ -9,6 +9,7 @@ import {
   ProvideService,
   InjectActionInfoService,
   ActionInfo,
+  HeaderBarType,
 } from "@tenon/workbench";
 import { HeaderBarName, MoreItemName } from "../../configs/header-bar-config";
 import { HeaderBarFeature } from "./headerbar.interface";
@@ -27,13 +28,11 @@ export class HeaderBarsController {
 
   @ActionController(HeaderBarName.GithubIcon, ActionType.onClick)
   @awaitLoad(HeaderBarFeature)
-  @ProvideService
   handleGithubIconClick() {
     window.open(this.headerBar.instance!.getGitHubHref(), '_blank');
   }
 
   @ActionController(HeaderBarName.DocIcon, ActionType.onClick)
-  @ProvideService
   handleDocIconClick(
     @InjectBarService() barService: BarConfig,
     @InjectActionInfoService() actionInfo: ActionInfo,
@@ -43,37 +42,37 @@ export class HeaderBarsController {
 
   @ActionController(MoreItemName.More, ActionType.onClick)
   @ActionController('edit', ActionType.onClick)
-  @ProvideService
   handleMoreClick(@InjectActionInfoService() actionInfo: ActionInfo) {
     console.log(actionInfo);
 
     if (actionInfo.name === MoreItemName.More) {
       MessagePlugin.success('点击更多');
-    } else if(actionInfo.name === 'edit') {
+    } else if (actionInfo.name === 'edit') {
       MessagePlugin.success('切换为编辑模式');
     }
   }
 
   @HeaderBarController(HeaderBarName.GithubIcon)
-  async updateGithubItemConfig(): Promise<UIControllerResult> {
+  async updateGithubItemConfig(): Promise<HeaderBarControllerResult> {
     await new Promise((resolve) => {
       setTimeout(resolve, 3000);
     });
     return {
+      type: HeaderBarType.Operator,
       popupText: 'Github: D0ct0r',
       iconName: 'logo-github',
     };
   }
 
   @HeaderBarController(HeaderBarName.SubTitle)
-  async updateSubTitle(): Promise<UIControllerResult> {
+  async updateSubTitle(): Promise<HeaderBarControllerResult> {
     await new Promise((resolve) => {
       setTimeout(resolve, 3000);
     });
     return {
       render: () => h(SubTitle, {
         text: 'Workbench副标题 (updated)',
-        key: Math.random(),
+        // key: Math.random(),
         style: {
           alignSelf: 'flex-end',
           marginBottom: '5px',
@@ -83,7 +82,7 @@ export class HeaderBarsController {
   }
 
   @ToolBarController(ToolBarName.SaveConfig)
-  async updateMode(): Promise<UIControllerResult> {
+  async updateMode(): Promise<ToolBarControllerResult> {
     await new Promise((resolve) => {
       setTimeout(resolve, 3000);
     });
@@ -93,7 +92,7 @@ export class HeaderBarsController {
   }
 
   @ToolBarController('preview')
-  async updatePreview(): Promise<UIControllerResult> {
+  async updatePreview(): Promise<ToolBarControllerResult> {
     await new Promise((resolve) => {
       setTimeout(resolve, 3000);
     });
@@ -104,7 +103,6 @@ export class HeaderBarsController {
 
   @ActionController(ToolBarName.MaterialSwitch, ActionType.onActive)
   @awaitLoad(BarService)
-  @ProvideService
   handleMaterialActive(
     @InjectActionInfoService() actionInfo: ActionInfo,
   ) {

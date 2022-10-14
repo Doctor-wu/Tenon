@@ -15,7 +15,7 @@
             <Icon class="sub-root-icon" name="caret-right-small"></Icon>
           </section>
           <template #content>
-            <ListTree :list="item.children" @click="emitClick"></ListTree>
+            <ListTree :from="from" :list="item.children" @click="emitClick"></ListTree>
           </template>
         </Popup>
       </template>
@@ -51,8 +51,8 @@ const emitAction = (action: ActionType, name: any, ...args) => {
 const popups = ref<any>([]);
 
 const emitClick = (...args) => {
-  popups.value.forEach(popup => popup?.handleClose());
   $emit('click', ...args);
+  popups.value.forEach(popup => popup?.handleClose());
 };
 
 </script>
