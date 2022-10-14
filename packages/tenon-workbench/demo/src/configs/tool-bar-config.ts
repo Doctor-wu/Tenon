@@ -10,6 +10,7 @@ export enum ToolBarName {
   Mode = 'Mode',
   RealPreview = 'RealPreview',
   ClearPageConfig = 'ClearPageConfig',
+  /** 保存页面配置 */
   SaveConfig = 'SaveConfig',
   ExportConfig = 'ExportConfig',
   LoadConfig = 'LoadConfig',

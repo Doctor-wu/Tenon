@@ -17,10 +17,16 @@ const createServiceInjector = (serviceTag: ServiceTag) => {
   };
 };
 
+const ProvideServiceTag = createServiceTag('ProvideService');
+
 /**
  * 使用 @Inject__Service时需要使用这个装饰器装饰方法
  */
 export const ProvideService: MethodDecorator = function (target, propertyKey, desc) {
+  // 确保只会Provide一次
+  if (target[ProvideServiceTag] && target[ProvideServiceTag].has(propertyKey)) return;
+  target[ProvideServiceTag] = target[ProvideServiceTag] || new Set();
+  target[ProvideServiceTag].add(propertyKey);
   const oldValue = desc.value! as unknown as Function;
   desc.value = function (this: any, ...args: any[]) {
     const applyArgs: any[] = [];
