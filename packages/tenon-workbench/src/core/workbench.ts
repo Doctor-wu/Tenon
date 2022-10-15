@@ -1,4 +1,4 @@
-import { WorkbenchDIServiceCore, BarConfig, EventEmitterCore, createServiceTag, DynamicFeatureTag, ActionInfo } from '../services';
+import { WorkbenchDIServiceCore, BarServiceCore, EventEmitterCore, createServiceTag, DynamicFeatureTag, ActionInfo } from '../services';
 import { FeatureNameKey, ActionControllerKey, Service } from '../decorators';
 import { IWorkbenchAdapter } from './adapter';
 import { newable, Singleton } from '@tenon/shared';
@@ -31,7 +31,7 @@ export interface IWorkbench {
   dynamicTags: Set<DynamicFeatureTag>;
   controllers: newable<any, any>[];
   eventEmitter: EventEmitterCore;
-  barConfig: BarConfig;
+  barConfig: BarServiceCore;
   workbenchDIService: WorkbenchDIServiceCore;
 }
 
@@ -70,7 +70,7 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
 
     public workbenchDIService = new WorkbenchDIServiceCore();
 
-    public barConfig: BarConfig = new BarConfig(
+    public barConfig: BarServiceCore = new BarServiceCore(
       headerBarConfig,
       toolBarConfig,
       footBarConfig

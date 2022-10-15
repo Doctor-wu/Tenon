@@ -4,7 +4,7 @@ import {
   HeaderBarControllerResult, ToolBarControllerResult,
   ActionType,
   BarService,
-  BarConfig,
+  BarServiceCore,
   InjectBarService,
   InjectActionInfoService,
   ActionInfo,
@@ -28,7 +28,7 @@ export class HeaderBarsController {
   headerBar: IDynamicFeature<HeaderBarFeature>;
 
   @Loader(BarService)
-  barService: IDynamicFeature<BarConfig>
+  barService: IDynamicFeature<BarServiceCore>
 
   @ActionController(HeaderBarName.GithubIcon, ActionType.onClick)
   @awaitLoad(HeaderBarFeature)
@@ -38,7 +38,7 @@ export class HeaderBarsController {
 
   @ActionController(HeaderBarName.DocIcon, ActionType.onClick)
   handleDocIconClick(
-    @InjectBarService() barService: BarConfig,
+    @InjectBarService() barService: BarServiceCore,
     @InjectActionInfoService() actionInfo: ActionInfo,
   ) {
     console.log(barService, actionInfo);
@@ -149,10 +149,31 @@ export class HeaderBarsController {
     drawerService.left.detachLayer();
   }
 
+  @ActionController(ToolBarName.ComponentProperty, ActionType.onActive)
+  @awaitLoad(BarService)
+  handleComponentPropActive(
+    @InjectActionInfoService() actionInfo: ActionInfo,
+    @InjectDrawerService() drawerService: DrawerServiceCore,
+  ) {
+    console.log(actionInfo);
+    const barService = this.barService.instance!;
+    drawerService.right.replaceLayer('组件属性', () => h('span', '组件属性'));
+    barService.updateToolBarConfig(ToolBarName.MaterialSwitch, {
+      active: false,
+    });
+  }
+
+  @ActionController(ToolBarName.ComponentProperty, ActionType.onDeActive)
+  handleComponentPropDeActive(
+    @InjectDrawerService() drawerService: DrawerServiceCore,
+  ) {
+    drawerService.right.detachLayer();
+  }
+
   @ActionController(FootBarName.FullScreen, ActionType.onClick)
   @awaitLoad(HeaderBarFeature)
   handleFullScreenClick(
-    @InjectBarService() barService: BarConfig,
+    @InjectBarService() barService: BarServiceCore,
   ) {
     const isFullScreen = this.headerBar.instance!.isFullScreen;
     this.headerBar.instance!.toggleFullScreen();

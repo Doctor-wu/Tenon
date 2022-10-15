@@ -1,7 +1,7 @@
 import { ToolBarConfig, ToolBarFlag } from "@tenon/workbench";
 import FileTree from "vue-material-design-icons/FamilyTree.vue";
 import PaletteSwatch from "vue-material-design-icons/PaletteSwatch.vue";
-import ContentCopy from "vue-material-design-icons/ContentCopy.vue";
+import FormatListText from "vue-material-design-icons/FormatListText.vue";
 import { h } from "vue";
 
 export enum ToolBarName {
@@ -19,7 +19,7 @@ export enum ToolBarName {
   PageLifeCycle = 'PageLifeCycle',
   MaterialSwitch = 'MaterialSwitch',
   ComponentTreeSwitch = 'ComponentTreeSwitch',
-  CopyComponent = 'CopyComponent',
+  ComponentProperty = 'ComponentProperty',
 }
 
 export const toolBarConfig: ToolBarConfig = {
@@ -176,6 +176,20 @@ export const toolBarConfig: ToolBarConfig = {
         popupText: '展示组件树面板',
       },
     ],
+    [
+      {
+        name: ToolBarName.ComponentProperty,
+        flag: ToolBarFlag.Switch,
+        text: '组件属性',
+        icon: {
+          iconRender: () => h(FormatListText, {
+            size: 16,
+          }),
+        },
+        active: false,
+        popupText: '展示组件属性面板',
+      }
+    ]
   ],
   alignment: 'center',
 };

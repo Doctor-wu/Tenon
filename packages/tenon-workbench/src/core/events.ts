@@ -8,4 +8,6 @@ export enum WorkbenchEvents {
   updateFootBarConfig = 'updateFootBarConfig',
   emitAction = 'emitAction',
   regisAction = 'regisAction',
+
+  drawerChanged = 'drawerChanged',
 }

@@ -3,7 +3,7 @@ import { App } from "vue";
 import { WorkbenchEvents } from "./events";
 import { DynamicFeatureTag } from "../services/tag";
 import { IWorkbench } from "./workbench";
-import { BarConfig, WorkbenchDIServiceCore } from "../services";
+import { BarServiceCore, WorkbenchDIServiceCore } from "../services";
 
 
 export class WorkbenchLoader implements IWorkbench {
@@ -13,7 +13,7 @@ export class WorkbenchLoader implements IWorkbench {
   app: App;
   syncFeatures: newable<any, any>[];
   dynamicTags: Set<DynamicFeatureTag>;
-  barConfig: BarConfig;
+  barConfig: BarServiceCore;
   load(el: HTMLElement) {
     this.eventEmitter.emit(
       WorkbenchEvents.Load,

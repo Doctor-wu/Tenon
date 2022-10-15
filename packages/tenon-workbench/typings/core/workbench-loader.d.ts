@@ -2,7 +2,7 @@ import { newable, Subscribe } from "@tenon/shared";
 import { App } from "vue";
 import { DynamicFeatureTag } from "../services/tag";
 import { IWorkbench } from "./workbench";
-import { BarConfig, WorkbenchDIServiceCore } from "../services";
+import { BarServiceCore, WorkbenchDIServiceCore } from "../services";
 export declare class WorkbenchLoader implements IWorkbench {
     workbenchDIService: WorkbenchDIServiceCore;
     controllers: newable<any, any>[];
@@ -10,6 +10,6 @@ export declare class WorkbenchLoader implements IWorkbench {
     app: App;
     syncFeatures: newable<any, any>[];
     dynamicTags: Set<DynamicFeatureTag>;
-    barConfig: BarConfig;
+    barConfig: BarServiceCore;
     load(el: HTMLElement): void;
 }

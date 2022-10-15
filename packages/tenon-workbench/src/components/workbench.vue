@@ -47,6 +47,7 @@ onMounted(() => {
   flex-direction: column;
   height: 100%;
   overflow: hidden;
+  text-align: center;
 }
 .editor-container {
   flex: 1;

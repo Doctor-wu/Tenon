@@ -5,7 +5,7 @@ import { ToolBarConfig, ToolBarItemType } from "../configs/tool-bar-config";
 import { InternalUIService } from './action-info-service';
 import { FootBarConfig, FootBarItemType } from '../configs';
 export declare const BarService: symbol;
-export declare class BarConfig {
+export declare class BarServiceCore {
     private headerBarConfigInit;
     private toolBarConfigInit;
     private footBarConfigInit;
