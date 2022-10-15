@@ -20,8 +20,10 @@ export interface IWorkbench {
     controllers: newable<any, any>[];
     eventEmitter: EventEmitterCore;
     barConfig: BarConfig;
+    workbenchDIService: WorkbenchDIServiceCore;
 }
-export declare type WorkbenchType = IWorkbenchAdapter & WorkbenchLoader & IWorkbench;
+declare type ComposeWorkbench<A extends {}, W extends {}, I extends {}> = A & W & I;
+export declare type WorkbenchType = ComposeWorkbench<IWorkbenchAdapter, WorkbenchLoader, IWorkbench>;
 export declare const WorkbenchService: symbol;
 export declare const inheritFromWorkbench: (Target: newable<any, WorkbenchType>, config: IWorkbenchConfig) => {
     new (...args: any[]): {
@@ -43,3 +45,4 @@ export declare const inheritFromWorkbench: (Target: newable<any, WorkbenchType>,
         load(el: HTMLElement): void;
     };
 };
+export {};

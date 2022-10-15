@@ -32,9 +32,12 @@ export interface IWorkbench {
   controllers: newable<any, any>[];
   eventEmitter: EventEmitterCore;
   barConfig: BarConfig;
+  workbenchDIService: WorkbenchDIServiceCore;
 }
 
-export type WorkbenchType = IWorkbenchAdapter & WorkbenchLoader & IWorkbench;
+type ComposeWorkbench<A extends {}, W extends {}, I extends {}> = A & W & I;
+
+export type WorkbenchType = ComposeWorkbench<IWorkbenchAdapter, WorkbenchLoader, IWorkbench>
 
 export const WorkbenchService = createServiceTag('WorkbenchService');
 
@@ -45,6 +48,7 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
     dynamicTags,
     headerBarConfig,
     toolBarConfig,
+    footBarConfig,
     controllers,
   } = config;
 
@@ -66,7 +70,11 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
 
     public workbenchDIService = new WorkbenchDIServiceCore();
 
-    public barConfig: BarConfig = new BarConfig(headerBarConfig, toolBarConfig);
+    public barConfig: BarConfig = new BarConfig(
+      headerBarConfig,
+      toolBarConfig,
+      footBarConfig
+    );
 
     constructor(
       ...args: any[]
@@ -123,6 +131,7 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
           workbenchInstance: this,
           headerBarConfig: this.barConfig.headerBarConfig,
           toolBarConfig: this.barConfig.toolBarConfig,
+          footBarConfig: this.barConfig.footBarConfig,
         }),
       });
       this.app.mount(el);

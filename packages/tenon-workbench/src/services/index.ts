@@ -5,3 +5,5 @@ export * from "./tag";
 export * from "./bar-service";
 export * from "./action-info-service";
 export * from "./service-decorator-util";
+export * from "./surface-service";
+export * from "./drawer-service";

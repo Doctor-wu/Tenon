@@ -26,7 +26,7 @@
 </template>
 <script setup lang="ts">
 import { Divider, Popup } from 'tdesign-vue-next';
-import { ToolBarConfig, ToolBarConfigType, ToolBarFlag } from '../../configs/tool-bar-config';
+import { ToolBarConfig, ToolBarItemType, ToolBarFlag } from '../../configs/tool-bar-config';
 import ToolBarItem from './tool-bar-item.vue';
 
 const props = defineProps<{
@@ -43,7 +43,7 @@ const toolbarStyle = {
   justifyContent: alignmentMap[props.config.alignment],
 };
 
-const isLastNonEmptyGroup = (group: ToolBarConfigType[]) => {
+const isLastNonEmptyGroup = (group: ToolBarItemType[]) => {
   for (let i = props.config.config.length -1; i >= 0; i --) {
     const groupItem = props.config.config[i];
     if (!groupItem.length) continue;
@@ -63,6 +63,7 @@ const isLastNonEmptyGroup = (group: ToolBarConfigType[]) => {
   padding: 6px 12px;
   box-sizing: border-box;
   transition: all ease .3s;
+  z-index: 1;
 }
 
 .toolbar-container {

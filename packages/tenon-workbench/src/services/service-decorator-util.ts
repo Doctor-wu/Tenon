@@ -2,7 +2,9 @@ import { ActionInfoService } from "./action-info-service";
 import { BarService } from "./bar-service";
 import { ContextService } from "./context";
 import { WorkbenchDIService, WorkbenchDIServiceCore } from "./di-service";
+import { DrawerService } from "./drawer-service";
 import { EventEmitterService } from "./event-emitter";
+import { SurfaceService } from "./surface-service";
 import { createServiceTag, ServiceTag } from "./tag";
 
 const ServiceDecoratorTag = createServiceTag('servicePropertyDecorator');
@@ -74,3 +76,13 @@ export const InjectDIService = createServiceInjector(WorkbenchDIService);
  * 需要与 @ProvideService 搭配使用
  */
 export const InjectActionInfoService = createServiceInjector(ActionInfoService);
+
+/**
+ * 需要与 @ProvideService 搭配使用
+ */
+export const InjectSurfaceService = createServiceInjector(SurfaceService);
+
+/**
+* 需要与 @ProvideService 搭配使用
+*/
+export const InjectDrawerService = createServiceInjector(DrawerService);

@@ -19,7 +19,7 @@ export const awaitLoad: awaitLoadType = (...tags: FeatureTag[]) => {
             await target[LoaderTag][featureKey].getInstance();
           }
         }
-        oldInvoke.call(this, ...args);
+        return oldInvoke.call(this, ...args);
       });
     } as any;
   }

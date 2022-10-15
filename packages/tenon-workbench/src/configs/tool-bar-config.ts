@@ -1,4 +1,5 @@
 import { VNode } from "vue";
+import { IconConfig } from "./icon";
 import { IListTree } from "./list-tree";
 
 export enum ToolBarFlag {
@@ -17,14 +18,9 @@ export interface IToolBarBaseConfig<Flag extends ToolBarFlag> {
   hidden?: boolean;
   disabled?: boolean;
   popupText?: string;
-  icon?: IToolBarIconConfig;
+  icon?: IconConfig;
 };
 
-export interface IToolBarIconConfig {
-  iconName?: string;
-  iconRender?: () => VNode;
-  iconSize?: number;
-}
 
 export interface IToolBarSwitchConfig extends IToolBarBaseConfig<ToolBarFlag.Switch> {
   active: boolean;
@@ -39,9 +35,9 @@ export interface IToolBarDropDownConfig extends IToolBarBaseConfig<ToolBarFlag.D
   dropDownWidth?: string;
 };
 
-export type ToolBarConfigType = IToolBarButtonConfig | IToolBarSwitchConfig | IToolBarDropDownConfig;
+export type ToolBarItemType = IToolBarButtonConfig | IToolBarSwitchConfig | IToolBarDropDownConfig;
 
 export type ToolBarConfig = {
-  config: ToolBarConfigType[][];
+  config: ToolBarItemType[][];
   alignment: 'left' | 'center' | 'right';
 };

@@ -1,9 +1,6 @@
 import { VNode } from "vue";
+import { IconConfig } from "./icon";
 import { IListTree } from "./list-tree";
-
-export type HeaderBarConfig = {
-  config: IHeaderBarItem[];
-};
 
 export enum HeaderBarType {
   Info = 'Info',
@@ -15,6 +12,7 @@ export interface IHeaderBarBaseItem<BarType extends HeaderBarType> {
   name: any;
   type: BarType,
   hidden?: boolean;
+  style?: Record<string, string | number>;
 };
 
 export interface IHeaderBarInfoItem extends IHeaderBarBaseItem<HeaderBarType.Info> {
@@ -23,10 +21,14 @@ export interface IHeaderBarInfoItem extends IHeaderBarBaseItem<HeaderBarType.Inf
 
 export interface IHeaderBarOperatorItem extends IHeaderBarBaseItem<HeaderBarType.Operator> {
   popupText?: string;
-  iconName?: string;
+  icon?: IconConfig;
   listTree?: IListTree[];
   render?: () => VNode;
 };
 
 
-export type IHeaderBarItem = IHeaderBarInfoItem | IHeaderBarOperatorItem;
+export type HeaderBarItemType = IHeaderBarInfoItem | IHeaderBarOperatorItem;
+
+export type HeaderBarConfig = {
+  config: HeaderBarItemType[];
+};

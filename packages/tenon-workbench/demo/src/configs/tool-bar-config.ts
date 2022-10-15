@@ -160,7 +160,7 @@ export const toolBarConfig: ToolBarConfig = {
             size: 16,
           }),
         },
-        active: true,
+        active: false,
         popupText: '展示物料面板',
       },
       {
@@ -174,19 +174,6 @@ export const toolBarConfig: ToolBarConfig = {
         },
         active: false,
         popupText: '展示组件树面板',
-      },
-    ],
-    [
-      {
-        name: ToolBarName.CopyComponent,
-        flag: ToolBarFlag.Button,
-        text: '复制',
-        icon: {
-          iconRender: () => h(ContentCopy, {
-            size: 16,
-          }),
-        },
-        popupText: '复制组件',
       },
     ],
   ],

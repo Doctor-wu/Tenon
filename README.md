@@ -37,10 +37,10 @@
   - [ ] 新增测试
   - [ ] 改造为docker项目
   - [ ] 改造 tenon-node-framework
-- [ ] 新增workbench系统
+- [x] 新增workbench系统
   - [x] 参考vscode使用workbench来连接编辑器与feature
   - [x] DI
-  - [ ] 可注册widget
+  - [x] 可注册surface
   - [x] 可注册feature
   - [x] 可注册工具栏
 - [ ] 新增场景编辑器, 可根据基础编辑器构造场景
