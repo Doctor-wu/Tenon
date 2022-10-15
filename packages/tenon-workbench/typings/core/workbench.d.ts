@@ -1,4 +1,4 @@
-import { WorkbenchDIServiceCore, BarConfig, EventEmitterCore, DynamicFeatureTag } from '../services';
+import { WorkbenchDIServiceCore, BarServiceCore, EventEmitterCore, DynamicFeatureTag } from '../services';
 import { IWorkbenchAdapter } from './adapter';
 import { newable } from '@tenon/shared';
 import { WorkbenchLoader } from './workbench-loader';
@@ -19,7 +19,7 @@ export interface IWorkbench {
     dynamicTags: Set<DynamicFeatureTag>;
     controllers: newable<any, any>[];
     eventEmitter: EventEmitterCore;
-    barConfig: BarConfig;
+    barConfig: BarServiceCore;
     workbenchDIService: WorkbenchDIServiceCore;
 }
 declare type ComposeWorkbench<A extends {}, W extends {}, I extends {}> = A & W & I;
@@ -35,7 +35,7 @@ export declare const inheritFromWorkbench: (Target: newable<any, WorkbenchType>,
         contextService: any;
         eventEmitter: EventEmitterCore;
         workbenchDIService: WorkbenchDIServiceCore;
-        barConfig: BarConfig;
+        barConfig: BarServiceCore;
         initFeatureTags(syncFeatures: any[], dynamicTags: DynamicFeatureTag[]): void;
         initControllers(): void;
         initEvents(): void;

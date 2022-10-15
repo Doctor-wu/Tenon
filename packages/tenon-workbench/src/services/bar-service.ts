@@ -1,5 +1,5 @@
 import { Singleton } from '@tenon/shared';
-import { awaitLoad, IDynamicFeature, Loader, Service } from "../decorators";
+import { ActionType, awaitLoad, IDynamicFeature, Loader, Service } from "../decorators";
 import { createServiceTag, ContextServiceCore, EventEmitterService, EventEmitterCore } from "../services";
 import { HeaderBarConfig, HeaderBarType, HeaderBarItemType } from "../configs/header-bar-config";
 import { ToolBarConfig, ToolBarItemType, ToolBarFlag } from "../configs/tool-bar-config";
@@ -14,7 +14,7 @@ export const BarService = createServiceTag('BarService');
   name: BarService,
 })
 @Singleton
-export class BarConfig {
+export class BarServiceCore {
   actionMap: Map<any, { [props: string]: Function[] }> = new Map;
   headerBarNameMap: Map<any, HeaderBarItemType> = new Map;
   toolBarNameMap: Map<any, ToolBarItemType> = new Map;

@@ -1,10 +1,13 @@
 <template>
   <section class="drawer-container" :style="computedStyle">
-    <section class="drawer-header">
-      <span v-for="(layerName, index) in drawerService[alignment].layers.value">{{index > 0 ? ' / ' : ''}}{{layerName}}</span>
-      <!-- <Button @click="closeDrawer" variant="text" class="close-btn">
+    <section v-if="drawerService[alignment].header.value.showHeader" class="drawer-header">
+      <span v-for="(layerName, index) in drawerService[alignment].layers.value">
+        {{index > 0 ? ' / ' :''}}{{layerName}}
+      </span>
+      <Button v-if="drawerService[alignment].header.value.showClose" @click="closeDrawer" variant="text"
+        class="close-btn">
         <Icon name="close"></Icon>
-      </Button> -->
+      </Button>
     </section>
     <template v-for="(item) in layers">
       <Transition :class="computedClassName">

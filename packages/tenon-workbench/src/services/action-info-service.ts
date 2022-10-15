@@ -8,6 +8,7 @@ export enum InternalUIService {
   HeaderBar = 'HeaderBar',
   ToolBar = 'ToolBar',
   FootBar = 'FootBar',
+  Custom = 'Custom',
 };
 
 export interface ActionInfo {

@@ -1,12 +1,31 @@
-import { Bridge } from "@tenon/shared";
+import { Bridge, Singleton } from "@tenon/shared";
 import { ref, VNode } from "vue";
-import { Service } from "../decorators";
+import { WorkbenchEvents } from "../core";
+import { Inject, Service } from "../decorators";
+import { EventEmitterCore, EventEmitterService } from "./event-emitter";
 import { createServiceTag } from "./tag";
 
 class DrawerServiceBase {
   bridge = new Bridge<IDrawer>();
+
   layers = ref<string[]>([]);
+
   visible = ref<boolean>(false);
+
+  header = ref<IDrawerHeader>({
+    showHeader: true,
+    showClose: true,
+  });
+
+  alignment: 'left' | 'right';
+
+  eventEmitter: EventEmitterCore;
+
+  constructor(alignment: 'left' | 'right', eventEmitter: EventEmitterCore) {
+    this.alignment = alignment;
+    this.eventEmitter = eventEmitter;
+  }
+
 
   private detectEmpty() {
     setTimeout(() => {
@@ -14,11 +33,20 @@ class DrawerServiceBase {
     }, 0);
   }
 
-  show() {
+  show(
+  ) {
+    this.eventEmitter.emit(WorkbenchEvents.drawerChanged, {
+      alignment: this.alignment,
+      state: true,
+    });
     this.visible.value = true;
   }
 
   close() {
+    this.eventEmitter.emit(WorkbenchEvents.drawerChanged, {
+      alignment: this.alignment,
+      state: false,
+    });
     this.visible.value = false;
   }
 
@@ -45,20 +73,35 @@ class DrawerServiceBase {
     this.detectEmpty();
   }
 
+  setHeader(header: IDrawerHeader) {
+    Object.assign(this.header.value, header);
+  }
 };
 
 export const DrawerService = createServiceTag('DrawerService');
 
 export interface IDrawer {
-  attachLayer: (name:string, renderer: () => VNode) => void;
+  attachLayer: (name: string, renderer: () => VNode) => void;
   clearLayer: () => void;
   detachLayer: () => void;
+};
+
+export interface IDrawerHeader {
+  showHeader?: boolean;
+  showClose?: boolean;
 };
 
 @Service({
   name: DrawerService,
 })
+@Singleton
 export class DrawerServiceCore {
-  left = new DrawerServiceBase;
-  right = new DrawerServiceBase;
+
+  constructor(
+    @Inject(EventEmitterService) private eventEmitter: EventEmitterCore,
+  ) {
+  }
+  
+  left = new DrawerServiceBase('left', this.eventEmitter);
+  right = new DrawerServiceBase('right', this.eventEmitter);
 };

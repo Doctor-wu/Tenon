@@ -5,5 +5,6 @@ export declare enum WorkbenchEvents {
     updateToolBarConfig = "updateToolBarConfig",
     updateFootBarConfig = "updateFootBarConfig",
     emitAction = "emitAction",
-    regisAction = "regisAction"
+    regisAction = "regisAction",
+    drawerChanged = "drawerChanged"
 }

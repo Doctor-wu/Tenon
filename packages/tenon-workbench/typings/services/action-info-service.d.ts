@@ -2,7 +2,8 @@ import { EventEmitterCore } from "./event-emitter";
 export declare enum InternalUIService {
     HeaderBar = "HeaderBar",
     ToolBar = "ToolBar",
-    FootBar = "FootBar"
+    FootBar = "FootBar",
+    Custom = "Custom"
 }
 export interface ActionInfo {
     name: string;
