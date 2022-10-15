@@ -5,8 +5,9 @@ import { HeaderBarsController } from "./features/headerbar/headerbar.controller"
 import "@tenon/workbench/lib/style.css";
 import "./index.css";
 import { toolBarConfig } from "./configs/tool-bar-config";
+import { footBarConfig } from "./configs/foot-bar-config";
 
-const root = document.getElementById('workbench-root')!;
+const root = document.getElementById('app-root')!;
 
 @WorkbenchSettings({
   dynamicTags: [
@@ -20,7 +21,7 @@ const root = document.getElementById('workbench-root')!;
   controllers: [
     HeaderBarsController,
   ],
-  footBarConfig: null,
+  footBarConfig: footBarConfig,
   headerBarConfig: headerBarConfig,
   keyBoardConfig: null,
   toolBarConfig: toolBarConfig,

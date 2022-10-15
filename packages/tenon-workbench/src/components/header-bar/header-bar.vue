@@ -2,11 +2,11 @@
   <section id="workbench-header">
     <section class="header-info">
       <template v-for="(item) in infoRenders" :key="item.name">
-        <component :is="item.render"></component>
+        <component :is="item.render" :style="item.style"></component>
       </template>
     </section>
     <section class="header-operator">
-      <section :key="item.name" v-for="item in (operatorItems as any)" class="operator-item">
+      <section :key="item.name" v-for="(item) in operatorItems" class="operator-item" :style="item.style">
         <HeaderItem :operateConfig="item"></HeaderItem>
       </section>
     </section>
@@ -14,7 +14,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
-import { HeaderBarConfig, HeaderBarType } from "../../configs";
+import { HeaderBarConfig, HeaderBarType, IHeaderBarOperatorItem } from "../../configs";
 import HeaderItem from "./header-item.vue";
 const { config } = defineProps<{
   config: HeaderBarConfig,
@@ -24,8 +24,8 @@ const infoRenders = computed(() => {
   return config.config.filter((item) => item.type === HeaderBarType.Info && !item.hidden);
 });
 
-const operatorItems = computed(() => {
-  return config.config.filter((item) => item.type === HeaderBarType.Operator && !item.hidden);
+const operatorItems = computed<IHeaderBarOperatorItem[]>(() => {
+  return config.config.filter((item) => item.type === HeaderBarType.Operator && !item.hidden) as IHeaderBarOperatorItem[];
 });
 
 </script>
@@ -40,6 +40,8 @@ const operatorItems = computed(() => {
   align-items: center;
   padding: 0 12px;
   box-sizing: border-box;
+  transition: all ease .3s;
+  z-index: 1;
 }
 
 .header-info {
@@ -68,8 +70,8 @@ const operatorItems = computed(() => {
 
   .t-button--variant-text {
     padding: 0;
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
   }
 }
 </style>

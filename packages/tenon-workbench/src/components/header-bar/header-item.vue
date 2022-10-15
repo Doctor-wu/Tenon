@@ -3,13 +3,15 @@
   <Popup v-else-if="!operateConfig.listTree" :content="operateConfig.popupText" :show-arrow="false" theme="light"
     placement="bottom">
     <Button :onClick="(...args) => emitAction(...args)" variant="text">
-      <Icon size="25px" :name="operateConfig.iconName"></Icon>
+      <component v-if="operateConfig.icon?.iconRender" :is="operateConfig.icon?.iconRender"></component>
+      <Icon v-else-if="operateConfig.icon" :name="operateConfig.icon.iconName" :size="(operateConfig.icon.iconSize || 24) + 'px'"></Icon>
     </Button>
   </Popup>
   <Popup v-else theme="light" trigger="click" ref="popupRef" :show-arrow="false" placement="bottom-right"
     :overlayInnerStyle="{padding: '6px 0', borderRadius: 0}">
     <Button variant="text">
-      <Icon size="25px" :name="operateConfig.iconName"></Icon>
+      <component v-if="operateConfig.icon?.iconRender" :is="operateConfig.icon?.iconRender"></component>
+      <Icon v-else-if="operateConfig.icon" :name="operateConfig.icon.iconName" :size="(operateConfig.icon.iconSize || 24) + 'px'"></Icon>
     </Button>
     <template #content>
       <ListTree :from="InternalUIService.HeaderBar" :list="operateConfig.listTree" @click="handleListTreeClick">
@@ -19,7 +21,7 @@
 </template>
 <script setup lang="ts">
 import { Popup, Button, Icon } from "tdesign-vue-next";
-import { inject, ref, VNode } from "vue";
+import { inject, ref } from "vue";
 import { HeaderBarType, IHeaderBarOperatorItem } from "../../configs";
 import { WorkbenchType } from "../../core";
 import { ActionType } from "../../decorators";
@@ -49,8 +51,8 @@ const handleListTreeClick = () => {
 <style lang="scss" scoped>
 .t-button--variant-text {
   padding: 0;
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   cursor: unset;
 }
 

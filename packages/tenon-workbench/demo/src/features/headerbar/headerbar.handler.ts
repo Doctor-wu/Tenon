@@ -6,8 +6,14 @@ import { HeaderBarFeature } from "./headerbar.interface";
   name: HeaderBarFeature
 })
 export class HeaderBarHandler implements HeaderBarFeature {
+  
+  public isFullScreen = false;
 
   public getGitHubHref() {
     return 'https://github.com/Doctor-wu/Tenon';
+  }
+
+  public toggleFullScreen() {
+    this.isFullScreen = !this.isFullScreen;
   }
 }

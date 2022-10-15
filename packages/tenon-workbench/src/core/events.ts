@@ -5,6 +5,7 @@ export enum WorkbenchEvents {
 
   updateHeaderBarConfig = 'updateHeaderBarConfig',
   updateToolBarConfig = 'updateToolBarConfig',
+  updateFootBarConfig = 'updateFootBarConfig',
   emitAction = 'emitAction',
   regisAction = 'regisAction',
 }

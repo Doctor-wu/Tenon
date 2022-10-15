@@ -3,6 +3,7 @@ export declare enum WorkbenchEvents {
     EditorRootMount = "WorkbenchEditorRootMount",
     updateHeaderBarConfig = "updateHeaderBarConfig",
     updateToolBarConfig = "updateToolBarConfig",
+    updateFootBarConfig = "updateFootBarConfig",
     emitAction = "emitAction",
     regisAction = "regisAction"
 }

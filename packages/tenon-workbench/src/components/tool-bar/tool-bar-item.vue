@@ -27,14 +27,14 @@
 <script setup lang="ts">
 import { Button, Icon, Popup } from 'tdesign-vue-next';
 import { inject, ref } from 'vue';
-import { ToolBarConfigType, ToolBarFlag } from '../../configs/tool-bar-config';
+import { ToolBarItemType, ToolBarFlag } from '../../configs/tool-bar-config';
 import { WorkbenchType } from '../../core';
 import { ActionType } from '../../decorators';
 import { InternalUIService } from '../../services';
 import ListTree from '../list-tree.vue';
 
 const props = defineProps<{
-  config: ToolBarConfigType;
+  config: ToolBarItemType;
 }>();
 
 const workbench = inject<WorkbenchType>("workbench");

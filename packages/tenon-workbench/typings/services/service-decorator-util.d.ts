@@ -22,3 +22,11 @@ export declare const InjectDIService: () => (target: any, propertyKey: any, prop
  * 需要与 @ProvideService 搭配使用
  */
 export declare const InjectActionInfoService: () => (target: any, propertyKey: any, propertyIndex: any) => void;
+/**
+ * 需要与 @ProvideService 搭配使用
+ */
+export declare const InjectSurfaceService: () => (target: any, propertyKey: any, propertyIndex: any) => void;
+/**
+* 需要与 @ProvideService 搭配使用
+*/
+export declare const InjectDrawerService: () => (target: any, propertyKey: any, propertyIndex: any) => void;

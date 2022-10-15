@@ -1,11 +1,12 @@
 import { Singleton } from '@tenon/shared';
 import { awaitLoad, IDynamicFeature, Loader, Service } from "../decorators";
 import { createServiceTag, ContextServiceCore, EventEmitterService, EventEmitterCore } from "../services";
-import { HeaderBarConfig, HeaderBarType, IHeaderBarItem } from "../configs/header-bar-config";
-import { ToolBarConfig, ToolBarConfigType, ToolBarFlag } from "../configs/tool-bar-config";
+import { HeaderBarConfig, HeaderBarType, HeaderBarItemType } from "../configs/header-bar-config";
+import { ToolBarConfig, ToolBarItemType, ToolBarFlag } from "../configs/tool-bar-config";
 import { IListTree } from "../configs/list-tree";
 import { WorkbenchEvents } from "../core";
 import { InternalUIService } from './action-info-service';
+import { FootBarConfig, FootBarItemType } from '../configs';
 
 export const BarService = createServiceTag('BarService');
 
@@ -15,8 +16,9 @@ export const BarService = createServiceTag('BarService');
 @Singleton
 export class BarConfig {
   actionMap: Map<any, { [props: string]: Function[] }> = new Map;
-  headerBarNameMap: Map<any, IHeaderBarItem> = new Map;
-  toolbarNameMap: Map<any, ToolBarConfigType> = new Map;
+  headerBarNameMap: Map<any, HeaderBarItemType> = new Map;
+  toolBarNameMap: Map<any, ToolBarItemType> = new Map;
+  footBarNameMap: Map<any, FootBarItemType> = new Map;
 
   contextService = new ContextServiceCore();
 
@@ -26,6 +28,7 @@ export class BarConfig {
   constructor(
     private headerBarConfigInit: HeaderBarConfig,
     private toolBarConfigInit: ToolBarConfig,
+    private footBarConfigInit: FootBarConfig,
   ) {
     this.init();
   }
@@ -34,12 +37,14 @@ export class BarConfig {
     this.contextService.set('barConfig', {
       headerBarConfig: this.headerBarConfigInit,
       toolBarConfig: this.toolBarConfigInit,
+      footBarConfig: this.footBarConfigInit,
     });
-    this.recursiveHeaderBar(this.headerBarConfig);
-    this.recursiveToolBar(this.toolBarConfig);
+    this.resolveHeaderBar(this.headerBarConfig);
+    this.resolveToolBar(this.toolBarConfig);
+    this.resolveFootBarConfig(this.footBarConfig);
   }
 
-  private recursiveHeaderBar(configs: HeaderBarConfig) {
+  private resolveHeaderBar(configs: HeaderBarConfig) {
     configs.config.forEach(config => {
       this.headerBarNameMap.set(config.name, config);
       if (config.type === HeaderBarType.Operator && config.listTree) {
@@ -48,14 +53,20 @@ export class BarConfig {
     });
   }
 
-  private recursiveToolBar(configs: ToolBarConfig) {
+  private resolveToolBar(configs: ToolBarConfig) {
     configs.config.forEach(group => {
       group.forEach(config => {
-        this.toolbarNameMap.set(config.name, config);
+        this.toolBarNameMap.set(config.name, config);
         if (config.flag === ToolBarFlag.DropDown && config.listTree) {
-          this.recursiveListTree(config.listTree, this.toolbarNameMap);
+          this.recursiveListTree(config.listTree, this.toolBarNameMap);
         }
       })
+    });
+  }
+
+  private resolveFootBarConfig(configs: FootBarConfig) {
+    configs.config.forEach(config => {
+      this.footBarNameMap.set(config.name, config);
     });
   }
 
@@ -76,16 +87,20 @@ export class BarConfig {
     return this.contextService.get('barConfig').toolBarConfig;
   }
 
+  get footBarConfig(): FootBarConfig {
+    return this.contextService.get('barConfig').footBarConfig;
+  }
+
   @awaitLoad(EventEmitterService)
   regisAction(name: any, action: string, cb: Function) {
     this.eventEmitter.instance?.emit(WorkbenchEvents.regisAction, name, action);
     if (!this.actionMap.get(name)) {
-      this.actionMap.set(name, {
-        [action]: [cb],
-      });
-    } else {
-      this.actionMap.get(name)![action].push(cb);
+      this.actionMap.set(name, {});
     }
+    if (!this.actionMap.get(name)?.[action]) {
+      this.actionMap.get(name)![action] = [];
+    }
+    this.actionMap.get(name)![action].push(cb);
   }
 
   @awaitLoad(EventEmitterService)
@@ -100,7 +115,7 @@ export class BarConfig {
   }
 
   @awaitLoad(EventEmitterService)
-  updateHeaderBarConfig(name: any, partial: Partial<IHeaderBarItem>) {
+  updateHeaderBarConfig(name: any, partial: Partial<HeaderBarItemType>) {
     this.eventEmitter.instance?.emit(WorkbenchEvents.updateHeaderBarConfig, name, partial);
     const config = this.headerBarNameMap.get(name);
     if (!config) {
@@ -110,9 +125,19 @@ export class BarConfig {
   }
 
   @awaitLoad(EventEmitterService)
-  updateToolBarConfig(name: any, partial: Partial<ToolBarConfigType>) {
+  updateToolBarConfig(name: any, partial: Partial<ToolBarItemType>) {
     this.eventEmitter.instance?.emit(WorkbenchEvents.updateToolBarConfig, name, partial);
-    const config = this.toolbarNameMap.get(name);
+    const config = this.toolBarNameMap.get(name);
+    if (!config) {
+      return console.error('updateToolBarConfig failed, config', name, 'is not exist');
+    };
+    Object.assign(config || {}, partial);
+  }
+
+  @awaitLoad(EventEmitterService)
+  updateFootBarConfig(name: any, partial: Partial<FootBarItemType>) {
+    this.eventEmitter.instance?.emit(WorkbenchEvents.updateFootBarConfig, name, partial);
+    const config = this.footBarNameMap.get(name);
     if (!config) {
       return console.error('updateToolBarConfig failed, config', name, 'is not exist');
     };

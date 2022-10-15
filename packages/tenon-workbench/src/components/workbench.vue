@@ -1,17 +1,26 @@
 <template>
-  <HeaderBar :config="headerBarConfig"></HeaderBar>
-  <ToolBar :config="toolBarConfig"></ToolBar>
-  <section ref="editorRoot" id="editor-root"></section>
-  <FootBar></FootBar>
+  <section id="workbench-root">
+    <HeaderBar :config="headerBarConfig"></HeaderBar>
+    <ToolBar :config="toolBarConfig"></ToolBar>
+    <section class="editor-container">
+      <section ref="editorRoot" id="editor-root"></section>
+      <SurfaceLayer></SurfaceLayer>
+      <BaseDrawer alignment="left"></BaseDrawer>
+      <BaseDrawer alignment="right"></BaseDrawer>
+    </section>
+    <FootBar :config="footBarConfig"></FootBar>
+  </section>
 </template>
 <script setup lang="ts">
+import { onMounted, provide, ref } from 'vue';
 import HeaderBar from './header-bar/header-bar.vue';
 import ToolBar from './tool-bar/tool-bar.vue';
-import FootBar from './foot-bar.vue';
-import { onMounted, provide, ref } from 'vue';
+import FootBar from './foot-bar/foot-bar.vue';
 import { IWorkbenchAdapter, WorkbenchLoader, WorkbenchEvents } from '../core';
-import { HeaderBarConfig } from '../configs';
+import { FootBarConfig, HeaderBarConfig } from '../configs';
 import { ToolBarConfig } from '../configs/tool-bar-config';
+import SurfaceLayer from './surface-layer.vue';
+import BaseDrawer from './drawer/base-drawer.vue';
 const editorRoot = ref(null);
 const {
   workbenchInstance,
@@ -19,6 +28,7 @@ const {
   workbenchInstance: IWorkbenchAdapter & WorkbenchLoader;
   headerBarConfig: HeaderBarConfig;
   toolBarConfig: ToolBarConfig;
+  footBarConfig: FootBarConfig;
 }>();
 
 provide('workbench', workbenchInstance);
@@ -32,5 +42,17 @@ onMounted(() => {
 
 </script>
 <style lang="scss" scoped>
-  
+#workbench-root {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+.editor-container {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  overflow: auto;
+}
+
 </style>

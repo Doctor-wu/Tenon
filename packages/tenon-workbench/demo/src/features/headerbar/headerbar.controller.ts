@@ -6,10 +6,11 @@ import {
   BarService,
   BarConfig,
   InjectBarService,
-  ProvideService,
   InjectActionInfoService,
   ActionInfo,
   HeaderBarType,
+  InjectDrawerService,
+  DrawerServiceCore,
 } from "@tenon/workbench";
 import { HeaderBarName, MoreItemName } from "../../configs/header-bar-config";
 import { HeaderBarFeature } from "./headerbar.interface";
@@ -17,6 +18,9 @@ import SubTitle from "../../components/sub-title.vue";
 import { h } from "vue";
 import { MessagePlugin } from "tdesign-vue-next";
 import { ToolBarName } from "../../configs/tool-bar-config";
+import { FootBarName } from "../../configs/foot-bar-config";
+import FullScreen from "vue-material-design-icons/FullScreen.vue";
+import FullScreenExit from "vue-material-design-icons/FullScreenExit.vue"
 
 export class HeaderBarsController {
 
@@ -60,7 +64,9 @@ export class HeaderBarsController {
     return {
       type: HeaderBarType.Operator,
       popupText: 'Github: D0ct0r',
-      iconName: 'logo-github',
+      icon: {
+        iconName: 'logo-github',
+      }
     };
   }
 
@@ -72,10 +78,8 @@ export class HeaderBarsController {
     return {
       render: () => h(SubTitle, {
         text: 'Workbench副标题 (updated)',
-        // key: Math.random(),
         style: {
           alignSelf: 'flex-end',
-          marginBottom: '5px',
         },
       }),
     };
@@ -105,20 +109,61 @@ export class HeaderBarsController {
   @awaitLoad(BarService)
   handleMaterialActive(
     @InjectActionInfoService() actionInfo: ActionInfo,
+    @InjectDrawerService() drawerService: DrawerServiceCore,
   ) {
     console.log(actionInfo);
     const barService = this.barService.instance!;
+    drawerService.left.replaceLayer('物料面板', () => h('span', '物料面板'));
     barService.updateToolBarConfig(ToolBarName.ComponentTreeSwitch, {
       active: false,
     });
   }
 
+  @ActionController(ToolBarName.MaterialSwitch, ActionType.onDeActive)
+  handleMaterialDeActive(
+    @InjectActionInfoService() actionInfo: ActionInfo,
+    @InjectDrawerService() drawerService: DrawerServiceCore,
+  ) {
+    console.log(actionInfo);
+    drawerService.left.detachLayer();
+  }
+
   @ActionController(ToolBarName.ComponentTreeSwitch, ActionType.onActive)
   @awaitLoad(BarService)
-  handleComponentTreeActive() {
+  handleComponentTreeActive(
+    @InjectActionInfoService() actionInfo: ActionInfo,
+    @InjectDrawerService() drawerService: DrawerServiceCore,
+  ) {
+    console.log(actionInfo);
     const barService = this.barService.instance!;
+    drawerService.left.replaceLayer('组件树面板', () => h('span', '组件树面板'));
     barService.updateToolBarConfig(ToolBarName.MaterialSwitch, {
       active: false,
     });
+  }
+
+  @ActionController(ToolBarName.ComponentTreeSwitch, ActionType.onDeActive)
+  handleComponentTreeDeActive(
+    @InjectDrawerService() drawerService: DrawerServiceCore,
+  ) {
+    drawerService.left.detachLayer();
+  }
+
+  @ActionController(FootBarName.FullScreen, ActionType.onClick)
+  @awaitLoad(HeaderBarFeature)
+  handleFullScreenClick(
+    @InjectBarService() barService: BarConfig,
+  ) {
+    const isFullScreen = this.headerBar.instance!.isFullScreen;
+    this.headerBar.instance!.toggleFullScreen();
+    barService.updateFootBarConfig(FootBarName.FullScreen, {
+      icon: {
+        iconRender: () => h(isFullScreen ? FullScreen : FullScreenExit, {
+          size: 24,
+          key: String(isFullScreen),
+        }),
+      },
+      popupText: isFullScreen ? '全屏' : '取消全屏'
+    })
   }
 }
