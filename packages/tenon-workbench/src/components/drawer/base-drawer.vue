@@ -1,9 +1,11 @@
 <template>
   <section class="drawer-container" :style="computedStyle">
     <section v-if="drawerService[alignment].header.value.showHeader" class="drawer-header">
-      <span v-for="(layerName, index) in drawerService[alignment].layers.value">
-        {{index > 0 ? ' / ' :''}}{{layerName}}
-      </span>
+      <section class="header-info">
+        <span v-for="(layerName, index) in drawerService[alignment].layers.value">
+          {{index > 0 ? ' / ' :''}}{{layerName}}
+        </span>
+      </section>
       <Button v-if="drawerService[alignment].header.value.showClose" @click="closeDrawer" variant="text"
         class="close-btn">
         <Icon name="close"></Icon>
@@ -11,7 +13,8 @@
     </section>
     <template v-for="(item) in layers">
       <Transition :class="computedClassName">
-        <section class="drawer-layer" :key="item.name" :style="{zIndex: item.zIndex}">
+        <section class="drawer-layer" :key="item.name"
+          :style="{zIndex: item.zIndex, marginTop: drawerService[alignment].header.value.showHeader ? '30px' : '0'}">
           <component :is="item.renderer"></component>
         </section>
       </Transition>
@@ -86,15 +89,9 @@ onMounted(() => {
   height: 100%;
   transition: all ease .3s;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
-
-.drawer-layer {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-}
-
-;
 
 .drawer-header {
   overflow: hidden;
@@ -110,9 +107,26 @@ onMounted(() => {
   border-bottom: 1px solid #ddd;
 }
 
+.drawer-layer {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  flex: 1;
+}
+
+.header-info {
+  white-space: nowrap;
+  flex: 1;
+  overflow: auto;
+  text-align: left;
+  position: relative;
+}
+
 .close-btn {
   height: 24px;
+  width: 24px;
   padding: 0 3px;
+  margin-left: 6px;
 }
 
 @keyframes fadeInFromLeft {

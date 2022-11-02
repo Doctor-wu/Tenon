@@ -65,9 +65,11 @@ const handleListTreeClick = () => {
 
 </script>
 <style lang="scss" scoped>
+@import "../../style/theme.scss";
+
 ::v-deep(.t-button--variant-text) {
   // padding: 3px 6px;
-  padding: 0;
+  padding: 0 3px;
   height: 30px;
   min-width: 30px;
   cursor: unset;
@@ -78,7 +80,8 @@ const handleListTreeClick = () => {
   }
 
   &.active {
-    background-color: #44444416;
+    background-color: $tenon-hover-color;
+    color: $tenon-primary-color;
   }
 }
 

@@ -1,4 +1,5 @@
 import { VNode } from "vue";
+import { IconConfig } from "./icon";
 export interface IListTree {
     name: string;
     hidden?: boolean;
@@ -6,4 +7,5 @@ export interface IListTree {
     text?: string;
     render?: () => VNode;
     children?: IListTree[];
+    icon?: IconConfig;
 }

@@ -16,7 +16,7 @@ import { onMounted, provide, ref } from 'vue';
 import HeaderBar from './header-bar/header-bar.vue';
 import ToolBar from './tool-bar/tool-bar.vue';
 import FootBar from './foot-bar/foot-bar.vue';
-import { IWorkbenchAdapter, WorkbenchLoader, WorkbenchEvents } from '../core';
+import { WorkbenchEvents, WorkbenchType } from '../core';
 import { FootBarConfig, HeaderBarConfig } from '../configs';
 import { ToolBarConfig } from '../configs/tool-bar-config';
 import SurfaceLayer from './surface-layer.vue';
@@ -25,7 +25,7 @@ const editorRoot = ref(null);
 const {
   workbenchInstance,
 } = defineProps<{
-  workbenchInstance: IWorkbenchAdapter & WorkbenchLoader;
+  workbenchInstance: WorkbenchType;
   headerBarConfig: HeaderBarConfig;
   toolBarConfig: ToolBarConfig;
   footBarConfig: FootBarConfig;
@@ -53,7 +53,7 @@ onMounted(() => {
   flex: 1;
   position: relative;
   width: 100%;
-  overflow: auto;
+  overflow: hidden;
 }
 
 </style>

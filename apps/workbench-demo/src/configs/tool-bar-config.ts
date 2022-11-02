@@ -2,6 +2,17 @@ import { ToolBarConfig, ToolBarFlag } from "@tenon/workbench";
 import FileTree from "vue-material-design-icons/FamilyTree.vue";
 import PaletteSwatch from "vue-material-design-icons/PaletteSwatch.vue";
 import FormatListText from "vue-material-design-icons/FormatListText.vue";
+import EyeOutLine from "vue-material-design-icons/EyeOutLine.vue";
+import PencilOutLine from "vue-material-design-icons/PencilOutLine.vue";
+import MonitorShimmer from "vue-material-design-icons/MonitorShimmer.vue";
+import LapTop from "vue-material-design-icons/LapTop.vue";
+import ContentSave from "vue-material-design-icons/ContentSave.vue";
+import Export from "vue-material-design-icons/Export.vue";
+import FileDownLoadOutLine from "vue-material-design-icons/FileDownLoadOutLine.vue";
+import FileUploadOutLine from "vue-material-design-icons/FileUploadOutLine.vue";
+import CalendarTextOutLine from "vue-material-design-icons/CalendarTextOutLine.vue";
+import StateMachine from "vue-material-design-icons/StateMachine.vue";
+import VectorCircle from "vue-material-design-icons/VectorCircle.vue";
 import { h } from "vue";
 
 export enum ToolBarName {
@@ -49,19 +60,30 @@ export const toolBarConfig: ToolBarConfig = {
         flag: ToolBarFlag.DropDown,
         text: '编辑模式',
         popupText: '编辑器模式',
-        dropDownWidth: '100px',
+        dropDownWidth: '120px',
         icon: {
-          iconName: 'edit',
-          iconSize: 16,
+          iconRender: () => h(PencilOutLine, {
+            size: 16,
+          }),
         },
         listTree: [
           {
             name: 'edit',
             text: '编辑模式',
+            icon: {
+              iconRender: () => h(PencilOutLine, {
+                size: 16,
+              }),
+            },
           },
           {
             name: 'preview',
             text: '预览模式',
+            icon: {
+              iconRender: () => h(EyeOutLine, {
+                size: 16,
+              }),
+            },
           }
         ]
       },
@@ -70,8 +92,9 @@ export const toolBarConfig: ToolBarConfig = {
         flag: ToolBarFlag.Button,
         text: '真机预览',
         icon: {
-          iconName: 'laptop',
-          iconSize: 16,
+          iconRender: () => h(LapTop, {
+            size: 16,
+          }),
         },
         popupText: '真机预览',
       },
@@ -80,8 +103,9 @@ export const toolBarConfig: ToolBarConfig = {
         flag: ToolBarFlag.Button,
         text: '清空页面',
         icon: {
-          iconName: 'clear',
-          iconSize: 16,
+          iconRender: () => h(MonitorShimmer, {
+            size: 16,
+          }),
         },
         popupText: '清空页面配置',
       }
@@ -92,8 +116,9 @@ export const toolBarConfig: ToolBarConfig = {
         flag: ToolBarFlag.Button,
         text: '保存',
         icon: {
-          iconName: 'save',
-          iconSize: 16,
+          iconRender: () => h(ContentSave, {
+            size: 16,
+          }),
         },
         popupText: '保存页面到云端',
       },
@@ -102,8 +127,9 @@ export const toolBarConfig: ToolBarConfig = {
         flag: ToolBarFlag.Button,
         text: '导出',
         icon: {
-          iconName: 'jump',
-          iconSize: 16,
+          iconRender: () => h(FileUploadOutLine, {
+            size: 16,
+          }),
         },
         popupText: '保存页面配置',
       },
@@ -112,8 +138,9 @@ export const toolBarConfig: ToolBarConfig = {
         flag: ToolBarFlag.Button,
         text: '加载',
         icon: {
-          iconName: 'download',
-          iconSize: 16,
+          iconRender: () => h(FileDownLoadOutLine, {
+            size: 16,
+          }),
         },
         popupText: '加载页面配置',
       },
@@ -124,8 +151,9 @@ export const toolBarConfig: ToolBarConfig = {
         flag: ToolBarFlag.Button,
         text: '事件',
         icon: {
-          iconName: 'view-module',
-          iconSize: 16,
+          iconRender: () => h(CalendarTextOutLine, {
+            size: 16,
+          }),
         },
         popupText: '管理页面事件',
       },
@@ -134,8 +162,9 @@ export const toolBarConfig: ToolBarConfig = {
         flag: ToolBarFlag.Button,
         text: '状态',
         icon: {
-          iconName: 'server',
-          iconSize: 16,
+          iconRender: () => h(StateMachine, {
+            size: 16,
+          }),
         },
         popupText: '管理页面状态',
       },
@@ -144,8 +173,9 @@ export const toolBarConfig: ToolBarConfig = {
         flag: ToolBarFlag.Button,
         text: '生命周期',
         icon: {
-          iconName: 'control-platform',
-          iconSize: 16,
+          iconRender: () => h(VectorCircle, {
+            size: 16,
+          }),
         },
         popupText: '管理页面生命周期',
       },
