@@ -3,10 +3,11 @@ import { App } from "vue";
 import { WorkbenchEvents } from "./events";
 import { DynamicFeatureTag } from "../services/tag";
 import { IWorkbench } from "./workbench";
-import { BarServiceCore, WorkbenchDIServiceCore } from "../services";
+import { BarServiceCore, DrawerServiceCore, WorkbenchDIServiceCore } from "../services";
 
 
 export class WorkbenchLoader implements IWorkbench {
+  drawerService: DrawerServiceCore;
   workbenchDIService: WorkbenchDIServiceCore;
   controllers: newable<any, any>[];
   eventEmitter: Subscribe;

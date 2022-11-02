@@ -38,3 +38,11 @@ console.log(app);
 //   window.open('https://github.com/torns/Tenon', '_blank');
 // });
 app.load(root);
+
+app.drawerService.right.setHeader({
+  showHeader: false,
+});
+
+app.drawerService.left.setHeader({
+  showHeader: false,
+});

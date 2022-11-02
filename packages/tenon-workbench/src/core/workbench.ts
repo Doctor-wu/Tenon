@@ -1,4 +1,4 @@
-import { WorkbenchDIServiceCore, BarServiceCore, EventEmitterCore, createServiceTag, DynamicFeatureTag, ActionInfo } from '../services';
+import { WorkbenchDIServiceCore, BarServiceCore, EventEmitterCore, createServiceTag, DynamicFeatureTag, ActionInfo, DrawerServiceCore } from '../services';
 import { FeatureNameKey, ActionControllerKey, Service } from '../decorators';
 import { IWorkbenchAdapter } from './adapter';
 import { newable, Singleton } from '@tenon/shared';
@@ -33,6 +33,7 @@ export interface IWorkbench {
   eventEmitter: EventEmitterCore;
   barConfig: BarServiceCore;
   workbenchDIService: WorkbenchDIServiceCore;
+  drawerService: DrawerServiceCore;
 }
 
 type ComposeWorkbench<A extends {}, W extends {}, I extends {}> = A & W & I;
@@ -75,6 +76,8 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
       toolBarConfig,
       footBarConfig
     );
+
+    public drawerService = new DrawerServiceCore(this.eventEmitter);
 
     constructor(
       ...args: any[]

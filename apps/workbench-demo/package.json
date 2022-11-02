@@ -1,0 +1,20 @@
+{
+    "name": "workbench-demo",
+    "version": "1.0.0",
+    "description": "Tenon workbench",
+    "main": "src/main.ts",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "@tenon/workbench": "workspace:*",
+        "tdesign-vue-next": "^0.21.0",
+        "vue": "^3.2.31",
+        "vue-material-design-icons": "^5.1.2"
+    },
+    "keywords": [
+        "lowcode"
+    ],
+    "author": "Doctorwu",
+    "license": "ISC"
+}

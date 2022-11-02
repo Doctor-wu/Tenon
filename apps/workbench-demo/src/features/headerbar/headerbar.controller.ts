@@ -46,6 +46,7 @@ export class HeaderBarsController {
 
   @ActionController(MoreItemName.More, ActionType.onClick)
   @ActionController('edit', ActionType.onClick)
+  @ActionController('preview', ActionType.onClick)
   handleMoreClick(@InjectActionInfoService() actionInfo: ActionInfo) {
     console.log(actionInfo);
 
@@ -53,6 +54,8 @@ export class HeaderBarsController {
       MessagePlugin.success('点击更多');
     } else if (actionInfo.name === 'edit') {
       MessagePlugin.success('切换为编辑模式');
+    } else if (actionInfo.name === 'preview') {
+      MessagePlugin.success('切换为预览模式');
     }
   }
 
@@ -101,7 +104,6 @@ export class HeaderBarsController {
       setTimeout(resolve, 3000);
     });
     return {
-      disabled: true,
     };
   }
 
@@ -150,17 +152,12 @@ export class HeaderBarsController {
   }
 
   @ActionController(ToolBarName.ComponentProperty, ActionType.onActive)
-  @awaitLoad(BarService)
   handleComponentPropActive(
     @InjectActionInfoService() actionInfo: ActionInfo,
     @InjectDrawerService() drawerService: DrawerServiceCore,
   ) {
     console.log(actionInfo);
-    const barService = this.barService.instance!;
     drawerService.right.replaceLayer('组件属性', () => h('span', '组件属性'));
-    barService.updateToolBarConfig(ToolBarName.MaterialSwitch, {
-      active: false,
-    });
   }
 
   @ActionController(ToolBarName.ComponentProperty, ActionType.onDeActive)

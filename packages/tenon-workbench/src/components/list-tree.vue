@@ -5,13 +5,21 @@
         <component v-if="item.render" :is="item.render" :config="item"></component>
         <section v-else-if="!item.children" class="list-item" :class="{disabled: item.disabled}"
           @click="(...args) => !item.disabled && emitAction(ActionType.onClick, item.name, ...args)">
-          <span> {{item.text}} </span>
+          <section class="list-item-content">
+            <component class="custom-icon" v-if="item.icon?.iconRender" :is="item.icon?.iconRender"></component>
+            <Icon class="custom-icon" v-else-if="item.icon" :name="item.icon.iconName" :size="(item.icon.iconSize || 16) + 'px'"></Icon>
+            <span> {{item.text}} </span>
+          </section>
         </section>
         <Popup v-else placement="left-bottom" :ref="el => popups.push(el)"
           :overlayInnerStyle="{padding: '6px 0', borderRadius: 0}">
           <section class="list-item sub-root" :class="{disabled: item.disabled}"
             @click="(...args) => !item.disabled && emitAction(ActionType.onClick, item.name, ...args)">
-            <span> {{item.text}} </span>
+            <section class="list-item-content">
+              <component class="custom-icon" v-if="item.icon?.iconRender" :is="item.icon?.iconRender"></component>
+              <Icon class="custom-icon" v-else-if="item.icon" :name="item.icon.iconName" :size="(item.icon.iconSize || 16) + 'px'"></Icon>
+              <span> {{item.text}} </span>
+            </section>
             <Icon class="sub-root-icon" name="caret-right-small"></Icon>
           </section>
           <template #content>
@@ -97,5 +105,14 @@ export default {
 .sub-root-icon {
   font-size: 16px;
   color: gray;
+}
+
+.list-item-content {
+  display: flex;
+  align-items: center;
+}
+
+.custom-icon {
+  margin-right: 5px;
 }
 </style>

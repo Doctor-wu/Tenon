@@ -69,6 +69,18 @@ importers:
       nodemon: 2.0.15
       svg-captcha: 1.4.0
 
+  apps/workbench-demo:
+    specifiers:
+      '@tenon/workbench': workspace:*
+      tdesign-vue-next: ^0.21.0
+      vue: ^3.2.31
+      vue-material-design-icons: ^5.1.2
+    dependencies:
+      '@tenon/workbench': link:../../packages/tenon-workbench
+      tdesign-vue-next: 0.21.0_vue@3.2.31
+      vue: 3.2.31
+      vue-material-design-icons: 5.1.2
+
   packages/shared:
     specifiers:
       '@tenon/shared': workspace:*
