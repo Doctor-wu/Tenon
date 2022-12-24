@@ -7,7 +7,7 @@ import { EventEmitterService } from "./event-emitter";
 import { SurfaceService } from "./surface-service";
 import { createServiceTag, ServiceTag } from "./tag";
 
-const ServiceDecoratorTag = createServiceTag('servicePropertyDecorator');
+export const ServiceDecoratorTag = createServiceTag('servicePropertyDecorator');
 
 const createServiceInjector = (serviceTag: ServiceTag) => {
   return () => {
@@ -19,7 +19,7 @@ const createServiceInjector = (serviceTag: ServiceTag) => {
   };
 };
 
-const ProvideServiceTag = createServiceTag('ProvideService');
+export const ProvideServiceTag = createServiceTag('ProvideService');
 
 /**
  * 使用 @Inject__Service时需要使用这个装饰器装饰方法

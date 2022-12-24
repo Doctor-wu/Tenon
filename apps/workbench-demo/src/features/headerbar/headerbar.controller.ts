@@ -21,6 +21,7 @@ import { ToolBarName } from "../../configs/tool-bar-config";
 import { FootBarName } from "../../configs/foot-bar-config";
 import FullScreen from "vue-material-design-icons/FullScreen.vue";
 import FullScreenExit from "vue-material-design-icons/FullScreenExit.vue"
+import { EditModeConfig, PreviewModeConfig } from "./config";
 
 export class HeaderBarsController {
 
@@ -47,15 +48,20 @@ export class HeaderBarsController {
   @ActionController(MoreItemName.More, ActionType.onClick)
   @ActionController('edit', ActionType.onClick)
   @ActionController('preview', ActionType.onClick)
-  handleMoreClick(@InjectActionInfoService() actionInfo: ActionInfo) {
+  handleMoreClick(
+    @InjectActionInfoService() actionInfo: ActionInfo,
+    @InjectBarService() barService: BarServiceCore,
+  ) {
     console.log(actionInfo);
 
     if (actionInfo.name === MoreItemName.More) {
       MessagePlugin.success('点击更多');
     } else if (actionInfo.name === 'edit') {
       MessagePlugin.success('切换为编辑模式');
+      barService.updateToolBarConfig(ToolBarName.Mode, EditModeConfig);
     } else if (actionInfo.name === 'preview') {
       MessagePlugin.success('切换为预览模式');
+      barService.updateToolBarConfig(ToolBarName.Mode, PreviewModeConfig);
     }
   }
 
@@ -131,13 +137,12 @@ export class HeaderBarsController {
   }
 
   @ActionController(ToolBarName.ComponentTreeSwitch, ActionType.onActive)
-  @awaitLoad(BarService)
   handleComponentTreeActive(
     @InjectActionInfoService() actionInfo: ActionInfo,
     @InjectDrawerService() drawerService: DrawerServiceCore,
+    @InjectBarService() barService: BarServiceCore,
   ) {
     console.log(actionInfo);
-    const barService = this.barService.instance!;
     drawerService.left.replaceLayer('组件树面板', () => h('span', '组件树面板'));
     barService.updateToolBarConfig(ToolBarName.MaterialSwitch, {
       active: false,

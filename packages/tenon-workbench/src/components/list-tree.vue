@@ -1,38 +1,39 @@
 <template>
-  <section :style="props.width ? {width: props.width} : {}" class="list-container">
+  <section :style="props.width ? { width: props.width } : {}" class="list-container">
     <template v-for="(item) in props.list" :key="item.name">
       <template v-if="!item.hidden">
         <component v-if="item.render" :is="item.render" :config="item"></component>
-        <section v-else-if="!item.children" class="list-item" :class="{disabled: item.disabled}"
+        <section v-else-if="!item.children" class="list-item" :class="{ disabled: item.disabled }"
           @click="(...args) => !item.disabled && emitAction(ActionType.onClick, item.name, ...args)">
           <section class="list-item-content">
             <component class="custom-icon" v-if="item.icon?.iconRender" :is="item.icon?.iconRender"></component>
-            <Icon class="custom-icon" v-else-if="item.icon" :name="item.icon.iconName" :size="(item.icon.iconSize || 16) + 'px'"></Icon>
-            <span> {{item.text}} </span>
+            <Icon class="custom-icon" v-else-if="item.icon" :name="item.icon.iconName"
+              :size="(item.icon.iconSize || 16) + 'px'"></Icon>
+            <span> {{ item.text }} </span>
           </section>
         </section>
-        <Popup v-else placement="left-bottom" :ref="el => popups.push(el)"
-          :overlayInnerStyle="{padding: '6px 0', borderRadius: 0}">
-          <section class="list-item sub-root" :class="{disabled: item.disabled}"
+        <TPopup v-else placement="left-bottom" :ref="el => popups.push(el)"
+          :overlayInnerStyle="{ padding: '6px 0', borderRadius: 0 }">
+          <section class="list-item sub-root" :class="{ disabled: item.disabled }"
             @click="(...args) => !item.disabled && emitAction(ActionType.onClick, item.name, ...args)">
             <section class="list-item-content">
               <component class="custom-icon" v-if="item.icon?.iconRender" :is="item.icon?.iconRender"></component>
-              <Icon class="custom-icon" v-else-if="item.icon" :name="item.icon.iconName" :size="(item.icon.iconSize || 16) + 'px'"></Icon>
-              <span> {{item.text}} </span>
+              <TIcon class="custom-icon" v-else-if="item.icon" :name="item.icon.iconName"
+                :size="(item.icon.iconSize || 16) + 'px'"></TIcon>
+              <span> {{ item.text }} </span>
             </section>
             <Icon class="sub-root-icon" name="caret-right-small"></Icon>
           </section>
           <template #content>
             <ListTree :from="from" :list="item.children" @click="emitClick"></ListTree>
           </template>
-        </Popup>
+        </TPopup>
       </template>
     </template>
   </section>
 </template>
 <script setup lang="ts">
 import { inject, ref } from 'vue';
-import { Icon, Popup } from 'tdesign-vue-next';
 import { IListTree } from '../configs';
 import { WorkbenchType } from '../core';
 import { ActionType } from '../decorators';

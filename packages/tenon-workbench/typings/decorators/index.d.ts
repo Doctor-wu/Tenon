@@ -1,4 +1,5 @@
 export * from "./feature";
+export * from "./controller";
 export * from "./loader";
 export * from "./inject";
 export * from "./await-load";

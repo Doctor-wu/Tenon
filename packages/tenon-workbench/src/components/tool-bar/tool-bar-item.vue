@@ -1,31 +1,31 @@
 <template>
   <section class="toolbar-item-container">
-    <Popup :overlayInnerStyle="{padding: '6px 0'}" trigger="click" ref="popupRef"
+    <TPopup :overlayInnerStyle="{ padding: '6px 0' }" trigger="click" ref="popupRef"
       v-if="config.flag === ToolBarFlag.DropDown && config.listTree" :show-arrow="false" theme="light"
       placement="bottom">
-      <Button :onClick="(...args) => emitAction(...args)" variant="text" :disabled="config.disabled">
+      <TButton :onClick="(...args) => emitAction(...args)" variant="text" :disabled="config.disabled"
+        :aria-label="config.name">
         <component v-if="config.icon?.iconRender" :is="config.icon?.iconRender"></component>
-        <Icon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></Icon>
-        <span class="item-text" v-if="config.text"> {{config.text}} </span>
-        <Icon class="dropdown-arrow" v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></Icon>
-      </Button>
+        <TIcon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></TIcon>
+        <span class="item-text" v-if="config.text"> {{ config.text }} </span>
+        <TIcon class="dropdown-arrow" v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></TIcon>
+      </TButton>
       <template #content>
         <ListTree :from="InternalUIService.ToolBar" :list="config.listTree" :width="config.dropDownWidth || '90px'"
           @click="handleListTreeClick">
         </ListTree>
       </template>
-    </Popup>
-    <Button :onClick="(...args) => emitAction(...args)" variant="text" :disabled="config.disabled"
-      :class="{active: (config.flag === ToolBarFlag.Switch && !!config.active)}" v-else>
+    </TPopup>
+    <TButton v-else :onClick="(...args) => emitAction(...args)" variant="text" :disabled="config.disabled"
+      :aria-label="config.name" :class="{ active: (config.flag === ToolBarFlag.Switch && !!config.active) }">
       <component v-if="config.icon?.iconRender" :is="config.icon?.iconRender"></component>
-      <Icon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></Icon>
-      <span class="item-text" v-if="config.text"> {{config.text}} </span>
-      <Icon class="dropdown-arrow" v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></Icon>
-    </Button>
+      <TIcon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></TIcon>
+      <span class="item-text" v-if="config.text"> {{ config.text }} </span>
+      <TIcon class="dropdown-arrow" v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></TIcon>
+    </TButton>
   </section>
 </template>
 <script setup lang="ts">
-import { Button, Icon, Popup } from 'tdesign-vue-next';
 import { inject, ref } from 'vue';
 import { ToolBarItemType, ToolBarFlag } from '../../configs/tool-bar-config';
 import { WorkbenchType } from '../../core';

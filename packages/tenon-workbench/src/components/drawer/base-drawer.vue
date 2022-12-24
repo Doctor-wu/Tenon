@@ -3,18 +3,18 @@
     <section v-if="drawerService[alignment].header.value.showHeader" class="drawer-header">
       <section class="header-info">
         <span v-for="(layerName, index) in drawerService[alignment].layers.value">
-          {{index > 0 ? ' / ' :''}}{{layerName}}
+          {{ index > 0 ? ' / ' : '' }}{{ layerName }}
         </span>
       </section>
-      <Button v-if="drawerService[alignment].header.value.showClose" @click="closeDrawer" variant="text"
+      <TButton aria-label="close-drawer" v-if="drawerService[alignment].header.value.showClose" @click="closeDrawer" variant="text"
         class="close-btn">
-        <Icon name="close"></Icon>
-      </Button>
+        <TIcon name="close"></TIcon>
+      </TButton>
     </section>
     <template v-for="(item) in layers">
       <Transition :class="computedClassName">
         <section class="drawer-layer" :key="item.name"
-          :style="{zIndex: item.zIndex, marginTop: drawerService[alignment].header.value.showHeader ? '30px' : '0'}">
+          :style="{ zIndex: item.zIndex, marginTop: drawerService[alignment].header.value.showHeader ? '30px' : '0' }">
           <component :is="item.renderer"></component>
         </section>
       </Transition>
@@ -22,7 +22,6 @@
   </section>
 </template>
 <script setup lang="ts">
-import { Button, Icon } from 'tdesign-vue-next';
 import { computed, inject, onMounted, ref, VNode } from 'vue';
 import { WorkbenchType } from '../../core';
 import { DrawerService, DrawerServiceCore } from '../../services';

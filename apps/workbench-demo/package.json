@@ -8,7 +8,7 @@
     },
     "dependencies": {
         "@tenon/workbench": "workspace:*",
-        "tdesign-vue-next": "^0.21.0",
+        "tdesign-vue-next": "^1.0.0",
         "vue": "^3.2.31",
         "vue-material-design-icons": "^5.1.2"
     },

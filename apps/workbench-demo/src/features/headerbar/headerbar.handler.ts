@@ -3,6 +3,7 @@ import {
   EventEmitterCore, EventEmitterService,
   Feature, Inject, WorkbenchEvents, ActionType,
 } from "@tenon/workbench";
+import { MoreItemName } from "../../configs/header-bar-config";
 import { ToolBarName } from "../../configs/tool-bar-config";
 import { HeaderBarFeature } from "./headerbar.interface";
 
@@ -19,6 +20,9 @@ export class HeaderBarHandler implements HeaderBarFeature {
     @Inject(EventEmitterService) private eventEmitter: EventEmitterCore,
   ) {
     this.initEvents();
+    setTimeout(() => {
+      barService.emitAction('preview', ActionType.onClick, 'headerbar feature' as any);
+    }, 3000);
   }
 
   public initEvents() {
