@@ -6,26 +6,24 @@
           <section class="toolbar-group">
             <template v-for="(item) in group" :key="item.name">
               <template v-if="!item.hidden">
-                <Popup v-if="item.popupText && (item.flag !== ToolBarFlag.DropDown || !item.listTree)"
+                <TPopup v-if="item.popupText && (item.flag !== ToolBarFlag.DropDown || !item.listTree)"
                   :show-arrow="false" theme="light" placement="bottom">
                   <ToolBarItem class="toolbar-item" :config="item"></ToolBarItem>
                   <template #content>
-                    <span class="toolbar-item-popup">{{item.popupText}}</span>
+                    <span class="toolbar-item-popup">{{ item.popupText }}</span>
                   </template>
-                </Popup>
+                </TPopup>
                 <ToolBarItem v-else class="toolbar-item" :config="item"></ToolBarItem>
               </template>
             </template>
           </section>
-          <Divider v-if="!isLastNonEmptyGroup(group)"
-            layout="vertical"></Divider>
+          <TDivider v-if="!isLastNonEmptyGroup(group)" layout="vertical"></TDivider>
         </template>
       </template>
     </section>
   </section>
 </template>
 <script setup lang="ts">
-import { Divider, Popup } from 'tdesign-vue-next';
 import { ToolBarConfig, ToolBarItemType, ToolBarFlag } from '../../configs/tool-bar-config';
 import ToolBarItem from './tool-bar-item.vue';
 
@@ -44,7 +42,7 @@ const toolbarStyle = {
 };
 
 const isLastNonEmptyGroup = (group: ToolBarItemType[]) => {
-  for (let i = props.config.config.length -1; i >= 0; i --) {
+  for (let i = props.config.config.length - 1; i >= 0; i--) {
     const groupItem = props.config.config[i];
     if (!groupItem.length) continue;
     return groupItem === group;

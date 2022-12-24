@@ -1,4 +1,4 @@
-import { BarConfig, createSyncFeatureTag } from "@tenon/workbench";
+import { createSyncFeatureTag } from "@tenon/workbench";
 
 
 export interface HeaderBarFeature {

@@ -1,17 +1,16 @@
 <template>
   <component v-if="config.render" :is="config.render"></component>
-  <Popup v-else theme="light" :content="config.popupText" ref="popupRef" :show-arrow="false"
-    placement="bottom-right" :overlayInnerStyle="{padding: '3px 6px'}">
-    <Button variant="text" @click="(...args) => emitAction(...args)">
+  <TPopup v-else theme="light" :content="config.popupText" ref="popupRef" :show-arrow="false" placement="bottom-right"
+    :overlayInnerStyle="{ padding: '3px 6px' }">
+    <TButton variant="text" @click="(...args) => emitAction(...args)" :aria-label="config.name">
       <component v-if="config.icon?.iconRender" :is="config.icon?.iconRender"></component>
-      <Icon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></Icon>
-      <span class="item-text" v-if="config.text"> {{config.text}} </span>
-    </Button>
-  </Popup>
+      <TIcon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></TIcon>
+      <span class="item-text" v-if="config.text"> {{ config.text }} </span>
+    </TButton>
+  </TPopup>
 </template>
 <script setup lang="ts">
-import { Popup, Button, Icon } from "tdesign-vue-next";
-import { inject, ref } from "vue";
+import { inject } from "vue";
 import { FootBarItemType } from "../../configs";
 import { WorkbenchType } from "../../core";
 import { ActionType } from "../../decorators";

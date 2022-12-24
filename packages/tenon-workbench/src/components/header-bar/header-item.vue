@@ -1,26 +1,27 @@
 <template>
   <component v-if="operateConfig.render" :is="operateConfig.render"></component>
-  <Popup v-else-if="!operateConfig.listTree" :content="operateConfig.popupText" :show-arrow="false" theme="light"
+  <TPopup v-else-if="!operateConfig.listTree" :content="operateConfig.popupText" :show-arrow="false" theme="light"
     placement="bottom">
-    <Button :onClick="(...args) => emitAction(...args)" variant="text">
+    <TButton :onClick="(...args) => emitAction(...args)" variant="text" :aria-label="operateConfig.name">
       <component v-if="operateConfig.icon?.iconRender" :is="operateConfig.icon?.iconRender"></component>
-      <Icon v-else-if="operateConfig.icon" :name="operateConfig.icon.iconName" :size="(operateConfig.icon.iconSize || 24) + 'px'"></Icon>
-    </Button>
-  </Popup>
-  <Popup v-else theme="light" trigger="click" ref="popupRef" :show-arrow="false" placement="bottom-right"
-    :overlayInnerStyle="{padding: '6px 0', borderRadius: 0}">
-    <Button variant="text">
+      <TIcon v-else-if="operateConfig.icon" :name="operateConfig.icon.iconName"
+        :size="(operateConfig.icon.iconSize || 24) + 'px'"></TIcon>
+    </TButton>
+  </TPopup>
+  <TPopup v-else theme="light" trigger="click" ref="popupRef" :show-arrow="false" placement="bottom-right"
+    :overlayInnerStyle="{ padding: '6px 0', borderRadius: 0 }">
+    <TButton variant="text" :aria-label="operateConfig.name">
       <component v-if="operateConfig.icon?.iconRender" :is="operateConfig.icon?.iconRender"></component>
-      <Icon v-else-if="operateConfig.icon" :name="operateConfig.icon.iconName" :size="(operateConfig.icon.iconSize || 24) + 'px'"></Icon>
-    </Button>
+      <TIcon v-else-if="operateConfig.icon" :name="operateConfig.icon.iconName"
+        :size="(operateConfig.icon.iconSize || 24) + 'px'"></TIcon>
+    </TButton>
     <template #content>
       <ListTree :from="InternalUIService.HeaderBar" :list="operateConfig.listTree" @click="handleListTreeClick">
       </ListTree>
     </template>
-  </Popup>
+  </TPopup>
 </template>
 <script setup lang="ts">
-import { Popup, Button, Icon } from "tdesign-vue-next";
 import { inject, ref } from "vue";
 import { HeaderBarType, IHeaderBarOperatorItem } from "../../configs";
 import { WorkbenchType } from "../../core";

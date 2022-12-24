@@ -9,7 +9,7 @@ export const awaitLoad: awaitLoadType = (...tags: FeatureTag[]) => {
   return (target, propertyKey, desc) => {
     const oldInvoke = desc.value! as unknown as Function;
     desc.value = function (this: any, ...args) {
-      Promise.all(
+      return Promise.all(
         tags.map(tag => {
           return new WorkbenchDIServiceCore().get(tag);
         }),
@@ -19,7 +19,7 @@ export const awaitLoad: awaitLoadType = (...tags: FeatureTag[]) => {
             await target[LoaderTag][featureKey].getInstance();
           }
         }
-        return oldInvoke.call(this, ...args);
+        return await oldInvoke.call(this, ...args);
       });
     } as any;
   }

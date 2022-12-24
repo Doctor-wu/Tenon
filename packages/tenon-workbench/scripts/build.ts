@@ -3,6 +3,9 @@ import { build } from 'vite';
 import { execSync } from 'child_process';
 import vue from '@vitejs/plugin-vue';
 import createExternal from 'vite-plugin-external';
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { TDesignResolver } from 'unplugin-vue-components/resolvers';
 
 
 (async () => {
@@ -15,7 +18,17 @@ import createExternal from 'vite-plugin-external';
         externals: {
           vue: 'Vue',
         },
-      })
+      }),
+      AutoImport({
+        resolvers: [TDesignResolver({
+          library: 'vue-next'
+        })],
+      }),
+      Components({
+        resolvers: [TDesignResolver({
+          library: 'vue-next'
+        })],
+      }),
     ],
     build: {
       sourcemap: true,

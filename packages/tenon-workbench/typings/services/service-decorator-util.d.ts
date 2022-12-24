@@ -1,3 +1,5 @@
+export declare const ServiceDecoratorTag: symbol;
+export declare const ProvideServiceTag: symbol;
 /**
  * 使用 @Inject__Service时需要使用这个装饰器装饰方法
  */

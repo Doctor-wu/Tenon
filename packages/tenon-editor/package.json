@@ -1,0 +1,24 @@
+{
+  "name": "@tenon/editor",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "scripts": {
+    "dev": "cross-env MODE=dev vite",
+    "build": "cross-env MODE=prod vite build"
+  },
+  "author": "Doctor wu",
+  "license": "MIT",
+  "dependencies": {
+    "@tenon/shared": "workspace:*",
+    "@tenon/workbench": "workspace:*",
+    "cross-env": "^7.0.3",
+    "tdesign-vue-next": "^1.0.0",
+    "unplugin-auto-import": "^0.12.1",
+    "unplugin-vue-components": "^0.22.12",
+    "vite-plugin-ejs": "^1.6.4",
+    "vue": "^3.2.31",
+    "vue-material-design-icons": "^5.1.2"
+  },
+  "description": ""
+}
