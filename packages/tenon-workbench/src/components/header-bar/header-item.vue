@@ -2,7 +2,7 @@
   <component v-if="operateConfig.render" :is="operateConfig.render"></component>
   <TPopup v-else-if="!operateConfig.listTree" :content="operateConfig.popupText" :show-arrow="false" theme="light"
     placement="bottom">
-    <TButton :onClick="(...args) => emitAction(...args)" variant="text" :aria-label="operateConfig.name">
+    <TButton :onClick="(...args) => emitAction(...args)" variant="text" :aria-label="operateConfig.name" :disabled="operateConfig.disabled">
       <component v-if="operateConfig.icon?.iconRender" :is="operateConfig.icon?.iconRender"></component>
       <TIcon v-else-if="operateConfig.icon" :name="operateConfig.icon.iconName"
         :size="(operateConfig.icon.iconSize || 24) + 'px'"></TIcon>
@@ -10,7 +10,7 @@
   </TPopup>
   <TPopup v-else theme="light" trigger="click" ref="popupRef" :show-arrow="false" placement="bottom-right"
     :overlayInnerStyle="{ padding: '6px 0', borderRadius: 0 }">
-    <TButton variant="text" :aria-label="operateConfig.name">
+    <TButton variant="text" :aria-label="operateConfig.name" :disabled="operateConfig.disabled">
       <component v-if="operateConfig.icon?.iconRender" :is="operateConfig.icon?.iconRender"></component>
       <TIcon v-else-if="operateConfig.icon" :name="operateConfig.icon.iconName"
         :size="(operateConfig.icon.iconSize || 24) + 'px'"></TIcon>

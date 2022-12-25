@@ -1,16 +1,20 @@
 import {
   HeaderBarController, HeaderBarControllerResult,
-  IDynamicFeature, Loader, awaitLoad, Controller, HeaderBarType,
+  IDynamicFeature, Loader, awaitLoad, Controller,
 } from "@tenon/workbench";
 import { HeaderBarName } from "@/configs/header-bar-config";
 import { ITitleFeature } from "./title.interface";
 import { h } from "vue";
 
-@Controller
+@Controller()
 export class TitleController {
 
   @Loader(ITitleFeature)
-  titleFeature: IDynamicFeature<ITitleFeature>;
+  titleFeatureLoader: IDynamicFeature<ITitleFeature>;
+
+  get titleFeature() {
+    return this.titleFeatureLoader.instance;
+  }
 
   @HeaderBarController(HeaderBarName.Title)
   @awaitLoad(ITitleFeature)
@@ -18,13 +22,14 @@ export class TitleController {
     const {
       title,
       subTitle,
-    } = await this.titleFeature.instance!.getTitle();
+    } = await this.titleFeature!.getTitle();
 
     const Title = (await import('./components/title.vue')).default;
     return {
       render: () => h(Title, {
         title,
         subTitle,
+        titleFeature: this.titleFeature!,
       }),
     };
   }

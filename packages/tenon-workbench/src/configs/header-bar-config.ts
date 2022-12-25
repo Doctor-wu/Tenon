@@ -12,6 +12,7 @@ export interface IHeaderBarBaseItem<BarType extends HeaderBarType> {
   name: any;
   type: BarType,
   hidden?: boolean;
+  disabled?: boolean;
   style?: Record<string, string | number>;
 };
 
