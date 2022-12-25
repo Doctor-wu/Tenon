@@ -1,14 +1,16 @@
 <template>
   <span class="title-wrapper">
-    <span class="title"> {{ title }} </span>
-    <span class="sub-title"> {{ subTitle }} </span>
+    <span class="title">{{ title }}</span>
+    <span class="sub-title">{{ subTitle }}</span>
   </span>
 </template>
 <script setup lang="ts">
-  defineProps<{
-    title: string;
-    subTitle: string;
-  }>();
+import { ITitleFeature } from '..'
+const { titleFeature } = defineProps<{
+  title: string
+  subTitle: string
+  titleFeature: ITitleFeature
+}>()
 </script>
 <style lang="scss" scoped>
 .title-wrapper {
@@ -18,7 +20,7 @@
 }
 .title {
   font-size: x-large;
-};
+}
 
 .sub-title {
   font-size: medium;

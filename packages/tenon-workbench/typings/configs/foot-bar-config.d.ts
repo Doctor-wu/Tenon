@@ -11,6 +11,7 @@ export interface IFootBarItem {
     hidden?: boolean;
     icon?: IconConfig;
     text?: string;
+    disabled?: boolean;
     render?: () => VNode;
 }
 export declare type FootBarItemType = IFootBarItem;

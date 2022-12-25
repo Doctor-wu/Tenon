@@ -3,11 +3,10 @@ import "@tenon/workbench/lib/style.css";
 import { footBarConfig } from "../configs/foot-bar-config";
 import { headerBarConfig } from "../configs/header-bar-config";
 import { toolBarConfig } from "../configs/tool-bar-config";
-import { controllers, syncFeatures } from "../features";
+import { controllers, dynamicTags, syncFeatures } from "../features";
 
 @WorkbenchSettings({
-  dynamicTags: [
-  ],
+  dynamicTags: dynamicTags,
   syncFeatures: syncFeatures,
   controllers: controllers,
   footBarConfig: footBarConfig,

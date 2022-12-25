@@ -1,1 +1,1 @@
-export declare const Controller: ClassDecorator;
+export declare const Controller: () => ClassDecorator;

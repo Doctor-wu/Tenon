@@ -12,3 +12,9 @@ export function createSleepFunc(time: number) {
     setTimeout(resolve, time);
   });
 }
+
+export function sleep(duration: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, duration)
+  });
+};

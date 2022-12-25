@@ -12,34 +12,31 @@
   </section>
 </template>
 <script setup lang="ts">
-import { onMounted, provide, ref } from 'vue';
-import HeaderBar from './header-bar/header-bar.vue';
-import ToolBar from './tool-bar/tool-bar.vue';
-import FootBar from './foot-bar/foot-bar.vue';
-import { WorkbenchEvents, WorkbenchType } from '../core';
-import { FootBarConfig, HeaderBarConfig } from '../configs';
-import { ToolBarConfig } from '../configs/tool-bar-config';
-import SurfaceLayer from './surface-layer.vue';
-import BaseDrawer from './drawer/base-drawer.vue';
-const editorRoot = ref(null);
-const {
-  workbenchInstance,
-} = defineProps<{
-  workbenchInstance: WorkbenchType;
-  headerBarConfig: HeaderBarConfig;
-  toolBarConfig: ToolBarConfig;
-  footBarConfig: FootBarConfig;
-}>();
+import { onMounted, provide, ref } from 'vue'
+import HeaderBar from './header-bar/header-bar.vue'
+import ToolBar from './tool-bar/tool-bar.vue'
+import FootBar from './foot-bar/foot-bar.vue'
+import { WorkbenchEvents, WorkbenchType } from '../core'
+import { FootBarConfig, HeaderBarConfig } from '../configs'
+import { ToolBarConfig } from '../configs/tool-bar-config'
+import SurfaceLayer from './surface-layer.vue'
+import BaseDrawer from './drawer/base-drawer.vue'
+const editorRoot = ref(null)
+const { workbenchInstance } = defineProps<{
+  workbenchInstance: WorkbenchType
+  headerBarConfig: HeaderBarConfig
+  toolBarConfig: ToolBarConfig
+  footBarConfig: FootBarConfig
+}>()
 
-provide('workbench', workbenchInstance);
+provide('workbench', workbenchInstance)
 
 onMounted(() => {
   workbenchInstance.eventEmitter.emit(
     WorkbenchEvents.EditorRootMount,
     editorRoot.value,
-  );
-});
-
+  )
+})
 </script>
 <style lang="scss" scoped>
 #workbench-root {
@@ -48,6 +45,7 @@ onMounted(() => {
   height: 100%;
   overflow: hidden;
   text-align: center;
+  background-color: #fff;
 }
 .editor-container {
   flex: 1;
@@ -55,5 +53,4 @@ onMounted(() => {
   width: 100%;
   overflow: hidden;
 }
-
 </style>
