@@ -1,6 +1,5 @@
 import path from 'path';
 import { build } from 'vite';
-import { execSync } from 'child_process';
 import vue from '@vitejs/plugin-vue';
 import createExternal from 'vite-plugin-external';
 import AutoImport from 'unplugin-auto-import/vite';
@@ -44,6 +43,4 @@ import { TDesignResolver } from 'unplugin-vue-components/resolvers';
       }
     }
   });
-  execSync('tsc');
-  console.log('tsc completed');
 })();

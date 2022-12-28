@@ -1,4 +1,8 @@
-import { WorkbenchDIServiceCore, BarServiceCore, EventEmitterCore, createServiceTag, DynamicFeatureTag, ActionInfo, DrawerServiceCore } from '../services';
+import {
+  WorkbenchDIServiceCore, BarServiceCore, EventEmitterCore,
+  createServiceTag, DynamicFeatureTag,
+  ActionInfo, DrawerServiceCore,
+} from '../services';
 import { FeatureNameKey, ActionControllerKey, Service } from '../decorators';
 import { IWorkbenchAdapter } from './adapter';
 import { newable, Singleton } from '@tenon/shared';
@@ -20,9 +24,6 @@ export interface IWorkbenchConfig {
   headerBarConfig: HeaderBarConfig;
   toolBarConfig: ToolBarConfig;
   footBarConfig: any;
-
-  // 键盘事件管理服务
-  keyBoardConfig: any;
 };
 
 export interface IWorkbench {

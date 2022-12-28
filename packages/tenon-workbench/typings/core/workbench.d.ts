@@ -11,7 +11,6 @@ export interface IWorkbenchConfig {
     headerBarConfig: HeaderBarConfig;
     toolBarConfig: ToolBarConfig;
     footBarConfig: any;
-    keyBoardConfig: any;
 }
 export interface IWorkbench {
     app: App;

@@ -11,7 +11,6 @@ import { controllers, dynamicTags, syncFeatures } from "../features";
   controllers: controllers,
   footBarConfig: footBarConfig,
   headerBarConfig: headerBarConfig,
-  keyBoardConfig: null,
   toolBarConfig: toolBarConfig,
 })
 export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAdapter {

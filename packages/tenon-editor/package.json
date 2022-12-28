@@ -5,7 +5,8 @@
   "module": "src/index.ts",
   "scripts": {
     "dev": "cross-env MODE=dev vite",
-    "build": "cross-env MODE=prod vite build"
+    "build": "cross-env MODE=prod vite build",
+    "add-feature": "ts-node scripts/add-feature"
   },
   "author": "Doctor wu",
   "license": "MIT",
