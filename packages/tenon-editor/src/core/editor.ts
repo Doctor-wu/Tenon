@@ -6,9 +6,10 @@ import { TenonEditorLifeCycle, TenonEditorLifeCycleStage } from "./lifecycle";
 
 export const IEditor = createSyncFeatureTag('tenon-editor');
 export const IConfig = createSyncFeatureTag('tenon-editor-config');
+export const IEventEmitter = createSyncFeatureTag('event-emitter');
 
 export class TenonEditor {
-  eventEmitter = new Subscribe();
+  private eventEmitter = new Subscribe();
   lifecycle: TenonEditorLifeCycle = new TenonEditorLifeCycle();
   adaptor: TenonEditorAdapter;
   config: BaseConfig = window.AppConfig;
@@ -48,6 +49,7 @@ export class TenonEditor {
   private initInstantiations = () => {
     this.registerService(IEditor, this);
     this.registerService(IConfig, this.config);
+    this.registerService(IEventEmitter, this.eventEmitter);
     // [...this.adaptor.workbenchDIService.instances.values()].forEach(instance => {
     //   if ('$onEditorOpen' in instance) {
     //     instance['$onEditorOpen'](this);
@@ -80,6 +82,7 @@ export class TenonEditor {
       loader: () => { },
       instance,
     });
+    this.adaptor.workbenchDIService.instances.set(serviceName, instance);
   }
 
   public run() {

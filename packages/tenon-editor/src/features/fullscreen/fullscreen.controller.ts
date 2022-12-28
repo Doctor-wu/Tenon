@@ -1,11 +1,10 @@
 import {
   IDynamicFeature, Loader, Controller, ActionController,
-  ActionType, awaitLoad, InjectBarService, BarServiceCore,
-  FootBarController, FootBarControllerResult,
+  ActionType, awaitLoad, FootBarController,
+  FootBarControllerResult,
 } from "@tenon/workbench";
 import { IFullScreenFeature } from "./fullscreen.interface";
 import { FootBarName } from "@/configs/foot-bar-config";
-import { ExitFullScreenConfig, FullScreenConfig } from "./configs";
 
 @Controller()
 export class FullScreenController {
@@ -32,9 +31,7 @@ export class FullScreenController {
 
   @ActionController(FootBarName.FullScreen, ActionType.onClick)
   @awaitLoad(IFullScreenFeature)
-  async toggleFullScreen(
-    @InjectBarService() barService: BarServiceCore,
-  ) {
-    const fullscreen = await this.fullScreenFeature!.toggleFullScreen();
+  async toggleFullScreen() {
+    await this.fullScreenFeature!.toggleFullScreen();
   }
 }

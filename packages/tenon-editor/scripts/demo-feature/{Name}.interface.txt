@@ -1,0 +1,11 @@
+import { createSyncFeatureTag } from "@tenon/workbench";
+import { FeatureName } from "../feature-name";
+
+export interface I{Name}Feature {
+  // interface
+}
+
+export const I{Name}Feature = createSyncFeatureTag(FeatureName.{Name});
+
+// bind feature tag here
+

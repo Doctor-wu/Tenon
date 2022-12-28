@@ -1,0 +1,10 @@
+import {
+  Feature
+} from "@tenon/workbench";
+import { I{Name}Feature } from "./{name}.interface";
+
+@Feature({
+  name: I{Name}Feature,
+})
+export class {Name}Handler implements I{Name}Feature {
+}

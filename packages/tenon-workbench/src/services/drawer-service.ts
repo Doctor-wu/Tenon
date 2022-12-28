@@ -1,5 +1,5 @@
 import { Bridge, Singleton } from "@tenon/shared";
-import { ref, VNode } from "vue";
+import { reactive, ref, VNode } from "vue";
 import { WorkbenchEvents } from "../core";
 import { Inject, Service } from "../decorators";
 import { EventEmitterCore, EventEmitterService } from "./event-emitter";
@@ -12,7 +12,7 @@ class DrawerServiceBase {
 
   visible = ref<boolean>(false);
 
-  header = ref<IDrawerHeader>({
+  header = reactive<IDrawerHeader>({
     showHeader: true,
     showClose: true,
   });
@@ -33,8 +33,7 @@ class DrawerServiceBase {
     }, 0);
   }
 
-  show(
-  ) {
+  show() {
     this.eventEmitter.emit(WorkbenchEvents.drawerChanged, {
       alignment: this.alignment,
       state: true,
@@ -74,7 +73,7 @@ class DrawerServiceBase {
   }
 
   setHeader(header: IDrawerHeader) {
-    Object.assign(this.header.value, header);
+    Object.assign(this.header, header);
   }
 };
 
@@ -96,12 +95,11 @@ export interface IDrawerHeader {
 })
 @Singleton
 export class DrawerServiceCore {
+  left = new DrawerServiceBase('left', this.eventEmitter);
+  right = new DrawerServiceBase('right', this.eventEmitter);
 
   constructor(
     @Inject(EventEmitterService) private eventEmitter: EventEmitterCore,
   ) {
   }
-  
-  left = new DrawerServiceBase('left', this.eventEmitter);
-  right = new DrawerServiceBase('right', this.eventEmitter);
 };

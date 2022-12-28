@@ -1,7 +1,7 @@
 import {
   BarService,
   BarServiceCore,
-  Feature, Inject
+  Feature, Inject,
 } from "@tenon/workbench";
 import { IFullScreenFeature } from "./fullscreen.interface";
 import { IEditor, TenonEditor } from "@/core/editor";
@@ -14,14 +14,12 @@ import { FootBarName } from "@/configs/foot-bar-config";
 export class FullScreenHandler implements IFullScreenFeature {
   private fullScreen: boolean;
   private root: HTMLElement;
-  private barService: BarServiceCore;
 
   constructor(
+    @Inject(BarService) private barService: BarServiceCore,
     @Inject(IEditor) editor: TenonEditor,
-    @Inject(BarService) barService: BarServiceCore,
   ) {
     this.root = editor.root;
-    this.barService = barService;
     this.initEvent();
   }
 
@@ -43,7 +41,7 @@ export class FullScreenHandler implements IFullScreenFeature {
     if (this.isFullScreen) {
       await document.exitFullscreen();
     } else {
-      await this.root.requestFullscreen();
+      await document.body.requestFullscreen();
     }
     this.onFullScreenChange(this.isFullScreen);
     return this.isFullScreen;
