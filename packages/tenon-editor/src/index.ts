@@ -1,4 +1,4 @@
-import { TenonEditor } from "./core/editor";
+import { TenonEditor } from "@/core/editor";
 import "@/style/app.scss";
 
 const editor = new TenonEditor();
