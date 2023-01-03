@@ -1,4 +1,6 @@
+import { EditModeController, IEditModeFeature } from './edit-mode';
 import { FullScreenController, IFullScreenFeature } from './fullscreen';
+import { IMaterialFeature, MaterialController } from './material';
 import { TitleController, TitleHandler } from "./title";
 
 export const syncFeatures = [
@@ -7,9 +9,13 @@ export const syncFeatures = [
 
 export const dynamicTags = [
   IFullScreenFeature,
+  IEditModeFeature,
+  IMaterialFeature,
 ]
 
 export const controllers = [
   TitleController,
-  FullScreenController
+  FullScreenController,
+  EditModeController,
+  MaterialController,
 ];

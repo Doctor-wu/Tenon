@@ -4,6 +4,7 @@ import { WorkbenchEvents } from "../core";
 import { Inject, Service } from "../decorators";
 import { EventEmitterCore, EventEmitterService } from "./event-emitter";
 import { createServiceTag } from "./tag";
+import { InternalUIService } from "./action-info-service";
 
 class DrawerServiceBase {
   bridge = new Bridge<IDrawer>();
@@ -33,19 +34,22 @@ class DrawerServiceBase {
     }, 0);
   }
 
-  show() {
+  show(fromInternal = false) {
     this.eventEmitter.emit(WorkbenchEvents.drawerChanged, {
       alignment: this.alignment,
       state: true,
+      fromInternal,
     });
     this.visible.value = true;
   }
 
-  close() {
+  close(fromInternal = false) {
     this.eventEmitter.emit(WorkbenchEvents.drawerChanged, {
       alignment: this.alignment,
       state: false,
+      fromInternal,
     });
+    this.layers.value.length = 0;
     this.visible.value = false;
   }
 

@@ -1,4 +1,8 @@
-import { Singleton, Subscribe } from '@tenon/shared';
+import { Singleton } from '@tenon/shared';
+import {
+  EventEmitterCore, EventEmitterService,
+  IDynamicFeature, Loader, Service, awaitLoad, createSyncFeatureTag,
+} from '@tenon/workbench';
 
 export enum TenonEditorLifeCycleStage {
   Init,
@@ -7,11 +11,14 @@ export enum TenonEditorLifeCycleStage {
   Ready,
 }
 
-@Singleton
+export const ILifeCycle = createSyncFeatureTag('tenon-editor-lifecycle');
+
+@Service({
+  name: ILifeCycle,
+})
 export class TenonEditorLifeCycle {
   private stage: TenonEditorLifeCycleStage = TenonEditorLifeCycleStage.Init;
   private stageIndex: number = 0;
-  private eventEmitter = new Subscribe();
   private stageRegistry = new Map<TenonEditorLifeCycleStage, Set<any>>();
   private stageList = [
     TenonEditorLifeCycleStage.Init,
@@ -19,6 +26,13 @@ export class TenonEditorLifeCycle {
     TenonEditorLifeCycleStage.EditorAdapterReady,
     TenonEditorLifeCycleStage.Ready,
   ];
+
+  @Loader(EventEmitterService)
+  eventEmitterLoader: IDynamicFeature<EventEmitterCore>;
+
+  get eventEmitter() {
+    return this.eventEmitterLoader.instance;
+  }
 
   constructor() {
     this.setupRegistry();
@@ -51,9 +65,10 @@ export class TenonEditorLifeCycle {
    * 需要调用该方法来结束一段生命周期从而进入下一段生命周期
    * @param stage 生命周期阶段
    */
+  @awaitLoad(EventEmitterService)
   public emitStageFinish(stage: TenonEditorLifeCycleStage) {
     this.checkStage(stage);
-    this.eventEmitter.emit(`${stage} finish`);
+    this.eventEmitter!.emit(`${stage} finish`);
     this.nextStage();
   }
 
@@ -67,11 +82,12 @@ export class TenonEditorLifeCycle {
     }
   }
 
+  @awaitLoad(EventEmitterService)
   public onStageFinish(stage: TenonEditorLifeCycleStage, fn: Function) {
     if (this.stage > stage) {
       fn();
     } else {
-      this.eventEmitter.on(
+      this.eventEmitter!.on(
         `${stage} finish`,
         fn,
       );

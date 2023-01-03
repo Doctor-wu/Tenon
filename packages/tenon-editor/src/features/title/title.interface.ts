@@ -1,4 +1,4 @@
-import { bindSyncFeature, createSyncFeatureTag } from "@tenon/workbench";
+import { createSyncFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
 
 export interface ITitleFeature {

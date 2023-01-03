@@ -42,6 +42,7 @@ export declare const inheritFromWorkbench: (Target: newable<any, WorkbenchType>,
         initEvents(): void;
         onLoad(el: HTMLElement): void;
         render(el: any): void;
+        editor: any;
         attachEditor(dom: HTMLElement): void;
         load(el: HTMLElement): void;
     };

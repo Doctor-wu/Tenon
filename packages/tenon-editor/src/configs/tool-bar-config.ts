@@ -18,6 +18,8 @@ export enum ToolBarName {
   Undo = 'Undo',
   Redo = 'Redo',
   Mode = 'Mode',
+  PreviewMode = 'PreviewMode',
+  EditMode = 'EditMode',
   RealPreview = 'RealPreview',
   ClearPageConfig = 'ClearPageConfig',
   /** 保存页面配置 */
@@ -66,7 +68,7 @@ export const toolBarConfig: ToolBarConfig = {
         },
         listTree: [
           {
-            name: 'edit',
+            name: ToolBarName.EditMode,
             text: '编辑模式',
             icon: {
               iconRender: () => h(PencilOutLine, {
@@ -75,7 +77,7 @@ export const toolBarConfig: ToolBarConfig = {
             },
           },
           {
-            name: 'preview',
+            name: ToolBarName.PreviewMode,
             text: '预览模式',
             icon: {
               iconRender: () => h(EyeOutLine, {

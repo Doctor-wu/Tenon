@@ -1,55 +1,74 @@
-import { Subscribe } from "@tenon/shared";
-import { createSyncFeatureTag } from "@tenon/workbench";
+import { IDynamicFeature, Loader, awaitLoad, createSyncFeatureTag } from "@tenon/workbench";
 import { BaseConfig } from "../../config/base";
 import { TenonEditorAdapter } from "../workbench/tenon-loader";
-import { TenonEditorLifeCycle, TenonEditorLifeCycleStage } from "./lifecycle";
+import { ILifeCycle, TenonEditorLifeCycle, TenonEditorLifeCycleStage } from "./lifecycle";
+import { IContext, TenonEditorContext } from "./context";
 
 export const IEditor = createSyncFeatureTag('tenon-editor');
 export const IConfig = createSyncFeatureTag('tenon-editor-config');
-export const IEventEmitter = createSyncFeatureTag('event-emitter');
 
 export class TenonEditor {
-  private eventEmitter = new Subscribe();
-  lifecycle: TenonEditorLifeCycle = new TenonEditorLifeCycle();
-  adaptor: TenonEditorAdapter;
-  config: BaseConfig = window.AppConfig;
-  root: HTMLElement;
+  @Loader(ILifeCycle)
+  lifecycleLoader: IDynamicFeature<TenonEditorLifeCycle>;
 
-  constructor() {
-    this.setupLifeCycle();
+  get lifecycle() {
+    return this.lifecycleLoader.instance;
   }
 
-  private setupLifeCycle() {
-    this.lifecycle.regisStageCallBack(
+  workbenchAdaptor: TenonEditorAdapter;
+  config: BaseConfig = window.AppConfig;
+  root: HTMLElement;
+  context: TenonEditorContext;
+
+  constructor() {
+    this.setupAdaptor();
+    this.setupContext();
+    this.initInstantiations()
+    this.setupLifeCycle();
+    window.editor = this;
+  }
+
+  private setupAdaptor() {
+    this.workbenchAdaptor = new TenonEditorAdapter(this);
+  }
+
+  private async setupContext() {
+    this.context = (await this.workbenchAdaptor.workbenchDIService.get<TenonEditorContext>(IContext))!;
+  }
+
+  @awaitLoad(ILifeCycle)
+  private async setupLifeCycle() {
+    this.lifecycle!.regisStageCallBack(
       TenonEditorLifeCycleStage.Init,
-      () => {
+      async () => {
         this.logInfo();
-        this.lifecycle.emitStageFinish(
+        this.lifecycle!.emitStageFinish(
           TenonEditorLifeCycleStage.Init,
         );
       }
     );
-    this.lifecycle.regisStageCallBack(
+    this.lifecycle!.regisStageCallBack(
       TenonEditorLifeCycleStage.LaunchWorkbench,
       () => {
         this.launchWorkbench();
       }
     );
-    this.lifecycle.regisStageCallBack(
+    this.lifecycle!.regisStageCallBack(
       TenonEditorLifeCycleStage.EditorAdapterReady,
       () => {
         this.initInstantiations();
-        this.lifecycle.emitStageFinish(
+        this.lifecycle!.emitStageFinish(
           TenonEditorLifeCycleStage.EditorAdapterReady,
         );
       }
     )
   }
 
-  private initInstantiations = () => {
+  @awaitLoad(ILifeCycle)
+  private async initInstantiations() {
     this.registerService(IEditor, this);
     this.registerService(IConfig, this.config);
-    this.registerService(IEventEmitter, this.eventEmitter);
+    // this.workbenchAdaptor.workbenchDIService.regisService(IContext, )
     // [...this.adaptor.workbenchDIService.instances.values()].forEach(instance => {
     //   if ('$onEditorOpen' in instance) {
     //     instance['$onEditorOpen'](this);
@@ -57,13 +76,13 @@ export class TenonEditor {
     // });
   }
 
+  @awaitLoad(ILifeCycle)
   private launchWorkbench() {
     window.addEventListener('load', () => {
       const root = document.getElementById('workbench-root')!;
       this.root = root;
-      this.adaptor = new TenonEditorAdapter();
-      this.adaptor.load(root);
-      this.lifecycle.emitStageFinish(
+      this.workbenchAdaptor.load(root);
+      this.lifecycle!.emitStageFinish(
         TenonEditorLifeCycleStage.LaunchWorkbench
       );
     });
@@ -77,15 +96,16 @@ export class TenonEditor {
     serviceName: any,
     instance: any,
   ) => {
-    this.adaptor.workbenchDIService.services.set(serviceName, {
+    this.workbenchAdaptor.workbenchDIService.services.set(serviceName, {
       name: serviceName,
       loader: () => { },
       instance,
     });
-    this.adaptor.workbenchDIService.instances.set(serviceName, instance);
+    this.workbenchAdaptor.workbenchDIService.instances.set(serviceName, instance);
   }
 
-  public run() {
-    this.lifecycle.run();
+  @awaitLoad(ILifeCycle)
+  public async run() {
+    this.lifecycle!.run();
   }
 }

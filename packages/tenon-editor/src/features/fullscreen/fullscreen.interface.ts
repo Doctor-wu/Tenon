@@ -8,6 +8,11 @@ export interface IFullScreenFeature {
   enableFullScreen: () => boolean;
 }
 
+export enum FullScreenType {
+  FullScreen = 'full-screen',
+  UnFullScreen = 'un-full-screen',
+};
+
 export const IFullScreenFeature = createDynamicFeatureTag(FeatureName.FullScreen);
 
 bindDynamicLoader(IFullScreenFeature, {

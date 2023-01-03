@@ -6,7 +6,9 @@ import {
 import { IFullScreenFeature } from "./fullscreen.interface";
 import { FootBarName } from "@/configs/foot-bar-config";
 
-@Controller()
+@Controller({
+  name: Symbol('full-screen-controller')
+})
 export class FullScreenController {
 
   @Loader(IFullScreenFeature)
@@ -16,18 +18,17 @@ export class FullScreenController {
     return this.fullScreenFeatureLoader.instance;
   }
 
-
-  @FootBarController(FootBarName.FullScreen)
-  @awaitLoad(IFullScreenFeature)
-  async enableFullScreen(): Promise<FootBarControllerResult> {
-    const disabled = !this.fullScreenFeature!.enableFullScreen();
-    return {
-      disabled,
-      ...disabled ? {
-        popupText: '无法使用全屏功能',
-      } : {},
-    };
-  }
+  // @FootBarController(FootBarName.FullScreen)
+  // @awaitLoad(IFullScreenFeature)
+  // async enableFullScreen(): Promise<FootBarControllerResult> {
+  //   const disabled = !this.fullScreenFeature!.enableFullScreen();
+  //   return {
+  //     disabled,
+  //     ...disabled ? {
+  //       popupText: '无法使用全屏功能',
+  //     } : {},
+  //   };
+  // }
 
   @ActionController(FootBarName.FullScreen, ActionType.onClick)
   @awaitLoad(IFullScreenFeature)

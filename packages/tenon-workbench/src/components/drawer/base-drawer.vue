@@ -1,20 +1,38 @@
 <template>
   <section class="drawer-container" :style="computedStyle">
-    <section v-if="drawerService[alignment].header.value.showHeader" class="drawer-header">
+    <section
+      v-if="drawerService[alignment].header.showHeader"
+      class="drawer-header"
+    >
       <section class="header-info">
-        <span v-for="(layerName, index) in drawerService[alignment].layers.value">
+        <span
+          v-for="(layerName, index) in drawerService[alignment].layers.value"
+        >
           {{ index > 0 ? ' / ' : '' }}{{ layerName }}
         </span>
       </section>
-      <TButton aria-label="close-drawer" v-if="drawerService[alignment].header.value.showClose" @click="closeDrawer" variant="text"
-        class="close-btn">
+      <TButton
+        aria-label="close-drawer"
+        v-if="drawerService[alignment].header.showClose"
+        @click="closeDrawer"
+        variant="text"
+        class="close-btn"
+      >
         <TIcon name="close"></TIcon>
       </TButton>
     </section>
-    <template v-for="(item) in layers">
+    <template v-for="item in layers">
       <Transition :class="computedClassName">
-        <section class="drawer-layer" :key="item.name"
-          :style="{ zIndex: item.zIndex, marginTop: drawerService[alignment].header.value.showHeader ? '30px' : '0' }">
+        <section
+          class="drawer-layer"
+          :key="item.name"
+          :style="{
+            zIndex: item.zIndex,
+            marginTop: drawerService[alignment].header.showHeader
+              ? '30px'
+              : '0',
+          }"
+        >
           <component :is="item.renderer"></component>
         </section>
       </Transition>
@@ -22,62 +40,62 @@
   </section>
 </template>
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, VNode } from 'vue';
-import { WorkbenchType } from '../../core';
-import { DrawerService, DrawerServiceCore } from '../../services';
+import { computed, inject, onMounted, ref, VNode } from 'vue'
+import { WorkbenchType } from '../../core'
+import { DrawerService, DrawerServiceCore } from '../../services'
 
 const props = defineProps<{
   alignment: 'left' | 'right'
-}>();
+}>()
 
-const workbench = inject<WorkbenchType>('workbench');
-const workbenchDIService = workbench!.workbenchDIService;
-const drawerService = workbenchDIService.getServiceInstance<DrawerServiceCore>(DrawerService)!;
+const workbench = inject<WorkbenchType>('workbench')
+const workbenchDIService = workbench!.workbenchDIService
+const drawerService = workbenchDIService.getServiceInstance<DrawerServiceCore>(
+  DrawerService,
+)!
 
-const visible = drawerService[props.alignment].visible;
+const visible = drawerService[props.alignment].visible
 
-const computedClassName = [
-  props.alignment,
-];
+const computedClassName = [props.alignment]
 const computedStyle = computed(() => [
   `${props.alignment}: ${visible.value ? '0' : '-320px'}`,
-  `border-${(props.alignment === 'left') ? 'right' : 'left'}: 1px solid #ddd`
-]);
+  `border-${props.alignment === 'left' ? 'right' : 'left'}: 1px solid #ddd`,
+])
 
 interface DrawerLayer {
-  renderer: () => VNode;
-  name: string;
-  zIndex: number;
+  renderer: () => VNode
+  name: string
+  zIndex: number
 }
 
-const layers = ref<DrawerLayer[]>([]);
+const layers = ref<DrawerLayer[]>([])
 
 const attachLayer = (name: string, renderer: () => VNode) => {
   layers.value.push({
     renderer,
     zIndex: layers.value.length + 1,
     name,
-  });
+  })
 }
 
 const detachLayer = () => {
-  layers.value.pop();
-};
+  layers.value.pop()
+}
 
 const clearLayer = () => {
-  layers.value.length = 0;
-};
+  layers.value.length = 0
+}
 
 const closeDrawer = () => {
-  clearLayer();
-  drawerService[props.alignment].close();
+  clearLayer()
+  drawerService[props.alignment].close(true)
 }
 
 onMounted(() => {
-  drawerService[props.alignment].bridge.register('attachLayer', attachLayer);
-  drawerService[props.alignment].bridge.register('detachLayer', detachLayer);
-  drawerService[props.alignment].bridge.register('clearLayer', clearLayer);
-});
+  drawerService[props.alignment].bridge.register('attachLayer', attachLayer)
+  drawerService[props.alignment].bridge.register('detachLayer', detachLayer)
+  drawerService[props.alignment].bridge.register('clearLayer', clearLayer)
+})
 </script>
 <style lang="scss" scoped>
 .drawer-container {
@@ -86,7 +104,7 @@ onMounted(() => {
   background-color: #f8f8f8;
   top: 0;
   height: 100%;
-  transition: all ease .3s;
+  transition: all ease 0.3s;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -122,8 +140,8 @@ onMounted(() => {
 }
 
 .close-btn {
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
   padding: 0 3px;
   margin-left: 6px;
 }
@@ -131,7 +149,7 @@ onMounted(() => {
 @keyframes fadeInFromLeft {
   0% {
     left: -150px;
-    opacity: .3;
+    opacity: 0.3;
   }
 
   100% {
@@ -140,12 +158,10 @@ onMounted(() => {
   }
 }
 
-;
-
 @keyframes fadeInFromRight {
   0% {
     right: -150px;
-    opacity: .3;
+    opacity: 0.3;
   }
 
   100% {
@@ -153,8 +169,6 @@ onMounted(() => {
     opacity: 1;
   }
 }
-
-;
 
 @keyframes fadeOutFromLeft {
   0% {
@@ -164,7 +178,7 @@ onMounted(() => {
 
   100% {
     left: -150px;
-    opacity: .3;
+    opacity: 0.3;
   }
 }
 
@@ -176,29 +190,29 @@ onMounted(() => {
 
   100% {
     right: -150px;
-    opacity: .3;
+    opacity: 0.3;
   }
 }
 
 .v-enter-active,
 .v-leave-active {
   &.left {
-    animation: fadeInFromLeft .3s ease-in-out;
+    animation: fadeInFromLeft 0.3s ease-in-out;
   }
 
   &.right {
-    animation: fadeInFromRight .3s ease-in-out;
+    animation: fadeInFromRight 0.3s ease-in-out;
   }
 }
 
 .v-enter-from,
 .v-leave-to {
   &.left {
-    animation: fadeOutFromLeft .3s ease-in-out;
+    animation: fadeOutFromLeft 0.3s ease-in-out;
   }
 
   &.right {
-    animation: fadeOutFromRight .3s ease-in-out;
+    animation: fadeOutFromRight 0.3s ease-in-out;
   }
 }
 </style>

@@ -3,7 +3,7 @@ import {
   createServiceTag, DynamicFeatureTag,
   ActionInfo, DrawerServiceCore,
 } from '../services';
-import { FeatureNameKey, ActionControllerKey, Service } from '../decorators';
+import { FeatureNameKey, ActionControllerKey, Service, ControllerKeyName } from '../decorators';
 import { IWorkbenchAdapter } from './adapter';
 import { newable, Singleton } from '@tenon/shared';
 import { WorkbenchEvents } from './events';
@@ -43,7 +43,6 @@ export type WorkbenchType = ComposeWorkbench<IWorkbenchAdapter, WorkbenchLoader,
 
 export const WorkbenchService = createServiceTag('WorkbenchService');
 
-// @ts-ignore
 export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config: IWorkbenchConfig) => {
   const {
     syncFeatures,
@@ -96,17 +95,18 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
     }
 
     public initControllers() {
-      this.controllers.forEach(controller => {
-        Object.keys(controller.prototype[ActionControllerKey]).forEach(nameKey => {
-          Object.keys(controller.prototype[ActionControllerKey][nameKey]).forEach(actionKey => {
-            controller.prototype[ActionControllerKey][nameKey][actionKey].forEach(cb => {
+      this.controllers.forEach(Controller => {
+        Object.keys(Controller.prototype[ActionControllerKey]).forEach(nameKey => {
+          Object.keys(Controller.prototype[ActionControllerKey][nameKey]).forEach(actionKey => {
+            Controller.prototype[ActionControllerKey][nameKey][actionKey].forEach(cb => {
               this.barConfig.regisAction(nameKey, actionKey, cb);
             });
           });
         });
-        Object.keys(controller.prototype[UIControllerKey]).forEach(nameKey => {
-          controller.prototype[UIControllerKey][nameKey](this);
+        Object.keys(Controller.prototype[UIControllerKey]).forEach(nameKey => {
+          Controller.prototype[UIControllerKey][nameKey](this);
         });
+        this.workbenchDIService.get(Controller.prototype[ControllerKeyName]);
       });
     }
 
