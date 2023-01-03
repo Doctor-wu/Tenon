@@ -1,12 +1,15 @@
 import {
   BarService,
   BarServiceCore,
+  EventEmitterService,
   Feature, Inject,
 } from "@tenon/workbench";
-import { IFullScreenFeature } from "./fullscreen.interface";
+import { FullScreenType, IFullScreenFeature } from "./fullscreen.interface";
 import { IEditor, TenonEditor } from "@/core/editor";
 import { ExitFullScreenConfig, FullScreenConfig } from "./configs";
 import { FootBarName } from "@/configs/foot-bar-config";
+import { IContext, TenonEditorContext } from "@/core/context";
+import { FullScreenNotification } from "./notification";
 
 @Feature({
   name: IFullScreenFeature,
@@ -17,6 +20,7 @@ export class FullScreenHandler implements IFullScreenFeature {
 
   constructor(
     @Inject(BarService) private barService: BarServiceCore,
+    @Inject(IContext) private context: TenonEditorContext,
     @Inject(IEditor) editor: TenonEditor,
   ) {
     this.root = editor.root;
@@ -68,8 +72,16 @@ export class FullScreenHandler implements IFullScreenFeature {
   private initEvent() {
     window.onresize = () => {
       if (this.isFullScreen !== this.fullScreen) {
-        this.onFullScreenChange(this.isFullScreen);
+        this.context.fire(new FullScreenNotification(
+          this.isFullScreen ? FullScreenType.FullScreen : FullScreenType.UnFullScreen,
+        ));
       }
     };
+    this.context.on<FullScreenNotification>(FullScreenType.FullScreen, () => {
+      this.onFullScreenChange(true);
+    });
+    this.context.on(FullScreenType.UnFullScreen, () => {
+      this.onFullScreenChange(false);
+    });
   }
 }

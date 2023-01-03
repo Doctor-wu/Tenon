@@ -8,8 +8,7 @@
     "resolveJsonModule": true,
     "jsx": "preserve",
     "declarationDir": "typings",
-    "tsBuildInfoFile": "./tsconfig.tsbuildinfo",
+    "tsBuildInfoFile": "./tsconfig.tsbuildinfo"
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.json"],
-  "exclude": ["demo"]
+  "include": ["src/**/*", "src/**/*.d.ts"]
 }

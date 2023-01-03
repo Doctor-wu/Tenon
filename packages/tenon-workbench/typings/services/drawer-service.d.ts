@@ -5,16 +5,16 @@ declare class DrawerServiceBase {
     bridge: Bridge<IDrawer>;
     layers: import("vue").Ref<string[]>;
     visible: import("vue").Ref<boolean>;
-    header: import("vue").Ref<{
+    header: {
         showHeader?: boolean | undefined;
         showClose?: boolean | undefined;
-    }>;
+    };
     alignment: 'left' | 'right';
     eventEmitter: EventEmitterCore;
     constructor(alignment: 'left' | 'right', eventEmitter: EventEmitterCore);
     private detectEmpty;
-    show(): void;
-    close(): void;
+    show(fromInternal?: boolean): void;
+    close(fromInternal?: boolean): void;
     attachLayer(layerName: string, renderer: () => VNode): void;
     replaceLayer(layerName: string, renderer: () => VNode): void;
     detachLayer(): void;
@@ -33,8 +33,8 @@ export interface IDrawerHeader {
 }
 export declare class DrawerServiceCore {
     private eventEmitter;
-    constructor(eventEmitter: EventEmitterCore);
     left: DrawerServiceBase;
     right: DrawerServiceBase;
+    constructor(eventEmitter: EventEmitterCore);
 }
 export {};

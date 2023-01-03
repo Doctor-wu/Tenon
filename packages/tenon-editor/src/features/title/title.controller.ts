@@ -6,7 +6,9 @@ import { HeaderBarName } from "@/configs/header-bar-config";
 import { ITitleFeature } from "./title.interface";
 import { h } from "vue";
 
-@Controller()
+@Controller({
+  name: Symbol('title-controller')
+})
 export class TitleController {
 
   @Loader(ITitleFeature)

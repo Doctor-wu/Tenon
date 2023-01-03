@@ -1,20 +1,21 @@
-import { Inject, Singleton } from "@tenon/shared";
+import { Singleton } from "@tenon/shared";
 import { WorkbenchEvents } from "../core";
-import { Service } from "../decorators";
-import { EventEmitterCore, EventEmitterService } from "./event-emitter";
+import { ActionType, Service } from "../decorators";
+import { EventEmitterCore } from "./event-emitter";
 import { createServiceTag } from "./tag";
 
 export enum InternalUIService {
   HeaderBar = 'HeaderBar',
   ToolBar = 'ToolBar',
   FootBar = 'FootBar',
+  Drawer = 'Drawer',
   Custom = 'Custom',
 };
 
-export interface ActionInfo {
-  name: string;
-  action: string;
-  from: InternalUIService;
+export interface ActionInfo<Name = string, Action = ActionType, From = InternalUIService> {
+  name: Name;
+  action: Action;
+  from: From;
 };
 
 export const ActionInfoService = createServiceTag('ActionInfo');
@@ -23,11 +24,11 @@ export const ActionInfoService = createServiceTag('ActionInfo');
   name: ActionInfoService,
 })
 @Singleton
-export class ActionInfo {
-  info: ActionInfo = {} as ActionInfo;
+export class ActionInfo<Name = string, Action = ActionType, From = InternalUIService> {
+  info: ActionInfo<Name, Action, From> = {} as ActionInfo<Name, Action, From>;
 
   constructor(
-    @Inject(EventEmitterService) private eventEmitter: EventEmitterCore,
+    private eventEmitter: EventEmitterCore,
   ) {
     this.eventEmitter.on(
       WorkbenchEvents.emitAction,
