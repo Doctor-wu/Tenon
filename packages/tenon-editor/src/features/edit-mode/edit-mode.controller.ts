@@ -1,9 +1,9 @@
 import {
-  ActionController,
-  ActionInfo,
-  ActionType,
-  BarServiceCore,
-  Controller, IDynamicFeature, InjectActionInfoService, InjectBarService, Loader, ToolBarController, awaitLoad,
+  ActionController, ActionInfo,
+  ActionType, BarServiceCore,
+  Controller, IDynamicFeature,
+  InjectActionInfoService, InjectBarService,
+  Loader, awaitLoad,
 } from "@tenon/workbench";
 import { IEditModeFeature, ModeType } from "./edit-mode.interface";
 import { ToolBarName } from "@/configs/tool-bar-config";

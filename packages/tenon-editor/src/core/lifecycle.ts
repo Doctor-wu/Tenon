@@ -1,4 +1,3 @@
-import { Singleton } from '@tenon/shared';
 import {
   EventEmitterCore, EventEmitterService,
   IDynamicFeature, Loader, Service, awaitLoad, createSyncFeatureTag,
@@ -11,10 +10,10 @@ export enum TenonEditorLifeCycleStage {
   Ready,
 }
 
-export const ILifeCycle = createSyncFeatureTag('tenon-editor-lifecycle');
+export const ITenonEditorLifeCycle = createSyncFeatureTag('tenon-editor-lifecycle');
 
 @Service({
-  name: ILifeCycle,
+  name: ITenonEditorLifeCycle,
 })
 export class TenonEditorLifeCycle {
   private stage: TenonEditorLifeCycleStage = TenonEditorLifeCycleStage.Init;

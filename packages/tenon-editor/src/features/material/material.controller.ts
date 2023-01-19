@@ -1,22 +1,14 @@
 import { ToolBarName } from "@/configs/tool-bar-config";
 import {
-  ActionController,
-  ActionInfo,
-  ActionType,
-  BarService,
-  BarServiceCore,
-  Controller,
-  DrawerServiceCore,
-  EventEmitterCore,
-  EventEmitterService,
-  IDynamicFeature,
-  Inject,
+  ActionController, ActionInfo, ActionType,
+  BarService, BarServiceCore,
+  Controller, DrawerServiceCore,
+  EventEmitterCore, EventEmitterService,
+  IDynamicFeature, Inject,
   InjectActionInfoService,
   InjectDrawerService,
-  InternalUIService,
-  Loader,
-  WorkbenchEvents,
-  awaitLoad,
+  InternalUIService, Loader,
+  WorkbenchEvents, awaitLoad,
 } from "@tenon/workbench";
 import { IMaterialFeature } from "./material.interface";
 import { h } from "vue";
@@ -50,10 +42,10 @@ export class MaterialController {
     console.log(actionInfo);
     switch (actionInfo.action) {
       case ActionType.onActive:
-        drawerService.left.attachLayer('material', () => h('span', 'material core'));
+        drawerService.left.attachLayer(actionInfo.name, () => h('span', 'material core'));
         break;
       case ActionType.onDeActive:
-        drawerService.left.detachLayer();
+        drawerService.left.detachLayer(actionInfo.name);
         break;
       default:
         return;
@@ -62,7 +54,7 @@ export class MaterialController {
   }
 
   private listenDrawer() {
-    this.eventEmitter!.on(WorkbenchEvents.drawerChanged, ({
+    this.eventEmitter.on(WorkbenchEvents.drawerChanged, ({
       alignment, state, fromInternal,
     }) => {
       if (alignment === 'left' && fromInternal && !state) {

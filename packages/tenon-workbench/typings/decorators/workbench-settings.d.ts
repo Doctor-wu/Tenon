@@ -17,6 +17,7 @@ export declare const WorkbenchSettings: <T extends newable<any, WorkbenchType>>(
         initEvents(): void;
         onLoad(el: HTMLElement): void;
         render(el: any): void;
+        registerPlugin(plugins: import("../core").IPlugin[]): void;
         editor: any;
         attachEditor(dom: HTMLElement): void;
         load(el: HTMLElement): void;

@@ -3,4 +3,5 @@ export const FeatureName = {
   FullScreen: "full-screen",
   EditMode: "edit-mode",
   Material: "material",
+  ComponentsTree: "components-tree",
 };

@@ -1,11 +1,11 @@
 import { Singleton } from '@tenon/shared';
-import { ActionType, awaitLoad, IDynamicFeature, Loader, Service } from "../decorators";
+import { awaitLoad, IDynamicFeature, Loader, Service } from "../decorators";
 import { createServiceTag, ContextServiceCore, EventEmitterService, EventEmitterCore } from "../services";
 import { HeaderBarConfig, HeaderBarType, HeaderBarItemType } from "../configs/header-bar-config";
 import { ToolBarConfig, ToolBarItemType, ToolBarFlag } from "../configs/tool-bar-config";
 import { IListTree } from "../configs/list-tree";
 import { WorkbenchEvents } from "../core";
-import { InternalUIService } from './action-info-service';
+import { ActionFrom } from './action-info-service';
 import { FootBarConfig, FootBarItemType } from '../configs';
 
 export const BarService = createServiceTag('BarService');
@@ -104,13 +104,21 @@ export class BarServiceCore {
   }
 
   @awaitLoad(EventEmitterService)
-  emitAction(name: any, action: string, from: InternalUIService, ...args: any[]) {
+  async emitAction(name: any, action: string, from: ActionFrom, ...args: any[]) {
     this.eventEmitter.instance?.emit(WorkbenchEvents.emitAction, {
       name, action, from,
     });
-    if (!this.actionMap.get(name)) return;
-    this.actionMap.get(name)![action]?.forEach(cb => {
-      cb(...args);
+    if (this.actionMap.get(name)) {
+      const cbs = this.actionMap.get(name)![action];
+      if (cbs) {
+        for (let index = 0; index < cbs.length; index++) {
+          const cb = cbs[index];
+          await cb(...args);
+        }
+      }
+    }
+    this.eventEmitter.instance?.emit(WorkbenchEvents.emitActionFinish, {
+      name, action, from,
     });
   }
 

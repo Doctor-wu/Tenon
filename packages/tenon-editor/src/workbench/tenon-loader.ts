@@ -1,4 +1,4 @@
-import { IWorkbenchAdapter, WorkbenchLoader, WorkbenchSettings } from "@tenon/workbench"
+import { IWorkbenchAdapter, WorkbenchLoader, WorkbenchSettings, WorkbenchType } from "@tenon/workbench"
 import "@tenon/workbench/lib/style.css";
 import { footBarConfig } from "../configs/foot-bar-config";
 import { headerBarConfig } from "../configs/header-bar-config";

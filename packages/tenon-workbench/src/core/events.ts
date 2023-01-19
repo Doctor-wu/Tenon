@@ -7,6 +7,7 @@ export enum WorkbenchEvents {
   updateToolBarConfig = 'updateToolBarConfig',
   updateFootBarConfig = 'updateFootBarConfig',
   emitAction = 'emitAction',
+  emitActionFinish = 'emitActionFinish',
   regisAction = 'regisAction',
 
   drawerChanged = 'drawerChanged',

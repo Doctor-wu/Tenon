@@ -4,16 +4,17 @@ export declare enum InternalUIService {
     HeaderBar = "HeaderBar",
     ToolBar = "ToolBar",
     FootBar = "FootBar",
-    Drawer = "Drawer",
-    Custom = "Custom"
+    Drawer = "Drawer"
 }
-export interface ActionInfo<Name = string, Action = ActionType, From = InternalUIService> {
+export declare type CustomActionFrom = string;
+export declare type ActionFrom = InternalUIService | CustomActionFrom;
+export interface ActionInfo<Name = string, Action = ActionType, From = ActionFrom> {
     name: Name;
     action: Action;
     from: From;
 }
 export declare const ActionInfoService: symbol;
-export declare class ActionInfo<Name = string, Action = ActionType, From = InternalUIService> {
+export declare class ActionInfo<Name = string, Action = ActionType, From = ActionFrom> {
     private eventEmitter;
     info: ActionInfo<Name, Action, From>;
     constructor(eventEmitter: EventEmitterCore);

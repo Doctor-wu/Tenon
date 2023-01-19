@@ -27,7 +27,11 @@ const { workbenchInstance } = defineProps<{
   headerBarConfig: HeaderBarConfig
   toolBarConfig: ToolBarConfig
   footBarConfig: FootBarConfig
-}>()
+}>();
+
+const {
+  drawerService,
+} = workbenchInstance;
 
 provide('workbench', workbenchInstance)
 
@@ -46,6 +50,9 @@ onMounted(() => {
   overflow: hidden;
   text-align: center;
   background-color: #fff;
+}
+#editor-root {
+  height: 100%;
 }
 .editor-container {
   flex: 1;

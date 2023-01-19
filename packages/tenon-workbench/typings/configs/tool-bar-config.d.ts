@@ -24,7 +24,7 @@ export interface IToolBarSwitchConfig extends IToolBarBaseConfig<ToolBarFlag.Swi
 export interface IToolBarButtonConfig extends IToolBarBaseConfig<ToolBarFlag.Button> {
 }
 export interface IToolBarDropDownConfig extends IToolBarBaseConfig<ToolBarFlag.DropDown> {
-    listTree?: IListTree[];
+    listTree: IListTree[];
     dropDownRender?: () => VNode;
     dropDownWidth?: string;
 }

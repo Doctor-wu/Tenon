@@ -23,11 +23,9 @@ onMounted(() => {
     left: 0;
     top: 0;
     transform: scale(1);
-    
+
     .surface {
       position: fixed;
-      left: 50px;
-      top: 50px;
     }
   }
 </style>

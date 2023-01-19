@@ -30,7 +30,7 @@ export interface IToolBarButtonConfig extends IToolBarBaseConfig<ToolBarFlag.But
 };
 
 export interface IToolBarDropDownConfig extends IToolBarBaseConfig<ToolBarFlag.DropDown> {
-  listTree?: IListTree[];
+  listTree: IListTree[];
   dropDownRender?: () => VNode;
   dropDownWidth?: string;
 };

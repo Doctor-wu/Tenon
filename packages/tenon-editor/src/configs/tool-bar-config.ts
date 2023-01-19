@@ -136,7 +136,7 @@ export const toolBarConfig: ToolBarConfig = {
       {
         name: ToolBarName.LoadConfig,
         flag: ToolBarFlag.Button,
-        text: '加载',
+        text: '导入',
         icon: {
           iconRender: () => h(FileDownLoadOutLine, {
             size: 16,

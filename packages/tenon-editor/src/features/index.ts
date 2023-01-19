@@ -1,3 +1,4 @@
+import { ComponentsTreeController, IComponentsTreeFeature } from './components-tree';
 import { EditModeController, IEditModeFeature } from './edit-mode';
 import { FullScreenController, IFullScreenFeature } from './fullscreen';
 import { IMaterialFeature, MaterialController } from './material';
@@ -11,6 +12,7 @@ export const dynamicTags = [
   IFullScreenFeature,
   IEditModeFeature,
   IMaterialFeature,
+  IComponentsTreeFeature,
 ]
 
 export const controllers = [
@@ -18,4 +20,5 @@ export const controllers = [
   FullScreenController,
   EditModeController,
   MaterialController,
+  ComponentsTreeController,
 ];

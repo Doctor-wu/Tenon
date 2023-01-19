@@ -1,7 +1,6 @@
 import {
   BarService,
   BarServiceCore,
-  EventEmitterService,
   Feature, Inject,
 } from "@tenon/workbench";
 import { FullScreenType, IFullScreenFeature } from "./fullscreen.interface";
@@ -77,7 +76,7 @@ export class FullScreenHandler implements IFullScreenFeature {
         ));
       }
     };
-    this.context.on<FullScreenNotification>(FullScreenType.FullScreen, () => {
+    this.context.on(FullScreenType.FullScreen, () => {
       this.onFullScreenChange(true);
     });
     this.context.on(FullScreenType.UnFullScreen, () => {

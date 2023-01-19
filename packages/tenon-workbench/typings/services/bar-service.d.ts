@@ -2,7 +2,7 @@ import { IDynamicFeature } from "../decorators";
 import { ContextServiceCore, EventEmitterCore } from "../services";
 import { HeaderBarConfig, HeaderBarItemType } from "../configs/header-bar-config";
 import { ToolBarConfig, ToolBarItemType } from "../configs/tool-bar-config";
-import { InternalUIService } from './action-info-service';
+import { ActionFrom } from './action-info-service';
 import { FootBarConfig, FootBarItemType } from '../configs';
 export declare const BarService: symbol;
 export declare class BarServiceCore {
@@ -27,7 +27,7 @@ export declare class BarServiceCore {
     get toolBarConfig(): ToolBarConfig;
     get footBarConfig(): FootBarConfig;
     regisAction(name: any, action: string, cb: Function): void;
-    emitAction(name: any, action: string, from: InternalUIService, ...args: any[]): void;
+    emitAction(name: any, action: string, from: ActionFrom, ...args: any[]): Promise<void>;
     updateHeaderBarConfig(name: any, partial: Partial<HeaderBarItemType>): void;
     updateToolBarConfig(name: any, partial: Partial<ToolBarItemType>): void;
     updateFootBarConfig(name: any, partial: Partial<FootBarItemType>): void;
