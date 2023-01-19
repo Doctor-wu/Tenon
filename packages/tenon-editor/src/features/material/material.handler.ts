@@ -11,5 +11,6 @@ export class MaterialHandler implements IMaterialFeature {
 
   switchPanel(open: boolean) {
     console.log(`material panel: ${open ? 'open' : 'close'}`);
+    this.isPanelOpen = open;
   }
 }

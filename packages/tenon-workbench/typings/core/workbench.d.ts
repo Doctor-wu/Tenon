@@ -4,6 +4,7 @@ import { newable } from '@tenon/shared';
 import { WorkbenchLoader } from './workbench-loader';
 import { type App } from 'vue';
 import { HeaderBarConfig, ToolBarConfig } from '../configs';
+import { IPlugin } from './base-plugin';
 export interface IWorkbenchConfig {
     syncFeatures: newable<any, any>[];
     dynamicTags: DynamicFeatureTag[];
@@ -21,6 +22,7 @@ export interface IWorkbench {
     barConfig: BarServiceCore;
     workbenchDIService: WorkbenchDIServiceCore;
     drawerService: DrawerServiceCore;
+    registerPlugin(plugins: IPlugin[]): void;
 }
 declare type ComposeWorkbench<A extends {}, W extends {}, I extends {}> = A & W & I;
 export declare type WorkbenchType = ComposeWorkbench<IWorkbenchAdapter, WorkbenchLoader, IWorkbench>;
@@ -42,6 +44,7 @@ export declare const inheritFromWorkbench: (Target: newable<any, WorkbenchType>,
         initEvents(): void;
         onLoad(el: HTMLElement): void;
         render(el: any): void;
+        registerPlugin(plugins: IPlugin[]): void;
         editor: any;
         attachEditor(dom: HTMLElement): void;
         load(el: HTMLElement): void;

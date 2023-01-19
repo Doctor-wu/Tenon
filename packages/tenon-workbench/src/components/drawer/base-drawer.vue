@@ -6,7 +6,7 @@
     >
       <section class="header-info">
         <span
-          v-for="(layerName, index) in drawerService[alignment].layers.value"
+          v-for="(layerName, index) in layers.map((layer) => layer.name)"
         >
           {{ index > 0 ? ' / ' : '' }}{{ layerName }}
         </span>
@@ -40,7 +40,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, VNode } from 'vue'
+import { computed, inject, onMounted, ref, VNode, watch } from 'vue'
 import { WorkbenchType } from '../../core'
 import { DrawerService, DrawerServiceCore } from '../../services'
 
@@ -69,6 +69,12 @@ interface DrawerLayer {
 }
 
 const layers = ref<DrawerLayer[]>([])
+watch(layers, () => {
+  drawerService[props.alignment].bridge.run(
+    'updateLayers',
+    layers.value.map((layer) => layer.name),
+  )
+});
 
 const attachLayer = (name: string, renderer: () => VNode) => {
   layers.value.push({
@@ -78,7 +84,11 @@ const attachLayer = (name: string, renderer: () => VNode) => {
   })
 }
 
-const detachLayer = () => {
+const detachLayer = (name?: string) => {
+  if (name) {
+    layers.value = layers.value.filter((item) => item.name !== name)
+    return
+  }
   layers.value.pop()
 }
 

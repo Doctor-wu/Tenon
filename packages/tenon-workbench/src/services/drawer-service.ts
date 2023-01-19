@@ -4,12 +4,11 @@ import { WorkbenchEvents } from "../core";
 import { Inject, Service } from "../decorators";
 import { EventEmitterCore, EventEmitterService } from "./event-emitter";
 import { createServiceTag } from "./tag";
-import { InternalUIService } from "./action-info-service";
 
 class DrawerServiceBase {
   bridge = new Bridge<IDrawer>();
 
-  layers = ref<string[]>([]);
+  layers: string[] = [];
 
   visible = ref<boolean>(false);
 
@@ -25,12 +24,13 @@ class DrawerServiceBase {
   constructor(alignment: 'left' | 'right', eventEmitter: EventEmitterCore) {
     this.alignment = alignment;
     this.eventEmitter = eventEmitter;
+    this.bridge.register('updateLayers', (layers) => this.layers = layers);
   }
 
 
   private detectEmpty() {
     setTimeout(() => {
-      if (this.visible.value && this.layers.value.length === 0) this.close();
+      if (this.visible.value && this.layers.length === 0) this.close();
     }, 0);
   }
 
@@ -49,29 +49,26 @@ class DrawerServiceBase {
       state: false,
       fromInternal,
     });
-    this.layers.value.length = 0;
+    this.clearLayer();
     this.visible.value = false;
   }
 
   attachLayer(layerName: string, renderer: () => VNode) {
-    this.layers.value.push(layerName);
     this.bridge.run('attachLayer', layerName, renderer);
     if (!this.visible.value) this.show();
   }
 
   replaceLayer(layerName: string, renderer: () => VNode) {
-    this.clearLayer();
+    this.detachLayer();
     this.attachLayer(layerName, renderer);
   }
 
-  detachLayer() {
-    this.layers.value.pop();
-    this.bridge.run('detachLayer');
+  detachLayer(name?: string) {
+    this.bridge.run('detachLayer', name);
     this.detectEmpty();
   }
 
   clearLayer() {
-    this.layers.value.length = 0;
     this.bridge.run('clearLayer');
     this.detectEmpty();
   }
@@ -86,7 +83,8 @@ export const DrawerService = createServiceTag('DrawerService');
 export interface IDrawer {
   attachLayer: (name: string, renderer: () => VNode) => void;
   clearLayer: () => void;
-  detachLayer: () => void;
+  detachLayer: (name?: string) => void;
+  updateLayers: (layers: string[]) => void;
 };
 
 export interface IDrawerHeader {

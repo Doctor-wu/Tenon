@@ -12,6 +12,7 @@ import { type App, createApp, h } from 'vue';
 import { UIControllerKey } from '../decorators/bar-controller';
 import { HeaderBarConfig, ToolBarConfig } from '../configs';
 import WorkbenchComponent from '../components/workbench.vue';
+import { IPlugin } from './base-plugin';
 
 export interface IWorkbenchConfig {
   syncFeatures: newable<any, any>[];
@@ -35,12 +36,12 @@ export interface IWorkbench {
   barConfig: BarServiceCore;
   workbenchDIService: WorkbenchDIServiceCore;
   drawerService: DrawerServiceCore;
+  registerPlugin(plugins: IPlugin[]): void;
 }
 
 type ComposeWorkbench<A extends {}, W extends {}, I extends {}> = A & W & I;
 
 export type WorkbenchType = ComposeWorkbench<IWorkbenchAdapter, WorkbenchLoader, IWorkbench>
-
 export const WorkbenchService = createServiceTag('WorkbenchService');
 
 export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config: IWorkbenchConfig) => {
@@ -140,6 +141,13 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
       });
       this.app.mount(el);
     };
+
+    public registerPlugin(plugins: IPlugin[]) {
+      if (!plugins) return;
+      plugins.forEach(plugin => {
+        plugin.install(this);
+      });
+    }
   };
 
   return Workbench;

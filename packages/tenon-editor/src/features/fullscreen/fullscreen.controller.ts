@@ -1,7 +1,6 @@
 import {
-  IDynamicFeature, Loader, Controller, ActionController,
-  ActionType, awaitLoad, FootBarController,
-  FootBarControllerResult,
+  IDynamicFeature, Loader, Controller,
+  ActionController, ActionType, awaitLoad,
 } from "@tenon/workbench";
 import { IFullScreenFeature } from "./fullscreen.interface";
 import { FootBarName } from "@/configs/foot-bar-config";
@@ -17,18 +16,6 @@ export class FullScreenController {
   get fullScreenFeature() {
     return this.fullScreenFeatureLoader.instance;
   }
-
-  // @FootBarController(FootBarName.FullScreen)
-  // @awaitLoad(IFullScreenFeature)
-  // async enableFullScreen(): Promise<FootBarControllerResult> {
-  //   const disabled = !this.fullScreenFeature!.enableFullScreen();
-  //   return {
-  //     disabled,
-  //     ...disabled ? {
-  //       popupText: '无法使用全屏功能',
-  //     } : {},
-  //   };
-  // }
 
   @ActionController(FootBarName.FullScreen, ActionType.onClick)
   @awaitLoad(IFullScreenFeature)

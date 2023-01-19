@@ -9,10 +9,12 @@ export enum InternalUIService {
   ToolBar = 'ToolBar',
   FootBar = 'FootBar',
   Drawer = 'Drawer',
-  Custom = 'Custom',
 };
 
-export interface ActionInfo<Name = string, Action = ActionType, From = InternalUIService> {
+export type CustomActionFrom = string;
+
+export type ActionFrom = InternalUIService | CustomActionFrom;
+export interface ActionInfo<Name = string, Action = ActionType, From = ActionFrom> {
   name: Name;
   action: Action;
   from: From;
@@ -24,7 +26,7 @@ export const ActionInfoService = createServiceTag('ActionInfo');
   name: ActionInfoService,
 })
 @Singleton
-export class ActionInfo<Name = string, Action = ActionType, From = InternalUIService> {
+export class ActionInfo<Name = string, Action = ActionType, From = ActionFrom> {
   info: ActionInfo<Name, Action, From> = {} as ActionInfo<Name, Action, From>;
 
   constructor(
