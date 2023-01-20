@@ -1,9 +1,9 @@
 import { IDynamicFeature } from "../decorators";
 import { ContextServiceCore, EventEmitterCore } from "../services";
-import { HeaderBarConfig, HeaderBarItemType } from "../configs/header-bar-config";
-import { ToolBarConfig, ToolBarItemType } from "../configs/tool-bar-config";
+import { HeaderBarConfig, HeaderBarItemType } from "../interfaces/header-bar-config";
+import { ToolBarConfig, ToolBarItemType, ToolBarFlag } from "../interfaces/tool-bar-config";
 import { ActionFrom } from './action-info-service';
-import { FootBarConfig, FootBarItemType } from '../configs';
+import { FootBarConfig, FootBarItemType, IToolBarBaseConfig } from '../interfaces';
 export declare const BarService: symbol;
 export declare class BarServiceCore {
     private headerBarConfigInit;
@@ -19,6 +19,8 @@ export declare class BarServiceCore {
     eventEmitter: IDynamicFeature<EventEmitterCore>;
     constructor(headerBarConfigInit: HeaderBarConfig, toolBarConfigInit: ToolBarConfig, footBarConfigInit: FootBarConfig);
     init(): void;
+    setSwitchActive(switchName: string, active: boolean): void;
+    getSwitchActive(switchName: string): boolean;
     private resolveHeaderBar;
     private resolveToolBar;
     private resolveFootBarConfig;
@@ -29,6 +31,6 @@ export declare class BarServiceCore {
     regisAction(name: any, action: string, cb: Function): void;
     emitAction(name: any, action: string, from: ActionFrom, ...args: any[]): Promise<void>;
     updateHeaderBarConfig(name: any, partial: Partial<HeaderBarItemType>): void;
-    updateToolBarConfig(name: any, partial: Partial<ToolBarItemType>): void;
+    updateToolBarConfig<Config extends IToolBarBaseConfig<ToolBarFlag> = ToolBarItemType>(name: any, partial: Partial<Config>): void;
     updateFootBarConfig(name: any, partial: Partial<FootBarItemType>): void;
 }

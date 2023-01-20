@@ -191,6 +191,9 @@ export const toolBarConfig: ToolBarConfig = {
           }),
         },
         active: false,
+        activeStyle: {
+          fontWeight: 'bold'
+        },
         popupText: '展示物料面板',
       },
       {
@@ -201,6 +204,10 @@ export const toolBarConfig: ToolBarConfig = {
           iconRender: () => h(FileTree, {
             size: 16,
           }),
+        },
+        activeStyle: {
+          color: '#11bb88',
+          fontWeight: 'bold'
         },
         active: false,
         popupText: '展示组件树面板',
@@ -215,6 +222,9 @@ export const toolBarConfig: ToolBarConfig = {
           iconRender: () => h(FormatListText, {
             size: 16,
           }),
+        },
+        activeStyle: {
+          fontWeight: 'bold'
         },
         active: false,
         popupText: '展示组件属性面板',

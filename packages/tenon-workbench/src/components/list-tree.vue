@@ -1,7 +1,8 @@
 <template>
   <section
     :style="props.width ? { width: props.width } : {}"
-    class="list-container"
+    class="workbench-list-tree-container"
+    v-if="visible"
   >
     <template v-for="item in props.list" :key="item.name">
       <template v-if="!item.hidden">
@@ -38,7 +39,6 @@
         <TPopup
           v-else
           placement="left-bottom"
-          :ref="(el) => popups.push(el)"
           :overlayInnerStyle="{ padding: '6px 0', borderRadius: 0 }"
         >
           <section
@@ -68,6 +68,7 @@
           </section>
           <template #content>
             <ListTree
+              :visible="visible"
               :from="from"
               :list="item.children"
               @click="emitClick"
@@ -79,8 +80,8 @@
   </section>
 </template>
 <script setup lang="ts">
-import { inject, ref } from 'vue'
-import { IListTree } from '../configs'
+import { inject } from 'vue'
+import { IListTree } from '../interfaces'
 import { WorkbenchType } from '../core'
 import { ActionType } from '../decorators'
 import { InternalUIService } from '../services'
@@ -89,6 +90,7 @@ const props = defineProps<{
   list: IListTree[]
   width?: string
   from: InternalUIService
+  visible?: boolean
 }>()
 
 const workbench = inject<WorkbenchType>('workbench')
@@ -103,11 +105,8 @@ const emitAction = (action: ActionType, name: any, ...args) => {
   barConfig?.emitAction(name, action, props.from)
 }
 
-const popups = ref<any>([])
-
 const emitClick = (...args) => {
   $emit('click', ...args)
-  popups.value.forEach((popup) => popup?.handleClose())
 }
 </script>
 
@@ -117,7 +116,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.list-container {
+.workbench-list-tree-container {
   width: 230px;
   display: flex;
   align-items: center;

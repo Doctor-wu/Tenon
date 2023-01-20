@@ -1,71 +1,143 @@
 <template>
   <section class="toolbar-item-container">
-    <TPopup :overlayInnerStyle="{ padding: '6px 0' }" trigger="click" ref="popupRef"
-      v-if="config.flag === ToolBarFlag.DropDown && config.listTree" :show-arrow="false" theme="light"
-      placement="bottom">
-      <TButton :onClick="(...args) => emitAction(...args)" variant="text" :disabled="config.disabled"
-        :aria-label="config.name">
-        <component v-if="config.icon?.iconRender" :is="config.icon?.iconRender"></component>
-        <TIcon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></TIcon>
-        <span class="item-text" v-if="config.text"> {{ config.text }} </span>
-        <TIcon class="dropdown-arrow" v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></TIcon>
+    <TPopup
+      :overlayInnerStyle="{ padding: '6px 0' }"
+      trigger="click"
+      v-if="config.flag === ToolBarFlag.DropDown"
+      :show-arrow="false"
+      theme="light"
+      placement="bottom"
+      :visible="visible"
+    >
+      <TButton
+        :onClick="handleButtonClick"
+        variant="text"
+        :disabled="config.disabled"
+        :aria-label="config.name"
+      >
+        <component
+          v-if="config.icon?.iconRender"
+          :is="config.icon?.iconRender"
+        ></component>
+        <TIcon
+          v-else-if="config.icon"
+          :name="config.icon.iconName"
+          :size="(config.icon.iconSize || 16) + 'px'"
+        ></TIcon>
+        <span class="item-text" v-if="config.text">{{ config.text }}</span>
+        <TIcon
+          class="dropdown-arrow"
+          v-if="config.flag === ToolBarFlag.DropDown"
+          name="caret-down-small"
+        ></TIcon>
       </TButton>
       <template #content>
-        <ListTree :from="InternalUIService.ToolBar" :list="config.listTree" :width="config.dropDownWidth || '90px'"
-          @click="handleListTreeClick">
-        </ListTree>
+        <ListTree
+          :from="InternalUIService.ToolBar"
+          :list="config.listTree"
+          :width="config.dropDownWidth || '90px'"
+          :visible="visible"
+          @click="handleListTreeClick"
+        ></ListTree>
       </template>
     </TPopup>
-    <TButton v-else :onClick="(...args) => emitAction(...args)" variant="text" :disabled="config.disabled"
-      :aria-label="config.name" :class="{ active: (config.flag === ToolBarFlag.Switch && !!config.active) }">
-      <component v-if="config.icon?.iconRender" :is="config.icon?.iconRender"></component>
-      <TIcon v-else-if="config.icon" :name="config.icon.iconName" :size="(config.icon.iconSize || 16) + 'px'"></TIcon>
-      <span class="item-text" v-if="config.text"> {{ config.text }} </span>
-      <TIcon class="dropdown-arrow" v-if="config.flag === ToolBarFlag.DropDown" name="caret-down-small"></TIcon>
+    <TButton
+      v-else
+      :onClick="handleButtonClick"
+      variant="text"
+      :disabled="config.disabled"
+      :aria-label="config.name"
+      :class="{ active: config.flag === ToolBarFlag.Switch && !!config.active }"
+      :style="getSwitchStyle()"
+    >
+      <component
+        v-if="config.icon?.iconRender"
+        :is="config.icon?.iconRender"
+      ></component>
+      <TIcon
+        v-else-if="config.icon"
+        :name="config.icon.iconName"
+        :size="(config.icon.iconSize || 16) + 'px'"
+      ></TIcon>
+      <span class="item-text" v-if="config.text">{{ config.text }}</span>
     </TButton>
   </section>
 </template>
 <script setup lang="ts">
-import { inject, ref } from 'vue';
-import { ToolBarItemType, ToolBarFlag } from '../../configs/tool-bar-config';
-import { WorkbenchType } from '../../core';
-import { ActionType } from '../../decorators';
-import { InternalUIService } from '../../services';
-import ListTree from '../list-tree.vue';
+import { inject, nextTick, ref } from 'vue'
+import { ToolBarItemType, ToolBarFlag } from '../../interfaces/tool-bar-config'
+import { WorkbenchType } from '../../core'
+import { ActionType } from '../../decorators'
+import { InternalUIService } from '../../services'
+import ListTree from '../list-tree.vue'
+import {
+  getClickOutSideByParentClassName,
+  useClickOutSide,
+} from '../../hooks/useClickOutSide'
 
 const props = defineProps<{
-  config: ToolBarItemType;
-}>();
+  config: ToolBarItemType
+}>()
 
-const workbench = inject<WorkbenchType>("workbench");
-const barConfig = workbench?.barConfig;
+const workbench = inject<WorkbenchType>('workbench')
+const barConfig = workbench?.barConfig
 
-const popupRef = ref<any>(null);
+const visible = ref(false)
+
+let clickOutSideController: AbortController | undefined
 
 const emitAction = (...args) => {
-  let action: ActionType | undefined;
-  if (props.config.flag === ToolBarFlag.Button) action = ActionType.onClick;
+  let action: ActionType | undefined
+  if (props.config.flag === ToolBarFlag.Button) action = ActionType.onClick
   if (props.config.flag === ToolBarFlag.Switch) {
     if (props.config.active) {
-      action = ActionType.onDeActive;
+      action = ActionType.onDeActive
     } else {
-      action = ActionType.onActive;
+      action = ActionType.onActive
     }
-    barConfig?.updateToolBarConfig(props.config.name, {
-      active: !props.config.active,
-    });
+    barConfig?.setSwitchActive(props.config.name, !props.config.active)
   }
-  if (!action) return;
-  barConfig?.emitAction(props.config.name, action, InternalUIService.ToolBar);
-};
+  if (!action) return
+  barConfig?.emitAction(props.config.name, action, InternalUIService.ToolBar)
+}
+
+const handleButtonClick = (...args) => {
+  if (props.config.flag === ToolBarFlag.DropDown) {
+    visible.value = true
+    setTimeout(() => {
+      clickOutSideController = useClickOutSide(
+        getClickOutSideByParentClassName('workbench-list-tree-container'),
+        () => {
+          visible.value = false
+          clickOutSideController = undefined
+        },
+      )
+    }, 50)
+  }
+  emitAction(...args)
+}
 
 const handleListTreeClick = () => {
-  popupRef.value?.handleClose();
-};
+  visible.value = false
+  if (clickOutSideController) {
+    clickOutSideController.abort()
+    clickOutSideController = undefined
+  }
+}
 
+const getSwitchStyle = () => {
+  if (props.config.flag === ToolBarFlag.Switch) {
+    return [
+      props.config.active
+        ? props.config.activeStyle
+        : props.config.deActiveStyle,
+    ].filter(Boolean)
+  }
+  return []
+}
 </script>
 <style lang="scss" scoped>
-@import "../../style/theme.scss";
+@import '../../style/theme.scss';
 
 ::v-deep(.t-button--variant-text) {
   // padding: 3px 6px;
@@ -84,7 +156,6 @@ const handleListTreeClick = () => {
     color: $tenon-primary-color;
   }
 }
-
 
 ::v-deep(.list-container) {
   width: auto;

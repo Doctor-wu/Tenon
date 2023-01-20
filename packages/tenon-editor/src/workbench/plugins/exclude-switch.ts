@@ -34,10 +34,8 @@ export class ExcludeSwitch extends BasePlugin {
         ) {
           names.forEach(switchName => {
             if (switchName === name) return;
-            if ((barService.toolBarNameMap.get(switchName) as IToolBarSwitchConfig | undefined)?.active) {
-              barService.updateToolBarConfig(switchName, {
-                active: false,
-              });
+            if (barService.getSwitchActive(switchName)) {
+              barService.setSwitchActive(switchName, false);
               barService.emitAction(switchName, ActionType.onDeActive, 'ExcludeSwitch');
             }
           })

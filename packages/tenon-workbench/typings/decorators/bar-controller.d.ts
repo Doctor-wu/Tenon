@@ -1,4 +1,4 @@
-import { FootBarItemType, HeaderBarItemType, ToolBarItemType } from "../configs";
+import { FootBarItemType, HeaderBarItemType, ToolBarItemType } from "../interfaces";
 export declare type HeaderBarControllerResult = Promise<Partial<HeaderBarItemType>>;
 export declare type ToolBarControllerResult = Promise<Partial<ToolBarItemType>>;
 export declare type FootBarControllerResult = Promise<Partial<FootBarItemType>>;
