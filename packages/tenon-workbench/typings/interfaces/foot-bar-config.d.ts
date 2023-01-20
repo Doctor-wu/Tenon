@@ -7,7 +7,7 @@ export declare enum FootBarAlignment {
 export interface IFootBarItem {
     name: any;
     alignment: FootBarAlignment;
-    popupText: string;
+    popupText: string | ((config: IFootBarItem) => string);
     hidden?: boolean;
     icon?: IconConfig;
     text?: string;

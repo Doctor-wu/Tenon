@@ -2,7 +2,7 @@
   <component v-if="operateConfig.render" :is="operateConfig.render"></component>
   <TPopup
     v-else-if="!operateConfig.listTree"
-    :content="operateConfig.popupText"
+    :content="getPopUpText(operateConfig)"
     :show-arrow="false"
     theme="light"
     placement="bottom"
@@ -109,6 +109,15 @@ const handleListTreeClick = () => {
     clickOutSideController.abort()
     clickOutSideController = undefined
   }
+}
+
+const getPopUpText = (config: IHeaderBarOperatorItem) => {
+  if (config.popupText) {
+    return typeof config.popupText === 'string'
+      ? config.popupText
+      : config.popupText(config)
+  }
+  return undefined
 }
 </script>
 <style lang="scss" scoped>
