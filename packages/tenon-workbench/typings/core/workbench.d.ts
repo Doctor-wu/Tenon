@@ -3,7 +3,7 @@ import { IWorkbenchAdapter } from './adapter';
 import { newable } from '@tenon/shared';
 import { WorkbenchLoader } from './workbench-loader';
 import { type App } from 'vue';
-import { HeaderBarConfig, ToolBarConfig } from '../configs';
+import { HeaderBarConfig, ToolBarConfig } from '../interfaces';
 import { IPlugin } from './base-plugin';
 export interface IWorkbenchConfig {
     syncFeatures: newable<any, any>[];

@@ -41,30 +41,36 @@
         ></ListTree>
       </template>
     </TPopup>
-    <TButton
-      v-else
-      :onClick="handleButtonClick"
-      variant="text"
-      :disabled="config.disabled"
-      :aria-label="config.name"
-      :class="{ active: config.flag === ToolBarFlag.Switch && !!config.active }"
-      :style="getSwitchStyle()"
-    >
-      <component
-        v-if="config.icon?.iconRender"
-        :is="config.icon?.iconRender"
-      ></component>
-      <TIcon
-        v-else-if="config.icon"
-        :name="config.icon.iconName"
-        :size="(config.icon.iconSize || 16) + 'px'"
-      ></TIcon>
-      <span class="item-text" v-if="config.text">{{ config.text }}</span>
-    </TButton>
+    <TPopup v-else :show-arrow="false" theme="light" placement="bottom">
+      <TButton
+        :onClick="handleButtonClick"
+        variant="text"
+        :disabled="config.disabled"
+        :aria-label="config.name"
+        :class="{
+          active: config.flag === ToolBarFlag.Switch && !!config.active,
+        }"
+        :style="getSwitchStyle()"
+      >
+        <component
+          v-if="config.icon?.iconRender"
+          :is="config.icon?.iconRender"
+        ></component>
+        <TIcon
+          v-else-if="config.icon"
+          :name="config.icon.iconName"
+          :size="(config.icon.iconSize || 16) + 'px'"
+        ></TIcon>
+        <span class="item-text" v-if="config.text">{{ config.text }}</span>
+      </TButton>
+      <template v-if="config.popupText" #content>
+        <span class="toolbar-item-popup">{{ getPopUpText(config) }}</span>
+      </template>
+    </TPopup>
   </section>
 </template>
 <script setup lang="ts">
-import { inject, nextTick, ref } from 'vue'
+import { inject, ref } from 'vue'
 import { ToolBarItemType, ToolBarFlag } from '../../interfaces/tool-bar-config'
 import { WorkbenchType } from '../../core'
 import { ActionType } from '../../decorators'
@@ -134,6 +140,15 @@ const getSwitchStyle = () => {
     ].filter(Boolean)
   }
   return []
+}
+
+const getPopUpText = (config: any) => {
+  if (config.popupText) {
+    return typeof config.popupText === 'string'
+      ? config.popupText
+      : config.popupText(config)
+  }
+  return undefined
 }
 </script>
 <style lang="scss" scoped>

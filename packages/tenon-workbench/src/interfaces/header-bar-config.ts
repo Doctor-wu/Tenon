@@ -21,7 +21,7 @@ export interface IHeaderBarInfoItem extends IHeaderBarBaseItem<HeaderBarType.Inf
 };
 
 export interface IHeaderBarOperatorItem extends IHeaderBarBaseItem<HeaderBarType.Operator> {
-  popupText?: string;
+  popupText?: string | ((config: IHeaderBarOperatorItem) => string);
   icon?: IconConfig;
   listTree?: IListTree[];
   render?: () => VNode;

@@ -6,25 +6,7 @@
           <section class="toolbar-group">
             <template v-for="item in group" :key="item.name">
               <template v-if="!item.hidden">
-                <TPopup
-                  v-if="
-                    item.popupText &&
-                    (item.flag !== ToolBarFlag.DropDown)
-                  "
-                  :show-arrow="false"
-                  theme="light"
-                  placement="bottom"
-                >
-                  <ToolBarItem
-                    class="toolbar-item"
-                    :config="item"
-                  ></ToolBarItem>
-                  <template #content>
-                    <span class="toolbar-item-popup">{{ item.popupText }}</span>
-                  </template>
-                </TPopup>
                 <ToolBarItem
-                  v-else
                   class="toolbar-item"
                   :config="item"
                 ></ToolBarItem>

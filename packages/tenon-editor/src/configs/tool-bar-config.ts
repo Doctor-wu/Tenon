@@ -1,4 +1,4 @@
-import { ToolBarConfig, ToolBarFlag } from "@tenon/workbench";
+import { IToolBarSwitchConfig, ToolBarConfig, ToolBarFlag } from "@tenon/workbench";
 import FileTree from "vue-material-design-icons/FamilyTree.vue";
 import PaletteSwatch from "vue-material-design-icons/PaletteSwatch.vue";
 import FormatListText from "vue-material-design-icons/FormatListText.vue";
@@ -194,7 +194,7 @@ export const toolBarConfig: ToolBarConfig = {
         activeStyle: {
           fontWeight: 'bold'
         },
-        popupText: '展示物料面板',
+        popupText: (config) => `${!config.active ? '展开' : '收起'}物料面板`,
       },
       {
         name: ToolBarName.ComponentTreeSwitch,
@@ -210,7 +210,7 @@ export const toolBarConfig: ToolBarConfig = {
           fontWeight: 'bold'
         },
         active: false,
-        popupText: '展示组件树面板',
+        popupText: (config) => `${!config.active ? '展开' : '收起'}组件树面板`,
       },
     ],
     [
