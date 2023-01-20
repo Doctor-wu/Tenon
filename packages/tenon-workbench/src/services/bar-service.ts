@@ -1,12 +1,12 @@
 import { Singleton } from '@tenon/shared';
 import { awaitLoad, IDynamicFeature, Loader, Service } from "../decorators";
 import { createServiceTag, ContextServiceCore, EventEmitterService, EventEmitterCore } from "../services";
-import { HeaderBarConfig, HeaderBarType, HeaderBarItemType } from "../configs/header-bar-config";
-import { ToolBarConfig, ToolBarItemType, ToolBarFlag } from "../configs/tool-bar-config";
-import { IListTree } from "../configs/list-tree";
+import { HeaderBarConfig, HeaderBarType, HeaderBarItemType } from "../interfaces/header-bar-config";
+import { ToolBarConfig, ToolBarItemType, ToolBarFlag } from "../interfaces/tool-bar-config";
+import { IListTree } from "../interfaces/list-tree";
 import { WorkbenchEvents } from "../core";
 import { ActionFrom } from './action-info-service';
-import { FootBarConfig, FootBarItemType } from '../configs';
+import { FootBarConfig, FootBarItemType, IToolBarBaseConfig } from '../interfaces';
 
 export const BarService = createServiceTag('BarService');
 
@@ -33,7 +33,7 @@ export class BarServiceCore {
     this.init();
   }
 
-  init() {
+  public init() {
     this.contextService.set('barConfig', {
       headerBarConfig: this.headerBarConfigInit,
       toolBarConfig: this.toolBarConfigInit,
@@ -42,6 +42,21 @@ export class BarServiceCore {
     this.resolveHeaderBar(this.headerBarConfig);
     this.resolveToolBar(this.toolBarConfig);
     this.resolveFootBarConfig(this.footBarConfig);
+  }
+
+  public setSwitchActive(switchName: string, active: boolean) {
+    const config = this.toolBarNameMap.get(switchName);
+    if (config && config.flag === ToolBarFlag.Switch) {
+      config.active = active;
+    }
+  }
+
+  public getSwitchActive(switchName: string) {
+    const config = this.toolBarNameMap.get(switchName);
+    if (config && config.flag === ToolBarFlag.Switch) {
+      return config.active;
+    }
+    return false;
   }
 
   private resolveHeaderBar(configs: HeaderBarConfig) {
@@ -129,17 +144,19 @@ export class BarServiceCore {
     if (!config) {
       return console.error('updateHeaderBarConfig failed, config', name, 'is not exist');
     };
-    Object.assign(config || {}, partial);
+    Object.assign(config, partial);
   }
 
   @awaitLoad(EventEmitterService)
-  updateToolBarConfig(name: any, partial: Partial<ToolBarItemType>) {
+  updateToolBarConfig<
+    Config extends IToolBarBaseConfig<ToolBarFlag> = ToolBarItemType
+  >(name: any, partial: Partial<Config>) {
     this.eventEmitter.instance?.emit(WorkbenchEvents.updateToolBarConfig, name, partial);
     const config = this.toolBarNameMap.get(name);
     if (!config) {
       return console.error('updateToolBarConfig failed, config', name, 'is not exist');
     };
-    Object.assign(config || {}, partial);
+    Object.assign(config, partial);
   }
 
   @awaitLoad(EventEmitterService)
@@ -147,8 +164,8 @@ export class BarServiceCore {
     this.eventEmitter.instance?.emit(WorkbenchEvents.updateFootBarConfig, name, partial);
     const config = this.footBarNameMap.get(name);
     if (!config) {
-      return console.error('updateToolBarConfig failed, config', name, 'is not exist');
+      return console.error('updateFootBarConfig failed, config', name, 'is not exist');
     };
-    Object.assign(config || {}, partial);
+    Object.assign(config, partial);
   }
 }

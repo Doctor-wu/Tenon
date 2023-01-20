@@ -11,7 +11,7 @@
 </template>
 <script setup lang="ts">
 import { inject } from "vue";
-import { FootBarItemType } from "../../configs";
+import { FootBarItemType } from "../../interfaces";
 import { WorkbenchType } from "../../core";
 import { ActionType } from "../../decorators";
 import { InternalUIService } from "../../services";

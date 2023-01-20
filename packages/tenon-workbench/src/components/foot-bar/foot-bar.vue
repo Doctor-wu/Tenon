@@ -14,7 +14,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
-import { FootBarAlignment, FootBarConfig } from "../../configs";
+import { FootBarAlignment, FootBarConfig } from "../../interfaces";
 import FootBarItem from "./foot-bar-item.vue";
 const { config } = defineProps<{
   config: FootBarConfig,

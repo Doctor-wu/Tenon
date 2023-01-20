@@ -4,7 +4,7 @@ import {
   BarService, BarServiceCore,
   Controller, DrawerServiceCore,
   EventEmitterCore, EventEmitterService,
-  IDynamicFeature, Inject,
+  IDynamicFeature, IToolBarSwitchConfig, Inject,
   InjectActionInfoService,
   InjectDrawerService,
   InternalUIService, Loader,
@@ -63,7 +63,7 @@ export class MaterialController {
           ActionType.onDeActive,
           InternalUIService.Drawer,
         );
-        this.barService!.updateToolBarConfig(ToolBarName.MaterialSwitch, {
+        this.barService!.updateToolBarConfig<IToolBarSwitchConfig>(ToolBarName.MaterialSwitch, {
           active: false,
         });
       }

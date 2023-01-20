@@ -9,7 +9,7 @@
                 <TPopup
                   v-if="
                     item.popupText &&
-                    (item.flag !== ToolBarFlag.DropDown || !item.listTree)
+                    (item.flag !== ToolBarFlag.DropDown)
                   "
                   :show-arrow="false"
                   theme="light"
@@ -45,7 +45,7 @@ import {
   ToolBarConfig,
   ToolBarItemType,
   ToolBarFlag,
-} from '../../configs/tool-bar-config'
+} from '../../interfaces/tool-bar-config'
 import ToolBarItem from './tool-bar-item.vue'
 
 const props = defineProps<{

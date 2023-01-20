@@ -1,4 +1,4 @@
-import { FootBarItemType, HeaderBarItemType, ToolBarItemType } from "../configs";
+import { FootBarItemType, HeaderBarItemType, ToolBarItemType } from "../interfaces";
 import { WorkbenchType } from "../core";
 import { ProvideService } from "../services";
 

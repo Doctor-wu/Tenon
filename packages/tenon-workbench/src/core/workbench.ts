@@ -10,7 +10,7 @@ import { WorkbenchEvents } from './events';
 import { WorkbenchLoader } from './workbench-loader';
 import { type App, createApp, h } from 'vue';
 import { UIControllerKey } from '../decorators/bar-controller';
-import { HeaderBarConfig, ToolBarConfig } from '../configs';
+import { HeaderBarConfig, ToolBarConfig } from '../interfaces';
 import WorkbenchComponent from '../components/workbench.vue';
 import { IPlugin } from './base-plugin';
 

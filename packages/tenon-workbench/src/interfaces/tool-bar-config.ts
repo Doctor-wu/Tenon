@@ -1,4 +1,4 @@
-import { VNode } from "vue";
+import { CSSProperties, VNode } from "vue";
 import { IconConfig } from "./icon";
 import { IListTree } from "./list-tree";
 
@@ -24,6 +24,8 @@ export interface IToolBarBaseConfig<Flag extends ToolBarFlag> {
 
 export interface IToolBarSwitchConfig extends IToolBarBaseConfig<ToolBarFlag.Switch> {
   active: boolean;
+  activeStyle?: CSSProperties;
+  deActiveStyle?: CSSProperties;
 };
 
 export interface IToolBarButtonConfig extends IToolBarBaseConfig<ToolBarFlag.Button> {

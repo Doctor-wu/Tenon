@@ -14,7 +14,7 @@
 </template>
 <script setup lang="ts">
 import { computed } from "vue";
-import { HeaderBarConfig, HeaderBarType, IHeaderBarOperatorItem } from "../../configs";
+import { HeaderBarConfig, HeaderBarType, IHeaderBarOperatorItem } from "../../interfaces";
 import HeaderItem from "./header-item.vue";
 const { config } = defineProps<{
   config: HeaderBarConfig,
