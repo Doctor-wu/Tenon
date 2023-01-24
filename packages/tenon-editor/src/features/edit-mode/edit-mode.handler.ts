@@ -9,7 +9,7 @@ import { ModeNotification } from "./notification";
   name: IEditModeFeature,
 })
 export class EditModeHandler implements IEditModeFeature {
-  public mode: ModeType;
+  public mode: ModeType = ModeType.Edit;
   constructor(
     @Inject(IContext) private context: TenonEditorContext,
   ) {

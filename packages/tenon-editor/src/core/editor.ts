@@ -1,7 +1,13 @@
-import { IDynamicFeature, Loader, awaitLoad, createSyncFeatureTag } from "@tenon/workbench";
+import {
+  IDynamicFeature, Loader,
+  awaitLoad, createSyncFeatureTag,
+} from "@tenon/workbench";
 import { BaseConfig } from "../../config/base";
 import { TenonEditorAdapter } from "../workbench/tenon-loader";
-import { ITenonEditorLifeCycle, TenonEditorLifeCycle, TenonEditorLifeCycleStage } from "./lifecycle";
+import {
+  ITenonEditorLifeCycle, TenonEditorLifeCycle,
+  TenonEditorLifeCycleStage,
+} from "./lifecycle";
 import { IContext, TenonEditorContext } from "./context";
 import { plugins } from "../workbench/plugins";
 
@@ -24,7 +30,7 @@ export class TenonEditor {
   constructor() {
     this.setupAdaptor();
     this.setupContext();
-    this.initInstantiations()
+    this.initInstantiations();
     this.setupLifeCycle();
     window.editor = this;
   }

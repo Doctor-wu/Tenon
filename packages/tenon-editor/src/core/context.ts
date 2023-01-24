@@ -1,5 +1,6 @@
 import {
-  EventEmitterCore, EventEmitterService, Inject, Service, createSyncFeatureTag
+  EventEmitterCore, EventEmitterService,
+  Inject, Service, createSyncFeatureTag,
 } from "@tenon/workbench";
 import { BaseNotification } from "./notification";
 

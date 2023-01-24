@@ -1,6 +1,7 @@
 import {
   EventEmitterCore, EventEmitterService,
-  IDynamicFeature, Loader, Service, awaitLoad, createSyncFeatureTag,
+  IDynamicFeature, Loader, Service,
+  awaitLoad, createServiceTag,
 } from '@tenon/workbench';
 
 export enum TenonEditorLifeCycleStage {
@@ -10,7 +11,7 @@ export enum TenonEditorLifeCycleStage {
   Ready,
 }
 
-export const ITenonEditorLifeCycle = createSyncFeatureTag('tenon-editor-lifecycle');
+export const ITenonEditorLifeCycle = createServiceTag('tenon-editor-lifecycle');
 
 @Service({
   name: ITenonEditorLifeCycle,

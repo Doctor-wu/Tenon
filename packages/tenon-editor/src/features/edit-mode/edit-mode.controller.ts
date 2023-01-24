@@ -1,19 +1,26 @@
 import {
   ActionController, ActionInfo,
-  ActionType, BarServiceCore,
+  ActionType, BarService, BarServiceCore,
   Controller, IDynamicFeature,
+  IToolBarSwitchConfig,
+  Inject,
   InjectActionInfoService, InjectBarService,
   Loader, awaitLoad,
 } from "@tenon/workbench";
 import { IEditModeFeature, ModeType } from "./edit-mode.interface";
 import { ToolBarName } from "@/configs/tool-bar-config";
-import { editModeConfig, previewModeConfig } from "./config";
+import { configModeMap } from "./config";
 import { MessagePlugin } from "tdesign-vue-next";
+import { sleep } from "@tenon/shared";
 
 @Controller({
   name: Symbol('edit-mode-controller')
 })
 export class EditModeController {
+
+  constructor(
+    @Inject(BarService) private barService: BarServiceCore,
+  ) { }
 
   @Loader(IEditModeFeature)
   editModeLoader: IDynamicFeature<IEditModeFeature>;
@@ -25,27 +32,26 @@ export class EditModeController {
   @ActionController(ToolBarName.PreviewMode, ActionType.onClick)
   @ActionController(ToolBarName.EditMode, ActionType.onClick)
   @awaitLoad(IEditModeFeature)
-  handleModeSwitch(
+  async handleModeSwitch(
     @InjectBarService() barService: BarServiceCore,
     @InjectActionInfoService() actionInfo: ActionInfo<ModeType>,
   ) {
-    switch (actionInfo.name) {
-      case ModeType.Preview:
-        barService.updateToolBarConfig(
-          ToolBarName.Mode,
-          previewModeConfig,
-        );
-        break;
-      case ModeType.Edit:
-        barService.updateToolBarConfig(
-          ToolBarName.Mode,
-          editModeConfig,
-        );
-        break;
-    }
+    if (actionInfo.name === this.editModeFeature!.mode) return;
+    barService.setToolBarItemLoading(ToolBarName.Mode, true);
+    await sleep(500); // process business
     this.editModeFeature!.switchMode(actionInfo.name);
+    barService.setToolBarItemLoading(ToolBarName.Mode, false);
+
+    this.updateToolBar(configModeMap.get(actionInfo.name)!);
     MessagePlugin.success(
-      `切换为：${actionInfo.name === ModeType.Preview ? previewModeConfig.text : editModeConfig.text}`
+      `切换为：${configModeMap.get(actionInfo.name)?.text}`
+    );
+  }
+
+  updateToolBar(config: Partial<IToolBarSwitchConfig>) {
+    this.barService.updateToolBarConfig(
+      ToolBarName.Mode,
+      config,
     );
   }
 

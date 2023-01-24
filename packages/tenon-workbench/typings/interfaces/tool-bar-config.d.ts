@@ -17,6 +17,7 @@ export interface IToolBarBaseConfig<Flag extends ToolBarFlag> {
     disabled?: boolean;
     popupText?: string | ((config: any) => string);
     icon?: IconConfig;
+    loading?: boolean;
 }
 export interface IToolBarSwitchConfig extends IToolBarBaseConfig<ToolBarFlag.Switch> {
     popupText?: string | ((config: IToolBarSwitchConfig) => string);

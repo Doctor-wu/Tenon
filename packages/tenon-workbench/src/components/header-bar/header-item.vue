@@ -60,7 +60,7 @@
   </TPopup>
 </template>
 <script setup lang="ts">
-import { inject, ref } from 'vue'
+import { inject, nextTick, ref } from 'vue'
 import { HeaderBarType, IHeaderBarOperatorItem } from '../../interfaces'
 import { WorkbenchType } from '../../core'
 import { ActionType } from '../../decorators'
@@ -69,7 +69,7 @@ import ListTree from '../list-tree.vue'
 import {
   useClickOutSide,
   getClickOutSideByParentClassName,
-} from '../../hooks/useClickOutSide'
+} from '@tenon/shared'
 
 const { operateConfig } = defineProps<{
   operateConfig: IHeaderBarOperatorItem
@@ -90,16 +90,17 @@ const emitAction = (...args) => {
 }
 
 const handleButtonClick = (...args) => {
-  visible.value = true
-  setTimeout(() => {
-    clickOutSideController = useClickOutSide(
-      getClickOutSideByParentClassName('workbench-list-tree-container'),
-      () => {
-        visible.value = false
-        clickOutSideController = undefined
-      },
-    )
-  }, 50)
+  visible.value = !visible.value
+  visible.value &&
+    setTimeout(() => {
+      clickOutSideController = useClickOutSide(
+        getClickOutSideByParentClassName('workbench-list-tree-container'),
+        () => {
+          visible.value = false
+          clickOutSideController = undefined
+        },
+      )
+    })
   emitAction(...args)
 }
 

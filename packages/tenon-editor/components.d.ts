@@ -7,16 +7,9 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    MaterialIcon: typeof import('./src/components/common/MaterialIcon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    SubTitle: typeof import('./src/components/header/sub-title.vue')['default']
-    TButton: typeof import('tdesign-vue-next')['Button']
-    TDivider: typeof import('tdesign-vue-next')['Divider']
-    TIcon: typeof import('tdesign-vue-next')['Icon']
-    Title: typeof import('./src/components/header/title.vue')['default']
     TitlePlaceholder: typeof import('./src/components/header/title-placeholder.vue')['default']
-    TPopup: typeof import('tdesign-vue-next')['Popup']
     TSkeleton: typeof import('tdesign-vue-next')['Skeleton']
   }
 }

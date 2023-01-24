@@ -15,20 +15,22 @@ import { TDesignResolver } from 'unplugin-vue-components/resolvers';
     base: '/',
     plugins: [
       vue(),
-      createExternal({
-        externals: {
-          vue: 'Vue',
-        },
-      }),
       AutoImport({
         resolvers: [TDesignResolver({
-          library: 'vue-next'
+          library: 'vue-next',
+          esm: true,
         })],
       }),
       Components({
         resolvers: [TDesignResolver({
-          library: 'vue-next'
+          library: 'vue-next',
+          esm: true,
         })],
+      }),
+      createExternal({
+        externals: {
+          vue: 'vue',
+        },
       }),
     ],
     build: {
@@ -39,7 +41,7 @@ import { TDesignResolver } from 'unplugin-vue-components/resolvers';
         name: 'TenonWorkbench',
         fileName: (format) => `tenon-workbench.${format}.js`,
       },
-      // minify: 'terser',
+      minify: 'terser',
       rollupOptions: {
         // ...
       }

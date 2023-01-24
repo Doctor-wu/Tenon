@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "cross-env MODE=dev vite",
     "build": "cross-env MODE=prod vite build",
+    "local:build": "cross-env MODE=local vite build",
     "add-feature": "ts-node scripts/add-feature"
   },
   "author": "Doctor wu",

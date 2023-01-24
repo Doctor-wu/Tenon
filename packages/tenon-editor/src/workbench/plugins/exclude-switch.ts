@@ -1,7 +1,7 @@
 import {
   ActionType, BasePlugin,
   BarService, BarServiceCore,
-  WorkbenchEvents, WorkbenchType, IToolBarSwitchConfig
+  WorkbenchEvents, WorkbenchType,
 } from "@tenon/workbench";
 
 export class ExcludeSwitch extends BasePlugin {
@@ -18,31 +18,31 @@ export class ExcludeSwitch extends BasePlugin {
   }
 
   async registerExcludeSwitch(names: string[]) {
+    const nameSet = new Set(names);
     const {
       workbenchDIService,
     } = this.workbench;
     const barService = (await workbenchDIService.get<BarServiceCore>(BarService))!;
-    const nameSet = new Set(names);
     this.workbench.eventEmitter.on(
       WorkbenchEvents.emitActionFinish,
-      ({
-        name, action,
-      }) => {
+      ({ name, action }) => {
         if (
           action === ActionType.onActive
           && nameSet.has(name)
         ) {
-          names.forEach(switchName => {
-            if (switchName === name) return;
-            if (barService.getSwitchActive(switchName)) {
-              barService.setSwitchActive(switchName, false);
-              barService.emitAction(switchName, ActionType.onDeActive, 'ExcludeSwitch');
-            }
-          })
+          this.excludeSwitches(names.filter(item => item !== name), barService);
         }
-      }
-    )
+      },
+    );
   }
 
+  private excludeSwitches = async (names: string[], barService: BarServiceCore) => {
+    names.forEach(switchName => {
+      if (barService.getSwitchActive(switchName)) {
+        barService.setSwitchActive(switchName, false);
+        barService.emitAction(switchName, ActionType.onDeActive, 'ExcludeSwitch');
+      }
+    })
+  }
 }
 

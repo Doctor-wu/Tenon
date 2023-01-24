@@ -143,7 +143,6 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
     };
 
     public registerPlugin(plugins: IPlugin[]) {
-      if (!plugins) return;
       plugins.forEach(plugin => {
         plugin.install(this);
       });
