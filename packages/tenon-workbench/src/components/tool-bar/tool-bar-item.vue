@@ -15,15 +15,11 @@
         :disabled="config.disabled"
         :aria-label="config.name"
       >
-        <component
-          v-if="config.icon?.iconRender"
-          :is="config.icon?.iconRender"
-        ></component>
-        <TIcon
-          v-else-if="config.icon"
-          :name="config.icon.iconName"
-          :size="(config.icon.iconSize || 16) + 'px'"
-        ></TIcon>
+        <IconRender
+          v-if="config.icon"
+          :icon="config.icon"
+          :loading="config.loading"
+        ></IconRender>
         <span class="item-text" v-if="config.text">{{ config.text }}</span>
         <TIcon
           class="dropdown-arrow"
@@ -52,15 +48,11 @@
         }"
         :style="getSwitchStyle()"
       >
-        <component
-          v-if="config.icon?.iconRender"
-          :is="config.icon?.iconRender"
-        ></component>
-        <TIcon
-          v-else-if="config.icon"
-          :name="config.icon.iconName"
-          :size="(config.icon.iconSize || 16) + 'px'"
-        ></TIcon>
+        <IconRender
+          v-if="config.icon"
+          :icon="config.icon"
+          :loading="config.loading"
+        ></IconRender>
         <span class="item-text" v-if="config.text">{{ config.text }}</span>
       </TButton>
       <template v-if="config.popupText" #content>
@@ -70,7 +62,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { inject, ref } from 'vue'
+import { inject, nextTick, ref } from 'vue'
 import { ToolBarItemType, ToolBarFlag } from '../../interfaces/tool-bar-config'
 import { WorkbenchType } from '../../core'
 import { ActionType } from '../../decorators'
@@ -79,7 +71,8 @@ import ListTree from '../list-tree.vue'
 import {
   getClickOutSideByParentClassName,
   useClickOutSide,
-} from '../../hooks/useClickOutSide'
+} from '@tenon/shared'
+import IconRender from '../icon-render.vue'
 
 const props = defineProps<{
   config: ToolBarItemType
@@ -109,16 +102,17 @@ const emitAction = (...args) => {
 
 const handleButtonClick = (...args) => {
   if (props.config.flag === ToolBarFlag.DropDown) {
-    visible.value = true
-    setTimeout(() => {
-      clickOutSideController = useClickOutSide(
-        getClickOutSideByParentClassName('workbench-list-tree-container'),
-        () => {
-          visible.value = false
-          clickOutSideController = undefined
-        },
-      )
-    }, 50)
+    visible.value = !visible.value
+    visible.value &&
+      setTimeout(() => {
+        clickOutSideController = useClickOutSide(
+          getClickOutSideByParentClassName('workbench-list-tree-container'),
+          () => {
+            visible.value = false
+            clickOutSideController = undefined
+          },
+        )
+      })
   }
   emitAction(...args)
 }

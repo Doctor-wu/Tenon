@@ -6,10 +6,7 @@
           <section class="toolbar-group">
             <template v-for="item in group" :key="item.name">
               <template v-if="!item.hidden">
-                <ToolBarItem
-                  class="toolbar-item"
-                  :config="item"
-                ></ToolBarItem>
+                <ToolBarItem class="toolbar-item" :config="item"></ToolBarItem>
               </template>
             </template>
           </section>
@@ -26,7 +23,6 @@
 import {
   ToolBarConfig,
   ToolBarItemType,
-  ToolBarFlag,
 } from '../../interfaces/tool-bar-config'
 import ToolBarItem from './tool-bar-item.vue'
 

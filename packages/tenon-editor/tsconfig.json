@@ -11,5 +11,5 @@
       "~components": ["./src/components"]
     }
   },
-  "include": ["src", "config"]
+  "include": ["src", "config", "./*.d.ts"]
 }

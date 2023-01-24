@@ -30,6 +30,7 @@ export declare class BarServiceCore {
     get footBarConfig(): FootBarConfig;
     regisAction(name: any, action: string, cb: Function): void;
     emitAction(name: any, action: string, from: ActionFrom, ...args: any[]): Promise<void>;
+    setToolBarItemLoading(name: any, loading: boolean): Promise<void>;
     updateHeaderBarConfig(name: any, partial: Partial<HeaderBarItemType>): void;
     updateToolBarConfig<Config extends IToolBarBaseConfig<ToolBarFlag> = ToolBarItemType>(name: any, partial: Partial<Config>): void;
     updateFootBarConfig(name: any, partial: Partial<FootBarItemType>): void;

@@ -17,12 +17,12 @@ export default defineConfig({
     }),
     AutoImport({
       resolvers: [TDesignResolver({
-        library: 'vue-next'
+        library: 'vue-next',
       })],
     }),
     Components({
       resolvers: [TDesignResolver({
-        library: 'vue-next'
+        library: 'vue-next',
       })],
     }),
   ],
@@ -34,5 +34,5 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
-  base: '/tenon-editor/'
-})
+  base: config.basePath,
+});

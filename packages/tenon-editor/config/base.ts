@@ -1,6 +1,7 @@
-type BuildMode = 'dev' | 'prod';
+export type BuildMode = 'dev' | 'prod' | 'local';
 
 export class BaseConfig {
   appName: 'tenon-editor';
   mode: BuildMode;
+  basePath: string = '';
 }

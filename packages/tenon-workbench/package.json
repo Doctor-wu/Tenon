@@ -11,7 +11,7 @@
   "types": "typings",
   "devDependencies": {
     "@tenon/shared": "workspace:*",
-    "@tenon/workbench": "workspace:*"
+    "less": "^4.1.3"
   },
   "description": "",
   "peerDependencies": {
@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "sass": "^1.43.4",
+    "tdesign-vue-next": "^1.0.0",
     "unplugin-auto-import": "^0.12.1",
     "unplugin-vue-components": "^0.22.12",
-    "tdesign-vue-next": "^1.0.0",
     "vite": "^2.8.6",
     "vite-plugin-external": "^1.2.5",
     "vue": "^3.2.31"

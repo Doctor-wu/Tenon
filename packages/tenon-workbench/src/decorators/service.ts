@@ -2,7 +2,6 @@ import { WorkbenchDIServiceCore } from '../services/di-service';
 import { createServiceDecorator } from "@tenon/shared";
 import { ServiceTag } from '../services';
 
-
 export const ServiceHandler = createServiceDecorator(
   new WorkbenchDIServiceCore(),
 );
@@ -19,5 +18,5 @@ export const Service: (params: IServiceParams) => ClassDecorator = (params: ISer
   } = params;
   target.prototype[ServiceNameKey] = name;
 
-  ServiceHandler({name})(target);
+  ServiceHandler({ name })(target);
 };
