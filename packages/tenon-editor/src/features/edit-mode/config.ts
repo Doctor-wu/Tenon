@@ -2,7 +2,7 @@ import { IToolBarSwitchConfig } from "@tenon/workbench";
 import EyeOutLine from "vue-material-design-icons/EyeOutLine.vue";
 import PencilOutLine from "vue-material-design-icons/PencilOutLine.vue";
 import { h } from "vue";
-import { ModeType } from "./edit-mode.interface";
+import { ModeType } from "./notification";
 
 export const previewModeConfig: Partial<IToolBarSwitchConfig> = {
   text: '预览模式',

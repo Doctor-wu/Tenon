@@ -1,18 +1,15 @@
-import {
-  IDynamicFeature, Loader,
-  awaitLoad, createSyncFeatureTag,
-} from "@tenon/workbench";
+import { IEditor, IConfig, IContext, IEventCenter } from "./interface";
+import { TenonEditorEventCenter } from "./event-center";
+import { IDynamicFeature, Loader, awaitLoad } from "@tenon/workbench";
 import { BaseConfig } from "../../config/base";
 import { TenonEditorAdapter } from "../workbench/tenon-loader";
 import {
-  ITenonEditorLifeCycle, TenonEditorLifeCycle,
+  ITenonEditorLifeCycle,
+  TenonEditorLifeCycle,
   TenonEditorLifeCycleStage,
 } from "./lifecycle";
-import { IContext, TenonEditorContext } from "./context";
+import { TenonEditorContext } from "./context";
 import { plugins } from "../workbench/plugins";
-
-export const IEditor = createSyncFeatureTag('tenon-editor');
-export const IConfig = createSyncFeatureTag('tenon-editor-config');
 
 export class TenonEditor {
   @Loader(ITenonEditorLifeCycle)
@@ -22,6 +19,7 @@ export class TenonEditor {
     return this.lifecycleLoader.instance;
   }
 
+  eventCenter: TenonEditorEventCenter;
   workbenchAdaptor: TenonEditorAdapter;
   config: BaseConfig = window.AppConfig;
   root: HTMLElement;
@@ -29,7 +27,7 @@ export class TenonEditor {
 
   constructor() {
     this.setupAdaptor();
-    this.setupContext();
+    this.setupInjection();
     this.initInstantiations();
     this.setupLifeCycle();
     window.editor = this;
@@ -39,8 +37,16 @@ export class TenonEditor {
     this.workbenchAdaptor = new TenonEditorAdapter(this);
   }
 
-  private async setupContext() {
-    this.context = (await this.workbenchAdaptor.workbenchDIService.get<TenonEditorContext>(IContext))!;
+  private async setupInjection() {
+    this.context =
+      (await this.workbenchAdaptor.workbenchDIService.get<TenonEditorContext>(
+        IContext
+      ))!;
+
+    this.eventCenter =
+      (await this.workbenchAdaptor.workbenchDIService.get<TenonEditorEventCenter>(
+        IEventCenter
+      ))!;
   }
 
   private setupPlugin() {
@@ -53,9 +59,7 @@ export class TenonEditor {
       TenonEditorLifeCycleStage.Init,
       async () => {
         this.logInfo();
-        this.lifecycle!.emitStageFinish(
-          TenonEditorLifeCycleStage.Init,
-        );
+        this.lifecycle!.emitStageFinish(TenonEditorLifeCycleStage.Init);
       }
     );
     this.lifecycle!.regisStageCallBack(
@@ -70,10 +74,10 @@ export class TenonEditor {
         this.initInstantiations();
         this.setupPlugin();
         this.lifecycle!.emitStageFinish(
-          TenonEditorLifeCycleStage.EditorAdapterReady,
+          TenonEditorLifeCycleStage.EditorAdapterReady
         );
       }
-    )
+    );
   }
 
   @awaitLoad(ITenonEditorLifeCycle)
@@ -90,8 +94,8 @@ export class TenonEditor {
 
   @awaitLoad(ITenonEditorLifeCycle)
   private launchWorkbench() {
-    window.addEventListener('load', () => {
-      const root = document.getElementById('workbench-root')!;
+    window.addEventListener("load", () => {
+      const root = document.getElementById("workbench-root")!;
       this.root = root;
       this.workbenchAdaptor.load(root);
       this.lifecycle!.emitStageFinish(
@@ -101,20 +105,20 @@ export class TenonEditor {
   }
 
   private logInfo() {
-    console.log('tenon editor init, editor: ', this);
+    console.log("tenon editor init, editor: ", this);
   }
 
-  public registerService = (
-    serviceName: any,
-    instance: any,
-  ) => {
+  public registerService = (serviceName: any, instance: any) => {
     this.workbenchAdaptor.workbenchDIService.services.set(serviceName, {
       name: serviceName,
-      loader: () => { },
+      loader: () => {},
       instance,
     });
-    this.workbenchAdaptor.workbenchDIService.instances.set(serviceName, instance);
-  }
+    this.workbenchAdaptor.workbenchDIService.instances.set(
+      serviceName,
+      instance
+    );
+  };
 
   @awaitLoad(ITenonEditorLifeCycle)
   public async run() {

@@ -1,26 +1,25 @@
-import {
-  BarService,
-  BarServiceCore,
-  Feature, Inject,
-} from "@tenon/workbench";
+import { BarService, BarServiceCore, Feature, Inject } from "@tenon/workbench";
 import { FullScreenType, IFullScreenFeature } from "./fullscreen.interface";
-import { IEditor, TenonEditor } from "@/core/editor";
+import { TenonEditor } from "@/core/editor";
 import { ExitFullScreenConfig, FullScreenConfig } from "./configs";
 import { FootBarName } from "@/configs/foot-bar-config";
-import { IContext, TenonEditorContext } from "@/core/context";
+import { TenonEditorContext } from "@/core/context";
 import { FullScreenNotification } from "./notification";
+import { FullScreen } from "./reactive";
+import { fromEvent, takeWhile } from "rxjs";
+import { IContext, IEditor } from "@/core/interface";
 
 @Feature({
   name: IFullScreenFeature,
 })
 export class FullScreenHandler implements IFullScreenFeature {
-  private fullScreen: boolean;
+  private fullScreen = FullScreen;
   private root: HTMLElement;
 
   constructor(
     @Inject(BarService) private barService: BarServiceCore,
     @Inject(IContext) private context: TenonEditorContext,
-    @Inject(IEditor) editor: TenonEditor,
+    @Inject(IEditor) editor: TenonEditor
   ) {
     this.root = editor.root;
     this.initEvent();
@@ -46,7 +45,6 @@ export class FullScreenHandler implements IFullScreenFeature {
     } else {
       await document.body.requestFullscreen();
     }
-    this.onFullScreenChange(this.isFullScreen);
     return this.isFullScreen;
   }
 
@@ -55,27 +53,22 @@ export class FullScreenHandler implements IFullScreenFeature {
   }
 
   private onFullScreenChange(fullscreen: boolean) {
-    let result;
-    if (fullscreen) {
-      result = ExitFullScreenConfig;
-    } else {
-      result = FullScreenConfig;
-    }
-    this.barService.updateFootBarConfig(
-      FootBarName.FullScreen,
-      result,
-    );
-    this.fullScreen = fullscreen;
+    this.fullScreen.value = fullscreen;
   }
 
   private initEvent() {
-    window.onresize = () => {
-      if (this.isFullScreen !== this.fullScreen) {
-        this.context.fire(new FullScreenNotification(
-          this.isFullScreen ? FullScreenType.FullScreen : FullScreenType.UnFullScreen,
-        ));
-      }
-    };
+    fromEvent(window, "resize").subscribe(() => {
+      if (this.isFullScreen === this.fullScreen.value) return;
+      console.log(this.isFullScreen, this.fullScreen.value);
+      console.log("fire FullScreenNotification");
+      this.context.fire(
+        new FullScreenNotification(
+          this.isFullScreen
+            ? FullScreenType.FullScreen
+            : FullScreenType.UnFullScreen
+        )
+      );
+    });
     this.context.on(FullScreenType.FullScreen, () => {
       this.onFullScreenChange(true);
     });

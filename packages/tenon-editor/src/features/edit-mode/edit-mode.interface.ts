@@ -1,17 +1,13 @@
-import { bindDynamicLoader, createDynamicFeatureTag, createSyncFeatureTag } from "@tenon/workbench";
+import { bindDynamicLoader, createDynamicFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
-import { ToolBarName } from "@/configs/tool-bar-config";
+import { ModeType } from "./notification";
+import { Ref } from "vue";
 
 export interface IEditModeFeature {
   // interface
-  mode: ModeType;
+  mode: Ref<ModeType>;
   switchMode(mode: ModeType): void;
 }
-
-export enum ModeType {
-  Preview = ToolBarName.PreviewMode,
-  Edit = ToolBarName.EditMode
-};
 
 export const IEditModeFeature = createDynamicFeatureTag(FeatureName.EditMode);
 bindDynamicLoader(IEditModeFeature, {

@@ -131,7 +131,7 @@ export const toolBarConfig: ToolBarConfig = {
             size: 16,
           }),
         },
-        popupText: '保存页面配置',
+        popupText: '导出页面配置',
       },
       {
         name: ToolBarName.LoadConfig,
@@ -142,7 +142,7 @@ export const toolBarConfig: ToolBarConfig = {
             size: 16,
           }),
         },
-        popupText: '加载页面配置',
+        popupText: '导入页面配置',
       },
     ],
     [
