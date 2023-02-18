@@ -30,7 +30,7 @@ export const ProvideService: MethodDecorator = function (target, propertyKey, de
   target[ProvideServiceTag] = target[ProvideServiceTag] || new Set();
   target[ProvideServiceTag].add(propertyKey);
   const oldValue = desc.value! as unknown as Function;
-  desc.value = function (this: any, ...args: any[]) {
+  desc.value = async function (this: any, ...args: any[]) {
     const applyArgs: any[] = [];
     const propertyDeps = target[ServiceDecoratorTag].get(propertyKey);
     let injectArgsCount = propertyDeps?.size || 0;
@@ -48,7 +48,7 @@ export const ProvideService: MethodDecorator = function (target, propertyKey, de
       }
       argIndex += 1;
     }
-    return oldValue.call(this, ...applyArgs);
+    return await oldValue.call(this, ...applyArgs);
   } as any;
 };
 

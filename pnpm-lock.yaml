@@ -190,6 +190,7 @@ importers:
       '@tenon/shared': workspace:*
       '@tenon/workbench': workspace:*
       cross-env: ^7.0.3
+      rxjs: ^7.8.0
       tdesign-vue-next: ^1.0.0
       unplugin-auto-import: ^0.12.1
       unplugin-vue-components: ^0.22.12
@@ -200,6 +201,7 @@ importers:
       '@tenon/shared': link:../shared
       '@tenon/workbench': link:../tenon-workbench
       cross-env: 7.0.3
+      rxjs: 7.8.0
       tdesign-vue-next: 1.0.0_vue@3.2.31
       unplugin-auto-import: 0.12.1
       unplugin-vue-components: 0.22.12_vue@3.2.31
@@ -3849,6 +3851,12 @@ packages:
 
   /rxjs/7.5.5:
     resolution: {integrity: sha512-sy+H0pQofO95VDmFLzyaw9xNJU4KTRSwQIGM6+iG3SypAtCiLDzpeG8sJrNCWn2Up9km+KhkvTdbkrdy+yzZdw==}
+    dependencies:
+      tslib: 2.3.1
+    dev: false
+
+  /rxjs/7.8.0:
+    resolution: {integrity: sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==}
     dependencies:
       tslib: 2.3.1
     dev: false

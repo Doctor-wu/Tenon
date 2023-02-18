@@ -1,30 +1,23 @@
-import {
-  Feature, Inject
-} from "@tenon/workbench";
-import { IEditModeFeature, ModeType } from "./edit-mode.interface";
-import { IContext, TenonEditorContext } from "@/core/context";
-import { ModeNotification } from "./notification";
+import { Feature, Inject } from "@tenon/workbench";
+import { IEditModeFeature } from "./edit-mode.interface";
+import { EditModeChange, ModeNotification, ModeType } from "./notification";
+import { Ref } from "vue";
+import { EditorMode } from "./reactive";
+import { IContext, TenonEditorContext } from "@/core";
 
 @Feature({
   name: IEditModeFeature,
 })
 export class EditModeHandler implements IEditModeFeature {
-  public mode: ModeType = ModeType.Edit;
-  constructor(
-    @Inject(IContext) private context: TenonEditorContext,
-  ) {
-    this.context.on(
-      ModeType.Edit,
-      (noti: ModeNotification) => console.log(noti),
-    );
-    this.context.on(
-      ModeType.Preview,
-      (noti: ModeNotification) => console.log(noti),
+  public mode: Ref<ModeType> = EditorMode;
+  constructor(@Inject(IContext) private context: TenonEditorContext) {
+    this.context.on(EditModeChange, (noti: ModeNotification) =>
+      console.log(noti)
     );
   }
 
   switchMode(mode: ModeType): void {
-    this.mode = mode;
-    this.context.fire(new ModeNotification(mode));
+    this.context.fire(new ModeNotification(mode, this.mode.value));
+    this.mode.value = mode;
   }
 }

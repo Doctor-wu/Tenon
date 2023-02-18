@@ -1,30 +1,54 @@
 import { ToolBarName } from "@/configs/tool-bar-config";
 import {
+  DrawerNotification,
+  IContext,
+  LeftDrawerNotificationType,
+  TenonEditorContext,
+} from "@/core";
+import {
   ActionController,
   ActionInfo,
   ActionType,
+  BarService,
+  BarServiceCore,
   Controller,
   DrawerServiceCore,
+  EventEmitterCore,
+  EventEmitterService,
+  IToolBarSwitchConfig,
+  Inject,
   InjectActionInfoService,
   InjectDrawerService,
+  InternalUIService,
+  WorkbenchEvents,
 } from "@tenon/workbench";
 import { h } from "vue";
 
 @Controller({
-  name: Symbol('components-tree-controller')
+  name: Symbol("components-tree-controller"),
 })
 export class ComponentsTreeController {
+  constructor(
+    @Inject(EventEmitterService) private eventEmitter: EventEmitterCore,
+    @Inject(BarService) private barService: BarServiceCore,
+    @Inject(IContext) private context: TenonEditorContext
+  ) {
+    console.log(this.context);
+    this.listenDrawer();
+  }
 
   @ActionController(ToolBarName.ComponentTreeSwitch, ActionType.onActive)
   @ActionController(ToolBarName.ComponentTreeSwitch, ActionType.onDeActive)
   handleMaterialSwitch(
     @InjectActionInfoService() actionInfo: ActionInfo,
-    @InjectDrawerService() drawerService: DrawerServiceCore,
+    @InjectDrawerService() drawerService: DrawerServiceCore
   ) {
     console.log(actionInfo);
     switch (actionInfo.action) {
       case ActionType.onActive:
-        drawerService.left.attachLayer(actionInfo.name, () => h('span', 'components-tree'));
+        drawerService.left.attachLayer(actionInfo.name, () =>
+          h("span", "components-tree")
+        );
         break;
       case ActionType.onDeActive:
         drawerService.left.detachLayer(actionInfo.name);
@@ -32,5 +56,25 @@ export class ComponentsTreeController {
       default:
         return;
     }
+  }
+
+  private listenDrawer() {
+    this.context.on(
+      LeftDrawerNotificationType.ClOSE_FROM_INTERNAL,
+      (noti: DrawerNotification<"left">) => {
+        noti.type;
+        this.barService.emitAction(
+          ToolBarName.ComponentTreeSwitch,
+          ActionType.onDeActive,
+          InternalUIService.Drawer
+        );
+        this.barService!.updateToolBarConfig<IToolBarSwitchConfig>(
+          ToolBarName.ComponentTreeSwitch,
+          {
+            active: false,
+          }
+        );
+      }
+    );
   }
 }
