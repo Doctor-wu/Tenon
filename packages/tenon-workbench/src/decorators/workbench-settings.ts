@@ -4,6 +4,6 @@ import { newable } from '@tenon/shared';
 export const WorkbenchSettings = <T extends newable<any, WorkbenchType>>(config: IWorkbenchConfig) => {
 
   return (Target: T) => {
-    return inheritFromWorkbench(Target, config);
+    return inheritFromWorkbench(Target, config) as unknown as WorkbenchType & T;
   }
 }

@@ -4,4 +4,6 @@ export const FeatureName = {
   EditMode: "edit-mode",
   Material: "material",
   ComponentsTree: "components-tree",
+  AreaIndicator: "area-indicator",
+  SurfaceOperate: "surface-operate",
 };

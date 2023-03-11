@@ -1,3 +1,4 @@
+import { AreaIndicatorHandler } from './area-indicator';
 import { ComponentsTreeController, IComponentsTreeFeature } from './components-tree';
 import { EditModeController, IEditModeFeature } from './edit-mode';
 import { FullScreenController, IFullScreenFeature } from './fullscreen';
@@ -6,6 +7,7 @@ import { TitleController, TitleHandler } from "./title";
 
 export const syncFeatures = [
   TitleHandler,
+  AreaIndicatorHandler,
 ];
 
 export const dynamicTags = [

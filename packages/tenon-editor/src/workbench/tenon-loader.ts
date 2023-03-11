@@ -5,6 +5,8 @@ import { headerBarConfig } from "@/configs/header-bar-config";
 import { toolBarConfig } from "@/configs/tool-bar-config";
 import { controllers, dynamicTags, syncFeatures } from "@/features";
 import { TenonEditor } from "@/core/editor";
+import { App, createApp, h } from "vue";
+import EditorView from "./editor-view.vue";
 
 @WorkbenchSettings({
   dynamicTags: dynamicTags,
@@ -15,6 +17,8 @@ import { TenonEditor } from "@/core/editor";
   toolBarConfig: toolBarConfig,
 })
 export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAdapter {
+  public editorRoot: HTMLElement;
+  public editorVM: App<Element>;
 
   constructor(
     public editor: TenonEditor,
@@ -23,6 +27,11 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
   }
 
   attachEditor(dom: HTMLElement): void {
-    dom.innerHTML = 'editor';
+    const editorVM = createApp(EditorView, {
+      editor: this.editor,
+    });
+    editorVM.mount(dom);
+    this.editorVM = editorVM;
+    this.editorRoot = dom;
   }
 }
