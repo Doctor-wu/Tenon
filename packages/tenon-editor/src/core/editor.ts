@@ -84,12 +84,11 @@ export class TenonEditor {
   private async initInstantiations() {
     this.registerService(IEditor, this);
     this.registerService(IConfig, this.config);
-    // this.workbenchAdaptor.workbenchDIService.regisService(IContext, )
-    // [...this.adaptor.workbenchDIService.instances.values()].forEach(instance => {
-    //   if ('$onEditorOpen' in instance) {
-    //     instance['$onEditorOpen'](this);
-    //   }
-    // });
+    [...this.workbenchAdaptor.workbenchDIService.instances.values()].forEach(instance => {
+      if ('$onEditorOpen' in instance) {
+        instance['$onEditorOpen'](this);
+      }
+    });
   }
 
   @awaitLoad(ITenonEditorLifeCycle)
@@ -111,7 +110,7 @@ export class TenonEditor {
   public registerService = (serviceName: any, instance: any) => {
     this.workbenchAdaptor.workbenchDIService.services.set(serviceName, {
       name: serviceName,
-      loader: () => {},
+      loader: () => { },
       instance,
     });
     this.workbenchAdaptor.workbenchDIService.instances.set(
@@ -123,5 +122,9 @@ export class TenonEditor {
   @awaitLoad(ITenonEditorLifeCycle)
   public async run() {
     this.lifecycle!.run();
+  }
+
+  get editorRoot() {
+    return this.workbenchAdaptor?.editorRoot;
   }
 }
