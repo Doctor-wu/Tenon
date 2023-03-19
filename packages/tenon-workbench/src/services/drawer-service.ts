@@ -5,6 +5,11 @@ import { Inject, Service } from "../decorators";
 import { EventEmitterCore, EventEmitterService } from "./event-emitter";
 import { createServiceTag } from "./tag";
 
+export enum DrawerDisplayType {
+  Float = 'float',
+  Flow = 'flow',
+}
+
 class DrawerServiceBase {
   bridge = new Bridge<IDrawer>();
 
@@ -21,9 +26,16 @@ class DrawerServiceBase {
 
   eventEmitter: EventEmitterCore;
 
-  constructor(alignment: 'left' | 'right', eventEmitter: EventEmitterCore) {
+  displayType: DrawerDisplayType;
+
+  constructor(
+    alignment: 'left' | 'right',
+    eventEmitter: EventEmitterCore,
+    displayType: DrawerDisplayType = DrawerDisplayType.Float,
+  ) {
     this.alignment = alignment;
     this.eventEmitter = eventEmitter;
+    this.displayType = displayType;
     this.bridge.register('updateLayers', (layers) => this.layers = layers);
   }
 
@@ -76,6 +88,12 @@ class DrawerServiceBase {
   setHeader(header: IDrawerHeader) {
     Object.assign(this.header, header);
   }
+
+  setDisplayType(type: DrawerDisplayType) {
+    this.displayType = type;
+    this.bridge.run('updateDisplayType', type);
+  }
+
 };
 
 export const DrawerService = createServiceTag('DrawerService');
@@ -85,6 +103,7 @@ export interface IDrawer {
   clearLayer: () => void;
   detachLayer: (name?: string) => void;
   updateLayers: (layers: string[]) => void;
+  updateDisplayType: (type: DrawerDisplayType) => void;
 };
 
 export interface IDrawerHeader {
@@ -97,7 +116,7 @@ export interface IDrawerHeader {
 })
 @Singleton
 export class DrawerServiceCore {
-  left = new DrawerServiceBase('left', this.eventEmitter);
+  left = new DrawerServiceBase('left', this.eventEmitter, DrawerDisplayType.Flow);
   right = new DrawerServiceBase('right', this.eventEmitter);
 
   constructor(

@@ -95,7 +95,6 @@ export class TenonEditor {
   private launchWorkbench() {
     window.addEventListener("load", () => {
       const root = document.getElementById("workbench-root")!;
-      this.root = root;
       this.workbenchAdaptor.load(root);
       this.lifecycle!.emitStageFinish(
         TenonEditorLifeCycleStage.LaunchWorkbench
@@ -122,9 +121,5 @@ export class TenonEditor {
   @awaitLoad(ITenonEditorLifeCycle)
   public async run() {
     this.lifecycle!.run();
-  }
-
-  get editorRoot() {
-    return this.workbenchAdaptor?.editorRoot;
   }
 }

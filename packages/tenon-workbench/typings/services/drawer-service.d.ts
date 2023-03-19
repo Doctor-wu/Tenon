@@ -1,6 +1,10 @@
 import { Bridge } from "@tenon/shared";
 import { VNode } from "vue";
 import { EventEmitterCore } from "./event-emitter";
+export declare enum DrawerDisplayType {
+    Float = "float",
+    Flow = "flow"
+}
 declare class DrawerServiceBase {
     bridge: Bridge<IDrawer>;
     layers: string[];
@@ -11,7 +15,8 @@ declare class DrawerServiceBase {
     };
     alignment: 'left' | 'right';
     eventEmitter: EventEmitterCore;
-    constructor(alignment: 'left' | 'right', eventEmitter: EventEmitterCore);
+    displayType: DrawerDisplayType;
+    constructor(alignment: 'left' | 'right', eventEmitter: EventEmitterCore, displayType?: DrawerDisplayType);
     private detectEmpty;
     show(fromInternal?: boolean): void;
     close(fromInternal?: boolean): void;
@@ -20,6 +25,7 @@ declare class DrawerServiceBase {
     detachLayer(name?: string): void;
     clearLayer(): void;
     setHeader(header: IDrawerHeader): void;
+    setDisplayType(type: DrawerDisplayType): void;
 }
 export declare const DrawerService: symbol;
 export interface IDrawer {
@@ -27,6 +33,7 @@ export interface IDrawer {
     clearLayer: () => void;
     detachLayer: (name?: string) => void;
     updateLayers: (layers: string[]) => void;
+    updateDisplayType: (type: DrawerDisplayType) => void;
 }
 export interface IDrawerHeader {
     showHeader?: boolean;

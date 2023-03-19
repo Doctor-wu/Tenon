@@ -161,7 +161,7 @@ const getPopUpText = (config: any) => {
   }
 
   &.active {
-    background-color: $tenon-hover-color;
+    background-color: $tenon-active-color;
     color: $tenon-primary-color;
   }
 }

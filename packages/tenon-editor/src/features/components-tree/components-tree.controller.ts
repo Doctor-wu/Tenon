@@ -61,8 +61,8 @@ export class ComponentsTreeController {
   private listenDrawer() {
     this.context.on(
       LeftDrawerNotificationType.ClOSE_FROM_INTERNAL,
-      (noti: DrawerNotification<"left">) => {
-        noti.type;
+      () => {
+        if (!this.barService.getSwitchActive(ToolBarName.ComponentTreeSwitch)) return;
         this.barService.emitAction(
           ToolBarName.ComponentTreeSwitch,
           ActionType.onDeActive,

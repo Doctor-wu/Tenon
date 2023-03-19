@@ -17,7 +17,7 @@ import EditorView from "./editor-view.vue";
   toolBarConfig: toolBarConfig,
 })
 export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAdapter {
-  public editorRoot: HTMLElement;
+  public root: HTMLElement;
   public editorVM: App<Element>;
 
   constructor(
@@ -26,12 +26,17 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
     super();
   }
 
+  load(el) {
+    super.load(el);
+    this.root = el;
+  }
+
   attachEditor(dom: HTMLElement): void {
     const editorVM = createApp(EditorView, {
       editor: this.editor,
     });
     editorVM.mount(dom);
     this.editorVM = editorVM;
-    this.editorRoot = dom;
+    this.editor.root = dom;
   }
 }
