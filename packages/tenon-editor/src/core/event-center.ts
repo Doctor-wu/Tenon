@@ -28,19 +28,14 @@ export class TenonEditorEventCenter {
     this.eventEmitter.on(
       WorkbenchEvents.drawerChanged,
       ({ alignment, state, fromInternal }) => {
-        if (alignment === "left" && fromInternal && !state) {
+        if (fromInternal && !state) {
+          const type = alignment === "left"
+            ? LeftDrawerNotificationType.ClOSE_FROM_INTERNAL
+            : RightDrawerNotificationType.ClOSE_FROM_INTERNAL;
           this.context.fire(
             new DrawerNotification(
-              LeftDrawerNotificationType.ClOSE_FROM_INTERNAL,
-              "left"
-            )
-          );
-        }
-        if (alignment === "right" && fromInternal && !state) {
-          this.context.fire(
-            new DrawerNotification(
-              RightDrawerNotificationType.ClOSE_FROM_INTERNAL,
-              "right"
+              type,
+              alignment,
             )
           );
         }

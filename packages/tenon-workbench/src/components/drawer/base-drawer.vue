@@ -44,7 +44,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { computed, inject, onMounted, ref, VNode, watch } from "vue";
+import { computed, inject, onMounted, ref, VNode, watchEffect } from "vue";
 import { WorkbenchType } from "../../core";
 import { DrawerDisplayType, DrawerService, DrawerServiceCore } from "../../services";
 
@@ -106,7 +106,8 @@ interface DrawerLayer {
 }
 
 const layers = ref<DrawerLayer[]>([]);
-watch(layers, () => {
+
+watchEffect(() => {
   drawerService[props.alignment].bridge.run(
     "updateLayers",
     layers.value.map((layer) => layer.name)

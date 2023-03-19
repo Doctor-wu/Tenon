@@ -36,7 +36,9 @@ class DrawerServiceBase {
     this.alignment = alignment;
     this.eventEmitter = eventEmitter;
     this.displayType = displayType;
-    this.bridge.register('updateLayers', (layers) => this.layers = layers);
+    this.bridge.register('updateLayers', (layers) => {
+      this.layers = layers;
+    });
   }
 
 
