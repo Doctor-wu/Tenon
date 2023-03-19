@@ -69,6 +69,7 @@ export class MaterialController {
 
   private listenDrawer() {
     this.context.on(LeftDrawerNotificationType.ClOSE_FROM_INTERNAL, () => {
+      if (!this.barService.getSwitchActive(ToolBarName.MaterialSwitch)) return;
       this.barService.emitAction(
         ToolBarName.MaterialSwitch,
         ActionType.onDeActive,

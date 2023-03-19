@@ -4,7 +4,13 @@ import { FeatureName } from "../feature-name";
 export interface IAreaIndicatorFeature {
   // interface
   markElement: (element: HTMLElement, type: AreaMarkType) => void;
-  initHoverEvent: (element: HTMLElement) => void;
+  useHoverMark: (element: HTMLElement) => Promise<AbortController>;
+  getElementRectRelativeWithSurface: (element: HTMLElement) => Promise<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  }>;
 }
 
 export enum AreaMarkType {

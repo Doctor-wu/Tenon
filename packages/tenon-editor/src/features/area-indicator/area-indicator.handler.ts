@@ -15,6 +15,10 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
   @Loader(ISurfaceOperateFeature)
   private surfaceOperate: IDynamicFeature<ISurfaceOperateFeature>;
 
+  get [ISurfaceOperateFeature]() {
+    return this.surfaceOperate.instance;
+  }
+
   constructor(
     @Inject(IContext) context: TenonEditorContext
   ) { }
@@ -24,17 +28,17 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
   }
 
   private initEvent(editor: TenonEditor) {
-    const editorDiv = document.getElementById('tenon-editor')!;
-    this.initHoverEvent(editorDiv);
   }
 
-  async initHoverEvent(element: HTMLElement) {
+  async useHoverMark(element: HTMLElement) {
+    const abortController = new AbortController();
     element.addEventListener('mouseover', async () => {
       const dispose = await this.markElement(element, AreaMarkType.Hover);
       element.addEventListener('mouseleave', () => {
         dispose();
       }, { once: true });
-    });
+    }, { signal: abortController.signal });
+    return abortController;
   }
 
   @awaitLoad(ISurfaceOperateFeature)
@@ -42,7 +46,7 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     const { left, top, width, height } = await this.getElementRectRelativeWithSurface(element);
     const {
       dom,
-    } = this.surfaceOperate.instance!.drawRect(
+    } = this[ISurfaceOperateFeature]!.drawRect(
       left - MARK_PADDING,
       top - MARK_PADDING,
       width + 2 * MARK_PADDING,
@@ -52,7 +56,7 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     const ob = new MutationObserver(async () => {
       console.log('style changed');
       const { left, top, width, height } = await this.getElementRectRelativeWithSurface(element);
-      this.surfaceOperate.instance!.setDom(
+      this[ISurfaceOperateFeature]!.setDom(
         dom,
         left - MARK_PADDING,
         top - MARK_PADDING,
@@ -65,12 +69,12 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     });
     return () => {
       ob.disconnect();
-      this.surfaceOperate.instance!.removeDom(dom.id);
+      this[ISurfaceOperateFeature]!.removeDom(dom.id);
     }
   }
 
   @awaitLoad(ISurfaceOperateFeature)
-  private async getElementRectRelativeWithSurface(element: HTMLElement) {
+  public async getElementRectRelativeWithSurface(element: HTMLElement) {
     const surfaceDom = this.surfaceOperate.instance!.getSurfaceDom();
     let accY = element.offsetTop;
     let accX = element.offsetLeft;

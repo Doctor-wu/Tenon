@@ -1,11 +1,11 @@
 import { BaseNotification } from "../notification";
 
 export enum LeftDrawerNotificationType {
-  ClOSE_FROM_INTERNAL = "close-from-internal",
+  ClOSE_FROM_INTERNAL = "close-from-internal-left",
 }
 
 export enum RightDrawerNotificationType {
-  ClOSE_FROM_INTERNAL = "close-from-internal",
+  ClOSE_FROM_INTERNAL = "close-from-internal-right",
 }
 
 export class DrawerNotification<
