@@ -47,21 +47,8 @@ export class MaterialController {
   @awaitLoad(IMaterialFeature)
   handleMaterialSwitch(
     @InjectActionInfoService() actionInfo: ActionInfo,
-    @InjectDrawerService() drawerService: DrawerServiceCore
   ) {
     console.log(actionInfo);
-    switch (actionInfo.action) {
-      case ActionType.onActive:
-        drawerService.left.attachLayer(actionInfo.name, () =>
-          h("span", "material core")
-        );
-        break;
-      case ActionType.onDeActive:
-        drawerService.left.detachLayer(actionInfo.name);
-        break;
-      default:
-        return;
-    }
     this.materialFeature!.switchPanel(
       actionInfo.action === ActionType.onActive
     );

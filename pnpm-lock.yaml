@@ -187,6 +187,7 @@ importers:
 
   packages/tenon-editor:
     specifiers:
+      '@tenon/materials': workspace:*
       '@tenon/shared': workspace:*
       '@tenon/workbench': workspace:*
       cross-env: ^7.0.3
@@ -198,6 +199,7 @@ importers:
       vue: ^3.2.31
       vue-material-design-icons: ^5.1.2
     dependencies:
+      '@tenon/materials': link:../tenon-materials
       '@tenon/shared': link:../shared
       '@tenon/workbench': link:../tenon-workbench
       cross-env: 7.0.3

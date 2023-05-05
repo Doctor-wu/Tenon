@@ -1,5 +1,5 @@
 import {
-  Feature, IDynamicFeature, Inject, Loader, SurfaceService, SurfaceServiceCore, awaitLoad
+  Feature, IDynamicFeature, Inject, Loader, awaitLoad
 } from "@tenon/workbench";
 import { AreaMarkStyleMap, AreaMarkType, IAreaIndicatorFeature } from "./area-indicator.interface";
 import { ISurfaceOperateFeature } from "../surface-operate";
@@ -15,8 +15,8 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
   @Loader(ISurfaceOperateFeature)
   private surfaceOperate: IDynamicFeature<ISurfaceOperateFeature>;
 
-  get [ISurfaceOperateFeature]() {
-    return this.surfaceOperate.instance;
+  private get ISurfaceOperateFeature(): ISurfaceOperateFeature {
+    return this.surfaceOperate.instance!;
   }
 
   constructor(
@@ -46,17 +46,18 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     const { left, top, width, height } = await this.getElementRectRelativeWithSurface(element);
     const {
       dom,
-    } = this[ISurfaceOperateFeature]!.drawRect(
+    } = this.ISurfaceOperateFeature.drawRect(
       left - MARK_PADDING,
       top - MARK_PADDING,
       width + 2 * MARK_PADDING,
       height + 2 * MARK_PADDING,
       AreaMarkStyleMap[type],
     );
+    dom.setAttribute('data-indicator-index', '0');
     const ob = new MutationObserver(async () => {
-      console.log('style changed');
+      console.log('attribute changed');
       const { left, top, width, height } = await this.getElementRectRelativeWithSurface(element);
-      this[ISurfaceOperateFeature]!.setDom(
+      this.ISurfaceOperateFeature.setDom(
         dom,
         left - MARK_PADDING,
         top - MARK_PADDING,
@@ -65,11 +66,12 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
       );
     });
     ob.observe(element, {
-      attributeFilter: ['style'],
+      attributes: true,
+      attributeFilter: ['style', 'data-indicator-index']
     });
     return () => {
       ob.disconnect();
-      this[ISurfaceOperateFeature]!.removeDom(dom.id);
+      this.ISurfaceOperateFeature.removeDom(dom.id);
     }
   }
 
@@ -92,5 +94,13 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
       width,
       height,
     };
+  }
+
+  public update() {
+    const doms = this.ISurfaceOperateFeature.getDoms();
+    doms.forEach(dom => {
+      const index = Number(dom.getAttribute('data-indicator-index')) || 0;
+      dom.setAttribute('data-indicator-index', String(index + 1));
+    });
   }
 }

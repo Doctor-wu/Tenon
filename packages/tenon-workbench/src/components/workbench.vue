@@ -12,7 +12,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { onMounted, provide, ref } from "vue";
+import { computed, onMounted, provide, ref } from "vue";
 import HeaderBar from "./header-bar/header-bar.vue";
 import ToolBar from "./tool-bar/tool-bar.vue";
 import FootBar from "./foot-bar/foot-bar.vue";
@@ -29,13 +29,12 @@ const { workbenchInstance } = defineProps<{
   footBarConfig: FootBarConfig;
 }>();
 
-const { drawerService } = workbenchInstance;
-
 provide("workbench", workbenchInstance);
 
 onMounted(() => {
   workbenchInstance.eventEmitter.emit(WorkbenchEvents.EditorRootMount, editorRoot.value);
 });
+
 </script>
 <style lang="scss" scoped>
 #workbench-root {

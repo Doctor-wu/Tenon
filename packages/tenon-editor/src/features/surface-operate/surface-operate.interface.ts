@@ -18,6 +18,7 @@ export interface ISurfaceOperateFeature {
   removeDom(id: string): void;
   clearDom(): void;
   getSurfaceDom(): HTMLElement;
+  getDoms(): Map<string, HTMLElement>;
 }
 
 export const ISurfaceOperateFeature = createDynamicFeatureTag(FeatureName.SurfaceOperate);

@@ -36,6 +36,7 @@ onMounted(async () => {
   const areaIndicator = (await di.get<IAreaIndicatorFeature>(IAreaIndicatorFeature))!;
   const editMode = (await di.get<IEditModeFeature>(IEditModeFeature))!;
   const context = (await di.get<TenonEditorContext>(IContext))!;
+  areaIndicator.markElement(editorView.value!, AreaMarkType.Active);
   let signal: AbortController;
   if (editMode?.mode.value === ModeType.Edit) {
     signal = await areaIndicator.useHoverMark(editorView.value!);
