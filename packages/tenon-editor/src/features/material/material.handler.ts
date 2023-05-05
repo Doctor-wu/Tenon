@@ -24,6 +24,8 @@ export class MaterialHandler implements IMaterialFeature {
     return this.areaIndicator.instance!;
   }
 
+  private layerName = '物料面板';
+
   constructor(
     @Inject(DrawerService) private drawerService: DrawerServiceCore,
   ) {
@@ -39,21 +41,17 @@ export class MaterialHandler implements IMaterialFeature {
     }
   }
 
-  @awaitLoad(IAreaIndicatorFeature)
   private openMaterialPanel() {
     console.log('open material panel');
-    this.drawerService.left.attachLayer('物料面板', () => {
+    this.drawerService.left.attachLayer(this.layerName, () => {
       return h(materialListVue, {
         materials: this.computedComponents,
       });
     });
-    this[IAreaIndicatorFeature].update();
   }
 
-  @awaitLoad(IAreaIndicatorFeature)
   private closeMaterialPanel() {
     console.log('close material panel');
-    this[IAreaIndicatorFeature].update();
-    this.drawerService.left.detachLayer();
+    this.drawerService.left.detachLayer(this.layerName);
   }
 }

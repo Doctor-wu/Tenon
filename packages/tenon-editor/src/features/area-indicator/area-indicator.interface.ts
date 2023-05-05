@@ -12,6 +12,8 @@ export interface IAreaIndicatorFeature {
     width: number;
     height: number;
   }>;
+  changeVisible: (visible: boolean) => void;
+  update: () => void;
 }
 
 export enum AreaMarkType {

@@ -28,8 +28,9 @@
       </TButton>
     </section>
     <template v-for="item in layers">
-      <Transition :class="computedClassName">
+      <Transition>
         <section
+          :class="computedClassName"
           class="drawer-layer"
           :key="item.name"
           :style="{

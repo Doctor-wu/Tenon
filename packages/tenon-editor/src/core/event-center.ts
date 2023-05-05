@@ -1,4 +1,6 @@
 import {
+  DrawerService,
+  DrawerServiceCore,
   EventEmitterCore,
   EventEmitterService,
   Inject,
@@ -7,6 +9,7 @@ import {
 } from "@tenon/workbench";
 import { IContext, IEventCenter, TenonEditorContext } from ".";
 import {
+  DrawerDisplayTypeNotification,
   DrawerNotification,
   LeftDrawerNotificationType,
   RightDrawerNotificationType,
@@ -18,10 +21,12 @@ import {
 export class TenonEditorEventCenter {
   constructor(
     @Inject(EventEmitterService) private eventEmitter: EventEmitterCore,
-    @Inject(IContext) private context: TenonEditorContext
+    @Inject(IContext) private context: TenonEditorContext,
+    @Inject(DrawerService) private drawerService: DrawerServiceCore,
   ) {
     console.log("event manager", eventEmitter, context);
     this.wrapDrawerEvent();
+    this.listenDrawerPin();
   }
 
   wrapDrawerEvent() {
@@ -39,7 +44,44 @@ export class TenonEditorEventCenter {
             )
           );
         }
+        if (!state) {
+          const type = alignment === "left"
+            ? LeftDrawerNotificationType.CLOSE_LEFT_DRAWER
+            : RightDrawerNotificationType.CLOSE_RIGHT_DRAWER;
+          this.context.fire(
+            new DrawerNotification(
+              type,
+              alignment,
+            )
+          );
+        } else {
+          const type = alignment === "left"
+            ? LeftDrawerNotificationType.OPEN_LEFT_DRAWER
+            : RightDrawerNotificationType.OPEN_RIGHT_DRAWER;
+          this.context.fire(
+            new DrawerNotification(
+              type,
+              alignment,
+            )
+          );
+        }
       }
     );
+  }
+
+  listenDrawerPin() {
+    (['left', 'right'] as const).forEach((alignment) => {
+      this.drawerService[alignment].bridge.register(
+        'updateDisplayType',
+        (type) => {
+          this.context.fire(
+            new DrawerDisplayTypeNotification(
+              type,
+              alignment,
+            )
+          );
+        }
+      );
+    });
   }
 }

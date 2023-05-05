@@ -45,7 +45,7 @@ onMounted(async () => {
     if (noti.mode === ModeType.Edit) {
       signal = await areaIndicator?.useHoverMark(editorView.value!);
     } else {
-      signal.abort();
+      signal?.abort();
     }
   });
 });

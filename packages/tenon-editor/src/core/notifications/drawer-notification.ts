@@ -1,25 +1,46 @@
+import { DrawerDisplayType } from "@tenon/workbench/typings";
 import { BaseNotification } from "../notification";
 
 export enum LeftDrawerNotificationType {
   ClOSE_FROM_INTERNAL = "close-from-internal-left",
+  CLOSE_LEFT_DRAWER = "close-left-drawer",
+  OPEN_LEFT_DRAWER = "open-left-drawer",
+  DRAWER_DISPLAY_TYPE_CHANGE = "drawer-display-type-change-left",
 }
 
 export enum RightDrawerNotificationType {
   ClOSE_FROM_INTERNAL = "close-from-internal-right",
+  CLOSE_RIGHT_DRAWER = "close-right-drawer",
+  OPEN_RIGHT_DRAWER = "open-right-drawer",
+  DRAWER_DISPLAY_TYPE_CHANGE = "drawer-display-type-change-right",
 }
 
 export class DrawerNotification<
   Align extends "left" | "right" = "left",
   Type extends Align extends "left"
-    ? LeftDrawerNotificationType
-    : RightDrawerNotificationType = Align extends "left"
-    ? LeftDrawerNotificationType
-    : RightDrawerNotificationType
+  ? LeftDrawerNotificationType
+  : RightDrawerNotificationType = Align extends "left"
+  ? LeftDrawerNotificationType
+  : RightDrawerNotificationType
 > extends BaseNotification {
   public alignment: Align;
   public type: Type;
   constructor(type: Type, alignment: Align) {
     super(type);
     this.alignment = alignment;
+  }
+}
+
+export class DrawerDisplayTypeNotification extends BaseNotification {
+  public alignment: "left" | "right";
+  public type: DrawerDisplayType;
+  constructor(type: DrawerDisplayType, alignment: "left" | "right") {
+    super(
+      alignment === "left"
+        ? LeftDrawerNotificationType.DRAWER_DISPLAY_TYPE_CHANGE
+        : RightDrawerNotificationType.DRAWER_DISPLAY_TYPE_CHANGE
+    );
+    this.alignment = alignment;
+    this.type = type;
   }
 }
