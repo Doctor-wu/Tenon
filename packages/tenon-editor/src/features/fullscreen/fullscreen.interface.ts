@@ -9,7 +9,9 @@ export interface IFullScreenFeature {
 }
 
 export enum FullScreenType {
+  /** 切换为全屏 */
   FullScreen = 'full-screen',
+  /** 切换为非全屏 */
   UnFullScreen = 'un-full-screen',
 };
 

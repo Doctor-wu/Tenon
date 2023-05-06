@@ -1,5 +1,5 @@
 import { Bridge, Singleton } from "@tenon/shared";
-import { reactive, ref, VNode } from "vue";
+import { reactive, Ref, ref, VNode } from "vue";
 import { WorkbenchEvents } from "../core";
 import { Inject, Service } from "../decorators";
 import { EventEmitterCore, EventEmitterService } from "./event-emitter";

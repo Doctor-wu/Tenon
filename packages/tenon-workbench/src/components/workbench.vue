@@ -12,7 +12,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { onMounted, provide, ref } from "vue";
+import { computed, onMounted, provide, ref } from "vue";
 import HeaderBar from "./header-bar/header-bar.vue";
 import ToolBar from "./tool-bar/tool-bar.vue";
 import FootBar from "./foot-bar/foot-bar.vue";
@@ -28,8 +28,6 @@ const { workbenchInstance } = defineProps<{
   toolBarConfig: ToolBarConfig;
   footBarConfig: FootBarConfig;
 }>();
-
-const { drawerService } = workbenchInstance;
 
 provide("workbench", workbenchInstance);
 

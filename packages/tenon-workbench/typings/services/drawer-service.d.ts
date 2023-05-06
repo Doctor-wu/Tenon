@@ -1,5 +1,5 @@
 import { Bridge } from "@tenon/shared";
-import { VNode } from "vue";
+import { Ref, VNode } from "vue";
 import { EventEmitterCore } from "./event-emitter";
 export declare enum DrawerDisplayType {
     Float = "float",
@@ -8,7 +8,7 @@ export declare enum DrawerDisplayType {
 declare class DrawerServiceBase {
     bridge: Bridge<IDrawer>;
     layers: string[];
-    visible: import("vue").Ref<boolean>;
+    visible: Ref<boolean>;
     header: {
         showHeader?: boolean | undefined;
         showClose?: boolean | undefined;

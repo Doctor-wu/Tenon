@@ -14,6 +14,7 @@
   "dependencies": {
     "@tenon/shared": "workspace:*",
     "@tenon/workbench": "workspace:*",
+    "@tenon/materials": "workspace:*",
     "cross-env": "^7.0.3",
     "rxjs": "^7.8.0",
     "tdesign-vue-next": "^1.0.0",

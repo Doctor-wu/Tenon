@@ -1,5 +1,8 @@
 import {
-  Feature, Inject, SurfaceService, SurfaceServiceCore
+  DrawerService,
+  DrawerServiceCore,
+  Feature, Inject, SurfaceService,
+  SurfaceServiceCore, IDrawer,
 } from "@tenon/workbench";
 import { ISurfaceOperateFeature } from "./surface-operate.interface";
 
@@ -73,5 +76,9 @@ export class SurfaceOperateHandler implements ISurfaceOperateFeature {
 
   public getSurfaceDom() {
     return this.surfaceDom;
+  }
+
+  public getDoms() {
+    return this.doms;
   }
 }

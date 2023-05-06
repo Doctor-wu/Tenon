@@ -1,5 +1,6 @@
 import { createSyncFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
+import { ISurfaceOperateFeature } from "../surface-operate";
 
 export interface IAreaIndicatorFeature {
   // interface
@@ -11,6 +12,8 @@ export interface IAreaIndicatorFeature {
     width: number;
     height: number;
   }>;
+  changeVisible: (visible: boolean) => void;
+  update: () => void;
 }
 
 export enum AreaMarkType {

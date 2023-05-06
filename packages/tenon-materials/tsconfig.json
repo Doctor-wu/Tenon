@@ -14,9 +14,10 @@
     },
     "noEmit": false
   },
-  "files": [
-    "./components-dist/web.json"
+  "files": ["./components-dist/web.json"],
+  "include": [
+    "src/**/*",
+    "../tenon-internal-components/shim.d copy.ts"
   ],
-  "include": ["src/**/*", "../tenon-internal-components/shim.d copy.ts"],
   "exclude": ["./dist", "./typings", "scripts/dev.ts"]
 }

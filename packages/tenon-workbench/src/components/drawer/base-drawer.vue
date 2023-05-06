@@ -28,13 +28,15 @@
       </TButton>
     </section>
     <template v-for="item in layers">
-      <Transition :class="computedClassName">
+      <Transition>
         <section
+          :class="computedClassName"
           class="drawer-layer"
           :key="item.name"
           :style="{
             zIndex: item.zIndex,
-            marginTop: drawerService[alignment].header.showHeader ? '30px' : '0',
+            paddingTop: drawerService[alignment].header.showHeader ? '30px' : '0',
+            boxSizing: 'border-box',
           }"
         >
           <component :is="item.renderer"></component>
