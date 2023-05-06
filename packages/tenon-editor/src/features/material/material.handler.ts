@@ -1,7 +1,7 @@
 import {
   DrawerService,
   DrawerServiceCore,
-  Feature, IDynamicFeature, Inject, Loader, awaitLoad
+  Feature, IDynamicFeature, Inject, Loader,
 } from "@tenon/workbench";
 import { IMaterialFeature } from "./material.interface";
 import { TenonAtomComponents } from "@tenon/materials";
@@ -15,7 +15,7 @@ import { IAreaIndicatorFeature } from "../area-indicator";
 export class MaterialHandler implements IMaterialFeature {
   isPanelOpen: boolean;
   private atomComponents = Object.keys(TenonAtomComponents);
-  private computedComponents = [...this.atomComponents.map(name => TenonAtomComponents[name])];
+  private computedComponents = Array.from({ length: 10 }, () => this.atomComponents.map(name => new TenonAtomComponents[name])).flat();
 
   @Loader(IAreaIndicatorFeature)
   private areaIndicator: IDynamicFeature<IAreaIndicatorFeature>;

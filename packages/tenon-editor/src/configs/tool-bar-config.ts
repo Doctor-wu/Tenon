@@ -190,7 +190,7 @@ export const toolBarConfig: ToolBarConfig = {
             size: 16,
           }),
         },
-        active: false,
+        active: true,
         activeStyle: {
           fontWeight: 'bold'
         },

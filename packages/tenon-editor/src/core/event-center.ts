@@ -14,6 +14,8 @@ import {
   LeftDrawerNotificationType,
   RightDrawerNotificationType,
 } from "./notifications";
+import { fromEvent, throttleTime } from "rxjs";
+import { WindowResizeNotification } from "./notifications/common-notification";
 
 @Service({
   name: IEventCenter,
@@ -24,27 +26,37 @@ export class TenonEditorEventCenter {
     @Inject(IContext) private context: TenonEditorContext,
     @Inject(DrawerService) private drawerService: DrawerServiceCore,
   ) {
-    console.log("event manager", eventEmitter, context);
+    this.initCommonEvent();
     this.wrapDrawerEvent();
     this.listenDrawerPin();
+  }
+
+  initCommonEvent() {
+    fromEvent(window, 'resize')
+      .pipe(
+        throttleTime(100, undefined, { leading: true }),
+      )
+      .subscribe(() => {
+        this.context.fire(new WindowResizeNotification());
+      });
   }
 
   wrapDrawerEvent() {
     this.eventEmitter.on(
       WorkbenchEvents.drawerChanged,
       ({ alignment, state, fromInternal }) => {
-        if (fromInternal && !state) {
-          const type = alignment === "left"
-            ? LeftDrawerNotificationType.ClOSE_FROM_INTERNAL
-            : RightDrawerNotificationType.ClOSE_FROM_INTERNAL;
-          this.context.fire(
-            new DrawerNotification(
-              type,
-              alignment,
-            )
-          );
-        }
         if (!state) {
+          if (fromInternal) {
+            const type = alignment === "left"
+              ? LeftDrawerNotificationType.ClOSE_FROM_INTERNAL
+              : RightDrawerNotificationType.ClOSE_FROM_INTERNAL;
+            this.context.fire(
+              new DrawerNotification(
+                type,
+                alignment,
+              )
+            );
+          }
           const type = alignment === "left"
             ? LeftDrawerNotificationType.CLOSE_LEFT_DRAWER
             : RightDrawerNotificationType.CLOSE_RIGHT_DRAWER;

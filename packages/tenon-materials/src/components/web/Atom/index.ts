@@ -5,6 +5,6 @@ export const TenonAtomComponents = {
 };
 
 export const renderAtomComponent = (name: string, props: any) => {
-  const Component = TenonAtomComponents[name];
+  const Component = new TenonAtomComponents[name];
   return Component.render(props);
 }

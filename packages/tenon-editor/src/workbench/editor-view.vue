@@ -5,8 +5,8 @@
       id="tenon-editor"
       ref="editorView"
     >
-      editor
-      <section>
+      <span ref="editorText">editor</span>
+      <section ref="editorConfig">
         {{ JSON.stringify(editor.config) }}
       </section>
     </div>
@@ -29,6 +29,8 @@ const props = defineProps<{
 }>();
 
 const editorView = ref<HTMLElement>();
+const editorText = ref<HTMLElement>();
+const editorConfig = ref<HTMLElement>();
 onMounted(async () => {
   console.log("editorView", editorView.value);
   const editor = props.editor;
@@ -36,7 +38,7 @@ onMounted(async () => {
   const areaIndicator = (await di.get<IAreaIndicatorFeature>(IAreaIndicatorFeature))!;
   const editMode = (await di.get<IEditModeFeature>(IEditModeFeature))!;
   const context = (await di.get<TenonEditorContext>(IContext))!;
-  areaIndicator.markElement(editorView.value!, AreaMarkType.Active);
+  areaIndicator.markElement(editorText.value!, AreaMarkType.Active);
   let signal: AbortController;
   if (editMode?.mode.value === ModeType.Edit) {
     signal = await areaIndicator.useHoverMark(editorView.value!);

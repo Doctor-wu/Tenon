@@ -39,6 +39,11 @@ export class MaterialController {
     @Inject(IContext) private context: TenonEditorContext,
     @Inject(BarService) private barService: BarServiceCore
   ) {
+    if (this.barService.getSwitchActive(ToolBarName.MaterialSwitch)) {
+      this.materialLoader.getInstance().then(instance => {
+        instance.switchPanel(true);
+      });
+    }
     this.listenDrawer();
   }
 

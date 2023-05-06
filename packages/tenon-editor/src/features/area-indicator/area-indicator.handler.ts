@@ -1,12 +1,13 @@
 import {
   DrawerDisplayType,
-  DrawerService,
-  DrawerServiceCore,
-  Feature, IDynamicFeature, Inject, Loader, awaitLoad
+  Feature, IDynamicFeature,
+  Inject, Loader, awaitLoad,
 } from "@tenon/workbench";
 import { AreaMarkStyleMap, AreaMarkType, IAreaIndicatorFeature } from "./area-indicator.interface";
 import { ISurfaceOperateFeature } from "../surface-operate";
 import { IContext, LeftDrawerNotificationType, RightDrawerNotificationType, TenonEditor, TenonEditorContext } from "@/core";
+import { CommonNotificationType } from "@/core/notifications/common-notification";
+import { FullScreenType } from "../fullscreen/fullscreen.interface";
 
 export const MARK_PADDING = 3;
 
@@ -33,6 +34,11 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
   private initEvent(editor: TenonEditor) {
     this.context.on(DrawerDisplayType.Float, this.update.bind(this));
     this.context.on(DrawerDisplayType.Flow, this.update.bind(this));
+    this.context.on(CommonNotificationType.WINDOW_RESIZE, () => {
+      setTimeout(() => {
+        this.update();
+      }, 0);
+    });
     const hideThenUpdate = () => {
       this.changeVisible(false);
       setTimeout(() => {
@@ -40,6 +46,8 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
         this.changeVisible(true);
       }, 300);
     }
+    this.context.on(FullScreenType.FullScreen, hideThenUpdate);
+    this.context.on(FullScreenType.UnFullScreen, hideThenUpdate);
     this.context.on(LeftDrawerNotificationType.CLOSE_LEFT_DRAWER, hideThenUpdate);
     this.context.on(LeftDrawerNotificationType.OPEN_LEFT_DRAWER, hideThenUpdate);
     this.context.on(RightDrawerNotificationType.CLOSE_RIGHT_DRAWER, hideThenUpdate);
@@ -70,7 +78,6 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
       AreaMarkStyleMap[type],
     );
     const updater = async () => {
-      console.log('attribute changed');
       const { left, top, width, height } = await this.getElementRectRelativeWithSurface(element);
       this.ISurfaceOperateFeature.setDom(
         dom,
@@ -83,10 +90,14 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     const ob = new MutationObserver(updater);
     ob.observe(element, {
       attributes: true,
+      subtree: true,
+      childList: true,
+      characterData: true,
     });
     (dom as any).__tenon_indicator_update__ = updater;
     return () => {
       ob.disconnect();
+      (dom as any).__tenon_indicator_update__ = undefined;
       this.ISurfaceOperateFeature.removeDom(dom.id);
     }
   }
@@ -94,10 +105,11 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
   @awaitLoad(ISurfaceOperateFeature)
   public async getElementRectRelativeWithSurface(element: HTMLElement) {
     const surfaceDom = this.surfaceOperate.instance!.getSurfaceDom();
+    const rect = element.getBoundingClientRect();
     let accY = element.offsetTop;
     let accX = element.offsetLeft;
-    let width = element.clientWidth;
-    let height = element.clientHeight;
+    let width = rect.width;
+    let height = rect.height;
     let current = element;
     while ([...current.children].includes(surfaceDom) && current.parentElement) {
       accY += current.offsetTop;

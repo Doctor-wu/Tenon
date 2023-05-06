@@ -6,6 +6,7 @@ export enum ModeType {
   Edit = ToolBarName.EditMode,
 };
 
+/** 编辑模式改变 */
 export const EditModeChange = 'edit-mode-change';
 
 export class ModeNotification extends BaseNotification<typeof EditModeChange> {

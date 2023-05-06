@@ -1,27 +1,38 @@
 <template>
   <section class="material-list-container">
     <div class="material-list">
-      <div class="material-list-item" v-for="material in materials" :key="material.id">
-        <div class="material-list-item__title">{{ material.name }}</div>
-        <div class="material-list-item__content">
-          <div class="material-list-item__content__preview">
-            <!-- <div class="material-list-item__content__preview__icon">
-              <img :src="material.icon" alt="" />
-            </div> -->
-            <!-- <div class="material-list-item__content__preview__name">
-              {{ material.name }}
-            </div> -->
-          </div>
-          <!-- <div class="material-list-item__content__desc">{{ material.desc }}</div> -->
-        </div>
-      </div>
+      <Card
+        v-for="material in materials"
+        :bordered="true"
+        class="material-list-item"
+        size="small"
+      >
+        <section class="material-list-item__title">
+          <Icon :name="material.icon" style="margin-right: 4px"></Icon>
+          <span> {{ material.name }}</span>
+        </section>
+        <section class="material-list-item__desc">
+          {{ material.description }}
+        </section>
+        <component :is="material.render({})"></component>
+      </Card>
     </div>
   </section>
 </template>
 <script setup lang="ts">
-defineProps<{
-  materials: any[];
+import { Card, Icon } from "tdesign-vue-next";
+import { BaseMaterial } from "@tenon/materials";
+
+const props = defineProps<{
+  materials: BaseMaterial[];
 }>();
+console.log(props.materials);
+props.materials[0].bridge.register("tenon-event:onClick", () => {
+  console.log("click");
+});
+props.materials[0].bridge.register("tenon-event:onDoubleClick", () => {
+  console.log("double click");
+});
 </script>
 <style lang="scss" scoped>
 .material-list-container {
@@ -36,42 +47,44 @@ defineProps<{
     overflow: auto;
     .material-list-item {
       box-sizing: border-box;
-      width: 100%;
-      height: 100px;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 20px;
+      flex-direction: column;
+      align-items: flex-start;
+      margin: 12px;
+      cursor: pointer;
       border-bottom: 1px solid #e8e8e8;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
+      }
+      ::v-deep(.t-card__body) {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        align-items: flex-start;
+      }
       .material-list-item__title {
-        font-size: 14px;
+        height: 25px;
+        display: flex;
+        width: 100%;
+        margin-bottom: 8px;
+        justify-content: flex-start;
+        align-items: center;
+        font-weight: bold;
+        font-size: 16px;
         color: #333;
       }
-      .material-list-item__content {
+      .material-list-item__desc {
+        flex: 1;
         display: flex;
+        width: 100%;
+        justify-content: flex-start;
         align-items: center;
-        .material-list-item__content__preview {
-          display: flex;
-          align-items: center;
-          .material-list-item__content__preview__icon {
-            width: 40px;
-            height: 40px;
-            img {
-              width: 100%;
-              height: 100%;
-            }
-          }
-          .material-list-item__content__preview__name {
-            margin-left: 10px;
-            font-size: 14px;
-            color: #333;
-          }
-        }
-        .material-list-item__content__desc {
-          margin-left: 20px;
-          font-size: 12px;
-          color: #999;
-        }
+        font-size: 13px;
+        color: #999;
+        margin-bottom: 8px;
       }
     }
   }
