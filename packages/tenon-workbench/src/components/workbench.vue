@@ -34,7 +34,6 @@ provide("workbench", workbenchInstance);
 onMounted(() => {
   workbenchInstance.eventEmitter.emit(WorkbenchEvents.EditorRootMount, editorRoot.value);
 });
-
 </script>
 <style lang="scss" scoped>
 #workbench-root {
