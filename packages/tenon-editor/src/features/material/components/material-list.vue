@@ -19,20 +19,19 @@
     </div>
   </section>
 </template>
+<script lang="ts">
+export default {
+  name: "MaterialList",
+};
+</script>
 <script setup lang="ts">
 import { Card, Icon } from "tdesign-vue-next";
 import { BaseMaterial } from "@tenon/materials";
+import { onBeforeMount } from "vue";
 
 const props = defineProps<{
   materials: BaseMaterial[];
 }>();
-console.log(props.materials);
-props.materials[0].bridge.register("tenon-event:onClick", () => {
-  console.log("click");
-});
-props.materials[0].bridge.register("tenon-event:onDoubleClick", () => {
-  console.log("double click");
-});
 </script>
 <style lang="scss" scoped>
 .material-list-container {

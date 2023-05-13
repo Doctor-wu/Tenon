@@ -6,6 +6,7 @@ export interface IAreaIndicatorFeature {
   // interface
   markElement: (element: HTMLElement, type: AreaMarkType) => void;
   useHoverMark: (element: HTMLElement) => Promise<AbortController>;
+  useSingletonHoverMark: (element: HTMLElement) => Promise<() => void>;
   getElementRectRelativeWithSurface: (element: HTMLElement) => Promise<{
     left: number;
     top: number;

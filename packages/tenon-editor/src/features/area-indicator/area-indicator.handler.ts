@@ -23,6 +23,8 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     return this.surfaceOperate.instance!;
   }
 
+  private singletonHoverMarkDisposer: () => void;
+
   constructor(
     @Inject(IContext) private context: TenonEditorContext,
   ) { }
@@ -63,6 +65,32 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
       }, { once: true });
     }, { signal: abortController.signal });
     return abortController;
+  }
+
+  async useSingletonHoverMark(element: HTMLElement) {
+    const abortController = new AbortController();
+    let dispose: () => void | undefined;
+    element.setAttribute('__tenon_singleton_hover_mark__', "true");
+    element.addEventListener('mouseover', async (el) => {
+      if (
+        el.target !== element
+        && el.target instanceof HTMLElement
+        && el.target?.hasAttribute('__tenon_singleton_hover_mark__')
+      ) return;
+      if (this.singletonHoverMarkDisposer) {
+        this.singletonHoverMarkDisposer();
+      }
+      const closureDispose = await this.markElement(element, AreaMarkType.Hover);
+      dispose = closureDispose;
+      this.singletonHoverMarkDisposer = closureDispose;
+      element.addEventListener('mouseleave', () => {
+        closureDispose();
+      }, { once: true });
+    }, { signal: abortController.signal, capture: true });
+    return () => {
+      dispose?.();
+      abortController.abort();
+    };
   }
 
   @awaitLoad(ISurfaceOperateFeature)
@@ -124,14 +152,16 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     };
   }
 
-  public update() {
+  @awaitLoad(ISurfaceOperateFeature)
+  public async update() {
     const doms = this.ISurfaceOperateFeature.getDoms();
     doms.forEach(dom => {
       (dom as any).__tenon_indicator_update__?.();
     });
   }
 
-  public changeVisible(visible: boolean) {
+  @awaitLoad(ISurfaceOperateFeature)
+  public async changeVisible(visible: boolean) {
     const doms = this.ISurfaceOperateFeature.getDoms();
     doms.forEach(dom => {
       if (visible) {

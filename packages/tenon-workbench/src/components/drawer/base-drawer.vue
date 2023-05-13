@@ -184,6 +184,7 @@ onMounted(() => {
   box-sizing: border-box;
   font-size: 14px;
   border-bottom: 1px solid #ddd;
+  z-index: 2;
 }
 
 .drawer-layer {

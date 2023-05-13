@@ -1,5 +1,6 @@
-import { Bridge, Dict } from "@tenon/shared";
+import { Bridge, Dict, Subscribe } from "@tenon/shared";
 import { VNode, CSSProperties } from "vue";
+import { IMaterialInternalEventMeta } from "./events/internal-meta";
 
 export const MaterialPropsType = {
   String: String as unknown as string,
@@ -28,13 +29,21 @@ export interface IMaterialEventMeta {
   name: string;
 }
 
-export abstract class BaseMaterial {
+
+export abstract class BaseMaterial{
   public type: MaterialType;
-  public bridge: Bridge<Record<string | number | symbol, unknown>>;
+  public bridge: Bridge<Record<`tenon-event:${string}`, any>> = new Bridge();
   public abstract name: string;
   public abstract icon: string | (() => VNode);
   public abstract description: string;
   public props: Dict<IMaterialPropsMeta>;
-  public eventMeta: IMaterialEventMeta[] = [];
+  public eventMeta: (IMaterialEventMeta | IMaterialInternalEventMeta)[] = [];
   public abstract render(props: unknown): VNode;
+
+  protected getInternalProps(this: BaseMaterial) {
+    return {
+      __tenon_material_instance__: this,
+      __tenon_event_meta__: this.eventMeta,
+    }
+  }
 }

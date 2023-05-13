@@ -38,16 +38,18 @@ onMounted(async () => {
   const areaIndicator = (await di.get<IAreaIndicatorFeature>(IAreaIndicatorFeature))!;
   const editMode = (await di.get<IEditModeFeature>(IEditModeFeature))!;
   const context = (await di.get<TenonEditorContext>(IContext))!;
-  areaIndicator.markElement(editorText.value!, AreaMarkType.Active);
-  let signal: AbortController;
+  // areaIndicator.markElement(editorText.value!, AreaMarkType.Active);
+  areaIndicator.useSingletonHoverMark(editorText.value!);
+  areaIndicator.useSingletonHoverMark(editorConfig.value!);
+  let disposer: () => void;
   if (editMode?.mode.value === ModeType.Edit) {
-    signal = await areaIndicator.useHoverMark(editorView.value!);
+    disposer = await areaIndicator.useSingletonHoverMark(editorView.value!);
   }
   context.on(EditModeChange, async (noti: ModeNotification) => {
     if (noti.mode === ModeType.Edit) {
-      signal = await areaIndicator?.useHoverMark(editorView.value!);
+      disposer = await areaIndicator?.useSingletonHoverMark(editorView.value!);
     } else {
-      signal?.abort();
+      disposer?.();
     }
   });
 });

@@ -3,13 +3,13 @@ import { BaseMaterial, IMaterialEventMeta, MaterialPropsType } from "../../../ba
 import TextComponent from "./Text.vue";
 import { clickTrigger, doubleClickTrigger } from "../../../events";
 import { Bridge } from "@tenon/shared";
+import { internalMeta } from "../../../events/internal-meta";
 
-export class TenonText extends BaseMaterial {
-  public name = 'TenonText';
-  public icon = 'app';
-  public description = '[原子组件] 提供文本能力';
-  public bridge = new Bridge();
-  public props = {
+const TenonTextInfo = {
+  name: 'TenonText',
+  icon: 'app',
+  description: '[原子组件] 提供文本能力',
+  props: {
     text: {
       type: MaterialPropsType.String,
       default: '占位文字(生产环境不会渲染)',
@@ -22,9 +22,8 @@ export class TenonText extends BaseMaterial {
       },
       name: '样式',
     },
-  };
-
-  public eventMeta: IMaterialEventMeta[] = [
+  },
+  eventMeta: [
     {
       name: 'onClick',
       desc: '点击事件',
@@ -35,18 +34,23 @@ export class TenonText extends BaseMaterial {
       desc: '双击事件',
       trigger: doubleClickTrigger,
     }
-  ];
+  ] as IMaterialEventMeta[],
+}
+
+export class TenonText extends BaseMaterial {
+  public name = TenonTextInfo.name;
+  public icon = TenonTextInfo.icon;
+  public description = TenonTextInfo.description;
+  public props = TenonTextInfo.props;
+
+  public eventMeta = [...internalMeta, ...TenonTextInfo.eventMeta];
 
   public render(props: {
     [K in keyof TenonText["props"]]: TenonText["props"][K]["type"];
   }) {
     const setProps = {
       ...props,
-      __tenon_material_instance__: this,
-      __tenon_event_meta__: this.eventMeta,
-      __trigger_tenon_event__: (name: string, ...args: any[]) => {
-        this.bridge.run(name, ...args);
-      },
+      ...this.getInternalProps(),
     };
     return h(TextComponent, setProps);
   }

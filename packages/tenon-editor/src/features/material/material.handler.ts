@@ -5,7 +5,7 @@ import {
 } from "@tenon/workbench";
 import { IMaterialFeature } from "./material.interface";
 import { TenonAtomComponents } from "@tenon/materials";
-import { h } from "vue";
+import { KeepAlive, VNode, h } from "vue";
 import materialListVue from "./components/material-list.vue";
 import { IAreaIndicatorFeature } from "../area-indicator";
 
@@ -30,6 +30,20 @@ export class MaterialHandler implements IMaterialFeature {
     @Inject(DrawerService) private drawerService: DrawerServiceCore,
   ) {
     this.isPanelOpen = false;
+    this.computedComponents[0].bridge.register("tenon-event:onClick", () => {
+      console.log("click");
+    });
+    this.computedComponents[0].bridge.register("tenon-event:onDoubleClick", () => {
+      console.log("double click");
+    });
+    this.computedComponents.forEach((material) => {
+      material.bridge.register("tenon-event:onMount", () => {
+        console.log(`mount ${material.name}`);
+      });
+      material.bridge.register("tenon-event:onUnMount", () => {
+        console.log(`unmount ${material.name}`);
+      });
+    });
   }
 
   switchPanel(open: boolean) {
@@ -43,11 +57,9 @@ export class MaterialHandler implements IMaterialFeature {
 
   private openMaterialPanel() {
     console.log('open material panel');
-    this.drawerService.left.attachLayer(this.layerName, () => {
-      return h(materialListVue, {
-        materials: this.computedComponents,
-      });
-    });
+    this.drawerService.left.attachLayer(this.layerName, () => h(materialListVue, {
+      materials: this.computedComponents,
+    }));
   }
 
   private closeMaterialPanel() {
