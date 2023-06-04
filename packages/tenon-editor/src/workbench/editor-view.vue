@@ -38,7 +38,7 @@ onMounted(async () => {
   const areaIndicator = (await di.get<IAreaIndicatorFeature>(IAreaIndicatorFeature))!;
   const editMode = (await di.get<IEditModeFeature>(IEditModeFeature))!;
   const context = (await di.get<TenonEditorContext>(IContext))!;
-  // areaIndicator.markElement(editorText.value!, AreaMarkType.Active);
+  areaIndicator.markElement(editorText.value!, AreaMarkType.Active);
   areaIndicator.useSingletonHoverMark(editorText.value!);
   areaIndicator.useSingletonHoverMark(editorConfig.value!);
   let disposer: () => void;

@@ -5,7 +5,7 @@ import { headerBarConfig } from "@/configs/header-bar-config";
 import { toolBarConfig } from "@/configs/tool-bar-config";
 import { controllers, dynamicTags, syncFeatures } from "@/features";
 import { TenonEditor } from "@/core/editor";
-import { App, createApp, h } from "vue";
+import { App, createApp } from "vue";
 import EditorView from "./editor-view.vue";
 
 @WorkbenchSettings({

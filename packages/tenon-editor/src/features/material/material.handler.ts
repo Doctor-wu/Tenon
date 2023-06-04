@@ -1,13 +1,14 @@
 import {
   DrawerService,
   DrawerServiceCore,
-  Feature, IDynamicFeature, Inject, Loader,
+  Feature, IDynamicFeature, Inject, Loader, awaitLoad,
 } from "@tenon/workbench";
 import { IMaterialFeature } from "./material.interface";
-import { TenonAtomComponents } from "@tenon/materials";
-import { KeepAlive, VNode, h } from "vue";
+import { BaseMaterial, TenonAtomComponents } from "@tenon/materials";
+import { h } from "vue";
+import { IAreaIndicatorFeature } from "@tenon-features/area-indicator";
+import { IMaterialDragFeature, DragType } from "@tenon-features/material-drag";
 import materialListVue from "./components/material-list.vue";
-import { IAreaIndicatorFeature } from "../area-indicator";
 
 @Feature({
   name: IMaterialFeature,
@@ -15,13 +16,20 @@ import { IAreaIndicatorFeature } from "../area-indicator";
 export class MaterialHandler implements IMaterialFeature {
   isPanelOpen: boolean;
   private atomComponents = Object.keys(TenonAtomComponents);
-  private computedComponents = Array.from({ length: 10 }, () => this.atomComponents.map(name => new TenonAtomComponents[name])).flat();
+  private computedComponents = this.atomComponents.map(name => new TenonAtomComponents[name]);
 
   @Loader(IAreaIndicatorFeature)
   private areaIndicator: IDynamicFeature<IAreaIndicatorFeature>;
 
   get [IAreaIndicatorFeature](): IAreaIndicatorFeature {
     return this.areaIndicator.instance!;
+  }
+
+  @Loader(IMaterialDragFeature)
+  private materialDrag: IDynamicFeature<IMaterialDragFeature>;
+
+  get [IMaterialDragFeature](): IMaterialDragFeature {
+    return this.materialDrag.instance!;
   }
 
   private layerName = '物料面板';
@@ -55,10 +63,20 @@ export class MaterialHandler implements IMaterialFeature {
     }
   }
 
-  private openMaterialPanel() {
+  @awaitLoad(IMaterialDragFeature)
+  async draggableMaterial(
+    el: HTMLElement,
+    getPayload: () => BaseMaterial,
+  ) {
+    return this.materialDrag.instance!.draggableElement(el, DragType.Material, getPayload);
+  }
+
+  private async openMaterialPanel() {
     console.log('open material panel');
+    // const materialListVue = (await import('./components/material-list.vue')).default;
     this.drawerService.left.attachLayer(this.layerName, () => h(materialListVue, {
       materials: this.computedComponents,
+      draggableMaterial: this.draggableMaterial.bind(this),
     }));
   }
 

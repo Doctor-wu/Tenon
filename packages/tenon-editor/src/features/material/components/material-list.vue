@@ -6,6 +6,12 @@
         :bordered="true"
         class="material-list-item"
         size="small"
+        :ref="
+          (el) => {
+            if (!el) return;
+            rootRefs.push({ el: el.$el, material });
+          }
+        "
       >
         <section class="material-list-item__title">
           <Icon :name="material.icon" style="margin-right: 4px"></Icon>
@@ -14,7 +20,9 @@
         <section class="material-list-item__desc">
           {{ material.description }}
         </section>
-        <component :is="material.render({})"></component>
+        <section class="material-list-item__preview">
+          <component :is="material.render({})"></component>
+        </section>
       </Card>
     </div>
   </section>
@@ -27,11 +35,28 @@ export default {
 <script setup lang="ts">
 import { Card, Icon } from "tdesign-vue-next";
 import { BaseMaterial } from "@tenon/materials";
-import { onBeforeMount } from "vue";
+import { IMaterialFeature } from "../material.interface";
+import { onMounted, onUnmounted } from "vue";
 
 const props = defineProps<{
   materials: BaseMaterial[];
+  draggableMaterial: IMaterialFeature["draggableMaterial"];
 }>();
+
+const rootRefs: { el: HTMLElement; material: BaseMaterial; disposer?: () => void }[] = [];
+onMounted(() => {
+  rootRefs.forEach(async (item, index) => {
+    const disposer = await props.draggableMaterial(item.el, () => item.material);
+    rootRefs[index].disposer = disposer;
+  });
+});
+onUnmounted(() => {
+  rootRefs.forEach((item) => {
+    item.disposer?.();
+  });
+  rootRefs.length = 0;
+});
+
 </script>
 <style lang="scss" scoped>
 .material-list-container {

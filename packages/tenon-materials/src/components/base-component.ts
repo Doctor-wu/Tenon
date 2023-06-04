@@ -1,6 +1,6 @@
-import { Bridge, Dict, Subscribe } from "@tenon/shared";
+import { Bridge, Dict } from "@tenon/shared";
 import { VNode, CSSProperties } from "vue";
-import { IMaterialInternalEventMeta } from "./events/internal-meta";
+import { IMaterialEventMeta, IMaterialInternalEventMeta } from "./events/event-meta";
 
 export const MaterialPropsType = {
   String: String as unknown as string,
@@ -23,11 +23,6 @@ export enum MaterialType {
   Compose = 'compose',
 };
 
-export interface IMaterialEventMeta {
-  trigger: (el: HTMLElement, trigger: (e: Event) => void) => void;
-  desc: string;
-  name: string;
-}
 
 
 export abstract class BaseMaterial{

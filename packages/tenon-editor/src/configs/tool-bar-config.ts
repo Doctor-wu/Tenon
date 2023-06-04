@@ -12,6 +12,7 @@ import FileUploadOutLine from "vue-material-design-icons/FileUploadOutLine.vue";
 import CalendarTextOutLine from "vue-material-design-icons/CalendarTextOutLine.vue";
 import StateMachine from "vue-material-design-icons/StateMachine.vue";
 import VectorCircle from "vue-material-design-icons/VectorCircle.vue";
+import CogSync from "vue-material-design-icons/CogSync.vue";
 import { h } from "vue";
 
 export enum ToolBarName {
@@ -21,11 +22,12 @@ export enum ToolBarName {
   PreviewMode = 'PreviewMode',
   EditMode = 'EditMode',
   RealPreview = 'RealPreview',
-  ClearPageConfig = 'ClearPageConfig',
+  ClearPageComponents = 'ClearPageComponents',
+  PageComponentsManage = 'PageComponentsManage',
   /** 保存页面配置 */
-  SaveConfig = 'SaveConfig',
-  ExportConfig = 'ExportConfig',
-  LoadConfig = 'LoadConfig',
+  SaveComponents = 'SaveComponents',
+  ExportComponent = 'ExportComponent',
+  LoadComponents = 'LoadComponents',
   Events = 'Events',
   PageStatus = 'PageStatus',
   PageLifeCycle = 'PageLifeCycle',
@@ -98,8 +100,50 @@ export const toolBarConfig: ToolBarConfig = {
         },
         popupText: '真机预览',
       },
+    ],
+    [
       {
-        name: ToolBarName.RealPreview,
+        name: ToolBarName.PageComponentsManage,
+        flag: ToolBarFlag.DropDown,
+        text: '页面组件管理',
+        icon: {
+          iconRender: () => h(CogSync, {
+            size: 16,
+          }),
+        },
+        dropDownWidth: '200px',
+        listTree: [
+          {
+            name: ToolBarName.SaveComponents,
+            text: '保存组件配置到云端',
+            icon: {
+              iconRender: () => h(ContentSave, {
+                size: 16,
+              }),
+            },
+          },
+          {
+            name: ToolBarName.ExportComponent,
+            text: '导出组件配置到本地',
+            icon: {
+              iconRender: () => h(FileUploadOutLine, {
+                size: 16,
+              }),
+            },
+          },
+          {
+            name: ToolBarName.LoadComponents,
+            text: '从本地导入组件配置',
+            icon: {
+              iconRender: () => h(FileDownLoadOutLine, {
+                size: 16,
+              }),
+            },
+          },
+        ]
+      },
+      {
+        name: ToolBarName.ClearPageComponents,
         flag: ToolBarFlag.Button,
         text: '清空页面',
         icon: {
@@ -107,42 +151,7 @@ export const toolBarConfig: ToolBarConfig = {
             size: 16,
           }),
         },
-        popupText: '清空页面配置',
-      }
-    ],
-    [
-      {
-        name: ToolBarName.SaveConfig,
-        flag: ToolBarFlag.Button,
-        text: '保存',
-        icon: {
-          iconRender: () => h(ContentSave, {
-            size: 16,
-          }),
-        },
-        popupText: '保存页面到云端',
-      },
-      {
-        name: ToolBarName.ExportConfig,
-        flag: ToolBarFlag.Button,
-        text: '导出',
-        icon: {
-          iconRender: () => h(FileUploadOutLine, {
-            size: 16,
-          }),
-        },
-        popupText: '导出页面配置',
-      },
-      {
-        name: ToolBarName.LoadConfig,
-        flag: ToolBarFlag.Button,
-        text: '导入',
-        icon: {
-          iconRender: () => h(FileDownLoadOutLine, {
-            size: 16,
-          }),
-        },
-        popupText: '导入页面配置',
+        popupText: '清空页面组件',
       },
     ],
     [

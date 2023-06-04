@@ -23,6 +23,7 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     return this.surfaceOperate.instance!;
   }
 
+  private visible = true;
   private singletonHoverMarkDisposer: () => void;
 
   constructor(
@@ -123,6 +124,7 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
       characterData: true,
     });
     (dom as any).__tenon_indicator_update__ = updater;
+    dom.style.visibility = this.visible ? 'visible' : 'hidden';
     return () => {
       ob.disconnect();
       (dom as any).__tenon_indicator_update__ = undefined;
@@ -162,6 +164,7 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
 
   @awaitLoad(ISurfaceOperateFeature)
   public async changeVisible(visible: boolean) {
+    this.visible = visible;
     const doms = this.ISurfaceOperateFeature.getDoms();
     doms.forEach(dom => {
       if (visible) {

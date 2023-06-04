@@ -32,6 +32,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@tenon-features": path.resolve(__dirname, "./src/features"),
     },
   },
   base: config.basePath,

@@ -9,12 +9,13 @@
 
 <script setup lang="ts">
 import { TenonText } from "./Text";
-import { IMaterialEventMeta } from "../../../base-component";
 import { CSSProperties, onBeforeUnmount, onMounted, ref } from "vue";
 import {
+  IMaterialEventMeta,
   IMaterialInternalEventMeta,
   MaterialInternalEvent,
-} from "../../../events/internal-meta";
+  useEventMeta,
+} from "../../../events/event-meta";
 
 const props = defineProps<{
   style?: CSSProperties;
@@ -26,23 +27,7 @@ const props = defineProps<{
 const root = ref<HTMLElement>();
 const eventMeta = props.__tenon_event_meta__;
 
-onMounted(() => {
-  eventMeta.forEach((meta) => {
-    if ("internal" in meta) return;
-    meta.trigger(root.value!, (e) => {
-      props.__tenon_material_instance__.bridge.run(`tenon-event:${meta.name}`, e);
-    });
-  });
-  props.__tenon_material_instance__.bridge.run(
-    `tenon-event:${MaterialInternalEvent.Mount}`
-  );
-});
-
-onBeforeUnmount(() => {
-  props.__tenon_material_instance__.bridge.run(
-    `tenon-event:${MaterialInternalEvent.UnMount}`
-  );
-});
+useEventMeta(eventMeta, root, props.__tenon_material_instance__.bridge);
 </script>
 
 <style lang="scss" scoped></style>

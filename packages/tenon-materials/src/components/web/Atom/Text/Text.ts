@@ -1,9 +1,8 @@
 import { h } from "vue";
-import { BaseMaterial, IMaterialEventMeta, MaterialPropsType } from "../../../base-component";
+import { BaseMaterial, MaterialPropsType } from "../../../base-component";
 import TextComponent from "./Text.vue";
 import { clickTrigger, doubleClickTrigger } from "../../../events";
-import { Bridge } from "@tenon/shared";
-import { internalMeta } from "../../../events/internal-meta";
+import { IMaterialEventMeta, internalMeta } from "../../../events/event-meta";
 
 const TenonTextInfo = {
   name: 'TenonText',
@@ -18,7 +17,7 @@ const TenonTextInfo = {
     style: {
       type: MaterialPropsType.StyleSheet,
       default: {
-        color: 'orange',
+        color: '#777',
       },
       name: '样式',
     },

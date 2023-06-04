@@ -59,7 +59,7 @@ const isLastNonEmptyGroup = (group: ToolBarItemType[]) => {
   padding: 6px 12px;
   box-sizing: border-box;
   transition: all ease 0.3s;
-  z-index: 1;
+  z-index: 2;
   background-color: #fff;
 }
 
