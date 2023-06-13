@@ -1,12 +1,12 @@
 import { createSyncFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
-import { ISurfaceOperateFeature } from "../surface-operate";
 
 export interface IAreaIndicatorFeature {
   // interface
   markElement: (element: HTMLElement, type: AreaMarkType) => void;
   useHoverMark: (element: HTMLElement) => Promise<AbortController>;
-  useSingletonHoverMark: (element: HTMLElement) => Promise<() => void>;
+  useSingletonMark: (type: SingleMarkType, element: HTMLElement) => Promise<() => void>;
+  useSingletonHoverMark: (type: SingleMarkType.DragHover | SingleMarkType.DropHovering, element: HTMLElement) => Promise<() => void>;
   getElementRectRelativeWithSurface: (element: HTMLElement) => Promise<{
     left: number;
     top: number;
@@ -18,16 +18,22 @@ export interface IAreaIndicatorFeature {
 }
 
 export enum AreaMarkType {
-  Active = "active",
-  Hover = "hover",
-  Error = "error",
+  Active = "Active",
+  DragHover = "DragHover",
+  DropHovering = "DropHovering",
 }
 
 export const AreaMarkStyleMap = {
   [AreaMarkType.Active]: "2px solid #1890ff",
-  [AreaMarkType.Hover]: "2px dashed #7940e2",
-  [AreaMarkType.Error]: "2px solid #f5222d",
+  [AreaMarkType.DragHover]: "2px dashed #7940e2",
+  [AreaMarkType.DropHovering]: "2px dashed #f5222d",
 };
+
+export enum SingleMarkType {
+  Active = "Active",
+  DragHover = "DragHover",
+  DropHovering = "DropHovering",
+}
 
 export const IAreaIndicatorFeature = createSyncFeatureTag(FeatureName.AreaIndicator);
 

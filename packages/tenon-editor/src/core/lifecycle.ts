@@ -7,6 +7,7 @@ import {
 export enum TenonEditorLifeCycleStage {
   Init,
   LaunchWorkbench,
+  InitDataEngine,
   EditorAdapterReady,
   Ready,
 }
@@ -23,6 +24,7 @@ export class TenonEditorLifeCycle {
   private stageList = [
     TenonEditorLifeCycleStage.Init,
     TenonEditorLifeCycleStage.LaunchWorkbench,
+    TenonEditorLifeCycleStage.InitDataEngine,
     TenonEditorLifeCycleStage.EditorAdapterReady,
     TenonEditorLifeCycleStage.Ready,
   ];

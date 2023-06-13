@@ -10,6 +10,7 @@ import {
 } from "./lifecycle";
 import { TenonEditorContext } from "./context";
 import { plugins } from "../workbench/plugins";
+import { IDataEngine, TenonDataEngine } from "./model/data-engine";
 
 export class TenonEditor {
   @Loader(ITenonEditorLifeCycle)
@@ -24,6 +25,7 @@ export class TenonEditor {
   config: BaseConfig = window.AppConfig;
   root: HTMLElement;
   context: TenonEditorContext;
+  dataEngine: TenonDataEngine;
 
   constructor() {
     this.setupAdaptor();
@@ -47,6 +49,10 @@ export class TenonEditor {
       (await this.workbenchAdaptor.workbenchDIService.get<TenonEditorEventCenter>(
         IEventCenter
       ))!;
+    this.dataEngine =
+      (await this.workbenchAdaptor.workbenchDIService.get<TenonDataEngine>(
+        IDataEngine
+      ))!;
   }
 
   private setupPlugin() {
@@ -66,6 +72,14 @@ export class TenonEditor {
       TenonEditorLifeCycleStage.LaunchWorkbench,
       () => {
         this.launchWorkbench();
+      }
+    );
+    this.lifecycle!.regisStageCallBack(
+      TenonEditorLifeCycleStage.InitDataEngine,
+      () => {
+        this.lifecycle!.emitStageFinish(
+          TenonEditorLifeCycleStage.InitDataEngine
+        );
       }
     );
     this.lifecycle!.regisStageCallBack(

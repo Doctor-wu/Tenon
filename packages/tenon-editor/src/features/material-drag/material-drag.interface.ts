@@ -1,6 +1,6 @@
 import { bindDynamicLoader, createDynamicFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
-import type { RuntimeComponentTree } from "@/core/model/runtime-component-tree";
+import type { RuntimeComponentTree } from "@/features/runtime-component-tree/runtime-component-tree";
 import type { BaseMaterial } from "@tenon/materials";
 
 export enum DragType {

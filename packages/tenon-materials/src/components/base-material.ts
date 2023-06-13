@@ -25,14 +25,14 @@ export enum MaterialType {
 
 
 
-export abstract class BaseMaterial{
+export abstract class BaseMaterial {
   public type: MaterialType;
-  public bridge: Bridge<Record<`tenon-event:${string}`, any>> = new Bridge();
   public abstract name: string;
   public abstract icon: string | (() => VNode);
   public abstract description: string;
-  public props: Dict<IMaterialPropsMeta>;
+  public propMeta: Dict<IMaterialPropsMeta>;
   public eventMeta: (IMaterialEventMeta | IMaterialInternalEventMeta)[] = [];
+  public nestable = false;
   public abstract render(props: unknown): VNode;
 
   protected getInternalProps(this: BaseMaterial) {
@@ -41,4 +41,13 @@ export abstract class BaseMaterial{
       __tenon_event_meta__: this.eventMeta,
     }
   }
+}
+
+export interface IDryMaterial extends Partial<BaseMaterial> {
+  name: string;
+  children?: IDryMaterial[];
+}
+
+export interface IWetMaterial extends BaseMaterial {
+
 }

@@ -1,14 +1,18 @@
 import {
-  Feature
+  Feature, Inject
 } from "@tenon/workbench";
 import { DragType, IDragPayload, IMaterialDragFeature } from "./material-drag.interface";
+import { IContext, TenonEditorContext } from "@/core";
+import { DragNotification } from "./notification";
 
 @Feature({
   name: IMaterialDragFeature,
 })
 export class MaterialDragHandler implements IMaterialDragFeature {
   private payload: IDragPayload[DragType] | null = null;
-  constructor() { }
+  constructor(
+    @Inject(IContext) private context: TenonEditorContext,
+  ) { }
 
   draggableElement<T extends DragType>(
     el: HTMLElement,
@@ -18,6 +22,7 @@ export class MaterialDragHandler implements IMaterialDragFeature {
     const abort = new AbortController();
     el.draggable = true;
     el.addEventListener('dragstart', (e) => {
+      e.stopPropagation();
       e.dataTransfer!.effectAllowed = 'move';
       e.dataTransfer!.dropEffect = 'move';
       e.dataTransfer!.setData('dragType', dragType);
@@ -32,6 +37,17 @@ export class MaterialDragHandler implements IMaterialDragFeature {
         }
       }
       this.payload = getPayload();
+      this.context.fire(
+        new DragNotification(true),
+      );
+    }, {
+      signal: abort.signal,
+    });
+    el.addEventListener('dragend', (e) => {
+      e.stopPropagation();
+      this.context.fire(
+        new DragNotification(false),
+      );
     }, {
       signal: abort.signal,
     });

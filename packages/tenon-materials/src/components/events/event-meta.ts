@@ -47,7 +47,7 @@ export const useEventMeta = (
       });
     });
     materialInstanceBridge.run(
-      `tenon-event:${MaterialInternalEvent.Mount}`
+      `tenon-event:${MaterialInternalEvent.Mount}`, elRef
     );
   });
 

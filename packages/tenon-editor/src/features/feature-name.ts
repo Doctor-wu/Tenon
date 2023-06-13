@@ -7,4 +7,7 @@ export const FeatureName = {
   ComponentsTree: "components-tree",
   AreaIndicator: "area-indicator",
   SurfaceOperate: "surface-operate",
+  ComposeView: "compose-view",
+  // RuntimeComponentDrag: "runtime-component-drag",
+  RuntimeComponentTree: "runtime-component-tree",
 };

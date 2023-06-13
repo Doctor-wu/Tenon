@@ -4,11 +4,14 @@ import {
   Feature, IDynamicFeature, Inject, Loader, awaitLoad,
 } from "@tenon/workbench";
 import { IMaterialFeature } from "./material.interface";
-import { BaseMaterial, TenonAtomComponents } from "@tenon/materials";
+import { BaseMaterial, IDryMaterial, IWetMaterial, TenonAtomComponents } from "@tenon/materials";
 import { h } from "vue";
 import { IAreaIndicatorFeature } from "@tenon-features/area-indicator";
 import { IMaterialDragFeature, DragType } from "@tenon-features/material-drag";
 import materialListVue from "./components/material-list.vue";
+import { IComposeViewFeature } from "../compose-view";
+import { IDataEngine, TenonDataEngine } from "@/core/model/data-engine";
+import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 
 @Feature({
   name: IMaterialFeature,
@@ -16,7 +19,8 @@ import materialListVue from "./components/material-list.vue";
 export class MaterialHandler implements IMaterialFeature {
   isPanelOpen: boolean;
   private atomComponents = Object.keys(TenonAtomComponents);
-  private computedComponents = this.atomComponents.map(name => new TenonAtomComponents[name]);
+  private computedComponents: (() => IWetMaterial)[]
+    = this.atomComponents.map(name => () => new TenonAtomComponents[name]);
 
   @Loader(IAreaIndicatorFeature)
   private areaIndicator: IDynamicFeature<IAreaIndicatorFeature>;
@@ -32,26 +36,21 @@ export class MaterialHandler implements IMaterialFeature {
     return this.materialDrag.instance!;
   }
 
+  @Loader(IRuntimeComponentTreeFeature)
+  private runtimeComponentTree: IDynamicFeature<IRuntimeComponentTreeFeature>;
+
+  private get runtimeTree() {
+    return this.runtimeComponentTree.instance!;
+  }
+
   private layerName = '物料面板';
 
   constructor(
     @Inject(DrawerService) private drawerService: DrawerServiceCore,
+    @Inject(IComposeViewFeature) private composeView: IComposeViewFeature,
   ) {
     this.isPanelOpen = false;
-    this.computedComponents[0].bridge.register("tenon-event:onClick", () => {
-      console.log("click");
-    });
-    this.computedComponents[0].bridge.register("tenon-event:onDoubleClick", () => {
-      console.log("double click");
-    });
-    this.computedComponents.forEach((material) => {
-      material.bridge.register("tenon-event:onMount", () => {
-        console.log(`mount ${material.name}`);
-      });
-      material.bridge.register("tenon-event:onUnMount", () => {
-        console.log(`unmount ${material.name}`);
-      });
-    });
+    this.computedComponents.unshift(this.composeView.getComposeView);
   }
 
   switchPanel(open: boolean) {
@@ -71,12 +70,17 @@ export class MaterialHandler implements IMaterialFeature {
     return this.materialDrag.instance!.draggableElement(el, DragType.Material, getPayload);
   }
 
+  getWetMaterial(dryMaterial: IDryMaterial): IWetMaterial | undefined {
+    return this.computedComponents.find(component => component().name === dryMaterial.name)?.();
+  }
+
+  @awaitLoad(IRuntimeComponentTreeFeature)
   private async openMaterialPanel() {
     console.log('open material panel');
-    // const materialListVue = (await import('./components/material-list.vue')).default;
     this.drawerService.left.attachLayer(this.layerName, () => h(materialListVue, {
       materials: this.computedComponents,
       draggableMaterial: this.draggableMaterial.bind(this),
+      runtimeComponentTree: this.runtimeTree,
     }));
   }
 

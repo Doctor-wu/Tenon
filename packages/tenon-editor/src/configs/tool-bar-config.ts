@@ -111,11 +111,11 @@ export const toolBarConfig: ToolBarConfig = {
             size: 16,
           }),
         },
-        dropDownWidth: '200px',
+        dropDownWidth: '120px',
         listTree: [
           {
             name: ToolBarName.SaveComponents,
-            text: '保存组件配置到云端',
+            text: '保存到云端',
             icon: {
               iconRender: () => h(ContentSave, {
                 size: 16,
@@ -124,7 +124,7 @@ export const toolBarConfig: ToolBarConfig = {
           },
           {
             name: ToolBarName.ExportComponent,
-            text: '导出组件配置到本地',
+            text: '导出到本地',
             icon: {
               iconRender: () => h(FileUploadOutLine, {
                 size: 16,
@@ -133,7 +133,7 @@ export const toolBarConfig: ToolBarConfig = {
           },
           {
             name: ToolBarName.LoadComponents,
-            text: '从本地导入组件配置',
+            text: '从本地导入',
             icon: {
               iconRender: () => h(FileDownLoadOutLine, {
                 size: 16,

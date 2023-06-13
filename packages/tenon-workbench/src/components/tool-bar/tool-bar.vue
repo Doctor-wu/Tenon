@@ -2,7 +2,7 @@
   <section :style="toolbarStyle" id="workbench-toolbar">
     <section class="toolbar-container">
       <template v-for="(group, index) in props.config.config" :key="index">
-        <template v-if="group.length">
+        <template v-if="group.length && !group.every(i => i.hidden)">
           <section class="toolbar-group">
             <template v-for="item in group" :key="item.name">
               <template v-if="!item.hidden">

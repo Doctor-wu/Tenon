@@ -1,1 +1,1 @@
-export * from "./runtime-component-tree";
+export * from "../../features/runtime-component-tree/runtime-component-tree";

@@ -17,7 +17,7 @@ export class TenonEditorContext {
 
   on<
     Notification extends any = "__base-notification",
-    Type extends string = string
+    Type extends string | symbol = string
   >(
     type: Type,
     fn: (
@@ -29,7 +29,7 @@ export class TenonEditorContext {
     this.eventEmitter.on(type, fn);
   }
 
-  fire<Notification extends BaseNotification>(notification: Notification) {
+  fire<Notification extends BaseNotification<string | symbol>>(notification: Notification) {
     this.eventEmitter.emit(notification.type, notification);
   }
 }

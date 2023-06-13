@@ -2,26 +2,26 @@
   <section class="material-list-container">
     <div class="material-list">
       <Card
-        v-for="material in materials"
+        v-for="runtimeTree in runtimeTreeInstances"
         :bordered="true"
         class="material-list-item"
         size="small"
         :ref="
           (el) => {
             if (!el) return;
-            rootRefs.push({ el: el.$el, material });
+            rootRefs.push({ el: el.$el, material: runtimeTree.material!, runtimeTree: runtimeTree });
           }
         "
       >
         <section class="material-list-item__title">
-          <Icon :name="material.icon" style="margin-right: 4px"></Icon>
-          <span> {{ material.name }}</span>
+          <Icon :name="runtimeTree.material!.icon" style="margin-right: 4px"></Icon>
+          <span> {{ runtimeTree.material!.name }}</span>
         </section>
         <section class="material-list-item__desc">
-          {{ material.description }}
+          {{ runtimeTree.material!.description }}
         </section>
         <section class="material-list-item__preview">
-          <component :is="material.render({})"></component>
+          <component :is="runtimeTree.render()"></component>
         </section>
       </Card>
     </div>
@@ -36,18 +36,48 @@ export default {
 import { Card, Icon } from "tdesign-vue-next";
 import { BaseMaterial } from "@tenon/materials";
 import { IMaterialFeature } from "../material.interface";
-import { onMounted, onUnmounted } from "vue";
+import { effect, onMounted, onUnmounted, reactive } from "vue";
+import type {
+  IRuntimeComponentTreeFeature,
+  RuntimeComponentTree,
+} from "@/features/runtime-component-tree";
 
 const props = defineProps<{
-  materials: BaseMaterial[];
+  materials: (() => BaseMaterial)[];
   draggableMaterial: IMaterialFeature["draggableMaterial"];
+  runtimeComponentTree: IRuntimeComponentTreeFeature;
 }>();
 
-const rootRefs: { el: HTMLElement; material: BaseMaterial; disposer?: () => void }[] = [];
+const runtimeTreeInstances: RuntimeComponentTree[] = reactive([]);
+
+const rootRefs: {
+  el: HTMLElement;
+  material: BaseMaterial;
+  runtimeTree: RuntimeComponentTree;
+  disposer?: () => void;
+}[] = [];
 onMounted(() => {
-  rootRefs.forEach(async (item, index) => {
-    const disposer = await props.draggableMaterial(item.el, () => item.material);
-    rootRefs[index].disposer = disposer;
+  effect(() => {
+    Promise.all(
+      // @TODO(Doctorwu) 这里有潜在的性能问题, 只要 props.materials 发生变化, 每次都会重新构建所有的树
+      props.materials.map(
+        async (m) => await props.runtimeComponentTree.buildRuntimeTree(m())
+      )
+    )
+      .then((trees) => {
+        // 物料列表的组件不允许拖拽
+        trees.forEach(tree => {
+          tree.draggable = false;
+          tree.droppable = false;
+        });
+        runtimeTreeInstances.push(...trees);
+      })
+      .then(() => {
+        rootRefs.forEach(async (item, index) => {
+          const disposer = await props.draggableMaterial(item.el, () => item.material);
+          rootRefs[index].disposer = disposer;
+        });
+      });
   });
 });
 onUnmounted(() => {
@@ -55,8 +85,11 @@ onUnmounted(() => {
     item.disposer?.();
   });
   rootRefs.length = 0;
+  runtimeTreeInstances.forEach((m) => {
+    m.destroy();
+  });
+  runtimeTreeInstances.length = 0;
 });
-
 </script>
 <style lang="scss" scoped>
 .material-list-container {
@@ -109,6 +142,13 @@ onUnmounted(() => {
         font-size: 13px;
         color: #999;
         margin-bottom: 8px;
+      }
+      .material-list-item__preview {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
       }
     }
   }

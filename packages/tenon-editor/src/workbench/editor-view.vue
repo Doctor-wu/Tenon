@@ -1,61 +1,55 @@
 <template>
   <section class="editor-view-wrapper">
-    <div
-      style="display: inline-block; margin-top: 20px"
-      id="tenon-editor"
-      ref="editorView"
-    >
-      <span ref="editorText">editor</span>
-      <section ref="editorConfig">
-        {{ JSON.stringify(editor.config) }}
-      </section>
+    <div id="tenon-editor" ref="editorView">
+      <component
+        v-if="runtimeTree"
+        :is="
+          runtimeTree.render({
+            style: {
+              minHeight: '680px',
+            },
+          })
+        "
+      ></component>
     </div>
   </section>
 </template>
 <script setup lang="ts">
-import { IContext, TenonEditor, TenonEditorContext } from "@/core";
-import { IAreaIndicatorFeature } from "@/features/area-indicator";
-import { AreaMarkType } from "@/features/area-indicator/area-indicator.interface";
-import { IEditModeFeature } from "@/features/edit-mode";
-import {
-  EditModeChange,
-  ModeNotification,
-  ModeType,
-} from "@/features/edit-mode/notification";
-import { onMounted, ref } from "vue";
+import { TenonEditor } from "@/core";
+import { RuntimeComponentTree } from "@/core/model";
+import { ModelChange, ModelChangeNotification } from "@/core/model/notification";
+import { onMounted, Ref, ref } from "vue";
 
 const props = defineProps<{
   editor: TenonEditor;
 }>();
 
 const editorView = ref<HTMLElement>();
-const editorText = ref<HTMLElement>();
-const editorConfig = ref<HTMLElement>();
+const runtimeTree = ref<RuntimeComponentTree | null>(props.editor.dataEngine.runtimeRoot) as Ref<RuntimeComponentTree | null>;
+
+props.editor.context.on(ModelChange, async (noti: ModelChangeNotification) => {
+  console.log("ModelChange", noti.payload);
+  runtimeTree.value = noti.payload;
+  // 根节点不可拖拽
+  runtimeTree.value.draggable = false;
+});
+
 onMounted(async () => {
   console.log("editorView", editorView.value);
-  const editor = props.editor;
-  const di = editor.workbenchAdaptor.workbenchDIService;
-  const areaIndicator = (await di.get<IAreaIndicatorFeature>(IAreaIndicatorFeature))!;
-  const editMode = (await di.get<IEditModeFeature>(IEditModeFeature))!;
-  const context = (await di.get<TenonEditorContext>(IContext))!;
-  areaIndicator.markElement(editorText.value!, AreaMarkType.Active);
-  areaIndicator.useSingletonHoverMark(editorText.value!);
-  areaIndicator.useSingletonHoverMark(editorConfig.value!);
-  let disposer: () => void;
-  if (editMode?.mode.value === ModeType.Edit) {
-    disposer = await areaIndicator.useSingletonHoverMark(editorView.value!);
-  }
-  context.on(EditModeChange, async (noti: ModeNotification) => {
-    if (noti.mode === ModeType.Edit) {
-      disposer = await areaIndicator?.useSingletonHoverMark(editorView.value!);
-    } else {
-      disposer?.();
-    }
-  });
 });
 </script>
 <style lang="scss" scoped>
 .editor-view-wrapper {
   padding: 6px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#tenon-editor {
+  display: inline-block;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 320px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 </style>

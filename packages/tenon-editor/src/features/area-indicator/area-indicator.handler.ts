@@ -3,13 +3,13 @@ import {
   Feature, IDynamicFeature,
   Inject, Loader, awaitLoad,
 } from "@tenon/workbench";
-import { AreaMarkStyleMap, AreaMarkType, IAreaIndicatorFeature } from "./area-indicator.interface";
+import { AreaMarkStyleMap, AreaMarkType, IAreaIndicatorFeature, SingleMarkType } from "./area-indicator.interface";
 import { ISurfaceOperateFeature } from "../surface-operate";
 import { IContext, LeftDrawerNotificationType, RightDrawerNotificationType, TenonEditor, TenonEditorContext } from "@/core";
 import { CommonNotificationType } from "@/core/notifications/common-notification";
 import { FullScreenType } from "../fullscreen/fullscreen.interface";
 
-export const MARK_PADDING = 3;
+export const MARK_PADDING = 1;
 
 @Feature({
   name: IAreaIndicatorFeature,
@@ -18,13 +18,17 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
 
   @Loader(ISurfaceOperateFeature)
   private surfaceOperate: IDynamicFeature<ISurfaceOperateFeature>;
+  private editor: TenonEditor | undefined;
 
   private get ISurfaceOperateFeature(): ISurfaceOperateFeature {
     return this.surfaceOperate.instance!;
   }
 
   private visible = true;
-  private singletonHoverMarkDisposer: () => void;
+  private singletonHoverMarkDisposerMap: Map<SingleMarkType, {
+    element: HTMLElement;
+    disposer: () => void;
+  }> = new Map();
 
   constructor(
     @Inject(IContext) private context: TenonEditorContext,
@@ -35,6 +39,7 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
   }
 
   private initEvent(editor: TenonEditor) {
+    this.editor = editor;
     this.context.on(DrawerDisplayType.Float, this.update.bind(this));
     this.context.on(DrawerDisplayType.Flow, this.update.bind(this));
     this.context.on(CommonNotificationType.WINDOW_RESIZE, () => {
@@ -59,8 +64,8 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
 
   async useHoverMark(element: HTMLElement) {
     const abortController = new AbortController();
-    element.addEventListener('mouseover', async () => {
-      const dispose = await this.markElement(element, AreaMarkType.Hover);
+    element.addEventListener('mouseenter', async () => {
+      const dispose = await this.markElement(element, AreaMarkType.DragHover);
       element.addEventListener('mouseleave', () => {
         dispose();
       }, { once: true });
@@ -68,28 +73,57 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     return abortController;
   }
 
-  async useSingletonHoverMark(element: HTMLElement) {
-    const abortController = new AbortController();
-    let dispose: () => void | undefined;
-    element.setAttribute('__tenon_singleton_hover_mark__', "true");
-    element.addEventListener('mouseover', async (el) => {
-      if (
-        el.target !== element
-        && el.target instanceof HTMLElement
-        && el.target?.hasAttribute('__tenon_singleton_hover_mark__')
-      ) return;
-      if (this.singletonHoverMarkDisposer) {
-        this.singletonHoverMarkDisposer();
-      }
-      const closureDispose = await this.markElement(element, AreaMarkType.Hover);
-      dispose = closureDispose;
-      this.singletonHoverMarkDisposer = closureDispose;
-      element.addEventListener('mouseleave', () => {
-        closureDispose();
-      }, { once: true });
-    }, { signal: abortController.signal, capture: true });
+  async useSingletonMark(
+    type: SingleMarkType,
+    element: HTMLElement,
+  ) {
+    if (this.singletonHoverMarkDisposerMap.get(type)) {
+      this.singletonHoverMarkDisposerMap.get(type)!.disposer();
+      this.singletonHoverMarkDisposerMap.delete(type);
+    }
+    const closureDispose = await this.markElement(element, AreaMarkType[type]);
+    this.singletonHoverMarkDisposerMap.set(type, {
+      element,
+      disposer: closureDispose,
+    });
     return () => {
-      dispose?.();
+      closureDispose?.();
+      this.singletonHoverMarkDisposerMap.delete(type);
+    };
+  }
+
+  async useSingletonHoverMark(
+    type: SingleMarkType.DragHover | SingleMarkType.DropHovering,
+    element: HTMLElement,
+  ) {
+    if (this.singletonHoverMarkDisposerMap.get(type)) {
+      this.singletonHoverMarkDisposerMap.get(type)!.disposer();
+      this.singletonHoverMarkDisposerMap.delete(type);
+    }
+    let closureDispose;
+    const abortController = new AbortController();
+    element.addEventListener('mouseover', async (e) => {
+      if (e.currentTarget !== element) return;
+      if (this.singletonHoverMarkDisposerMap.get(type)) {
+        this.singletonHoverMarkDisposerMap.get(type)!.disposer();
+        this.singletonHoverMarkDisposerMap.delete(type);
+      }
+      closureDispose = await this.markElement(element, AreaMarkType[type]);
+      this.singletonHoverMarkDisposerMap.set(type, {
+        element,
+        disposer: closureDispose,
+      });
+      element.addEventListener('mouseleave', (e) => {
+        closureDispose();
+        this.singletonHoverMarkDisposerMap.delete(type);
+      }, { once: true, signal: abortController.signal });
+    }, {
+      signal: abortController.signal,
+      capture: true,
+    });
+    return () => {
+      closureDispose?.();
+      this.singletonHoverMarkDisposerMap.delete(type);
       abortController.abort();
     };
   }
@@ -136,8 +170,8 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
   public async getElementRectRelativeWithSurface(element: HTMLElement) {
     const surfaceDom = this.surfaceOperate.instance!.getSurfaceDom();
     const rect = element.getBoundingClientRect();
-    let accY = element.offsetTop;
-    let accX = element.offsetLeft;
+    let accY = element.offsetTop - (this.editor?.root.scrollTop || 0);
+    let accX = element.offsetLeft - (this.editor?.root.scrollLeft || 0);
     let width = rect.width;
     let height = rect.height;
     let current = element;
