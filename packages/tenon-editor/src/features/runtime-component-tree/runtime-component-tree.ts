@@ -1,6 +1,6 @@
 import { BaseMaterial, MaterialInternalEvent, TenonEventPrefix } from "@tenon/materials";
 import { Bridge, Dict } from "@tenon/shared";
-import { Ref, VNode, effect, reactive } from "vue";
+import { Ref, VNode, reactive } from "vue";
 import { ElementChangeEvent, RuntimeComponentTreeDestroyEvent } from "./runtime-component-tree.interface";
 
 let runTimeId = 0;

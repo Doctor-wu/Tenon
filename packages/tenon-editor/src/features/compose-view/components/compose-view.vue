@@ -10,7 +10,7 @@
         (composeViewHandler?.hoveringRuntimeTreeId as unknown as string) ===
           rootRef?.getAttribute(DATA_RUNTIME_TREE_ID),
     }"
-    @dragenter.prevent.self="(e) => composeViewHandler?.bridge.run('onDragEnter', e)"
+    @dragenter.prevent.self="handleDragEnter"
     @dragover.prevent="() => {}"
     @dragleave.self="(e) => composeViewHandler?.bridge.run('onDragLeave', e)"
     @drop.prevent="(e) => composeViewHandler?.bridge.run('onDrop', e)"
@@ -26,7 +26,7 @@
     :class="{
       dragging: materialDrag?.computedDragging,
     }"
-    @dragenter.prevent.self="(e) => composeViewHandler?.bridge.run('onDragEnter', e)"
+    @dragenter.prevent.self="handleDragEnter"
     @dragover.prevent="() => {}"
     @dragleave.self="(e) => composeViewHandler?.bridge.run('onDragLeave', e)"
     @drop.prevent="(e) => composeViewHandler?.bridge.run('onDrop', e)"
@@ -67,12 +67,21 @@ props.composeViewHandler.getMaterialDrag().then((service) => {
 });
 
 useEventMeta(props.__tenon_event_meta__, rootRef, props.bridge);
+
 props.bridge.register(`${TenonEventPrefix}onClick`, (e) => {
   console.log(props.__tenon_material_instance__.name, `${TenonEventPrefix}onClick`, e);
 });
 props.bridge.register(`${TenonEventPrefix}onDoubleClick`, (e) => {
-  console.log(props.__tenon_material_instance__.name, `${TenonEventPrefix}onDoubleClick`, e);
+  console.log(
+    props.__tenon_material_instance__.name,
+    `${TenonEventPrefix}onDoubleClick`,
+    e
+  );
 });
+
+const handleDragEnter = (e) => {
+  props.composeViewHandler?.bridge.run('onDragEnter', e);
+};
 </script>
 <style lang="scss" scoped>
 .empty-view-container {
@@ -89,7 +98,7 @@ props.bridge.register(`${TenonEventPrefix}onDoubleClick`, (e) => {
   border: 1px dashed #999;
   // padding: 12px;
   &.dragging {
-    // padding-bottom: 12px;
+    padding-bottom: 12px;
   }
 }
 </style>

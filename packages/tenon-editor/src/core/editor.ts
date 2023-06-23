@@ -11,6 +11,8 @@ import {
 import { TenonEditorContext } from "./context";
 import { plugins } from "../workbench/plugins";
 import { IDataEngine, TenonDataEngine } from "./model/data-engine";
+import { TenonPerformanceMeasure } from '../performance/measure';
+import { Logger } from "@/utils/logger";
 
 export class TenonEditor {
   @Loader(ITenonEditorLifeCycle)
@@ -91,6 +93,14 @@ export class TenonEditor {
           TenonEditorLifeCycleStage.EditorAdapterReady
         );
       }
+    );
+    this.lifecycle!.regisStageCallBack(
+      TenonEditorLifeCycleStage.Ready,
+      () => {
+        Logger.info("Tenon Performance Measure:");
+        TenonPerformanceMeasure.getInstance().measureMetrics();
+        TenonPerformanceMeasure.getInstance().logMetrics();
+      },
     );
   }
 
