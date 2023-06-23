@@ -1,6 +1,6 @@
 
 import { Logger } from '../utils/logger';
-enum PerformanceMetricsName {
+export enum PerformanceMetricsName {
   /** Time To Interactive */
   TTI = 'TTI',
   /** First Contentful Paint */
@@ -13,6 +13,12 @@ enum PerformanceMetricsName {
   FMP = 'FMP',
   /** Speed Index */
   SI = 'SI',
+
+  EditorInitd = 'editor-initd',
+  WorkbenchLaunched = 'workbench-launched',
+  DataEngineInitd = 'data-engine-initd',
+  AdapterReady = 'adapter-ready',
+  EditorReady = 'editor-ready',
 }
 
 interface PerformanceMetrics {
@@ -39,13 +45,14 @@ export class TenonPerformanceMeasure {
     return this.metrics;
   }
 
-  public measureMetrics() {
+  public async measureMetrics() {
     this.measureTTI();
     this.measureFCP();
-    this.measureLCP();
+    await this.measureLCP();
     this.measureTTFB();
     this.measureFMP();
     this.measureSI();
+    this.measureEditorMetrics();
   }
 
   public logMetrics() {
@@ -73,10 +80,15 @@ export class TenonPerformanceMeasure {
   /**
    * Largest Contentful Paint
    */
-  private measureLCP() {
-    const lcp = performance.getEntriesByType('largest-contentful-paint')
-      .find((entry) => entry.startTime > 0)?.startTime;
-    this.metrics[PerformanceMetricsName.LCP] = lcp;
+  private async measureLCP() {
+    return new Promise((resolve) => {
+      new PerformanceObserver((entryList) => {
+        const entries = entryList.getEntries();
+        const lastEntry = entries[entries.length - 1] as any;
+        this.metrics[PerformanceMetricsName.LCP] = lastEntry.renderTime || lastEntry.loadTime;
+        resolve(null);
+      }).observe({ type: 'largest-contentful-paint', buffered: true });
+    });
   }
 
   /**
@@ -103,5 +115,18 @@ export class TenonPerformanceMeasure {
     const si = performance.getEntriesByType('paint')
       .find((entry) => entry.name === 'speed-index')?.startTime;
     this.metrics[PerformanceMetricsName.SI] = si;
+  }
+
+  private measureEditorMetrics() {
+    const editorInitd = performance.getEntriesByName(PerformanceMetricsName.EditorInitd)[0]?.startTime;
+    const workbenchLaunched = performance.getEntriesByName(PerformanceMetricsName.WorkbenchLaunched)[0]?.startTime;
+    const dataEngineInitd = performance.getEntriesByName(PerformanceMetricsName.DataEngineInitd)[0]?.startTime;
+    const adapterReady = performance.getEntriesByName(PerformanceMetricsName.AdapterReady)[0]?.startTime;
+    const editorReady = performance.getEntriesByName(PerformanceMetricsName.EditorReady)[0]?.startTime;
+    this.metrics[PerformanceMetricsName.EditorInitd] = editorInitd;
+    this.metrics[PerformanceMetricsName.WorkbenchLaunched] = workbenchLaunched;
+    this.metrics[PerformanceMetricsName.DataEngineInitd] = dataEngineInitd;
+    this.metrics[PerformanceMetricsName.AdapterReady] = adapterReady;
+    this.metrics[PerformanceMetricsName.EditorReady] = editorReady;
   }
 }

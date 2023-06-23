@@ -53,6 +53,32 @@ importers:
       lodash: 4.17.21
       ts-node: 10.7.0_j3lozeqrgqmnbhccco5fesxrka
 
+  apps/tenon-editor:
+    specifiers:
+      '@tenon/materials': workspace:*
+      '@tenon/shared': workspace:*
+      '@tenon/workbench': workspace:*
+      cross-env: ^7.0.3
+      rxjs: ^7.8.0
+      tdesign-vue-next: ^1.0.0
+      unplugin-auto-import: ^0.12.1
+      unplugin-vue-components: ^0.22.12
+      vite-plugin-ejs: ^1.6.4
+      vue: ^3.2.31
+      vue-material-design-icons: ^5.1.2
+    dependencies:
+      '@tenon/materials': link:../../packages/tenon-materials
+      '@tenon/shared': link:../../packages/shared
+      '@tenon/workbench': link:../../packages/tenon-workbench
+      cross-env: 7.0.3
+      rxjs: 7.8.0
+      tdesign-vue-next: 1.0.0_vue@3.2.31
+      unplugin-auto-import: 0.12.1
+      unplugin-vue-components: 0.22.12_vue@3.2.31
+      vite-plugin-ejs: 1.6.4
+      vue: 3.2.31
+      vue-material-design-icons: 5.1.2
+
   apps/todo-list/frontend:
     specifiers:
       '@tenon/sdk': workspace:*
@@ -184,32 +210,6 @@ importers:
       typescript: 4.6.2
       vite: 2.8.6_sass@1.49.9
       vue-tsc: 0.3.0_typescript@4.6.2
-
-  packages/tenon-editor:
-    specifiers:
-      '@tenon/materials': workspace:*
-      '@tenon/shared': workspace:*
-      '@tenon/workbench': workspace:*
-      cross-env: ^7.0.3
-      rxjs: ^7.8.0
-      tdesign-vue-next: ^1.0.0
-      unplugin-auto-import: ^0.12.1
-      unplugin-vue-components: ^0.22.12
-      vite-plugin-ejs: ^1.6.4
-      vue: ^3.2.31
-      vue-material-design-icons: ^5.1.2
-    dependencies:
-      '@tenon/materials': link:../tenon-materials
-      '@tenon/shared': link:../shared
-      '@tenon/workbench': link:../tenon-workbench
-      cross-env: 7.0.3
-      rxjs: 7.8.0
-      tdesign-vue-next: 1.0.0_vue@3.2.31
-      unplugin-auto-import: 0.12.1
-      unplugin-vue-components: 0.22.12_vue@3.2.31
-      vite-plugin-ejs: 1.6.4
-      vue: 3.2.31
-      vue-material-design-icons: 5.1.2
 
   packages/tenon-engine:
     specifiers:

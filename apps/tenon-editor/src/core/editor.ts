@@ -11,7 +11,7 @@ import {
 import { TenonEditorContext } from "./context";
 import { plugins } from "../workbench/plugins";
 import { IDataEngine, TenonDataEngine } from "./model/data-engine";
-import { TenonPerformanceMeasure } from '../performance/measure';
+import { PerformanceMetricsName, TenonPerformanceMeasure } from '../performance/measure';
 import { Logger } from "@/utils/logger";
 
 export class TenonEditor {
@@ -32,7 +32,6 @@ export class TenonEditor {
   constructor() {
     this.setupAdaptor();
     this.setupInjection();
-    this.initInstantiations();
     this.setupLifeCycle();
     window.editor = this;
   }
@@ -73,12 +72,15 @@ export class TenonEditor {
     this.lifecycle!.regisStageCallBack(
       TenonEditorLifeCycleStage.LaunchWorkbench,
       () => {
+        performance.mark(PerformanceMetricsName.EditorInitd);
         this.launchWorkbench();
       }
     );
     this.lifecycle!.regisStageCallBack(
       TenonEditorLifeCycleStage.InitDataEngine,
       () => {
+        performance.mark(PerformanceMetricsName.WorkbenchLaunched);
+        this.dataEngine
         this.lifecycle!.emitStageFinish(
           TenonEditorLifeCycleStage.InitDataEngine
         );
@@ -87,6 +89,7 @@ export class TenonEditor {
     this.lifecycle!.regisStageCallBack(
       TenonEditorLifeCycleStage.EditorAdapterReady,
       () => {
+        performance.mark(PerformanceMetricsName.DataEngineInitd);
         this.initInstantiations();
         this.setupPlugin();
         this.lifecycle!.emitStageFinish(
@@ -96,9 +99,12 @@ export class TenonEditor {
     );
     this.lifecycle!.regisStageCallBack(
       TenonEditorLifeCycleStage.Ready,
-      () => {
+      async () => {
+        performance.mark(PerformanceMetricsName.AdapterReady);
+        Logger.info("Tenon Editor Ready!");
         Logger.info("Tenon Performance Measure:");
-        TenonPerformanceMeasure.getInstance().measureMetrics();
+        performance.mark(PerformanceMetricsName.EditorReady);
+        await TenonPerformanceMeasure.getInstance().measureMetrics();
         TenonPerformanceMeasure.getInstance().logMetrics();
       },
     );
