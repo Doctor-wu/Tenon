@@ -6,7 +6,7 @@
     class="empty-view-container"
     :class="{
       dragging:
-        composeViewHandler?.computedDragging &&
+      materialDrag?.computedDragging &&
         (composeViewHandler?.hoveringRuntimeTreeId as unknown as string) ===
           rootRef?.getAttribute(DATA_RUNTIME_TREE_ID),
     }"
@@ -24,7 +24,7 @@
     :style="style"
     class="view-container"
     :class="{
-      dragging: composeViewHandler?.computedDragging,
+      dragging: materialDrag?.computedDragging,
     }"
     @dragenter.prevent.self="(e) => composeViewHandler?.bridge.run('onDragEnter', e)"
     @dragover.prevent="() => {}"
@@ -40,32 +40,38 @@ import { RuntimeComponentTree } from "@/features/runtime-component-tree";
 import {
   IMaterialEventMeta,
   IMaterialInternalEventMeta,
+  TenonEventPrefix,
   useEventMeta,
 } from "@tenon/materials";
-import type { Bridge } from "@tenon/shared";
-import { CSSProperties, ref } from "vue";
-import type { IComposeViewFeature } from "../compose-view.interface";
 import { DATA_RUNTIME_TREE_ID } from "../compose-view.interface";
+import { CSSProperties, ref, shallowRef } from "vue";
+import type { Bridge } from "@tenon/shared";
+import type { IComposeViewFeature } from "../compose-view.interface";
+import type { IMaterialDragFeature } from "@/features/material-drag";
 import type { TenonComposeView } from "../compose-view.material";
 
 const props = defineProps<{
   style?: CSSProperties;
   isEmpty: boolean;
   composeViewHandler: IComposeViewFeature;
-  bridge: Bridge<Record<`tenon-event:${string}`, any>>;
+  bridge: Bridge<Record<`${typeof TenonEventPrefix}${string}`, any>>;
   runtimeTree: RuntimeComponentTree;
   __tenon_material_instance__: TenonComposeView;
   __tenon_event_meta__: (IMaterialEventMeta | IMaterialInternalEventMeta)[];
 }>();
 
 const rootRef = ref<HTMLElement>();
+const materialDrag = shallowRef<IMaterialDragFeature | null>(null);
+props.composeViewHandler.getMaterialDrag().then((service) => {
+  materialDrag.value = service;
+});
 
 useEventMeta(props.__tenon_event_meta__, rootRef, props.bridge);
-props.bridge.register("tenon-event:onClick", (e) => {
-  console.log(props.__tenon_material_instance__.name, "tenon-event:onClick", e);
+props.bridge.register(`${TenonEventPrefix}onClick`, (e) => {
+  console.log(props.__tenon_material_instance__.name, `${TenonEventPrefix}onClick`, e);
 });
-props.bridge.register("tenon-event:onDoubleClick", (e) => {
-  console.log(props.__tenon_material_instance__.name, "tenon-event:onDoubleClick", e);
+props.bridge.register(`${TenonEventPrefix}onDoubleClick`, (e) => {
+  console.log(props.__tenon_material_instance__.name, `${TenonEventPrefix}onDoubleClick`, e);
 });
 </script>
 <style lang="scss" scoped>
@@ -81,9 +87,9 @@ props.bridge.register("tenon-event:onDoubleClick", (e) => {
 }
 .view-container {
   border: 1px dashed #999;
-  padding: 12px;
+  // padding: 12px;
   &.dragging {
-    padding-bottom: 12px;
+    // padding-bottom: 12px;
   }
 }
 </style>

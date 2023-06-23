@@ -1,4 +1,4 @@
-import { BaseMaterial, MaterialInternalEvent } from "@tenon/materials";
+import { BaseMaterial, MaterialInternalEvent, TenonEventPrefix } from "@tenon/materials";
 import { Bridge, Dict } from "@tenon/shared";
 import { Ref, VNode, effect, reactive } from "vue";
 import { ElementChangeEvent, RuntimeComponentTreeDestroyEvent } from "./runtime-component-tree.interface";
@@ -10,9 +10,9 @@ export class RuntimeComponentTree {
   el?: HTMLElement;
   material: BaseMaterial | null = null;
   props: Dict<unknown>;
-  bridge: Bridge<Record<`tenon-event:${string}`, any>> = new Bridge();
-  eventBindings: Record<`tenon-event:${string}`, (...args: unknown[]) => unknown> | null = null;
-  eventHandlers: Record<`tenon-event:${string}`, (...args: unknown[]) => unknown> | null = null;
+  bridge: Bridge<Record<`${typeof TenonEventPrefix}${string}`, any>> = new Bridge();
+  eventBindings: Record<`${typeof TenonEventPrefix}${string}`, (...args: unknown[]) => unknown> | null = null;
+  eventHandlers: Record<`${typeof TenonEventPrefix}${string}`, (...args: unknown[]) => unknown> | null = null;
   parent: RuntimeComponentTree | null = null;
   children = reactive<RuntimeComponentTree[]>([]) as RuntimeComponentTree[];
   draggable = true;
@@ -47,14 +47,14 @@ export class RuntimeComponentTree {
 
   private initEvents() {
     Object.keys(this.eventBindings || {}).forEach((key) => {
-      this.bridge.register(key as `tenon-event:${string}`, (...args) => {
+      this.bridge.register(key as `${typeof TenonEventPrefix}${string}`, (...args) => {
         console.log(key, args);
         if (this.eventHandlers?.[key]) {
           this.eventHandlers[key](...args);
         }
       });
     });
-    this.bridge.register(`tenon-event:${MaterialInternalEvent.Mount}`, (elRef: Ref<HTMLElement>) => {
+    this.bridge.register(`${TenonEventPrefix}${MaterialInternalEvent.Mount}`, (elRef: Ref<HTMLElement>) => {
       this.bridge.run(ElementChangeEvent, elRef);
     });
   }

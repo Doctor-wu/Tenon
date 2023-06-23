@@ -1,10 +1,10 @@
-import { bindDynamicLoader, createDynamicFeatureTag, createSyncFeatureTag } from "@tenon/workbench";
+import { bindDynamicLoader, createDynamicFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
 import { RuntimeComponentTree } from "./runtime-component-tree";
-import { IDryMaterial, IWetMaterial } from "@tenon/materials";
+import { IDryMaterial, IWetMaterial, TenonEventPrefix } from "@tenon/materials";
 
-export const ElementChangeEvent = 'tenon-event:__element_change__';
-export const RuntimeComponentTreeDestroyEvent = 'tenon-event:__runtime_component_tree_destroy__';
+export const ElementChangeEvent = `${TenonEventPrefix}__element_change__`;
+export const RuntimeComponentTreeDestroyEvent = `${TenonEventPrefix}__runtime_component_tree_destroy__`;
 
 export interface IRuntimeComponentTreeFeature {
   // interface

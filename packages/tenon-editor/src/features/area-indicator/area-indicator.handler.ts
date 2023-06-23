@@ -3,7 +3,10 @@ import {
   Feature, IDynamicFeature,
   Inject, Loader, awaitLoad,
 } from "@tenon/workbench";
-import { AreaMarkStyleMap, AreaMarkType, IAreaIndicatorFeature, SingleMarkType } from "./area-indicator.interface";
+import {
+  AreaMarkStyleMap, AreaMarkType,
+  IAreaIndicatorFeature, SingleMarkType,
+} from "./area-indicator.interface";
 import { ISurfaceOperateFeature } from "../surface-operate";
 import { IContext, LeftDrawerNotificationType, RightDrawerNotificationType, TenonEditor, TenonEditorContext } from "@/core";
 import { CommonNotificationType } from "@/core/notifications/common-notification";
@@ -95,6 +98,7 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
   async useSingletonHoverMark(
     type: SingleMarkType.DragHover | SingleMarkType.DropHovering,
     element: HTMLElement,
+    shouldHide?: () => boolean,
   ) {
     if (this.singletonHoverMarkDisposerMap.get(type)) {
       this.singletonHoverMarkDisposerMap.get(type)!.disposer();
@@ -103,10 +107,10 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     let closureDispose;
     const abortController = new AbortController();
     element.addEventListener('mouseover', async (e) => {
+      if (shouldHide?.()) return;
       if (e.currentTarget !== element) return;
       if (this.singletonHoverMarkDisposerMap.get(type)) {
         this.singletonHoverMarkDisposerMap.get(type)!.disposer();
-        this.singletonHoverMarkDisposerMap.delete(type);
       }
       closureDispose = await this.markElement(element, AreaMarkType[type]);
       this.singletonHoverMarkDisposerMap.set(type, {
@@ -114,16 +118,15 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
         disposer: closureDispose,
       });
       element.addEventListener('mouseleave', (e) => {
+        if (e.currentTarget !== element) return;
         closureDispose();
-        this.singletonHoverMarkDisposerMap.delete(type);
-      }, { once: true, signal: abortController.signal });
+      }, { signal: abortController.signal });
     }, {
       signal: abortController.signal,
       capture: true,
     });
     return () => {
       closureDispose?.();
-      this.singletonHoverMarkDisposerMap.delete(type);
       abortController.abort();
     };
   }

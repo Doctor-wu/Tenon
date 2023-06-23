@@ -6,15 +6,24 @@ import { IDryMaterial, IWetMaterial } from "@tenon/materials";
 import { IMaterialFeature } from "../material";
 import { RuntimeComponentTree } from "./runtime-component-tree";
 import { DragType, IMaterialDragFeature } from "../material-drag";
-import { Ref, effect, nextTick } from "vue";
+import { Ref, effect, watch } from "vue";
 import { IAreaIndicatorFeature } from "../area-indicator";
 import { SingleMarkType } from "../area-indicator/area-indicator.interface";
+import { IEditModeFeature } from "../edit-mode";
+import { ModeType } from "../edit-mode/notification";
 
 @Feature({
   name: IRuntimeComponentTreeFeature,
 })
 export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature {
   public runtimeTreeMap: Map<number, RuntimeComponentTree> = new Map();
+
+  @Loader(IEditModeFeature)
+  private editModeFeature!: IDynamicFeature<IEditModeFeature>;
+
+  private get editMode() {
+    return this.editModeFeature.instance!;
+  }
 
   @Loader(IMaterialFeature)
   private materialFeature: IDynamicFeature<IMaterialFeature>;
@@ -51,6 +60,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     console.log('move', runtimeTree, beMove);
     const index = beMove.parent!.children.indexOf(beMove);
     beMove.parent!.children.splice(index, 1);
+    beMove.parent = runtimeTree;
     runtimeTree.children.push(beMove);
   }
 
@@ -73,12 +83,10 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     return runtimeTree;
   }
 
-  @awaitLoad(IMaterialDragFeature, IAreaIndicatorFeature)
+  @awaitLoad(IMaterialDragFeature, IAreaIndicatorFeature, IEditModeFeature)
   private async initRuntimeTree(runtimeTree: RuntimeComponentTree) {
     runtimeTree.bridge.register(ElementChangeEvent, (elRef: Ref<HTMLElement>) => {
-      const disEffect = effect(() => {
-        const newEl = elRef.value;
-        const oldEl = runtimeTree.el;
+      const disEffect = watch(elRef, (newEl, oldEl) => {
         if (!newEl) return;
         if (oldEl && newEl.isEqualNode(oldEl)) return;
         if (oldEl) {
@@ -88,9 +96,17 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
         if (runtimeTree.draggable) {
           (newEl as any).elDropDisposer = this.materialDrag
             .draggableElement(newEl, DragType.Component, () => runtimeTree);
-          (newEl as any).elDragDisposer = this.areaIndicator.useSingletonHoverMark(SingleMarkType.DragHover, newEl);
+          (newEl as any).elDragDisposer = this.areaIndicator
+            .useSingletonHoverMark(SingleMarkType.DragHover, newEl,
+              () => this.editMode.mode.value !== ModeType.Edit,
+            );
         }
+      }, {
+        immediate: true,
       });
+      // const disEffect = effect(() => {
+      //   const newEl = elRef.value;
+      // });
       runtimeTree.bridge.register(RuntimeComponentTreeDestroyEvent, () => {
         disEffect();
         this.disposeElement(runtimeTree.el!);

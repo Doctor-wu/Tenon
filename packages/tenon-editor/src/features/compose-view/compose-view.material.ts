@@ -1,12 +1,12 @@
 import {
   BaseMaterial, IMaterialEventMeta, MaterialPropsType,
-  clickTrigger, doubleClickTrigger, internalMeta,
+  clickTrigger, doubleClickTrigger, internalMeta, TenonEventPrefix,
 } from "@tenon/materials";
 import { h } from "vue";
 import composeViewVue from "./components/compose-view.vue";
 import { IComposeViewFeature } from "./compose-view.interface";
 import { Bridge } from "@tenon/shared";
-import { RuntimeComponentTree } from "@/core/model";
+import { RuntimeComponentTree } from "../runtime-component-tree";
 
 const TenonComposeViewInfo = {
   name: 'ComposeView',
@@ -59,7 +59,7 @@ export class TenonComposeView extends BaseMaterial {
   } & {
     children: RuntimeComponentTree[];
     runtimeTree: RuntimeComponentTree;
-    bridge: Bridge<Record<`tenon-event:${string}`, any>>;
+    bridge: Bridge<Record<`${typeof TenonEventPrefix}${string}`, any>>;
   }) {
     const { children, runtimeTree, ...withoutChildrenProps } = props;
     const setProps = {
@@ -72,7 +72,7 @@ export class TenonComposeView extends BaseMaterial {
     };
     // @ts-ignore
     return h(composeViewVue, setProps, () => {
-      console.log(`render children, host: ${runtimeTree.id}`, children);
+      // console.log(`render children, host: ${runtimeTree.id}`, children);
       return children.map((child) => {
         return child.render({ key: child.id });
       });

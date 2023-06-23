@@ -1,18 +1,33 @@
 import {
-  Feature, Inject
+  Feature, IDynamicFeature, Inject, Loader, awaitLoad
 } from "@tenon/workbench";
 import { DragType, IDragPayload, IMaterialDragFeature } from "./material-drag.interface";
 import { IContext, TenonEditorContext } from "@/core";
-import { DragNotification } from "./notification";
+import { DragNotification, DragStatusChange } from "./notification";
+import { Ref, effect, ref } from "vue";
+import { ModeType } from "../edit-mode/notification";
+import { IEditModeFeature } from "../edit-mode";
 
 @Feature({
   name: IMaterialDragFeature,
 })
 export class MaterialDragHandler implements IMaterialDragFeature {
+  public computedDragging = ref(false);
+  private dragging = ref(false);
   private payload: IDragPayload[DragType] | null = null;
+
+  @Loader(IEditModeFeature)
+  private editModeFeature!: IDynamicFeature<IEditModeFeature>;
+
+  private get editMode() {
+    return this.editModeFeature.instance!;
+  }
+
   constructor(
     @Inject(IContext) private context: TenonEditorContext,
-  ) { }
+  ) {
+    this.initEvent();
+  }
 
   draggableElement<T extends DragType>(
     el: HTMLElement,
@@ -22,6 +37,7 @@ export class MaterialDragHandler implements IMaterialDragFeature {
     const abort = new AbortController();
     el.draggable = true;
     el.addEventListener('dragstart', (e) => {
+      if (this.editMode.mode.value !== ModeType.Edit) return e.preventDefault();
       e.stopPropagation();
       e.dataTransfer!.effectAllowed = 'move';
       e.dataTransfer!.dropEffect = 'move';
@@ -62,5 +78,18 @@ export class MaterialDragHandler implements IMaterialDragFeature {
       return null as any;
     }
     return this.payload! as IDragPayload[T];
+  }
+
+  @awaitLoad(IEditModeFeature)
+  private initEvent () {
+    this.context.on(DragStatusChange, (notification: DragNotification) => {
+      this.dragging.value = notification.dragging;
+      console.log('DragStatusChange', notification.dragging);
+    });
+    effect(() => {
+      const value = this.dragging.value
+        && this.editMode.mode.value === ModeType.Edit;
+      this.computedDragging.value = value;
+    });
   }
 }

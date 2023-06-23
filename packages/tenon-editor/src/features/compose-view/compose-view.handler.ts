@@ -21,9 +21,7 @@ import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 })
 export class ComposeViewHandler implements IComposeViewFeature {
   public bridge = new Bridge<IComposeViewBridge>();
-  public computedDragging: Ref<boolean> = ref(false);
   public hoveringRuntimeTreeId: Ref<string | undefined> = ref(undefined);
-  private dragging = ref(false);
   private draggingDisposer?: () => void;
   private editor: TenonEditor | undefined;
 
@@ -32,13 +30,6 @@ export class ComposeViewHandler implements IComposeViewFeature {
 
   private get areaIndicator() {
     return this.areaIndicatorFeature.instance!;
-  }
-
-  @Loader(IEditModeFeature)
-  private editModeFeature!: IDynamicFeature<IEditModeFeature>;
-
-  private get editMode() {
-    return this.editModeFeature.instance!;
   }
 
   @Loader(IMaterialDragFeature)
@@ -65,6 +56,11 @@ export class ComposeViewHandler implements IComposeViewFeature {
     this.editor = editor;
   }
 
+  @awaitLoad(IMaterialDragFeature)
+  async getMaterialDrag() {
+    return this.materialDrag;
+  }
+
   getComposeView = () => {
     return new TenonComposeView(this);
   }
@@ -72,16 +68,9 @@ export class ComposeViewHandler implements IComposeViewFeature {
   @awaitLoad(IEditModeFeature)
   private initEvent() {
     this.context.on(DragStatusChange, (notification: DragNotification) => {
-      this.dragging.value = notification.dragging;
-      console.log('DragStatusChange', notification.dragging);
       if (!notification.dragging) {
         this.handleDragEnd();
       }
-    });
-    effect(() => {
-      const value = this.dragging.value
-        && this.editMode.mode.value === ModeType.Edit;
-      this.computedDragging.value = value;
     });
     this.bridge.register('onDragEnter', (e) => this.handleDragEnter(e));
     this.bridge.register('onDragLeave', (e) => this.handleDragLeave(e));
@@ -102,11 +91,11 @@ export class ComposeViewHandler implements IComposeViewFeature {
 
   @awaitLoad(IMaterialDragFeature, IRuntimeComponentTreeFeature)
   private async handleDrop(e: DragEvent) {
+    this.clearDragDisposer();
     e.stopPropagation();
     const runtimeTreeId = (e.target as HTMLElement).getAttribute(DATA_RUNTIME_TREE_ID);
     if (!runtimeTreeId) return;
     const runtimeTree = this.runtimeComponentTree.getRuntimeTreeById(Number(runtimeTreeId));
-    console.log('handleDrop', runtimeTreeId, runtimeTree);
     if (!runtimeTree) return;
     if (!runtimeTree.droppable) return;
     const dragType = e.dataTransfer!.getData('dragType') as DragType;

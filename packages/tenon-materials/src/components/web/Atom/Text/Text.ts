@@ -1,7 +1,7 @@
 import { h } from "vue";
 import { BaseMaterial, MaterialPropsType } from "../../../base-material";
 import TextComponent from "./Text.vue";
-import { clickTrigger, doubleClickTrigger } from "../../../events";
+import { TenonEventPrefix, clickTrigger, doubleClickTrigger } from "../../../events";
 import { IMaterialEventMeta, internalMeta } from "../../../events/event-meta";
 import { Bridge } from "@tenon/shared";
 
@@ -48,7 +48,7 @@ export class TenonText extends BaseMaterial {
   public render(props: {
     [K in keyof TenonText["propMeta"]]: TenonText["propMeta"][K]["type"];
   } & {
-    bridge: Bridge<Record<`tenon-event:${string}`, any>>;
+    bridge: Bridge<Record<`${typeof TenonEventPrefix}${string}`, any>>;
   }) {
     const setProps = {
       ...props,

@@ -2,6 +2,7 @@ import { bindDynamicLoader, createDynamicFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
 import type { RuntimeComponentTree } from "@/features/runtime-component-tree/runtime-component-tree";
 import type { BaseMaterial } from "@tenon/materials";
+import { Ref } from "vue";
 
 export enum DragType {
   /** 拖拽组件 */
@@ -17,6 +18,7 @@ export interface IDragPayload {
 
 export interface IMaterialDragFeature {
   // interface
+  computedDragging: Ref<boolean>;
   draggableElement<T extends DragType>(el: HTMLElement, dragType: T, getPayload: () => IDragPayload[T]): () => void;
   getDragPayload<T extends DragType>(e: DragEvent, type: T): IDragPayload[T];
 }
