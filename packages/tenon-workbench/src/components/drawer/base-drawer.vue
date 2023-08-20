@@ -165,6 +165,7 @@ onMounted(() => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  will-change: auto;
 
   &.float {
     position: absolute;

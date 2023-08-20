@@ -94,19 +94,18 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
         }
         runtimeTree.el = newEl;
         if (runtimeTree.draggable) {
-          (newEl as any).elDropDisposer = this.materialDrag
-            .draggableElement(newEl, DragType.Component, () => runtimeTree);
           (newEl as any).elDragDisposer = this.areaIndicator
             .useSingletonHoverMark(SingleMarkType.DragHover, newEl,
               () => this.editMode.mode.value !== ModeType.Edit,
             );
         }
+        if (runtimeTree.droppable) {
+          (newEl as any).elDropDisposer = this.materialDrag
+          .draggableElement(newEl, DragType.Component, () => runtimeTree);
+        }
       }, {
         immediate: true,
       });
-      // const disEffect = effect(() => {
-      //   const newEl = elRef.value;
-      // });
       runtimeTree.bridge.register(RuntimeComponentTreeDestroyEvent, () => {
         disEffect();
         this.disposeElement(runtimeTree.el!);
