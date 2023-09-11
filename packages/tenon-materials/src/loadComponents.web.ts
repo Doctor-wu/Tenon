@@ -36,7 +36,7 @@ export const loadWebComponents = async () => {
 };
 
 const buildComponents = async (components: IMaterialConfig) => {
-  const dirs = path.resolve(__dirname, '../components/web');
+  const dirs = path.resolve(__dirname, '../src/components/web');
   const compSource = fs.readdirSync(dirs).filter(n => !n.includes("Atom"));
   console.log(compSource);
   await asyncCompose(

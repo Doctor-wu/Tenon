@@ -17,7 +17,7 @@ import {
   useEventMeta,
 } from "../../../events/event-meta";
 import type { Bridge } from "@tenon/shared";
-import { TenonEventPrefix } from "../../../events";
+import { createTenonEvent, TenonEventPrefix } from "../../../events";
 
 const props = defineProps<{
   style?: CSSProperties;
@@ -31,11 +31,11 @@ const root = ref<HTMLElement>();
 const eventMeta = props.__tenon_event_meta__;
 
 useEventMeta(eventMeta, root, props.bridge);
-props.bridge.register(`${TenonEventPrefix}onClick`, (e) => {
-  console.log(props.__tenon_material_instance__.name, `${TenonEventPrefix}onClick`, e);
+props.bridge.register(createTenonEvent('onClick'), (e) => {
+  console.log(props.__tenon_material_instance__.name, createTenonEvent('onClick'), e);
 });
-props.bridge.register(`${TenonEventPrefix}onDoubleClick`, (e) => {
-  console.log(props.__tenon_material_instance__.name, `${TenonEventPrefix}onDoubleClick`, e);
+props.bridge.register(createTenonEvent('onDoubleClick'), (e) => {
+  console.log(props.__tenon_material_instance__.name, createTenonEvent('onDoubleClick'), e);
 });
 </script>
 

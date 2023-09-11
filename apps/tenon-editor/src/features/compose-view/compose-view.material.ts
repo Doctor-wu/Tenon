@@ -6,7 +6,7 @@ import { h } from "vue";
 import composeViewVue from "./components/compose-view.vue";
 import { IComposeViewFeature } from "./compose-view.interface";
 import { Bridge } from "@tenon/shared";
-import { RuntimeComponentTree } from "../runtime-component-tree";
+import { RuntimeTreeNode } from "../runtime-component-tree";
 
 const TenonComposeViewInfo = {
   name: 'ComposeView',
@@ -57,8 +57,8 @@ export class TenonComposeView extends BaseMaterial {
   public render(props: {
     [K in keyof TenonComposeView["propMeta"]]: TenonComposeView["propMeta"][K]["type"];
   } & {
-    children: RuntimeComponentTree[];
-    runtimeTree: RuntimeComponentTree;
+    children: RuntimeTreeNode[];
+    runtimeTree: RuntimeTreeNode;
     bridge: Bridge<Record<`${typeof TenonEventPrefix}${string}`, any>>;
   }) {
     const { children, runtimeTree, ...withoutChildrenProps } = props;

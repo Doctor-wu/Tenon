@@ -36,11 +36,11 @@
   </section>
 </template>
 <script setup lang="ts">
-import { RuntimeComponentTree } from "@/features/runtime-component-tree";
 import {
+  createTenonEvent,
   IMaterialEventMeta,
   IMaterialInternalEventMeta,
-  TenonEventPrefix,
+  TenonEvent,
   useEventMeta,
 } from "@tenon/materials";
 import { DATA_RUNTIME_TREE_ID } from "../compose-view.interface";
@@ -49,13 +49,14 @@ import type { Bridge } from "@tenon/shared";
 import type { IComposeViewFeature } from "../compose-view.interface";
 import type { IMaterialDragFeature } from "@/features/material-drag";
 import type { TenonComposeView } from "../compose-view.material";
+import type { RuntimeTree } from "@/core/model";
 
 const props = defineProps<{
   style?: CSSProperties;
   isEmpty: boolean;
   composeViewHandler: IComposeViewFeature;
-  bridge: Bridge<Record<`${typeof TenonEventPrefix}${string}`, any>>;
-  runtimeTree: RuntimeComponentTree;
+  bridge: Bridge<Record<TenonEvent<string>, any>>;
+  runtimeTree: RuntimeTree;
   __tenon_material_instance__: TenonComposeView;
   __tenon_event_meta__: (IMaterialEventMeta | IMaterialInternalEventMeta)[];
 }>();
@@ -68,19 +69,19 @@ props.composeViewHandler.getMaterialDrag().then((service) => {
 
 useEventMeta(props.__tenon_event_meta__, rootRef, props.bridge);
 
-props.bridge.register(`${TenonEventPrefix}onClick`, (e) => {
-  console.log(props.__tenon_material_instance__.name, `${TenonEventPrefix}onClick`, e);
+props.bridge.register(createTenonEvent("onClick"), (e) => {
+  console.log(props.__tenon_material_instance__.name, createTenonEvent("onClick"), e);
 });
-props.bridge.register(`${TenonEventPrefix}onDoubleClick`, (e) => {
+props.bridge.register(createTenonEvent("onDoubleClick"), (e) => {
   console.log(
     props.__tenon_material_instance__.name,
-    `${TenonEventPrefix}onDoubleClick`,
+    createTenonEvent("onDoubleClick"),
     e
   );
 });
 
 const handleDragEnter = (e) => {
-  props.composeViewHandler?.bridge.run('onDragEnter', e);
+  props.composeViewHandler?.bridge.run("onDragEnter", e);
 };
 </script>
 <style lang="scss" scoped>

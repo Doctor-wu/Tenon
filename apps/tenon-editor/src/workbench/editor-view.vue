@@ -27,7 +27,7 @@ const props = defineProps<{
 const editorView = ref<HTMLElement>();
 const runtimeTree = ref<RuntimeComponentTree | null>(props.editor.dataEngine.runtimeRoot) as Ref<RuntimeComponentTree | null>;
 
-props.editor.context.on(ModelChange, async (noti: ModelChangeNotification) => {
+props.editor.context.on(ModelChange, async (noti: ModelChangeNotification<RuntimeComponentTree>) => {
   console.log("ModelChange", noti.payload);
   runtimeTree.value = noti.payload;
   // 根节点不可拖拽

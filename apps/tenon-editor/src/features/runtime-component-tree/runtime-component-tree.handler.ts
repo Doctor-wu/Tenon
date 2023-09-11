@@ -4,19 +4,19 @@ import {
 import { ElementChangeEvent, IRuntimeComponentTreeFeature, RuntimeComponentTreeDestroyEvent } from "./runtime-component-tree.interface";
 import { IDryMaterial, IWetMaterial } from "@tenon/materials";
 import { IMaterialFeature } from "../material";
-import { RuntimeComponentTree } from "./runtime-component-tree";
 import { DragType, IMaterialDragFeature } from "../material-drag";
 import { Ref, effect, watch } from "vue";
 import { IAreaIndicatorFeature } from "../area-indicator";
 import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
 import { ModeType } from "../edit-mode/notification";
+import { RuntimeTreeNode } from "@/core/model";
 
 @Feature({
   name: IRuntimeComponentTreeFeature,
 })
 export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature {
-  public runtimeTreeMap: Map<number, RuntimeComponentTree> = new Map();
+  public runtimeTreeMap: Map<number, RuntimeTreeNode> = new Map();
 
   @Loader(IEditModeFeature)
   private editModeFeature!: IDynamicFeature<IEditModeFeature>;
@@ -50,13 +50,13 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     return this.runtimeTreeMap.get(id);
   }
 
-  async insert(runtimeTree: RuntimeComponentTree, beInsert: IWetMaterial) {
+  async insert(runtimeTree: RuntimeTreeNode, beInsert: IWetMaterial) {
     const childTree = await this.buildRuntimeTree(beInsert);
     childTree.parent = runtimeTree;
     runtimeTree.children.push(childTree);
   }
 
-  move(runtimeTree: RuntimeComponentTree, beMove: RuntimeComponentTree) {
+  move(runtimeTree: RuntimeTreeNode, beMove: RuntimeTreeNode) {
     console.log('move', runtimeTree, beMove);
     const index = beMove.parent!.children.indexOf(beMove);
     beMove.parent!.children.splice(index, 1);
@@ -70,7 +70,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     if (!wetMaterial) {
       throw new Error(`Can not find wet material for ${dryMaterial.name}`);
     }
-    const runtimeTree = new RuntimeComponentTree(wetMaterial);
+    const runtimeTree = new RuntimeTreeNode();
     this.runtimeTreeMap.set(runtimeTree.id, runtimeTree);
     if (dryMaterial.children) {
       for (const child of dryMaterial.children) {
@@ -84,7 +84,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
   }
 
   @awaitLoad(IMaterialDragFeature, IAreaIndicatorFeature, IEditModeFeature)
-  private async initRuntimeTree(runtimeTree: RuntimeComponentTree) {
+  private async initRuntimeTree(runtimeTree: RuntimeTreeNode) {
     runtimeTree.bridge.register(ElementChangeEvent, (elRef: Ref<HTMLElement>) => {
       const disEffect = watch(elRef, (newEl, oldEl) => {
         if (!newEl) return;
@@ -98,10 +98,10 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
             .useSingletonHoverMark(SingleMarkType.DragHover, newEl,
               () => this.editMode.mode.value !== ModeType.Edit,
             );
+          (newEl as any).elDropDisposer = this.materialDrag
+            .draggableElement(newEl, DragType.Component, () => runtimeTree);
         }
         if (runtimeTree.droppable) {
-          (newEl as any).elDropDisposer = this.materialDrag
-          .draggableElement(newEl, DragType.Component, () => runtimeTree);
         }
       }, {
         immediate: true,

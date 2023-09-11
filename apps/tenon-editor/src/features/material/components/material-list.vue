@@ -37,10 +37,8 @@ import { Card, Icon } from "tdesign-vue-next";
 import { BaseMaterial } from "@tenon/materials";
 import { IMaterialFeature } from "../material.interface";
 import { effect, onMounted, onUnmounted, reactive } from "vue";
-import type {
-  IRuntimeComponentTreeFeature,
-  RuntimeComponentTree,
-} from "@/features/runtime-component-tree";
+import { RuntimeTree } from "@/core/model";
+import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree";
 
 const props = defineProps<{
   materials: (() => BaseMaterial)[];
@@ -48,12 +46,12 @@ const props = defineProps<{
   runtimeComponentTree: IRuntimeComponentTreeFeature;
 }>();
 
-const runtimeTreeInstances: RuntimeComponentTree[] = reactive([]);
+const runtimeTreeInstances: RuntimeTree[] = reactive([]);
 
 const rootRefs: {
   el: HTMLElement;
   material: BaseMaterial;
-  runtimeTree: RuntimeComponentTree;
+  runtimeTree: RuntimeTree;
   disposer?: () => void;
 }[] = [];
 onMounted(() => {

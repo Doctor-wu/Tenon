@@ -54,4 +54,4 @@ chokidar.watch(path.resolve(__dirname, '../components')).on('all', (event, path)
   handler(event, path);
 });
 
-// build();
+build();
