@@ -11,28 +11,25 @@ import { InsertTreeNodeMutation } from "./insert";
 export class RemoveTreeNodeMutation extends BaseMutation {
   public readonly parent: RuntimeTreeNode;
   public readonly source: RuntimeTreeNode;
+  public readonly oldIndex: number;
 
   constructor(parent: RuntimeTreeNode, source: RuntimeTreeNode) {
     super();
     this.parent = parent;
     this.source = source;
+    this.oldIndex = parent.children.indexOf(source);
   }
 
   handle(): unknown {
-    const index = this.parent.children.indexOf(this.source);
-    if (index === -1) {
+    if (this.oldIndex === -1) {
       throw new MutationError("Cannot remove node that is not a child");
     }
-    this.parent.children.splice(index, 1);
+    this.parent.children.splice(this.oldIndex, 1);
     this.source.destroy();
     return undefined;
   }
 
-  reverse(): unknown {
-    const index = this.parent.children.indexOf(this.source);
-    if (index === -1) {
-      throw new MutationError("Cannot reverse remove node that is not a child");
-    }
-    return new InsertTreeNodeMutation(this.parent, this.source, index);
+  reverse(): BaseMutation {
+    return new InsertTreeNodeMutation(this.parent, this.source, this.oldIndex);
   }
 }

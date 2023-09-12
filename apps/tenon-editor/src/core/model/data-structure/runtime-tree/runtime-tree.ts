@@ -1,13 +1,13 @@
 import { TenonEvent } from "@tenon/materials";
 import { Bridge, Dict } from "@tenon/shared";
-import { reactive } from "vue";
+import { Ref, reactive } from "vue";
 import { RuntimeComponentTreeDestroyEvent } from "./interface";
 
 export class RuntimeTreeNode {
   static runTimeId = 0;
   id: number;
   name: string;
-  el?: HTMLElement;
+  el?: Ref<HTMLElement>;
   props: Dict<unknown> | null = null;
   bridge: Bridge<Record<TenonEvent<string>, any>> = new Bridge();
   eventBindings: Record<TenonEvent<string>, (...args: unknown[]) => unknown> | null = null;

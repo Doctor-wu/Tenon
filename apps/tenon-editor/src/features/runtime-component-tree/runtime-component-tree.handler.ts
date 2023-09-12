@@ -1,5 +1,5 @@
 import {
-  Feature, IDynamicFeature, Loader, awaitLoad
+  Feature, IDynamicFeature, Inject, Loader, awaitLoad
 } from "@tenon/workbench";
 import { IRuntimeComponentTreeFeature } from "./runtime-component-tree.interface";
 import { IDryMaterial, IWetMaterial } from "@tenon/materials";
@@ -10,7 +10,7 @@ import { IAreaIndicatorFeature } from "../area-indicator";
 import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
 import { ModeType } from "../edit-mode/notification";
-import { ElementChangeEvent, RuntimeComponentTreeDestroyEvent, RuntimeTreeNode } from "@/core/model";
+import { ElementChangeEvent, IDataEngine, RuntimeComponentTreeDestroyEvent, RuntimeTreeCommands, RuntimeTreeNode, TenonDataEngine } from "@/core/model";
 import { Logger } from "@/utils/logger";
 
 @Feature({
@@ -47,38 +47,46 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     return this.areaIndicatorFeature.instance!;
   }
 
+  constructor(
+    @Inject(IDataEngine) private dataEngine: TenonDataEngine,
+  ) { }
+
   getRuntimeTreeById(id: number) {
     return this.runtimeTreeMap.get(id);
   }
 
-  async insert(runtimeTree: RuntimeTreeNode, beInsert: IWetMaterial) {
+  async insert(runtimeTree: RuntimeTreeNode, beInsert: string) {
     console.log('insert', runtimeTree, beInsert);
     const childTree = await this.buildRuntimeTree(beInsert);
-    childTree.parent = runtimeTree;
-    runtimeTree.children.push(childTree);
+    this.dataEngine.invoke(
+      RuntimeTreeCommands.pushInsertNode(childTree, runtimeTree),
+    );
   }
 
   move(runtimeTree: RuntimeTreeNode, beMove: RuntimeTreeNode) {
     Logger.log('move', runtimeTree, beMove);
-    const index = beMove.parent!.children.indexOf(beMove);
-    beMove.parent!.children.splice(index, 1);
-    beMove.parent = runtimeTree;
-    runtimeTree.children.push(beMove);
+    if (!runtimeTree.children.length) {
+      this.dataEngine.invoke(
+        RuntimeTreeCommands.moveNodeToEmptyContainer(beMove, runtimeTree),
+      );
+    } else {
+      this.dataEngine.invoke(
+        RuntimeTreeCommands.moveNodeAfter(beMove, runtimeTree.children.at(-1)!),
+      );
+    }
   }
 
+  /**
+   * Build runtime tree
+   * @param name Renderer name
+   * @returns RuntimeTreeNode
+   */
   @awaitLoad(IMaterialFeature)
-  async buildRuntimeTree(dryMaterial: IDryMaterial) {
-    const runtimeTree = new RuntimeTreeNode(dryMaterial.name);
-    this.runtimeTreeMap.set(runtimeTree.id, runtimeTree);
-    if (dryMaterial.children) {
-      for (const child of dryMaterial.children) {
-        const childRuntimeTree = await this.buildRuntimeTree(child);
-        childRuntimeTree.parent = runtimeTree;
-        runtimeTree.children.push(childRuntimeTree);
-      }
-    }
-    await this.initRuntimeTree(runtimeTree);
-    return runtimeTree;
+  async buildRuntimeTree(name: string) {
+    const model = new RuntimeTreeNode(name);
+    this.runtimeTreeMap.set(model.id, model);
+    await this.initRuntimeTree(model);
+    return model;
   }
 
   @awaitLoad(IMaterialDragFeature, IAreaIndicatorFeature, IEditModeFeature)
@@ -90,7 +98,6 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
         if (oldEl) {
           this.disposeElement(oldEl);
         }
-        runtimeTree.el = newEl;
         if (runtimeTree.draggable) {
           (newEl as any).elDragDisposer = this.areaIndicator
             .useSingletonHoverMark(SingleMarkType.DragHover, newEl,
@@ -106,7 +113,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
       });
       runtimeTree.bridge.register(RuntimeComponentTreeDestroyEvent, () => {
         disEffect();
-        this.disposeElement(runtimeTree.el!);
+        runtimeTree.el?.value && this.disposeElement(runtimeTree.el?.value);
         runtimeTree.el = undefined;
       });
     });

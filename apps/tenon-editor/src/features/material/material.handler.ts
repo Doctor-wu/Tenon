@@ -20,9 +20,12 @@ import { IRenderer, IRendererManager, RendererManager } from "@/core/renderer";
 })
 export class MaterialHandler implements IMaterialFeature {
   isPanelOpen: boolean;
-  private atomComponents = Object.keys(TenonAtomComponents);
-  private computedComponents: IRenderer[]
-    = this.atomComponents.map(name => new TenonAtomComponents[name]);
+  private atomComponents = Object.keys(TenonAtomComponents).reduce((acc, key) => {
+    return {
+      ...acc,
+      [key]: new TenonAtomComponents[key as keyof typeof TenonAtomComponents],
+    }
+  }, {});
 
   @Loader(IAreaIndicatorFeature)
   private areaIndicator: IDynamicFeature<IAreaIndicatorFeature>;
@@ -54,8 +57,8 @@ export class MaterialHandler implements IMaterialFeature {
     @Inject(IDataEngine) private dataEngine: TenonDataEngine,
   ) {
     this.isPanelOpen = false;
-    this.computedComponents.forEach(comp => {
-      this.rendererManager.registerRenderer(comp.name, comp);
+    Object.keys(this.atomComponents).forEach(name => {
+      this.rendererManager.registerRenderer(name, this.atomComponents[name]);
     });
     this.initRoot();
   }
@@ -72,9 +75,9 @@ export class MaterialHandler implements IMaterialFeature {
   @awaitLoad(IRuntimeComponentTreeFeature)
   async initRoot() {
     const composeViewRenderer = this.composeView.getComposeView();
-    this.computedComponents.unshift(composeViewRenderer);
+    this.atomComponents[composeViewRenderer.name] = composeViewRenderer;
     this.rendererManager.registerRenderer(composeViewRenderer.name, composeViewRenderer);
-    this.runtimeTree.buildRuntimeTree(composeViewRenderer).then(tree => {
+    this.runtimeTree.buildRuntimeTree(composeViewRenderer.name).then(tree => {
       this.dataEngine.setRoot(tree);
     });
   }
@@ -82,7 +85,7 @@ export class MaterialHandler implements IMaterialFeature {
   @awaitLoad(IMaterialDragFeature)
   async draggableMaterial(
     el: HTMLElement,
-    getPayload: () => BaseMaterial,
+    getPayload: () => string,
   ) {
     return this.materialDrag.instance!.draggableElement(el, DragType.Material, getPayload);
   }
@@ -95,7 +98,7 @@ export class MaterialHandler implements IMaterialFeature {
   private async openMaterialPanel() {
     Logger.log('open material panel');
     this.drawerService.left.attachLayer(this.layerName, () => h(materialListVue, {
-      materials: this.computedComponents,
+      materials: Object.keys(this.atomComponents),
       draggableMaterial: this.draggableMaterial.bind(this),
       runtimeComponentTree: this.runtimeTree,
       rendererManager: this.rendererManager,

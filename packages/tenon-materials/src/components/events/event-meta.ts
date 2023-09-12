@@ -1,5 +1,5 @@
 import { Bridge } from "@tenon/shared";
-import { onMounted, onBeforeUnmount, Ref } from "vue";
+import { onMounted, onBeforeUnmount, Ref, watch } from "vue";
 import { TenonEventPrefix } from "./constant";
 
 export interface IMaterialEventMeta {
@@ -50,6 +50,7 @@ export const useEventMeta = (
     materialInstanceBridge.run(
       `${TenonEventPrefix}${MaterialInternalEvent.Mount}`, elRef
     );
+  materialInstanceBridge.run(`${TenonEventPrefix}__element_change__`, elRef);
   });
 
   onBeforeUnmount(() => {

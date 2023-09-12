@@ -12,7 +12,7 @@ import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
 import { ModeType } from "../edit-mode/notification";
 import { DragType, IMaterialDragFeature } from "../material-drag";
-import { IDataEngine, TenonDataEngine, type RuntimeTreeNode } from "@/core/model";
+import { RuntimeTreeNode } from "@/core/model";
 import { BaseMaterial } from "@tenon/materials";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { IRendererManager } from "@/core/renderer";
@@ -106,7 +106,7 @@ export class ComposeViewHandler implements IComposeViewFeature {
     const dragType = e.dataTransfer!.getData('dragType') as DragType;
     const payload = this.materialDrag.getDragPayload(e, dragType);
     if (dragType === DragType.Material) {
-      await this.runtimeComponentTree.insert(runtimeTree, payload as BaseMaterial);
+      await this.runtimeComponentTree.insert(runtimeTree, payload as string);
     } else if (dragType === DragType.Component) {
       this.runtimeComponentTree.move(runtimeTree, payload as RuntimeTreeNode);
     }

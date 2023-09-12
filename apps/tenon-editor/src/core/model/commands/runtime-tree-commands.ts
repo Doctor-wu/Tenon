@@ -31,6 +31,16 @@ export const RuntimeTreeCommands = {
   },
 
   /**
+   * 在指定节点的孩子节点末尾插入一个节点
+   * @param node 待插入的节点
+   * @param parent 插入到哪个节点下
+   * @returns 返回一个 InsertTreeNodeMutation
+   */
+  pushInsertNode(node: RuntimeTreeNode, parent: RuntimeTreeNode) {
+    return new InsertTreeNodeMutation(parent, node, parent.children.length);
+  },
+
+  /**
    * 移动节点到指定节点之前
    * @param node 待移动的节点
    * @param relative 相对于哪个节点移动
@@ -52,6 +62,16 @@ export const RuntimeTreeCommands = {
     const parent = relative.parent!;
     const index = parent.children.indexOf(relative) + 1;
     return new MoveTreeNodeMutation(parent, node, index);
+  },
+
+  /**
+   * 移动节点到空容器内
+   * @param node 待移动的节点
+   * @param parent 移动到哪个节点下
+   * @returns 返回一个 MoveTreeNodeMutation
+   */
+  moveNodeToEmptyContainer(node: RuntimeTreeNode, parent: RuntimeTreeNode) {
+    return new MoveTreeNodeMutation(parent, node, 0);
   },
 
   /**

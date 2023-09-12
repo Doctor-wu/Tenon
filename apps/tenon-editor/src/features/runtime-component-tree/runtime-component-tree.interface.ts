@@ -1,14 +1,13 @@
 import { bindDynamicLoader, createDynamicFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
 import { RuntimeTreeNode } from "../../core/model/data-structure/runtime-tree/runtime-tree";
-import { IDryMaterial, IWetMaterial, TenonEventPrefix } from "@tenon/materials";
 
 export interface IRuntimeComponentTreeFeature {
   // interface
   getRuntimeTreeById(id: number): RuntimeTreeNode | undefined;
-  insert(runtimeTree: RuntimeTreeNode, beInsert: IWetMaterial): Promise<void>;
+  insert(runtimeTree: RuntimeTreeNode, beInsert: string): Promise<void>;
   move(runtimeTree: RuntimeTreeNode, beMove: RuntimeTreeNode): void;
-  buildRuntimeTree(wetMaterial: IDryMaterial): Promise<RuntimeTreeNode>;
+  buildRuntimeTree(name: string): Promise<RuntimeTreeNode>;
 }
 
 export const IRuntimeComponentTreeFeature = createDynamicFeatureTag(FeatureName.RuntimeComponentTree);

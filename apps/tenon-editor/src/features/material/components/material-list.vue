@@ -9,7 +9,7 @@
         :ref="
           (el) => {
             if (!el) return;
-            rootRefs.push({ el: el.$el, material: instance.renderer!, runtimeTree: instance.model });
+            rootRefs.push({ el: el.$el, renderer: instance.renderer!, runtimeTree: instance.model });
           }
         "
       >
@@ -42,7 +42,7 @@ import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree"
 import { RendererManager, IRenderer } from "@/core/renderer";
 
 const props = defineProps<{
-  materials: IRenderer[];
+  materials: string[];
   draggableMaterial: IMaterialFeature["draggableMaterial"];
   runtimeComponentTree: IRuntimeComponentTreeFeature;
   rendererManager: RendererManager;
@@ -55,7 +55,7 @@ const runtimeTreeInstances: ({
 
 const rootRefs: {
   el: HTMLElement;
-  material: BaseMaterial;
+  renderer: BaseMaterial;
   runtimeTree: RuntimeTreeNode;
   disposer?: () => void;
 }[] = [];
@@ -80,7 +80,7 @@ onMounted(() => {
       })
       .then(() => {
         rootRefs.forEach(async (item, index) => {
-          const disposer = await props.draggableMaterial(item.el, () => item.material);
+          const disposer = await props.draggableMaterial(item.el, () => item.renderer.name);
           rootRefs[index].disposer = disposer;
         });
       });

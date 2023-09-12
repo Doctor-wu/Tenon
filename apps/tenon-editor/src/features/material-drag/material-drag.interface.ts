@@ -3,6 +3,7 @@ import { FeatureName } from "../feature-name";
 import type { RuntimeTreeNode } from "@/core/model/data-structure/runtime-tree/runtime-tree";
 import type { BaseMaterial } from "@tenon/materials";
 import { Ref } from "vue";
+import { IRenderer } from "@/core/renderer";
 
 export enum DragType {
   /** 拖拽组件 */
@@ -13,7 +14,7 @@ export enum DragType {
 
 export interface IDragPayload {
   [DragType.Component]: RuntimeTreeNode;
-  [DragType.Material]: BaseMaterial;
+  [DragType.Material]: string;
 }
 
 export interface IMaterialDragFeature {

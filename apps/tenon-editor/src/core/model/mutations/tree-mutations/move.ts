@@ -20,6 +20,11 @@ export class MoveTreeNodeMutation extends InsertTreeNodeMutation {
     this.oldIndex = source.parent.children.indexOf(source) ?? -1;
   }
 
+  handle(): void {
+    super.handle();
+    this.oldParent.children.splice(this.oldIndex, 1);
+  }
+
   reverse(): BaseMutation {
     return new InsertTreeNodeMutation(this.oldParent, this.source, this.oldIndex);
   }
