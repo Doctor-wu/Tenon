@@ -1,4 +1,4 @@
-import { BaseNotification } from "../notification";
+import { BaseNotification } from "./base-notification";
 
 export enum CommonNotificationType {
   /** window 发生 resize */

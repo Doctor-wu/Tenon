@@ -11,6 +11,7 @@ import {
 import { TenonEditorContext } from "./context";
 import { plugins } from "../workbench/plugins";
 import { IDataEngine, TenonDataEngine } from "./model/data-engine";
+import { IRendererManager, RendererManager } from "./renderer";
 import { PerformanceMetricsName, TenonPerformanceMeasure } from '../performance/measure';
 import { Logger } from "@/utils/logger";
 
@@ -28,6 +29,7 @@ export class TenonEditor {
   root: HTMLElement;
   context: TenonEditorContext;
   dataEngine: TenonDataEngine;
+  rendererManager: RendererManager;
 
   constructor() {
     this.setupAdaptor();
@@ -45,7 +47,6 @@ export class TenonEditor {
       (await this.workbenchAdaptor.workbenchDIService.get<TenonEditorContext>(
         IContext
       ))!;
-
     this.eventCenter =
       (await this.workbenchAdaptor.workbenchDIService.get<TenonEditorEventCenter>(
         IEventCenter
@@ -53,6 +54,10 @@ export class TenonEditor {
     this.dataEngine =
       (await this.workbenchAdaptor.workbenchDIService.get<TenonDataEngine>(
         IDataEngine
+      ))!;
+    this.rendererManager =
+      (await this.workbenchAdaptor.workbenchDIService.get<RendererManager>(
+        IRendererManager
       ))!;
   }
 
@@ -133,7 +138,7 @@ export class TenonEditor {
   }
 
   private logInfo() {
-    console.log("tenon editor init, editor: ", this);
+    Logger.log("tenon editor init, editor: ", this);
   }
 
   public registerService = (serviceName: any, instance: any) => {

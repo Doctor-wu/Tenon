@@ -1,5 +1,5 @@
 import { ToolBarName } from "@/configs/tool-bar-config";
-import { BaseNotification } from "@/core/notification";
+import { BaseNotification } from "@/core/notifications/base-notification";
 
 export enum ModeType {
   Preview = ToolBarName.PreviewMode,

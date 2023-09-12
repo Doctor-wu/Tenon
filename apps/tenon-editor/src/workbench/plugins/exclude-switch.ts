@@ -1,10 +1,11 @@
+import { Logger } from "@/utils/logger";
 import {
   ActionType, BasePlugin,
   BarService, BarServiceCore,
   WorkbenchEvents, WorkbenchType,
 } from "@tenon/workbench";
 
-export class ExcludeSwitch extends BasePlugin {
+export class ExcludeSwitchPlugin extends BasePlugin {
   workbench: WorkbenchType;
 
   constructor(private excludeNames: string[]) {
@@ -14,7 +15,7 @@ export class ExcludeSwitch extends BasePlugin {
   install(workbench: WorkbenchType) {
     this.workbench = workbench;
     this.registerExcludeSwitch(this.excludeNames);
-    console.log('exclude switch', this.excludeNames);
+    Logger.log('exclude switch', this.excludeNames);
   }
 
   async registerExcludeSwitch(names: string[]) {

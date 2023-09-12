@@ -1,8 +1,8 @@
 import { ToolBarName } from "@/configs/tool-bar-config";
-import { ExcludeSwitch } from "./exclude-switch";
+import { ExcludeSwitchPlugin } from "./exclude-switch";
 
 export const plugins = [
-  new ExcludeSwitch([
+  new ExcludeSwitchPlugin([
     ToolBarName.MaterialSwitch,
     ToolBarName.ComponentTreeSwitch,
   ]),

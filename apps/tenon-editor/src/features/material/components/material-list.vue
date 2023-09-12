@@ -2,26 +2,26 @@
   <section class="material-list-container">
     <div class="material-list">
       <Card
-        v-for="runtimeTree in runtimeTreeInstances"
+        v-for="instance in runtimeTreeInstances"
         :bordered="true"
         class="material-list-item"
         size="small"
         :ref="
           (el) => {
             if (!el) return;
-            rootRefs.push({ el: el.$el, material: runtimeTree.material!, runtimeTree: runtimeTree });
+            rootRefs.push({ el: el.$el, material: instance.renderer!, runtimeTree: instance.model });
           }
         "
       >
         <section class="material-list-item__title">
-          <Icon :name="runtimeTree.material!.icon" style="margin-right: 4px"></Icon>
-          <span> {{ runtimeTree.material!.name }}</span>
+          <Icon :name="instance.renderer?.icon" style="margin-right: 4px"></Icon>
+          <span> {{ instance.renderer?.name }}</span>
         </section>
         <section class="material-list-item__desc">
-          {{ runtimeTree.material!.description }}
+          {{ instance.renderer!.description }}
         </section>
         <section class="material-list-item__preview">
-          <component :is="runtimeTree.render()"></component>
+          <component :is="instance.renderer.render(instance.model, {})"></component>
         </section>
       </Card>
     </div>
@@ -37,21 +37,26 @@ import { Card, Icon } from "tdesign-vue-next";
 import { BaseMaterial } from "@tenon/materials";
 import { IMaterialFeature } from "../material.interface";
 import { effect, onMounted, onUnmounted, reactive } from "vue";
-import { RuntimeTree } from "@/core/model";
+import { RuntimeTreeNode } from "@/core/model";
 import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree";
+import { RendererManager, IRenderer } from "@/core/renderer";
 
 const props = defineProps<{
-  materials: (() => BaseMaterial)[];
+  materials: IRenderer[];
   draggableMaterial: IMaterialFeature["draggableMaterial"];
   runtimeComponentTree: IRuntimeComponentTreeFeature;
+  rendererManager: RendererManager;
 }>();
 
-const runtimeTreeInstances: RuntimeTree[] = reactive([]);
+const runtimeTreeInstances: ({
+  model: RuntimeTreeNode,
+  renderer: IRenderer,
+})[] = reactive([]);
 
 const rootRefs: {
   el: HTMLElement;
   material: BaseMaterial;
-  runtimeTree: RuntimeTree;
+  runtimeTree: RuntimeTreeNode;
   disposer?: () => void;
 }[] = [];
 onMounted(() => {
@@ -59,7 +64,7 @@ onMounted(() => {
     Promise.all(
       // @TODO(Doctorwu) 这里有潜在的性能问题, 只要 props.materials 发生变化, 每次都会重新构建所有的树
       props.materials.map(
-        async (m) => await props.runtimeComponentTree.buildRuntimeTree(m())
+        async (m) => await props.runtimeComponentTree.buildRuntimeTree(m)
       )
     )
       .then((trees) => {
@@ -68,7 +73,10 @@ onMounted(() => {
           tree.draggable = false;
           tree.droppable = false;
         });
-        runtimeTreeInstances.push(...trees);
+        runtimeTreeInstances.push(...trees.map(tree => ({
+          model: tree,
+          renderer: props.rendererManager.getRenderer(tree.name),
+        })));
       })
       .then(() => {
         rootRefs.forEach(async (item, index) => {
@@ -84,7 +92,7 @@ onUnmounted(() => {
   });
   rootRefs.length = 0;
   runtimeTreeInstances.forEach((m) => {
-    m.destroy();
+    m.model.destroy();
   });
   runtimeTreeInstances.length = 0;
 });

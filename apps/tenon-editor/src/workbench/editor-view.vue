@@ -4,11 +4,13 @@
       <component
         v-if="runtimeTree"
         :is="
-          runtimeTree.render({
-            style: {
-              minHeight: '680px',
-            },
-          })
+          editor.rendererManager
+            .getRenderer(runtimeTree.name)
+            .render(runtimeTree, {
+              style: {
+                minHeight: '680px',
+              },
+            })
         "
       ></component>
     </div>
@@ -16,8 +18,7 @@
 </template>
 <script setup lang="ts">
 import { TenonEditor } from "@/core";
-import { RuntimeComponentTree } from "@/core/model";
-import { ModelChange, ModelChangeNotification } from "@/core/model/notification";
+import { ModelChange, ModelChangeNotification, RuntimeTreeNode } from "@/core/model";
 import { onMounted, Ref, ref } from "vue";
 
 const props = defineProps<{
@@ -25,14 +26,19 @@ const props = defineProps<{
 }>();
 
 const editorView = ref<HTMLElement>();
-const runtimeTree = ref<RuntimeComponentTree | null>(props.editor.dataEngine.runtimeRoot) as Ref<RuntimeComponentTree | null>;
+const runtimeTree = ref<RuntimeTreeNode | null>(
+  props.editor.dataEngine.runtimeRoot
+) as Ref<RuntimeTreeNode | null>;
 
-props.editor.context.on(ModelChange, async (noti: ModelChangeNotification<RuntimeComponentTree>) => {
-  console.log("ModelChange", noti.payload);
-  runtimeTree.value = noti.payload;
-  // 根节点不可拖拽
-  runtimeTree.value.draggable = false;
-});
+props.editor.context.on(
+  ModelChange,
+  async (noti: ModelChangeNotification<RuntimeTreeNode>) => {
+    console.log("ModelChange", noti.payload);
+    runtimeTree.value = noti.payload;
+    // 根节点不可拖拽
+    runtimeTree.value.draggable = false;
+  }
+);
 
 onMounted(async () => {
   console.log("editorView", editorView.value);

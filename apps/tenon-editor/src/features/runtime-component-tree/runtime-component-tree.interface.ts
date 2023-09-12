@@ -3,9 +3,6 @@ import { FeatureName } from "../feature-name";
 import { RuntimeTreeNode } from "../../core/model/data-structure/runtime-tree/runtime-tree";
 import { IDryMaterial, IWetMaterial, TenonEventPrefix } from "@tenon/materials";
 
-export const ElementChangeEvent = `${TenonEventPrefix}__element_change__`;
-export const RuntimeComponentTreeDestroyEvent = `${TenonEventPrefix}__runtime_component_tree_destroy__`;
-
 export interface IRuntimeComponentTreeFeature {
   // interface
   getRuntimeTreeById(id: number): RuntimeTreeNode | undefined;

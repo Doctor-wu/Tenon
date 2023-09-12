@@ -1,5 +1,5 @@
 import { DrawerDisplayType } from "@tenon/workbench/typings";
-import { BaseNotification } from "../notification";
+import { BaseNotification } from "./base-notification";
 
 export enum LeftDrawerNotificationType {
   /** 左侧抽屉点击关闭按钮 */

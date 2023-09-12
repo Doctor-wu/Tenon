@@ -4,7 +4,7 @@ import {
   Inject,
   Service,
 } from "@tenon/workbench";
-import { BaseNotification } from "./notification";
+import { BaseNotification } from "./notifications/base-notification";
 import { IContext, IFireOptions } from "./interface";
 
 @Service({

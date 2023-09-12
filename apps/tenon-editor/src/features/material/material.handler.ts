@@ -11,7 +11,9 @@ import { IMaterialDragFeature, DragType } from "@tenon-features/material-drag";
 import materialListVue from "./components/material-list.vue";
 import { IComposeViewFeature } from "../compose-view";
 import { IDataEngine, TenonDataEngine } from "@/core/model/data-engine";
-import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
+import { IRuntimeComponentTreeFeature, RuntimeTreeNode } from "../runtime-component-tree";
+import { Logger } from "@/utils/logger";
+import { IRenderer, IRendererManager, RendererManager } from "@/core/renderer";
 
 @Feature({
   name: IMaterialFeature,
@@ -19,8 +21,8 @@ import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 export class MaterialHandler implements IMaterialFeature {
   isPanelOpen: boolean;
   private atomComponents = Object.keys(TenonAtomComponents);
-  private computedComponents: (() => IWetMaterial)[]
-    = this.atomComponents.map(name => () => new TenonAtomComponents[name]);
+  private computedComponents: IRenderer[]
+    = this.atomComponents.map(name => new TenonAtomComponents[name]);
 
   @Loader(IAreaIndicatorFeature)
   private areaIndicator: IDynamicFeature<IAreaIndicatorFeature>;
@@ -48,9 +50,14 @@ export class MaterialHandler implements IMaterialFeature {
   constructor(
     @Inject(DrawerService) private drawerService: DrawerServiceCore,
     @Inject(IComposeViewFeature) private composeView: IComposeViewFeature,
+    @Inject(IRendererManager) private rendererManager: RendererManager,
+    @Inject(IDataEngine) private dataEngine: TenonDataEngine,
   ) {
     this.isPanelOpen = false;
-    this.computedComponents.unshift(this.composeView.getComposeView);
+    this.computedComponents.forEach(comp => {
+      this.rendererManager.registerRenderer(comp.name, comp);
+    });
+    this.initRoot();
   }
 
   switchPanel(open: boolean) {
@@ -62,6 +69,16 @@ export class MaterialHandler implements IMaterialFeature {
     }
   }
 
+  @awaitLoad(IRuntimeComponentTreeFeature)
+  async initRoot() {
+    const composeViewRenderer = this.composeView.getComposeView();
+    this.computedComponents.unshift(composeViewRenderer);
+    this.rendererManager.registerRenderer(composeViewRenderer.name, composeViewRenderer);
+    this.runtimeTree.buildRuntimeTree(composeViewRenderer).then(tree => {
+      this.dataEngine.setRoot(tree);
+    });
+  }
+
   @awaitLoad(IMaterialDragFeature)
   async draggableMaterial(
     el: HTMLElement,
@@ -70,22 +87,23 @@ export class MaterialHandler implements IMaterialFeature {
     return this.materialDrag.instance!.draggableElement(el, DragType.Material, getPayload);
   }
 
-  getWetMaterial(dryMaterial: IDryMaterial): IWetMaterial | undefined {
-    return this.computedComponents.find(component => component().name === dryMaterial.name)?.();
-  }
+  // getWetMaterial(dryMaterial: IDryMaterial): IWetMaterial | undefined {
+  //   return this.computedComponents.find(component => component().name === dryMaterial.name)?.();
+  // }
 
   @awaitLoad(IRuntimeComponentTreeFeature)
   private async openMaterialPanel() {
-    console.log('open material panel');
+    Logger.log('open material panel');
     this.drawerService.left.attachLayer(this.layerName, () => h(materialListVue, {
       materials: this.computedComponents,
       draggableMaterial: this.draggableMaterial.bind(this),
       runtimeComponentTree: this.runtimeTree,
+      rendererManager: this.rendererManager,
     }));
   }
 
   private closeMaterialPanel() {
-    console.log('close material panel');
+    Logger.log('close material panel');
     this.drawerService.left.detachLayer(this.layerName);
   }
 }

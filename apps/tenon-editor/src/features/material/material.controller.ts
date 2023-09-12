@@ -23,6 +23,7 @@ import {
   LeftDrawerNotificationType,
   TenonEditorContext,
 } from "@/core";
+import { Logger } from "@/utils/logger";
 
 @Controller({
   name: Symbol("material-controller"),
@@ -53,7 +54,7 @@ export class MaterialController {
   handleMaterialSwitch(
     @InjectActionInfoService() actionInfo: ActionInfo,
   ) {
-    console.log(actionInfo);
+    Logger.log(actionInfo);
     this.materialFeature!.switchPanel(
       actionInfo.action === ActionType.onActive
     );

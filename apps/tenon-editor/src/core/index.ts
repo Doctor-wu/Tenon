@@ -3,5 +3,5 @@ export * from "./event-center";
 export * from "./editor";
 export * from "./interface";
 export * from "./lifecycle";
-export * from "./notification";
+export * from "./notifications/base-notification";
 export * from "./notifications";

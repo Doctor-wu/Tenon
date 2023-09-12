@@ -7,6 +7,8 @@ import composeViewVue from "./components/compose-view.vue";
 import { IComposeViewFeature } from "./compose-view.interface";
 import { Bridge } from "@tenon/shared";
 import { RuntimeTreeNode } from "../runtime-component-tree";
+import { Logger } from "@/utils/logger";
+import type { RendererManager } from "@/core/renderer";
 
 const TenonComposeViewInfo = {
   name: 'ComposeView',
@@ -44,29 +46,28 @@ export class TenonComposeView extends BaseMaterial {
   public eventMeta = [...internalMeta, ...TenonComposeViewInfo.eventMeta];
 
   private composeViewHandler: IComposeViewFeature;
+  private rendererManager: RendererManager;
   constructor(
     composeViewHandler: IComposeViewFeature,
+    rendererManager: RendererManager,
   ) {
     super();
     this.composeViewHandler = composeViewHandler;
+    this.rendererManager = rendererManager;
     if (!this.composeViewHandler) {
-      console.log('composeViewHandler is null', this);
+      Logger.log('composeViewHandler is null', this);
     }
   }
 
-  public render(props: {
+  public render(model: RuntimeTreeNode, props: {
     [K in keyof TenonComposeView["propMeta"]]: TenonComposeView["propMeta"][K]["type"];
-  } & {
-    children: RuntimeTreeNode[];
-    runtimeTree: RuntimeTreeNode;
-    bridge: Bridge<Record<`${typeof TenonEventPrefix}${string}`, any>>;
   }) {
-    const { children, runtimeTree, ...withoutChildrenProps } = props;
+    const { children } = model;
     const setProps = {
-      ...withoutChildrenProps,
+      ...props,
       ...this.getInternalProps(),
-      runtimeTree,
-      bridge: props.bridge,
+      runtimeTree: model,
+      bridge: model.bridge,
       composeViewHandler: this.composeViewHandler,
       isEmpty: children.length === 0,
     };
@@ -74,7 +75,8 @@ export class TenonComposeView extends BaseMaterial {
     return h(composeViewVue, setProps, () => {
       // console.log(`render children, host: ${runtimeTree.id}`, children);
       return children.map((child) => {
-        return child.render({ key: child.id });
+        const renderer = this.rendererManager.getRenderer(child.name);
+        return renderer.render(child, { key: child.id });
       });
     });
   }

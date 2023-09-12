@@ -9,7 +9,7 @@ export interface IMaterialFeature {
   isPanelOpen: boolean;
   switchPanel(open: boolean): void;
   draggableMaterial(el: HTMLElement, getPayload: () => BaseMaterial): Promise<() => void>;
-  getWetMaterial(dryMaterial: IDryMaterial): IWetMaterial | undefined;
+  // getWetMaterial(dryMaterial: IDryMaterial): IWetMaterial | undefined;
 }
 
 export const IMaterialFeature = createDynamicFeatureTag(FeatureName.Material);

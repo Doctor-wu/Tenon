@@ -5,6 +5,7 @@ import {
   LeftDrawerNotificationType,
   TenonEditorContext,
 } from "@/core";
+import { Logger } from "@/utils/logger";
 import {
   ActionController,
   ActionInfo,
@@ -33,7 +34,7 @@ export class ComponentsTreeController {
     @Inject(BarService) private barService: BarServiceCore,
     @Inject(IContext) private context: TenonEditorContext
   ) {
-    console.log(this.context);
+    Logger.log(this.context);
     this.listenDrawer();
   }
 
@@ -43,7 +44,7 @@ export class ComponentsTreeController {
     @InjectActionInfoService() actionInfo: ActionInfo,
     @InjectDrawerService() drawerService: DrawerServiceCore
   ) {
-    console.log(actionInfo);
+    Logger.log(actionInfo);
     switch (actionInfo.action) {
       case ActionType.onActive:
         drawerService.left.attachLayer(actionInfo.name, () =>

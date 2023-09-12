@@ -7,6 +7,7 @@ import { DragNotification, DragStatusChange } from "./notification";
 import { Ref, effect, ref } from "vue";
 import { ModeType } from "../edit-mode/notification";
 import { IEditModeFeature } from "../edit-mode";
+import { Logger } from "@/utils/logger";
 
 @Feature({
   name: IMaterialDragFeature,
@@ -84,7 +85,7 @@ export class MaterialDragHandler implements IMaterialDragFeature {
   private initEvent () {
     this.context.on(DragStatusChange, (notification: DragNotification) => {
       this.dragging.value = notification.dragging;
-      console.log('DragStatusChange', notification.dragging);
+      Logger.log('DragStatusChange', notification.dragging);
     });
     effect(() => {
       const value = this.dragging.value

@@ -6,6 +6,7 @@ import { FullScreenNotification } from "./notification";
 import { FullScreen } from "./reactive";
 import { IContext, IEditor } from "@/core/interface";
 import { CommonNotificationType } from "@/core/notifications/common-notification";
+import { Logger } from "@/utils/logger";
 
 @Feature({
   name: IFullScreenFeature,
@@ -58,8 +59,8 @@ export class FullScreenHandler implements IFullScreenFeature {
       CommonNotificationType.WINDOW_RESIZE,
       () => {
         if (this.isFullScreen === this.fullScreen.value) return;
-        console.log(this.isFullScreen, this.fullScreen.value);
-        console.log("fire FullScreenNotification");
+        Logger.log(this.isFullScreen, this.fullScreen.value);
+        Logger.log("fire FullScreenNotification");
         this.context.fire(
           new FullScreenNotification(
             this.isFullScreen

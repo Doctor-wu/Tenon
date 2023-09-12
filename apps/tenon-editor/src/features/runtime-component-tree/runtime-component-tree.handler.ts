@@ -1,7 +1,7 @@
 import {
   Feature, IDynamicFeature, Loader, awaitLoad
 } from "@tenon/workbench";
-import { ElementChangeEvent, IRuntimeComponentTreeFeature, RuntimeComponentTreeDestroyEvent } from "./runtime-component-tree.interface";
+import { IRuntimeComponentTreeFeature } from "./runtime-component-tree.interface";
 import { IDryMaterial, IWetMaterial } from "@tenon/materials";
 import { IMaterialFeature } from "../material";
 import { DragType, IMaterialDragFeature } from "../material-drag";
@@ -10,7 +10,8 @@ import { IAreaIndicatorFeature } from "../area-indicator";
 import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
 import { ModeType } from "../edit-mode/notification";
-import { RuntimeTreeNode } from "@/core/model";
+import { ElementChangeEvent, RuntimeComponentTreeDestroyEvent, RuntimeTreeNode } from "@/core/model";
+import { Logger } from "@/utils/logger";
 
 @Feature({
   name: IRuntimeComponentTreeFeature,
@@ -51,13 +52,14 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
   }
 
   async insert(runtimeTree: RuntimeTreeNode, beInsert: IWetMaterial) {
+    console.log('insert', runtimeTree, beInsert);
     const childTree = await this.buildRuntimeTree(beInsert);
     childTree.parent = runtimeTree;
     runtimeTree.children.push(childTree);
   }
 
   move(runtimeTree: RuntimeTreeNode, beMove: RuntimeTreeNode) {
-    console.log('move', runtimeTree, beMove);
+    Logger.log('move', runtimeTree, beMove);
     const index = beMove.parent!.children.indexOf(beMove);
     beMove.parent!.children.splice(index, 1);
     beMove.parent = runtimeTree;
@@ -66,11 +68,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
 
   @awaitLoad(IMaterialFeature)
   async buildRuntimeTree(dryMaterial: IDryMaterial) {
-    const wetMaterial = this.material.getWetMaterial(dryMaterial);
-    if (!wetMaterial) {
-      throw new Error(`Can not find wet material for ${dryMaterial.name}`);
-    }
-    const runtimeTree = new RuntimeTreeNode();
+    const runtimeTree = new RuntimeTreeNode(dryMaterial.name);
     this.runtimeTreeMap.set(runtimeTree.id, runtimeTree);
     if (dryMaterial.children) {
       for (const child of dryMaterial.children) {
@@ -115,7 +113,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
   }
 
   private disposeElement(el: HTMLElement) {
-    console.log('dispose element', el);
+    Logger.log('dispose element', el);
     setTimeout(() => {
       if ((el as any).elDropDisposer) {
         (el as any).elDropDisposer();

@@ -12,9 +12,11 @@ import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
 import { ModeType } from "../edit-mode/notification";
 import { DragType, IMaterialDragFeature } from "../material-drag";
-import type { RuntimeTreeNode } from "@/core/model";
+import { IDataEngine, TenonDataEngine, type RuntimeTreeNode } from "@/core/model";
 import { BaseMaterial } from "@tenon/materials";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
+import { IRendererManager } from "@/core/renderer";
+import type { RendererManager } from "@/core/renderer";
 
 @Feature({
   name: IComposeViewFeature,
@@ -48,6 +50,7 @@ export class ComposeViewHandler implements IComposeViewFeature {
 
   constructor(
     @Inject(IContext) private context: TenonEditorContext,
+    @Inject(IRendererManager) private rendererManager: RendererManager,
   ) {
     this.initEvent();
   }
@@ -62,7 +65,7 @@ export class ComposeViewHandler implements IComposeViewFeature {
   }
 
   getComposeView = () => {
-    return new TenonComposeView(this);
+    return new TenonComposeView(this, this.rendererManager);
   }
 
   @awaitLoad(IEditModeFeature)
@@ -94,8 +97,10 @@ export class ComposeViewHandler implements IComposeViewFeature {
     this.clearDragDisposer();
     e.stopPropagation();
     const runtimeTreeId = (e.target as HTMLElement).getAttribute(DATA_RUNTIME_TREE_ID);
+    console.log('drop', runtimeTreeId);
     if (!runtimeTreeId) return;
     const runtimeTree = this.runtimeComponentTree.getRuntimeTreeById(Number(runtimeTreeId));
+    console.log('drop', runtimeTreeId, runtimeTree);
     if (!runtimeTree) return;
     if (!runtimeTree.droppable) return e.preventDefault();
     const dragType = e.dataTransfer!.getData('dragType') as DragType;

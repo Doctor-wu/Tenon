@@ -1,4 +1,4 @@
-import { BaseNotification } from "@/core/notification";
+import { BaseNotification } from "@/core/notifications/base-notification";
 import { FullScreenType } from "./fullscreen.interface";
 
 export class FullScreenNotification extends BaseNotification<FullScreenType> {

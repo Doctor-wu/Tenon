@@ -1,12 +1,10 @@
-import { IComposeViewFeature } from '@/features/compose-view';
 import { TenonEventManager } from './event-manager';
 import { RuntimeTreeNode } from './data-structure/runtime-tree/runtime-tree';
-import { IDynamicFeature, Inject, Loader, Service, awaitLoad, createServiceTag } from "@tenon/workbench";
+import { Inject, Service, createServiceTag } from "@tenon/workbench";
 import { IContext } from '../interface';
 import { TenonEditorContext } from '../context';
-import { ModelChangeNotification } from './notification';
-import { IRuntimeComponentTreeFeature } from '@/features/runtime-component-tree';
-import { BaseMutation } from './mutations';
+import { ModelChangeNotification } from '../notifications/model-notification';
+import { Logger } from '@/utils/logger';
 
 export const IDataEngine = createServiceTag('TenonDataEngine');
 
@@ -20,6 +18,11 @@ export class TenonDataEngine {
   constructor(
     @Inject(IContext) private context: TenonEditorContext,
   ) {
-    console.log('TenonDataEngine init');
+    Logger.log('TenonDataEngine init');
+  }
+
+  setRoot(root: RuntimeTreeNode) {
+    this.runtimeRoot = root;
+    this.context.fire(new ModelChangeNotification(this.runtimeRoot));
   }
 }

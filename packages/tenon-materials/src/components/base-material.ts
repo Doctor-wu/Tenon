@@ -33,7 +33,7 @@ export abstract class BaseMaterial {
   public propMeta: Dict<IMaterialPropsMeta>;
   public eventMeta: (IMaterialEventMeta | IMaterialInternalEventMeta)[] = [];
   public nestable = false;
-  public abstract render(props: unknown): VNode;
+  public abstract render(model: any, props: unknown): VNode;
 
   protected getInternalProps(this: BaseMaterial) {
     return {

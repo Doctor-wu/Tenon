@@ -1,11 +1,12 @@
-import { MaterialInternalEvent, TenonEvent, TenonEventPrefix, createTenonEvent } from "@tenon/materials";
+import { TenonEvent } from "@tenon/materials";
 import { Bridge, Dict } from "@tenon/shared";
-import { Ref, reactive } from "vue";
-import { ElementChangeEvent, RuntimeComponentTreeDestroyEvent } from "./interface";
+import { reactive } from "vue";
+import { RuntimeComponentTreeDestroyEvent } from "./interface";
 
 export class RuntimeTreeNode {
   static runTimeId = 0;
   id: number;
+  name: string;
   el?: HTMLElement;
   props: Dict<unknown> | null = null;
   bridge: Bridge<Record<TenonEvent<string>, any>> = new Bridge();
@@ -15,8 +16,9 @@ export class RuntimeTreeNode {
   draggable = true;
   droppable = true;
 
-  constructor() {
+  constructor(name: string) {
     this.id = RuntimeTreeNode.runTimeId++;
+    this.name = name;
     // this.initEvents();
   }
 
@@ -30,18 +32,4 @@ export class RuntimeTreeNode {
     this.children.length = 0;
     this.el = undefined;
   }
-
-  // private initEvents() {
-  //   Object.keys(this.eventBindings || {}).forEach((key) => {
-  //     this.bridge.register(key as TenonEvent<string>, (...args) => {
-  //       console.log(key, args);
-  //       if (this.eventHandlers?.[key]) {
-  //         this.eventHandlers[key](...args);
-  //       }
-  //     });
-  //   });
-  //   this.bridge.register(createTenonEvent(MaterialInternalEvent.Mount), (elRef: Ref<HTMLElement>) => {
-  //     this.bridge.run(ElementChangeEvent, elRef);
-  //   });
-  // }
 }
