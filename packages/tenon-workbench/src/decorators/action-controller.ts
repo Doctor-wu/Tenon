@@ -17,6 +17,6 @@ export const ActionController: ActionControllerType = (name: any, action: Action
     target[ActionControllerKey] = target[ActionControllerKey] || {};
     target[ActionControllerKey][name] = target[ActionControllerKey][name] || {};
     target[ActionControllerKey][name][action] = target[ActionControllerKey][name][action] || [];
-    target[ActionControllerKey][name][action].push(() => oldValue.call(target));
+    target[ActionControllerKey][name][action].push(oldValue);
   }
 }

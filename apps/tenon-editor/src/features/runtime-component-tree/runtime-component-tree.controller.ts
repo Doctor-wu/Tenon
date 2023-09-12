@@ -11,12 +11,10 @@ import {
   name: Symbol('runtime-component-tree-controller')
 })
 export class RuntimeComponentTreeController {
-  @Loader(ServiceName.UndoRedoService)
-  fullScreenFeatureLoader: IDynamicFeature<UndoRedoService>;
 
-  get undoRedoService() {
-    return this.fullScreenFeatureLoader.instance;
-  }
+  constructor(
+    @Inject(ServiceName.UndoRedoService) private undoRedoService: UndoRedoService,
+  ) { }
 
   @ToolBarController(ToolBarName.Undo, [UndoRedoService.canUndo])
   async canUndo(): Promise<ToolBarControllerResult> {
@@ -34,11 +32,10 @@ export class RuntimeComponentTreeController {
 
   @ActionController(ToolBarName.Undo, ActionType.onClick)
   @ActionController(ToolBarName.Redo, ActionType.onClick)
-  @awaitLoad(ServiceName.UndoRedoService)
   async handleUndoRedo(
     @InjectActionInfoService() actionInfo: ActionInfo<ToolBarName.Undo | ToolBarName.Redo>,
   ) {
-    console.log('handleUndoRedo', actionInfo);
+    console.log('handleUndoRedo', actionInfo, this);
     switch (actionInfo.name) {
       case ToolBarName.Redo:
         this.undoRedoService!.redo();
