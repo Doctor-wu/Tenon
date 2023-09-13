@@ -1,4 +1,5 @@
 packages:
   # all packages in subDirs of packages/ and components/
   - 'packages/**'
+  - 'legacy-packages/**'
   - 'apps/**'

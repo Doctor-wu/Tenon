@@ -1,0 +1,18 @@
+{
+  "name": "@tenon/legacy-internal-components",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Doctor wu",
+  "license": "MIT",
+  "dependencies": {
+    "@tenon/legacy-engine": "workspace:*",
+    "@tenon/legacy-materials": "workspace:*",
+    "@tenon/shared": "workspace:*",
+    "sass": "^1.43.4"
+  },
+  "description": ""
+}

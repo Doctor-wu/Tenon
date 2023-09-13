@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "description": "personal lowCode platform",
     "scripts": {
-        "dev:mix": "ts-node scripts/dev-mix.ts",
-        "build": "node -r ts-node/register --max-old-space-size=4096 scripts/build.ts"
+        "legacy:dev:mix": "ts-node scripts/legacy-dev-mix.ts",
+        "legacy:build": "node -r ts-node/register --max-old-space-size=4096 scripts/legacy-build.ts"
     },
     "keywords": [
         "lowCode",

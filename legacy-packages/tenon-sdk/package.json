@@ -1,0 +1,27 @@
+{
+    "name": "@tenon/legacy-sdk",
+    "version": "1.0.0",
+    "main": "src/web/dist/tenon-web-sdk.umd.js",
+    "module": "src/web/dist/tenon-web-sdk.es.js",
+    "scripts": {
+        "build": "ts-node src/scripts/build-web.ts"
+    },
+    "author": "Doctor wu",
+    "typings": "typings",
+    "license": "MIT",
+    "devDependencies": {},
+    "dependencies": {
+        "@tenon/legacy-internal-components": "workspace: *",
+        "@tenon/legacy-engine": "workspace:*",
+        "@tenon/legacy-flow": "workspace:*",
+        "@tenon/cms": "workspace:*",
+        "@tenon/legacy-materials": "workspace:*",
+        "@tenon/shared": "workspace:*",
+        "lodash": "^4.17.21",
+        "sass": "^1.43.4",
+        "typescript": "^4.4.3",
+        "vite": "^2.6.4",
+        "vue-tsc": "^0.3.0"
+    },
+    "description": ""
+}

@@ -1,0 +1,36 @@
+{
+    "name": "@tenon/cms",
+    "main": "src/main.ts",
+    "module": "src/main.ts",
+    "version": "1.0.0",
+    "scripts": {
+        "dev": "vite",
+        "build": "node -r ts-node/register --max-old-space-size=4096 scripts/build.ts",
+        "nocheck-build": "vite build",
+        "serve": "vite preview"
+    },
+    "dependencies": {
+        "@monaco-editor/loader": "^1.3.0",
+        "monaco-editor": "^0.21.2",
+        "rollup": "^2.33.1",
+        "rollup-plugin-copy": "^3.4.0",
+        "rollup-plugin-monaco-editor": "^0.2.1",
+        "vite-plugin-monaco-editor-nls": "^1.0.8"
+    },
+    "author": "Doctor wu",
+    "devDependencies": {
+        "@tenon/legacy-bff": "workspace:*",
+        "@tenon/cms": "workspace:*",
+        "@tenon/legacy-engine": "workspace:*",
+        "@tenon/legacy-flow": "workspace:*",
+        "@tenon/legacy-internal-components": "workspace:*",
+        "@tenon/legacy-materials": "workspace:*",
+        "@tenon/legacy-sdk": "workspace:*",
+        "@tenon/shared": "workspace:*",
+        "lodash": "^4.17.21",
+        "sass": "^1.43.4",
+        "typescript": "^4.4.3",
+        "vite": "^2.6.4",
+        "vue-tsc": "^0.3.0"
+    }
+}

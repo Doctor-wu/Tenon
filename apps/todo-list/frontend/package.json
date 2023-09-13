@@ -7,7 +7,7 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "@tenon/sdk": "workspace:*"
+        "@tenon/legacy-sdk": "workspace:*"
     },
     "keywords": [
         "lowcode"

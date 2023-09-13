@@ -49,7 +49,7 @@ importers:
         version: 4.6.2
       vite:
         specifier: ^2.8.6
-        version: 2.8.6(less@4.1.3)(sass@1.49.9)
+        version: 2.8.6
       vue:
         specifier: ^3.2.31
         version: 3.2.31
@@ -117,9 +117,9 @@ importers:
 
   apps/todo-list/frontend:
     dependencies:
-      '@tenon/sdk':
+      '@tenon/legacy-sdk':
         specifier: workspace:*
-        version: link:../../../packages/tenon-sdk
+        version: link:../../../legacy-packages/tenon-sdk
 
   apps/todo-list/server:
     dependencies:
@@ -148,13 +148,7 @@ importers:
         specifier: ^5.1.2
         version: 5.1.2
 
-  packages/shared:
-    dependencies:
-      '@tenon/shared':
-        specifier: workspace:*
-        version: 'link:'
-
-  packages/tenon-bff:
+  legacy-packages/tenon-bff:
     dependencies:
       '@koa/cors':
         specifier: ^3.1.0
@@ -203,7 +197,7 @@ importers:
         version: 5.0.0
       mongodb:
         specifier: ^4.3.1
-        version: 4.4.1
+        version: 4.3.1
       mongoose:
         specifier: ^6.2.0
         version: 6.2.6
@@ -217,23 +211,23 @@ importers:
         specifier: ^8.3.2
         version: 8.3.2
     devDependencies:
-      '@tenon/engine':
+      '@tenon/legacy-engine':
         specifier: workspace:*
         version: link:../tenon-engine
-      '@tenon/flow':
+      '@tenon/legacy-flow':
         specifier: workspace:*
         version: link:../tenon-flow
-      '@tenon/materials':
+      '@tenon/legacy-materials':
         specifier: workspace:*
         version: link:../tenon-materials
       '@tenon/node-framework':
         specifier: workspace:*
-        version: link:../tenon-node-framework
+        version: link:../../packages/tenon-node-framework
       '@tenon/shared':
         specifier: workspace:*
-        version: link:../shared
+        version: link:../../packages/shared
 
-  packages/tenon-cms:
+  legacy-packages/tenon-cms:
     dependencies:
       '@monaco-editor/loader':
         specifier: ^1.3.0
@@ -254,30 +248,30 @@ importers:
         specifier: ^1.0.8
         version: 1.0.8(vite@2.8.6)
     devDependencies:
-      '@tenon/bff':
-        specifier: workspace:*
-        version: link:../tenon-bff
       '@tenon/cms':
         specifier: workspace:*
         version: 'link:'
-      '@tenon/engine':
+      '@tenon/legacy-bff':
+        specifier: workspace:*
+        version: link:../tenon-bff
+      '@tenon/legacy-engine':
         specifier: workspace:*
         version: link:../tenon-engine
-      '@tenon/flow':
+      '@tenon/legacy-flow':
         specifier: workspace:*
         version: link:../tenon-flow
-      '@tenon/internal-components':
+      '@tenon/legacy-internal-components':
         specifier: workspace:*
         version: link:../tenon-internal-components
-      '@tenon/materials':
+      '@tenon/legacy-materials':
         specifier: workspace:*
         version: link:../tenon-materials
-      '@tenon/sdk':
+      '@tenon/legacy-sdk':
         specifier: workspace:*
         version: link:../tenon-sdk
       '@tenon/shared':
         specifier: workspace:*
-        version: link:../shared
+        version: link:../../packages/shared
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -294,17 +288,107 @@ importers:
         specifier: ^0.3.0
         version: 0.3.0(typescript@4.6.2)
 
-  packages/tenon-engine:
+  legacy-packages/tenon-engine:
     devDependencies:
-      '@tenon/engine':
+      '@tenon/legacy-engine':
         specifier: workspace:*
         version: 'link:'
-      '@tenon/materials':
+      '@tenon/legacy-materials':
         specifier: workspace:*
         version: link:../tenon-materials
-      '@tenon/sdk':
+      '@tenon/legacy-sdk':
         specifier: workspace:*
         version: link:../tenon-sdk
+      '@tenon/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+
+  legacy-packages/tenon-flow:
+    devDependencies:
+      '@tenon/node-framework':
+        specifier: workspace:*
+        version: link:../../packages/tenon-node-framework
+      '@tenon/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+
+  legacy-packages/tenon-internal-components:
+    dependencies:
+      '@tenon/legacy-engine':
+        specifier: workspace:*
+        version: link:../tenon-engine
+      '@tenon/legacy-materials':
+        specifier: workspace:*
+        version: link:../tenon-materials
+      '@tenon/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      sass:
+        specifier: ^1.43.4
+        version: 1.49.9
+
+  legacy-packages/tenon-materials:
+    dependencies:
+      '@tenon/dsl-compiler':
+        specifier: workspace:*
+        version: link:../../packages/tenon-dsl-compiler
+      '@tenon/legacy-engine':
+        specifier: workspace:*
+        version: link:../tenon-engine
+      '@tenon/legacy-flow':
+        specifier: workspace:*
+        version: link:../tenon-flow
+      '@tenon/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      esbuild:
+        specifier: ^0.14.23
+        version: 0.14.27
+
+  legacy-packages/tenon-sdk:
+    dependencies:
+      '@tenon/cms':
+        specifier: workspace:*
+        version: link:../tenon-cms
+      '@tenon/legacy-engine':
+        specifier: workspace:*
+        version: link:../tenon-engine
+      '@tenon/legacy-flow':
+        specifier: workspace:*
+        version: link:../tenon-flow
+      '@tenon/legacy-internal-components':
+        specifier: 'workspace: *'
+        version: link:../tenon-internal-components
+      '@tenon/legacy-materials':
+        specifier: workspace:*
+        version: link:../tenon-materials
+      '@tenon/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
+      sass:
+        specifier: ^1.43.4
+        version: 1.49.9
+      typescript:
+        specifier: ^4.4.3
+        version: 4.6.2
+      vite:
+        specifier: ^2.6.4
+        version: 2.8.6(less@4.1.3)(sass@1.49.9)
+      vue-tsc:
+        specifier: ^0.3.0
+        version: 0.3.0(typescript@4.6.2)
+
+  packages/shared:
+    dependencies:
+      '@tenon/shared':
+        specifier: workspace:*
+        version: 'link:'
+
+  packages/tenon-dsl-compiler:
+    dependencies:
       '@tenon/shared':
         specifier: workspace:*
         version: link:../shared
@@ -318,26 +402,11 @@ importers:
         specifier: workspace:*
         version: link:../shared
 
-  packages/tenon-internal-components:
-    dependencies:
-      '@tenon/engine':
-        specifier: workspace:*
-        version: link:../tenon-engine
-      '@tenon/materials':
-        specifier: workspace:*
-        version: link:../tenon-materials
-      '@tenon/shared':
-        specifier: workspace:*
-        version: link:../shared
-      sass:
-        specifier: ^1.43.4
-        version: 1.49.9
-
   packages/tenon-materials:
     dependencies:
-      '@tenon/engine':
+      '@tenon/dsl-compiler':
         specifier: workspace:*
-        version: link:../tenon-engine
+        version: link:../tenon-dsl-compiler
       '@tenon/flow':
         specifier: workspace:*
         version: link:../tenon-flow
@@ -394,7 +463,7 @@ importers:
         version: 5.0.0
       mongodb:
         specifier: ^4.3.1
-        version: 4.4.1
+        version: 4.3.1
       mongoose:
         specifier: ^6.2.0
         version: 6.2.6
@@ -402,42 +471,6 @@ importers:
       '@tenon/shared':
         specifier: workspace:*
         version: link:../shared
-
-  packages/tenon-sdk:
-    dependencies:
-      '@tenon/cms':
-        specifier: workspace:*
-        version: link:../tenon-cms
-      '@tenon/engine':
-        specifier: workspace:*
-        version: link:../tenon-engine
-      '@tenon/flow':
-        specifier: workspace:*
-        version: link:../tenon-flow
-      '@tenon/internal-components':
-        specifier: 'workspace: *'
-        version: link:../tenon-internal-components
-      '@tenon/materials':
-        specifier: workspace:*
-        version: link:../tenon-materials
-      '@tenon/shared':
-        specifier: workspace:*
-        version: link:../shared
-      lodash:
-        specifier: ^4.17.21
-        version: 4.17.21
-      sass:
-        specifier: ^1.43.4
-        version: 1.49.9
-      typescript:
-        specifier: ^4.4.3
-        version: 4.6.2
-      vite:
-        specifier: ^2.6.4
-        version: 2.8.6(less@4.1.3)(sass@1.49.9)
-      vue-tsc:
-        specifier: ^0.3.0
-        version: 0.3.0(typescript@4.6.2)
 
   packages/tenon-workbench:
     dependencies:
@@ -718,7 +751,7 @@ packages:
       '@types/connect': 3.4.35
       '@types/express': 4.17.13
       '@types/keygrip': 1.0.2
-      '@types/node': 17.0.21
+      '@types/node': 17.0.31
     dev: false
 
   /@types/eslint-scope@3.7.4:
@@ -851,7 +884,7 @@ packages:
       '@types/http-errors': 1.8.2
       '@types/keygrip': 1.0.2
       '@types/koa-compose': 3.2.5
-      '@types/node': 17.0.21
+      '@types/node': 17.0.31
     dev: false
 
   /@types/lodash@4.14.180:
@@ -931,7 +964,7 @@ packages:
   /@types/whatwg-url@8.2.1:
     resolution: {integrity: sha512-2YubE1sjj5ifxievI5Ge1sckb9k/Er66HyR2c+3+I6VDUUg1TLPdYYTEbQ+DjRkS4nTxMJhgWfSfMRD2sl2EYQ==}
     dependencies:
-      '@types/node': 17.0.21
+      '@types/node': 17.0.31
       '@types/webidl-conversions': 6.1.1
     dev: false
 
@@ -941,7 +974,7 @@ packages:
     peerDependencies:
       vite: ^2.5.10
     dependencies:
-      vite: 2.8.6(less@4.1.3)(sass@1.49.9)
+      vite: 2.8.6
     dev: false
 
   /@volar/code-gen@0.27.24:
@@ -2260,17 +2293,6 @@ packages:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
     dev: false
 
-  /fast-glob@3.2.11:
-    resolution: {integrity: sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==}
-    engines: {node: '>=8.6.0'}
-    dependencies:
-      '@nodelib/fs.stat': 2.0.5
-      '@nodelib/fs.walk': 1.2.8
-      glob-parent: 5.1.2
-      merge2: 1.4.1
-      micromatch: 4.0.5
-    dev: false
-
   /fast-glob@3.2.12:
     resolution: {integrity: sha512-DVj4CQIYYow0BlaelwK1pHl5n5cRSJfM60UA0zK891sVInoPri2Ekj7+e1CT3/3qxXenpI+nBBmQAcJPJgaj4w==}
     engines: {node: '>=8.6.0'}
@@ -2432,7 +2454,7 @@ packages:
       '@types/glob': 7.2.0
       array-union: 2.1.0
       dir-glob: 3.0.1
-      fast-glob: 3.2.11
+      fast-glob: 3.2.12
       glob: 7.2.0
       ignore: 5.2.0
       merge2: 1.4.1
@@ -2696,7 +2718,6 @@ packages:
     resolution: {integrity: sha512-RRjxlvLDkD1YJwDbroBHMb+cukurkDWNyHx7D3oNB5x9rb5ogcksMC5wHCadcXoo67gVr/+3GFySh3134zi6rw==}
     dependencies:
       has: 1.0.3
-    dev: false
 
   /is-core-module@2.8.1:
     resolution: {integrity: sha512-SdNCUs284hr40hFTFP6l0IfZ/RSrMXF3qgoRHd3/79unUTvrFO/JoXwkGm+5J/Oe3E/b5GsnG330uUNgRpu1PA==}
@@ -3000,7 +3021,7 @@ packages:
     resolution: {integrity: sha512-z/OzxVjf5NyuNO3t9nJpx7e1oR3FSBAauiwXtMQu4ppcnuNZzTaQ4p21P8A6r2Es8uJJM339oc4oVW+qX7SqnQ==}
     engines: {node: '>= 8.0.0'}
     dependencies:
-      debug: 4.3.3
+      debug: 4.3.4
       http-errors: 1.8.1
       koa-compose: 4.1.0
       methods: 1.1.2
@@ -3055,7 +3076,7 @@ packages:
       content-disposition: 0.5.4
       content-type: 1.0.4
       cookies: 0.8.0
-      debug: 4.3.3
+      debug: 4.3.4
       delegates: 1.0.0
       depd: 2.0.0
       destroy: 1.1.1
@@ -3333,18 +3354,6 @@ packages:
       saslprep: 1.0.3
     dev: false
 
-  /mongodb@4.4.1:
-    resolution: {integrity: sha512-IAD3nFtCR4s22vi5qjqkCBnuyDDrOW8WVSSmgHquOvGaP1iTD+XpC5tr8wAUbZ2EeZkaswwBKQFHDvl4qYcKqQ==}
-    engines: {node: '>=12.9.0'}
-    dependencies:
-      bson: 4.6.1
-      denque: 2.0.1
-      mongodb-connection-string-url: 2.5.2
-      socks: 2.6.2
-    optionalDependencies:
-      saslprep: 1.0.3
-    dev: false
-
   /mongoose@6.2.6:
     resolution: {integrity: sha512-OkPM1y7Ed9+Pa2/18mxegcD0OOe/aCXTQvOEyEn/MzVdaRsVSc+zE6myOS4LkWWi30c2tl4fpdJJvgC/MgXiww==}
     engines: {node: '>=12.0.0'}
@@ -3369,7 +3378,7 @@ packages:
     resolution: {integrity: sha512-oAVF0Nil1mT3rxty6Zln4YiD6x6QsUWYz927jZzjMxOK2aqmhEz5JQ7xmrKK7xRFA2dwV+YaOpKU/S+vfNqKxA==}
     engines: {node: '>=12.0.0'}
     dependencies:
-      debug: 4.3.3
+      debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -3900,7 +3909,6 @@ packages:
       is-core-module: 2.11.0
       path-parse: 1.0.7
       supports-preserve-symlinks-flag: 1.0.0
-    dev: false
 
   /responselike@1.0.2:
     resolution: {integrity: sha1-kYcg7ztjHFZCvgaPFa3lpG9Loec=}
@@ -4673,6 +4681,30 @@ packages:
       vite: 2.8.6(less@4.1.3)(sass@1.49.9)
     dev: false
 
+  /vite@2.8.6:
+    resolution: {integrity: sha512-e4H0QpludOVKkmOsRyqQ7LTcMUDF3mcgyNU4lmi0B5JUbe0ZxeBBl8VoZ8Y6Rfn9eFKYtdXNPcYK97ZwH+K2ug==}
+    engines: {node: '>=12.2.0'}
+    hasBin: true
+    peerDependencies:
+      less: '*'
+      sass: '*'
+      stylus: '*'
+    peerDependenciesMeta:
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+    dependencies:
+      esbuild: 0.14.27
+      postcss: 8.4.12
+      resolve: 1.22.0
+      rollup: 2.70.1
+    optionalDependencies:
+      fsevents: 2.3.2
+    dev: false
+
   /vite@2.8.6(less@4.1.3)(sass@1.49.9):
     resolution: {integrity: sha512-e4H0QpludOVKkmOsRyqQ7LTcMUDF3mcgyNU4lmi0B5JUbe0ZxeBBl8VoZ8Y6Rfn9eFKYtdXNPcYK97ZwH+K2ug==}
     engines: {node: '>=12.2.0'}
@@ -4692,7 +4724,7 @@ packages:
       esbuild: 0.14.27
       less: 4.1.3
       postcss: 8.4.12
-      resolve: 1.22.0
+      resolve: 1.22.1
       rollup: 2.70.1
       sass: 1.49.9
     optionalDependencies:

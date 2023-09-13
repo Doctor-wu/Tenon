@@ -1,4 +1,4 @@
-import { Bridge, Dict } from "@tenon/shared";
+import { Dict } from "@tenon/shared";
 import { VNode, CSSProperties } from "vue";
 import { IMaterialEventMeta, IMaterialInternalEventMeta } from "./events/event-meta";
 
