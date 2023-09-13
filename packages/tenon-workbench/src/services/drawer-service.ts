@@ -95,7 +95,6 @@ class DrawerServiceBase {
     this.displayType = type;
     this.bridge.run('updateDisplayType', type);
   }
-
 };
 
 export const DrawerService = createServiceTag('DrawerService');

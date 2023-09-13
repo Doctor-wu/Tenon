@@ -97,17 +97,18 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
 
     public initControllers() {
       this.controllers.forEach(Controller => {
-        Object.keys(Controller.prototype[ActionControllerKey]).forEach(nameKey => {
-          Object.keys(Controller.prototype[ActionControllerKey][nameKey]).forEach(actionKey => {
-            Controller.prototype[ActionControllerKey][nameKey][actionKey].forEach(cb => {
-              this.barConfig.regisAction(nameKey, actionKey, cb);
+        this.workbenchDIService.get(Controller.prototype[ControllerKeyName]).then(instance => {
+          Object.keys(Controller.prototype[ActionControllerKey]).forEach(nameKey => {
+            Object.keys(Controller.prototype[ActionControllerKey][nameKey]).forEach(actionKey => {
+              Controller.prototype[ActionControllerKey][nameKey][actionKey].forEach(cb => {
+                this.barConfig.regisAction(nameKey, actionKey, cb.bind(instance));
+              });
             });
           });
+          Object.keys(Controller.prototype[UIControllerKey]).forEach(nameKey => {
+            Controller.prototype[UIControllerKey][nameKey](this);
+          });
         });
-        Object.keys(Controller.prototype[UIControllerKey]).forEach(nameKey => {
-          Controller.prototype[UIControllerKey][nameKey](this);
-        });
-        this.workbenchDIService.get(Controller.prototype[ControllerKeyName]);
       });
     }
 

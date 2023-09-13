@@ -1,35 +1,46 @@
 <template>
   <span
     v-bind="$attrs"
-    :style="props.style || props.__tenon_material_instance__.props.style.default"
+    class="tenon-material-text"
+    :style="props.style || props.__tenon_material_instance__.propMeta.style.default"
     ref="root"
-    >{{ props.text || props.__tenon_material_instance__.props.text.default }}</span
+    >{{ props.text || props.__tenon_material_instance__.propMeta.text.default }}</span
   >
 </template>
 
 <script setup lang="ts">
 import { TenonText } from "./Text";
-import { IMaterialEventMeta } from "../../../base-component";
-import { CSSProperties, onMounted, ref } from "vue";
+import { CSSProperties, ref } from "vue";
+import {
+  IMaterialEventMeta,
+  IMaterialInternalEventMeta,
+  useEventMeta,
+} from "../../../events/event-meta";
+import type { Bridge } from "@tenon/shared";
+import { createTenonEvent, TenonEventPrefix } from "../../../events";
 
 const props = defineProps<{
   style?: CSSProperties;
   text?: string;
+  bridge: Bridge<Record<`${typeof TenonEventPrefix}${string}`, any>>;
   __tenon_material_instance__: TenonText;
-  __tenon_event_meta__: IMaterialEventMeta[];
-  __trigger_tenon_event__: (eventName: string, e: Event) => void;
+  __tenon_event_meta__: (IMaterialEventMeta | IMaterialInternalEventMeta)[];
 }>();
 
 const root = ref<HTMLElement>();
 const eventMeta = props.__tenon_event_meta__;
 
-onMounted(() => {
-  eventMeta.forEach((meta) => {
-    meta.trigger(root.value!, (e) => {
-      props.__trigger_tenon_event__(`tenon-event:${meta.name}`, e);
-    });
-  });
+useEventMeta(eventMeta, root, props.bridge);
+props.bridge.register(createTenonEvent('onClick'), (e) => {
+  console.log(props.__tenon_material_instance__.name, createTenonEvent('onClick'), e);
+});
+props.bridge.register(createTenonEvent('onDoubleClick'), (e) => {
+  console.log(props.__tenon_material_instance__.name, createTenonEvent('onDoubleClick'), e);
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tenon-material-text {
+  display: block;
+}
+</style>

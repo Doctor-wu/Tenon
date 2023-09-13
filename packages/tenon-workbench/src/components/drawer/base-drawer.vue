@@ -165,6 +165,7 @@ onMounted(() => {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  will-change: auto;
 
   &.float {
     position: absolute;
@@ -184,6 +185,7 @@ onMounted(() => {
   box-sizing: border-box;
   font-size: 14px;
   border-bottom: 1px solid #ddd;
+  z-index: 3;
 }
 
 .drawer-layer {

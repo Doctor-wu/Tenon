@@ -1,0 +1,19 @@
+{
+    "name": "@tenon/legacy-materials",
+    "version": "1.0.0",
+    "main": "src/index.ts",
+    "scripts": {
+        "dev": "ts-node scripts/dev.ts",
+        "build": "ts-node scripts/build.ts"
+    },
+    "author": "Doctor wu",
+    "license": "MIT",
+    "dependencies": {
+        "@tenon/legacy-engine": "workspace:*",
+        "@tenon/legacy-flow": "workspace:*",
+        "@tenon/shared": "workspace:*",
+        "@tenon/dsl-compiler": "workspace:*",
+        "esbuild": "^0.14.23"
+    },
+    "description": ""
+}

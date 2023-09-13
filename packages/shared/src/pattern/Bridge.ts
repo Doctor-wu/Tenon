@@ -12,4 +12,8 @@ export class Bridge<Actions extends Record<any, any>> {
       handler(...args);
     });
   }
+
+  clear() {
+    this.map.clear();
+  }
 }

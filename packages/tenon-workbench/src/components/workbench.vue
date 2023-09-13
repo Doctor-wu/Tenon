@@ -46,6 +46,7 @@ onMounted(() => {
 }
 #editor-root {
   height: 100%;
+  overflow: auto;
   flex: 1;
 }
 .editor-container {
@@ -54,5 +55,6 @@ onMounted(() => {
   width: 100%;
   overflow: hidden;
   display: flex;
+  z-index: 1;
 }
 </style>

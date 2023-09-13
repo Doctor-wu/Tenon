@@ -2,7 +2,7 @@
   <section :style="toolbarStyle" id="workbench-toolbar">
     <section class="toolbar-container">
       <template v-for="(group, index) in props.config.config" :key="index">
-        <template v-if="group.length">
+        <template v-if="group.length && !group.every(i => i.hidden)">
           <section class="toolbar-group">
             <template v-for="item in group" :key="item.name">
               <template v-if="!item.hidden">
@@ -59,7 +59,7 @@ const isLastNonEmptyGroup = (group: ToolBarItemType[]) => {
   padding: 6px 12px;
   box-sizing: border-box;
   transition: all ease 0.3s;
-  z-index: 1;
+  z-index: 2;
   background-color: #fff;
 }
 

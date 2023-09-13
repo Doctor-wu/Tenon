@@ -23,10 +23,10 @@ const root = document.getElementById('app-root')!;
   ],
   footBarConfig: footBarConfig,
   headerBarConfig: headerBarConfig,
-  keyBoardConfig: null,
   toolBarConfig: toolBarConfig,
 })
 class App extends WorkbenchLoader implements IWorkbenchAdapter{
+  public editor: any;
   attachEditor(dom: HTMLElement) {
     dom.innerHTML = 'editor';
   }
@@ -39,10 +39,10 @@ console.log(app);
 // });
 app.load(root);
 
-app.drawerService.right.setHeader({
-  showHeader: false,
-});
+// app.drawerService.right.setHeader({
+//   showHeader: false,
+// });
 
-app.drawerService.left.setHeader({
-  showHeader: false,
-});
+// app.drawerService.left.setHeader({
+//   showHeader: false,
+// });

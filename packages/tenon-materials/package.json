@@ -9,9 +9,9 @@
     "author": "Doctor wu",
     "license": "MIT",
     "dependencies": {
-        "@tenon/engine": "workspace:*",
         "@tenon/flow": "workspace:*",
         "@tenon/shared": "workspace:*",
+        "@tenon/dsl-compiler": "workspace:*",
         "esbuild": "^0.14.23"
     },
     "description": ""
