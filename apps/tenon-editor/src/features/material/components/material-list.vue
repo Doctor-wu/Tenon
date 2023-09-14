@@ -35,11 +35,11 @@ export default {
 </script>
 <script setup lang="ts">
 import { Card, Icon } from "tdesign-vue-next";
-import { IMaterialFeature } from "../material.interface";
 import { effect, onMounted, onUnmounted, reactive, ref, Ref } from "vue";
 import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree";
 import { RendererManager } from "@/core/renderer";
 import { IRenderer, ModelImpl, ModelType, RendererType } from "@tenon/engine";
+import { IMaterialFeature } from "../material.interface";
 
 const props = defineProps<{
   renderers: {

@@ -1,7 +1,7 @@
 import { HeaderBarConfig, HeaderBarType } from "@tenon/workbench";
 import { h } from "vue";
 import { Avatar, Button, Divider, Icon } from "tdesign-vue-next";
-import TitlePlaceholder from '@/components/header/title-placeholder.vue';
+import TitlePlaceholder from '@/workbench/components/header/title-placeholder.vue';
 
 export const createDividerItem = <BarType extends HeaderBarType>(
   type: BarType | undefined,
