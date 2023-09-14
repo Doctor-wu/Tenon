@@ -36,16 +36,25 @@ export class UndoRedoService {
 
   public pushUndo(items: BaseMutation[]) {
     this.undoStack.push(items.map(m => m.reverse()));
-    this.redoStack = [];
+    this.clearRedo();
     this.updateState();
   }
 
   public clear() {
-    this.undoStack = [];
-    this.redoStack = [];
+    this.clearUndo();
+    this.clearRedo();
     this.updateState();
     UndoRedoService.canUndo.value = false;
     UndoRedoService.canRedo.value = false;
+  }
+  private clearUndo() {
+    this.undoStack.forEach(ms => ms.forEach(m => m.dispose()));
+    this.undoStack = [];
+  }
+
+  private clearRedo() {
+    this.redoStack.forEach(ms => ms.forEach(m => m.dispose()));
+    this.redoStack = [];
   }
 
   private updateState() {

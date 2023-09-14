@@ -8,6 +8,7 @@ export interface IRuntimeComponentTreeFeature {
   insert(runtimeTree: RuntimeTreeNode, beInsert: string): Promise<void>;
   move(runtimeTree: RuntimeTreeNode, beMove: RuntimeTreeNode): void;
   buildRuntimeTree(name: string): Promise<RuntimeTreeNode>;
+  initRuntimeTree(runtimeTree: RuntimeTreeNode): Promise<void>;
 }
 
 export const IRuntimeComponentTreeFeature = createDynamicFeatureTag(FeatureName.RuntimeComponentTree);

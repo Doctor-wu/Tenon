@@ -10,8 +10,6 @@ import {
 } from "./lifecycle";
 import { TenonEditorContext } from "./context";
 import { plugins } from "../workbench/plugins";
-import { IDataEngine, TenonDataEngine } from "./model/data-engine";
-import { IRendererManager, RendererManager } from "./renderer";
 import { PerformanceMetricsName, TenonPerformanceMeasure } from '../performance/measure';
 import { Logger } from "@/utils/logger";
 
@@ -28,8 +26,6 @@ export class TenonEditor {
   config: BaseConfig = window.AppConfig;
   root: HTMLElement;
   context: TenonEditorContext;
-  dataEngine: TenonDataEngine;
-  rendererManager: RendererManager;
 
   constructor() {
     this.setupAdaptor();
@@ -50,14 +46,6 @@ export class TenonEditor {
     this.eventCenter =
       (await this.workbenchAdaptor.workbenchDIService.get<TenonEditorEventCenter>(
         IEventCenter
-      ))!;
-    this.dataEngine =
-      (await this.workbenchAdaptor.workbenchDIService.get<TenonDataEngine>(
-        IDataEngine
-      ))!;
-    this.rendererManager =
-      (await this.workbenchAdaptor.workbenchDIService.get<RendererManager>(
-        IRendererManager
       ))!;
   }
 
@@ -85,7 +73,6 @@ export class TenonEditor {
       TenonEditorLifeCycleStage.InitDataEngine,
       () => {
         performance.mark(PerformanceMetricsName.WorkbenchLaunched);
-        this.dataEngine
         this.lifecycle!.emitStageFinish(
           TenonEditorLifeCycleStage.InitDataEngine
         );

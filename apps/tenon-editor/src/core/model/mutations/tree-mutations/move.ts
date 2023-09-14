@@ -43,4 +43,6 @@ export class MoveTreeNodeMutation extends BaseMutation {
   reverse(): BaseMutation {
     return new MoveTreeNodeMutation(this.oldParent, this.source, this.oldIndex);
   }
+
+  dispose(): void {}
 }

@@ -10,7 +10,7 @@ export class DIState {
   protected getDeps(service: IService, ...args: any[]): any {
     if (this.depsStack.includes(service.name)) {
       this.depsStack.push(service.name);
-      throw new Error(`[Circle Deps] ${this.depsStack.join(' -> ')}`);
+      throw new Error(`[Circle Deps] ${this.depsStack.map(String).join(' -> ')}`);
     }
     this.depsStack.push(service.name);
     const deps: any[] = [];
@@ -33,7 +33,6 @@ export class DIState {
   }
 
   protected initService<T extends newable<any[], T>>(service: IService<T>, ...args: any[]): T {
-    this.depsStack.length = 0;
     const deps = this.getDeps(service as unknown as IService, ...args);
     const {
       loader,
@@ -46,6 +45,7 @@ export class DIState {
     }
     this.services.set(service.name, service);
     this.instances.set(service.name, service.instance!);
+    this.depsStack.length = 0;
     return service.instance;
   }
 
@@ -71,7 +71,7 @@ export class DIState {
     }
   }
 
-  public regisService<T extends unknown>(serviceName: any, loader: () => T, onLoad?: (instance:T) => void) {
+  public regisService<T extends unknown>(serviceName: any, loader: () => T, onLoad?: (instance: T) => void) {
     this.services.set(serviceName, {
       name: serviceName,
       loader,

@@ -10,12 +10,9 @@ import { Bridge } from "@tenon/shared";
 import { IAreaIndicatorFeature } from "../area-indicator";
 import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
-import { ModeType } from "../edit-mode/notification";
 import { DragType, IMaterialDragFeature } from "../material-drag";
 import { RuntimeTreeNode } from "@/core/model";
-import { BaseMaterial } from "@tenon/materials";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
-import { IRendererManager } from "@/core/renderer";
 import type { RendererManager } from "@/core/renderer";
 
 @Feature({
@@ -48,9 +45,12 @@ export class ComposeViewHandler implements IComposeViewFeature {
     return this.runtimeComponentTreeFeature.instance!;
   }
 
+  private get rendererManager() {
+    return this.context.rendererManager;
+  }
+
   constructor(
     @Inject(IContext) private context: TenonEditorContext,
-    @Inject(IRendererManager) private rendererManager: RendererManager,
   ) {
     this.initEvent();
   }
@@ -64,8 +64,9 @@ export class ComposeViewHandler implements IComposeViewFeature {
     return this.materialDrag;
   }
 
-  getComposeView = () => {
-    return new TenonComposeView(this, this.rendererManager);
+  @awaitLoad(IRuntimeComponentTreeFeature)
+  async getComposeView() {
+    return new TenonComposeView(this, this.rendererManager, this.runtimeComponentTree);
   }
 
   @awaitLoad(IEditModeFeature)

@@ -2,7 +2,6 @@ import {
   bindDynamicLoader, createDynamicFeatureTag
 } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
-import { BaseMaterial, IDryMaterial, IWetMaterial } from "@tenon/materials";
 
 export interface IMaterialFeature {
   // interface
