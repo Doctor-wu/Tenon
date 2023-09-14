@@ -5,13 +5,13 @@ import { TenonEditorContext } from '../context';
 import { ModelChangeNotification } from '../notifications/model-notification';
 import { Logger } from '@/utils/logger';
 import { ServiceName, UndoRedoService } from '@/services';
-import { BaseMutation, ModelImpl, ModelType } from '@tenon/engine';
+import { BaseMutation, ModelImpl, ModelHost } from '@tenon/engine';
 
 
 @Service({
   name: IDataEngine,
 })
-export class TenonDataEngine<Model extends ModelImpl[ModelType]> {
+export class TenonDataEngine<Model extends ModelImpl[ModelHost]> {
   runtimeRoot: Model;
   eventManager: TenonEventManager;
 

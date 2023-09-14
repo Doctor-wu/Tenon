@@ -8,7 +8,7 @@ import { IComposeViewFeature } from "./compose-view.interface";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { Logger } from "@/utils/logger";
 import type { RendererManager } from "@/core/renderer";
-import { IRenderer, ModelImpl, ModelType, RendererType } from "@tenon/engine";
+import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
 
 const TenonComposeViewInfo = {
   name: 'ComposeView',
@@ -37,7 +37,7 @@ const TenonComposeViewInfo = {
   ] as IMaterialEventMeta[],
 }
 
-export class TenonComposeView extends BaseMaterial<RendererType.Vue> implements IRenderer {
+export class TenonComposeView extends BaseMaterial<RendererHost.Vue> implements IRenderer {
   public name = TenonComposeViewInfo.name;
   public icon = TenonComposeViewInfo.icon;
   public description = TenonComposeViewInfo.description;
@@ -62,7 +62,7 @@ export class TenonComposeView extends BaseMaterial<RendererType.Vue> implements 
     }
   }
 
-  public render(model: ModelImpl[ModelType.Tree], props: {
+  public render(model: ModelImpl[ModelHost.Tree], props: {
     [K in keyof TenonComposeView["propMeta"]]: TenonComposeView["propMeta"][K]["type"];
   }) {
     const { children } = model;

@@ -9,7 +9,7 @@ import { NotificationManager } from "./notification-manager";
 import { type RendererManager } from "./renderer";
 import { type TenonDataEngine } from "./model";
 import type { TenonEditorStore } from "./store";
-import { ModelImpl, ModelType } from "@tenon/engine";
+import { ModelImpl, ModelHost } from "@tenon/engine";
 
 @Service({
   name: IContext,
@@ -17,7 +17,7 @@ import { ModelImpl, ModelType } from "@tenon/engine";
 export class TenonEditorContext extends NotificationManager {
   constructor(
     @Inject(EventEmitterService) public eventEmitter: EventEmitterCore,
-    @Inject(IDataEngine) public dataEngine: TenonDataEngine<ModelImpl[ModelType]>,
+    @Inject(IDataEngine) public dataEngine: TenonDataEngine<ModelImpl[ModelHost]>,
     @Inject(IRendererManager) public rendererManager: RendererManager,
     @Inject(IStore) public store: TenonEditorStore,
   ) {

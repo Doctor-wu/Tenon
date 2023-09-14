@@ -12,7 +12,7 @@ import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
 import { DragType, IMaterialDragFeature } from "../material-drag";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
-import { ModelImpl, ModelType } from "@tenon/engine";
+import { ModelImpl, ModelHost } from "@tenon/engine";
 
 @Feature({
   name: IComposeViewFeature,
@@ -108,7 +108,7 @@ export class ComposeViewHandler implements IComposeViewFeature {
     if (dragType === DragType.Material) {
       await this.runtimeComponentTree.insert(runtimeTree, payload as string);
     } else if (dragType === DragType.Component) {
-      this.runtimeComponentTree.move(runtimeTree, payload as ModelImpl[ModelType.Tree]);
+      this.runtimeComponentTree.move(runtimeTree, payload as ModelImpl[ModelHost.Tree]);
     }
   }
 

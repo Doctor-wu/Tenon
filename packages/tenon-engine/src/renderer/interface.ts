@@ -1,21 +1,21 @@
 import { BaseMaterial } from "@tenon/materials";
 import { VNode } from "vue";
 import { ReactElement } from "react";
-import { ModelImpl, ModelType } from "../model";
+import { ModelImpl, ModelHost } from "../model";
 
-export enum RendererType {
+export enum RendererHost {
   Vue = 'vue',
   React = 'react',
 }
 
 export interface RenderResultType {
-  [RendererType.Vue]: VNode,
-  [RendererType.React]: ReactElement,
+  [RendererHost.Vue]: VNode,
+  [RendererHost.React]: ReactElement,
 }
 
 export interface IRenderer<
-  Model extends ModelType = ModelType.Tree,
-  Render extends RendererType = RendererType.Vue,
+  Model extends ModelHost = ModelHost.Tree,
+  Render extends RendererHost = RendererHost.Vue,
 > extends BaseMaterial<Render> {
-  render(model: ModelImpl[Model], ...args: any[]): RenderResultType[Render];
+  render(model: ModelImpl[Model], ...args: unknown[]): RenderResultType[Render];
 }

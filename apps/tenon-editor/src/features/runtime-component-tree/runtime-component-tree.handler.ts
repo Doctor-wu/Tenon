@@ -12,7 +12,7 @@ import { ModeType } from "../edit-mode/notification";
 import { Logger } from "@/utils/logger";
 import { IContext, TenonEditorContext } from "@/core";
 import {
-  ModelType, RuntimeTreeCommands, ModelImpl,
+  ModelHost, RuntimeTreeCommands, ModelImpl,
   ElementChangeEvent, RuntimeComponentTreeDestroyEvent, RuntimeTreeNode,
 } from "@tenon/engine";
 
@@ -20,7 +20,7 @@ import {
   name: IRuntimeComponentTreeFeature,
 })
 export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature {
-  public runtimeTreeMap: Map<number, ModelImpl[ModelType.Tree]> = new Map();
+  public runtimeTreeMap: Map<number, ModelImpl[ModelHost.Tree]> = new Map();
 
   @Loader(IEditModeFeature)
   private editModeFeature!: IDynamicFeature<IEditModeFeature>;
@@ -62,7 +62,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     return this.runtimeTreeMap.get(id);
   }
 
-  async insert(runtimeTree: ModelImpl[ModelType.Tree], beInsert: string) {
+  async insert(runtimeTree: ModelImpl[ModelHost.Tree], beInsert: string) {
     console.log('insert', runtimeTree, beInsert);
     const childTree = await this.buildRuntimeTree(beInsert);
     this.dataEngine.invoke(
@@ -70,7 +70,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     );
   }
 
-  move(runtimeTree: ModelImpl[ModelType.Tree], beMove: ModelImpl[ModelType.Tree]) {
+  move(runtimeTree: ModelImpl[ModelHost.Tree], beMove: ModelImpl[ModelHost.Tree]) {
     Logger.log('move', runtimeTree, beMove);
     if (!runtimeTree.children.length) {
       this.dataEngine.invoke(
@@ -97,7 +97,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
   }
 
   @awaitLoad(IMaterialDragFeature, IAreaIndicatorFeature, IEditModeFeature)
-  public async initRuntimeTree(runtimeTree: ModelImpl[ModelType.Tree]) {
+  public async initRuntimeTree(runtimeTree: ModelImpl[ModelHost.Tree]) {
     runtimeTree.bridge.register(ElementChangeEvent, (elRef: Ref<HTMLElement>) => {
       const disEffect = watch(elRef, (newEl, oldEl) => {
         if (!newEl) return;

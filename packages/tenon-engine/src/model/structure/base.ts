@@ -1,6 +1,6 @@
-import { ModelType } from "../interface";
+import { ModelHost } from "../interface";
 
 export class BaseStructure {
   id: string | number;
-  type: ModelType;
+  type: ModelHost;
 }

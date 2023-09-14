@@ -1,7 +1,7 @@
 import { bindDynamicLoader, createDynamicFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
 import type { Ref } from "vue";
-import type { ModelImpl, ModelType } from "@tenon/engine";
+import type { ModelImpl, ModelHost } from "@tenon/engine";
 
 export enum DragType {
   /** 拖拽组件 */
@@ -11,7 +11,7 @@ export enum DragType {
 }
 
 export interface IDragPayload {
-  [DragType.Component]: ModelImpl[ModelType];
+  [DragType.Component]: ModelImpl[ModelHost];
   [DragType.Material]: string;
 }
 

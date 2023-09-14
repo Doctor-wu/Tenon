@@ -1,12 +1,12 @@
+import { ModelImpl, ModelHost } from "../../interface";
 import { BaseMutation, RemoveTreeNodeMutation } from "../../mutations";
-import { RuntimeTreeNode } from "../../structure";
 
 export class InsertTreeNodeMutation extends BaseMutation {
-  public parent: RuntimeTreeNode;
-  public source: RuntimeTreeNode;
+  public parent: ModelImpl[ModelHost.Tree];
+  public source: ModelImpl[ModelHost.Tree];
   public index: number;
 
-  constructor(parent: RuntimeTreeNode, source: RuntimeTreeNode, index: number) {
+  constructor(parent: ModelImpl[ModelHost.Tree], source: ModelImpl[ModelHost.Tree], index: number) {
     super();
     this.parent = parent;
     this.source = source;

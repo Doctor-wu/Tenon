@@ -4,7 +4,7 @@ import { TenonEventPrefix, clickTrigger, doubleClickTrigger } from "../../../eve
 import { IMaterialEventMeta, internalMeta } from "../../../events/event-meta";
 import { Bridge } from "@tenon/shared";
 import { MaterialPropsType, BaseMaterial } from "../../../base-material";
-import { RendererType } from "@tenon/engine";
+import { RendererHost } from "@tenon/engine";
 
 const TenonTextInfo = {
   name: 'TenonText',
@@ -38,7 +38,7 @@ const TenonTextInfo = {
   ] as IMaterialEventMeta[],
 }
 
-export class TenonText extends BaseMaterial<RendererType.Vue> {
+export class TenonText extends BaseMaterial<RendererHost.Vue> {
   public name = TenonTextInfo.name;
   public icon = TenonTextInfo.icon;
   public description = TenonTextInfo.description;

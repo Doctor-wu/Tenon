@@ -1,5 +1,5 @@
 import { Dict } from "@tenon/shared";
-import { RenderResultType, RendererType } from "@tenon/engine";
+import { RenderResultType, RendererHost } from "@tenon/engine";
 import { VNode, CSSProperties } from "vue";
 import { IMaterialEventMeta, IMaterialInternalEventMeta } from "./events/event-meta";
 
@@ -26,7 +26,7 @@ export enum MaterialType {
 
 
 
-export abstract class BaseMaterial<Render extends RendererType> {
+export abstract class BaseMaterial<Render extends RendererHost> {
   public type: MaterialType;
   public abstract name: string;
   public abstract icon: string | (() => VNode);

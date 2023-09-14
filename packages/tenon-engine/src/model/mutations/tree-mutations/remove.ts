@@ -1,5 +1,5 @@
-import { RuntimeTreeNode } from "../..";
 import { MutationError } from "../../../errors";
+import { ModelImpl, ModelHost } from "../../interface";
 import { BaseMutation } from "../base";
 import { InsertTreeNodeMutation } from "./insert";
 
@@ -9,11 +9,11 @@ import { InsertTreeNodeMutation } from "./insert";
  * @category Tree Mutations
  */
 export class RemoveTreeNodeMutation extends BaseMutation {
-  public readonly parent: RuntimeTreeNode;
-  public readonly source: RuntimeTreeNode;
+  public readonly parent: ModelImpl[ModelHost.Tree];
+  public readonly source: ModelImpl[ModelHost.Tree];
   public readonly oldIndex: number;
 
-  constructor(parent: RuntimeTreeNode, source: RuntimeTreeNode) {
+  constructor(parent: ModelImpl[ModelHost.Tree], source: ModelImpl[ModelHost.Tree]) {
     super();
     this.parent = parent;
     this.source = source;

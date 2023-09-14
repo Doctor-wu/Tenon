@@ -1,15 +1,15 @@
 import { MutationError } from "../../../errors";
-import { RuntimeTreeNode } from "../../structure";
+import { ModelImpl, ModelHost } from "../../interface";
 import { BaseMutation } from "../base";
 
 export class MoveTreeNodeMutation extends BaseMutation {
-  oldParent: RuntimeTreeNode;
-  newParent: RuntimeTreeNode;
+  oldParent: ModelImpl[ModelHost.Tree];
+  newParent: ModelImpl[ModelHost.Tree];
   oldIndex: number;
   newIndex: number;
-  source: RuntimeTreeNode;
+  source: ModelImpl[ModelHost.Tree];
 
-  constructor(newParent: RuntimeTreeNode, source: RuntimeTreeNode, index: number) {
+  constructor(newParent: ModelImpl[ModelHost.Tree], source: ModelImpl[ModelHost.Tree], index: number) {
     super();
     if (!source.parent) {
       throw new MutationError(

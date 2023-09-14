@@ -1,9 +1,9 @@
 import type { RuntimeTreeNode } from "./structure";
 
-export enum ModelType {
+export enum ModelHost {
   Tree = "tree",
 }
 
 export interface ModelImpl {
-  [ModelType.Tree]: RuntimeTreeNode;
+  [ModelHost.Tree]: RuntimeTreeNode;
 }
