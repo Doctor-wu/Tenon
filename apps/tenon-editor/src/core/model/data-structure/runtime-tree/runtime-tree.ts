@@ -22,6 +22,17 @@ export class RuntimeTreeNode {
     // this.initEvents();
   }
 
+  clone() {
+    const node = new RuntimeTreeNode(this.name);
+    node.bridge = this.bridge.clone();
+    node.eventBindings = this.eventBindings;
+    node.props = this.props;
+    node.draggable = this.draggable;
+    node.droppable = this.droppable;
+    node.children = this.children.map((child) => child.clone());
+    return node;
+  }
+
   destroy() {
     this.bridge.run(RuntimeComponentTreeDestroyEvent);
     this.bridge.clear();

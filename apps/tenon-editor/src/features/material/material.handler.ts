@@ -4,28 +4,31 @@ import {
   Feature, IDynamicFeature, Inject, Loader, awaitLoad,
 } from "@tenon/workbench";
 import { IMaterialFeature } from "./material.interface";
-import { BaseMaterial, IDryMaterial, IWetMaterial, TenonAtomComponents } from "@tenon/materials";
-import { h } from "vue";
+import { TenonAtomComponents } from "@tenon/materials";
+import { h, reactive } from "vue";
 import { IAreaIndicatorFeature } from "@tenon-features/area-indicator";
 import { IMaterialDragFeature, DragType } from "@tenon-features/material-drag";
 import materialListVue from "./components/material-list.vue";
 import { IComposeViewFeature } from "../compose-view";
-import { IDataEngine, TenonDataEngine } from "@/core/model/data-engine";
-import { IRuntimeComponentTreeFeature, RuntimeTreeNode } from "../runtime-component-tree";
+import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { Logger } from "@/utils/logger";
-import { IRenderer, IRendererManager, RendererManager } from "@/core/renderer";
+import type { IRenderer } from "@/core/renderer";
+import { IContext, TenonEditorContext } from "@/core";
 
 @Feature({
   name: IMaterialFeature,
 })
 export class MaterialHandler implements IMaterialFeature {
   isPanelOpen: boolean;
-  private atomComponents = Object.keys(TenonAtomComponents).reduce((acc, key) => {
+  private renderers: {
+    [x: string]: IRenderer;
+  } = reactive(Object.keys(TenonAtomComponents).reduce((acc, key) => {
+    const renderer = new TenonAtomComponents[key as keyof typeof TenonAtomComponents];
     return {
       ...acc,
-      [key]: new TenonAtomComponents[key as keyof typeof TenonAtomComponents],
+      [renderer.name]: renderer,
     }
-  }, {});
+  }, {}));
 
   @Loader(IAreaIndicatorFeature)
   private areaIndicator: IDynamicFeature<IAreaIndicatorFeature>;
@@ -50,15 +53,21 @@ export class MaterialHandler implements IMaterialFeature {
 
   private layerName = '物料面板';
 
+  private get dataEngine() {
+    return this.context.dataEngine;
+  }
+  private get rendererManager() {
+    return this.context.rendererManager;
+  }
+
   constructor(
     @Inject(DrawerService) private drawerService: DrawerServiceCore,
     @Inject(IComposeViewFeature) private composeView: IComposeViewFeature,
-    @Inject(IRendererManager) private rendererManager: RendererManager,
-    @Inject(IDataEngine) private dataEngine: TenonDataEngine,
+    @Inject(IContext) private context: TenonEditorContext,
   ) {
     this.isPanelOpen = false;
-    Object.keys(this.atomComponents).forEach(name => {
-      this.rendererManager.registerRenderer(name, this.atomComponents[name]);
+    Object.keys(this.renderers).forEach(name => {
+      this.rendererManager.registerRenderer(name, this.renderers[name]);
     });
     this.initRoot();
   }
@@ -74,9 +83,9 @@ export class MaterialHandler implements IMaterialFeature {
 
   @awaitLoad(IRuntimeComponentTreeFeature)
   async initRoot() {
-    const composeViewRenderer = this.composeView.getComposeView();
-    this.atomComponents[composeViewRenderer.name] = composeViewRenderer;
+    const composeViewRenderer = await this.composeView.getComposeView();
     this.rendererManager.registerRenderer(composeViewRenderer.name, composeViewRenderer);
+    this.renderers[composeViewRenderer.name] = composeViewRenderer;
     this.runtimeTree.buildRuntimeTree(composeViewRenderer.name).then(tree => {
       this.dataEngine.setRoot(tree);
     });
@@ -98,7 +107,7 @@ export class MaterialHandler implements IMaterialFeature {
   private async openMaterialPanel() {
     Logger.log('open material panel');
     this.drawerService.left.attachLayer(this.layerName, () => h(materialListVue, {
-      materials: Object.keys(this.atomComponents),
+      renderers: this.renderers,
       draggableMaterial: this.draggableMaterial.bind(this),
       runtimeComponentTree: this.runtimeTree,
       rendererManager: this.rendererManager,

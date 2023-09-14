@@ -2,16 +2,16 @@ import {
   Feature, IDynamicFeature, Inject, Loader, awaitLoad
 } from "@tenon/workbench";
 import { IRuntimeComponentTreeFeature } from "./runtime-component-tree.interface";
-import { IDryMaterial, IWetMaterial } from "@tenon/materials";
 import { IMaterialFeature } from "../material";
 import { DragType, IMaterialDragFeature } from "../material-drag";
-import { Ref, effect, watch } from "vue";
+import { Ref, watch } from "vue";
 import { IAreaIndicatorFeature } from "../area-indicator";
 import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
 import { ModeType } from "../edit-mode/notification";
-import { ElementChangeEvent, IDataEngine, RuntimeComponentTreeDestroyEvent, RuntimeTreeCommands, RuntimeTreeNode, TenonDataEngine } from "@/core/model";
+import { ElementChangeEvent, RuntimeComponentTreeDestroyEvent, RuntimeTreeCommands, RuntimeTreeNode } from "@/core/model";
 import { Logger } from "@/utils/logger";
+import { IContext, TenonEditorContext } from "@/core";
 
 @Feature({
   name: IRuntimeComponentTreeFeature,
@@ -47,8 +47,12 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     return this.areaIndicatorFeature.instance!;
   }
 
+  private get dataEngine() {
+    return this.context.dataEngine;
+  }
+
   constructor(
-    @Inject(IDataEngine) private dataEngine: TenonDataEngine,
+    @Inject(IContext) private context: TenonEditorContext,
   ) { }
 
   getRuntimeTreeById(id: number) {
@@ -90,7 +94,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
   }
 
   @awaitLoad(IMaterialDragFeature, IAreaIndicatorFeature, IEditModeFeature)
-  private async initRuntimeTree(runtimeTree: RuntimeTreeNode) {
+  public async initRuntimeTree(runtimeTree: RuntimeTreeNode) {
     runtimeTree.bridge.register(ElementChangeEvent, (elRef: Ref<HTMLElement>) => {
       const disEffect = watch(elRef, (newEl, oldEl) => {
         if (!newEl) return;

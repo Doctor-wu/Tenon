@@ -34,7 +34,6 @@ export class ComponentsTreeController {
     @Inject(BarService) private barService: BarServiceCore,
     @Inject(IContext) private context: TenonEditorContext
   ) {
-    Logger.log(this.context);
     this.listenDrawer();
   }
 

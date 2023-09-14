@@ -2,7 +2,8 @@
   <section class="material-list-container">
     <div class="material-list">
       <Card
-        v-for="instance in runtimeTreeInstances"
+        v-for="instance in materials"
+        :key="instance.model.id"
         :bordered="true"
         class="material-list-item"
         size="small"
@@ -36,65 +37,71 @@ export default {
 import { Card, Icon } from "tdesign-vue-next";
 import { BaseMaterial } from "@tenon/materials";
 import { IMaterialFeature } from "../material.interface";
-import { effect, onMounted, onUnmounted, reactive } from "vue";
+import { effect, onMounted, onUnmounted, reactive, ref, Ref } from "vue";
 import { RuntimeTreeNode } from "@/core/model";
 import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree";
 import { RendererManager, IRenderer } from "@/core/renderer";
 
 const props = defineProps<{
-  materials: string[];
+  renderers: {
+    [x: string]: IRenderer;
+  };
   draggableMaterial: IMaterialFeature["draggableMaterial"];
   runtimeComponentTree: IRuntimeComponentTreeFeature;
   rendererManager: RendererManager;
 }>();
 
-const runtimeTreeInstances: ({
-  model: RuntimeTreeNode,
-  renderer: IRenderer,
-})[] = reactive([]);
+const materials: Ref<
+  {
+    model: RuntimeTreeNode;
+    renderer: IRenderer;
+  }[]
+> = ref([]);
 
 const rootRefs: {
   el: HTMLElement;
   renderer: BaseMaterial;
   runtimeTree: RuntimeTreeNode;
   disposer?: () => void;
-}[] = [];
+}[] = reactive([]);
+
 onMounted(() => {
   effect(() => {
     Promise.all(
       // @TODO(Doctorwu) 这里有潜在的性能问题, 只要 props.materials 发生变化, 每次都会重新构建所有的树
-      props.materials.map(
+      Object.keys(props.renderers).map(
         async (m) => await props.runtimeComponentTree.buildRuntimeTree(m)
       )
-    )
-      .then((trees) => {
-        // 物料列表的组件不允许拖拽
-        trees.forEach(tree => {
-          tree.draggable = false;
-          tree.droppable = false;
-        });
-        runtimeTreeInstances.push(...trees.map(tree => ({
-          model: tree,
-          renderer: props.rendererManager.getRenderer(tree.name),
-        })));
-      })
-      .then(() => {
-        rootRefs.forEach(async (item, index) => {
-          const disposer = await props.draggableMaterial(item.el, () => item.renderer.name);
-          rootRefs[index].disposer = disposer;
-        });
+    ).then((trees) => {
+      // 物料列表的组件不允许拖拽
+      trees.forEach((tree) => {
+        tree.draggable = false;
+        tree.droppable = false;
       });
+      materials.value = trees.map((tree) => ({
+        model: tree,
+        renderer: props.rendererManager.getRenderer(tree.name),
+      }));
+    });
+  });
+  effect(() => {
+    rootRefs.forEach(async (item, index) => {
+      if (!item.disposer) {
+        const disposer = await props.draggableMaterial(item.el, () => item.renderer.name);
+        rootRefs[index].disposer = disposer;
+      }
+    });
   });
 });
 onUnmounted(() => {
   rootRefs.forEach((item) => {
     item.disposer?.();
   });
-  rootRefs.length = 0;
-  runtimeTreeInstances.forEach((m) => {
+  // rootRefs.length = 0;
+  materials.value.forEach((m) => {
     m.model.destroy();
   });
-  runtimeTreeInstances.length = 0;
+  materials.value.length = 0;
 });
 </script>
 <style lang="scss" scoped>

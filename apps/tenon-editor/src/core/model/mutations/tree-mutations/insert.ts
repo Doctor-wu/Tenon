@@ -21,4 +21,6 @@ export class InsertTreeNodeMutation extends BaseMutation {
   reverse(): BaseMutation {
     return new RemoveTreeNodeMutation(this.parent, this.source);
   }
+
+  dispose(): void {}
 }

@@ -125,7 +125,6 @@ export const inheritFromWorkbench = (Target: newable<any, WorkbenchType>, config
     }
 
     public onLoad(el: HTMLElement) {
-      console.log('workbench load', el);
       this.initFeatureTags(syncFeatures, dynamicTags);
       this.initControllers();
       this.render(el);

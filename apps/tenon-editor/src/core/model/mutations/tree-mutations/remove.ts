@@ -25,11 +25,14 @@ export class RemoveTreeNodeMutation extends BaseMutation {
       throw new MutationError("Cannot remove node that is not a child");
     }
     this.parent.children.splice(this.oldIndex, 1);
-    this.source.destroy();
     return undefined;
   }
 
   reverse(): BaseMutation {
     return new InsertTreeNodeMutation(this.parent, this.source, this.oldIndex);
+  }
+
+  dispose(): void {
+    this.source.destroy();
   }
 }

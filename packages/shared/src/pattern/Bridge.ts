@@ -13,6 +13,16 @@ export class Bridge<Actions extends Record<any, any>> {
     });
   }
 
+  clone() {
+    const bridge = new Bridge<Actions>();
+    this.map.forEach((set, key) => {
+      set.forEach((handler) => {
+        bridge.register(key, handler);
+      });
+    });
+    return bridge;
+  }
+
   clear() {
     this.map.clear();
   }

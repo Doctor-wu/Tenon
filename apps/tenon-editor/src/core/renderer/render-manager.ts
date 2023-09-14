@@ -1,7 +1,7 @@
-import { Service, createServiceTag } from "@tenon/workbench";
+import { Service } from "@tenon/workbench";
 import { IRenderer } from "./interface";
+import { IRendererManager } from "../interface";
 
-export const IRendererManager = createServiceTag('TenonRendererManager');
 
 @Service({
   name: IRendererManager,
