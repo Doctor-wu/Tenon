@@ -65,7 +65,6 @@ export class TenonComposeView extends BaseMaterial<RendererType.Vue> implements 
   public render(model: ModelImpl[ModelType.Tree], props: {
     [K in keyof TenonComposeView["propMeta"]]: TenonComposeView["propMeta"][K]["type"];
   }) {
-    Logger.log('render compose view', model, props);
     const { children } = model;
     const setProps = {
       key: model.id,

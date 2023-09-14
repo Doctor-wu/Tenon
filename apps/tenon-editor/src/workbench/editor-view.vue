@@ -20,20 +20,20 @@
 import { TenonEditor } from "@/core";
 import { ModelChange, ModelChangeNotification } from "@/core";
 import { ModelImpl, ModelType } from "@tenon/engine";
-import { Ref, ref } from "vue";
+import { Ref, ref, shallowRef } from "vue";
 
 const props = defineProps<{
   editor: TenonEditor;
 }>();
 
 const editorView = ref<HTMLElement>();
-const runtimeTree = ref<ModelImpl[ModelType.Tree] | null>(
+const runtimeTree = shallowRef<ModelImpl[ModelType] | null>(
   props.editor.context.dataEngine.runtimeRoot
-) as Ref<ModelImpl[ModelType.Tree] | null>;
+);
 
 props.editor.context.on(
   ModelChange,
-  async (noti: ModelChangeNotification<ModelImpl[ModelType.Tree]>) => {
+  async (noti: ModelChangeNotification<ModelImpl[ModelType]>) => {
     console.log("ModelChange", noti.payload);
     if (noti.payload.id === runtimeTree.value?.id) {
       return;
