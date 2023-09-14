@@ -1,5 +1,6 @@
 export * from "./context";
 export * from "./store";
+export * from "./model";
 export * from "./renderer";
 export * from "./event-center";
 export * from "./editor";

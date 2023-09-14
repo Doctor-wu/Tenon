@@ -1,19 +1,18 @@
 import { TenonEventManager } from './event-manager';
-import { RuntimeTreeNode } from './data-structure/runtime-tree/runtime-tree';
 import { IDynamicFeature, Inject, Loader, Service, awaitLoad } from "@tenon/workbench";
 import { IContext, IDataEngine } from '../interface';
 import { TenonEditorContext } from '../context';
 import { ModelChangeNotification } from '../notifications/model-notification';
 import { Logger } from '@/utils/logger';
-import { BaseMutation } from './mutations';
 import { ServiceName, UndoRedoService } from '@/services';
+import { BaseMutation, ModelImpl } from '@tenon/engine';
 
 
 @Service({
   name: IDataEngine,
 })
-export class TenonDataEngine {
-  runtimeRoot: RuntimeTreeNode;
+export class TenonDataEngine<Model extends ModelImpl> {
+  runtimeRoot: Model;
   eventManager: TenonEventManager;
 
   @Loader(IContext)
@@ -30,7 +29,7 @@ export class TenonDataEngine {
   }
 
   @awaitLoad(IContext)
-  setRoot(root: RuntimeTreeNode) {
+  setRoot(root: Model) {
     this.runtimeRoot = root;
     this[IContext].fire(new ModelChangeNotification(this.runtimeRoot));
   }

@@ -4,7 +4,8 @@ import {
   ActionController,
   ActionInfo,
   ActionType,
-  Controller, IDynamicFeature, Inject, InjectActionInfoService, Loader, ToolBarController, ToolBarControllerResult, awaitLoad,
+  Controller, Inject, InjectActionInfoService,
+  ToolBarController, ToolBarControllerResult,
 } from "@tenon/workbench";
 
 @Controller({

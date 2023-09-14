@@ -1,9 +1,10 @@
-import { h } from "vue";
+import { VNode, h } from "vue";
 import TextComponent from "./Text.vue";
 import { TenonEventPrefix, clickTrigger, doubleClickTrigger } from "../../../events";
 import { IMaterialEventMeta, internalMeta } from "../../../events/event-meta";
 import { Bridge } from "@tenon/shared";
 import { MaterialPropsType, BaseMaterial } from "../../../base-material";
+import { RendererType } from "@tenon/engine";
 
 const TenonTextInfo = {
   name: 'TenonText',
@@ -37,7 +38,7 @@ const TenonTextInfo = {
   ] as IMaterialEventMeta[],
 }
 
-export class TenonText extends BaseMaterial {
+export class TenonText extends BaseMaterial<RendererType.Vue> {
   public name = TenonTextInfo.name;
   public icon = TenonTextInfo.icon;
   public description = TenonTextInfo.description;

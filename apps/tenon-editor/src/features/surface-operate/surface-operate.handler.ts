@@ -1,8 +1,6 @@
 import {
-  DrawerService,
-  DrawerServiceCore,
   Feature, Inject, SurfaceService,
-  SurfaceServiceCore, IDrawer,
+  SurfaceServiceCore,
 } from "@tenon/workbench";
 import { ISurfaceOperateFeature } from "./surface-operate.interface";
 

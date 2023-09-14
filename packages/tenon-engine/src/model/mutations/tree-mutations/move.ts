@@ -1,5 +1,5 @@
-import { RuntimeTreeNode } from "../../data-structure";
-import { MutationError } from "../../errors";
+import { MutationError } from "../../../errors";
+import { RuntimeTreeNode } from "../../structure";
 import { BaseMutation } from "../base";
 
 export class MoveTreeNodeMutation extends BaseMutation {

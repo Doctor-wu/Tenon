@@ -1,4 +1,5 @@
-import { BaseMutation, RemoveTreeNodeMutation, RuntimeTreeNode } from "@/core/model";
+import { BaseMutation, RemoveTreeNodeMutation } from "../../mutations";
+import { RuntimeTreeNode } from "../../structure";
 
 export class InsertTreeNodeMutation extends BaseMutation {
   public parent: RuntimeTreeNode;

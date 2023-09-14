@@ -1,4 +1,4 @@
-import { RuntimeTreeNode } from "../data-structure";
+import { RuntimeTreeNode } from "../structure";
 import { InsertTreeNodeMutation, MoveTreeNodeMutation, RemoveTreeNodeMutation } from "../mutations";
 
 /**

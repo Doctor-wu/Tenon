@@ -115,7 +115,7 @@ export class TenonEditor {
 
   @awaitLoad(ITenonEditorLifeCycle)
   private launchWorkbench() {
-    window.addEventListener("load", () => {
+    window.addEventListener("DOMContentLoaded", () => {
       const root = document.getElementById("workbench-root")!;
       this.workbenchAdaptor.load(root);
       this.lifecycle!.emitStageFinish(

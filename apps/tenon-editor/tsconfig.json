@@ -12,5 +12,5 @@
       "@tenon-features/*": ["./src/features/*"]
     }
   },
-  "include": ["src", "config", "./*.d.ts"]
+  "include": ["src", "config", "./*.d.ts", "../../packages/tenon-engine/src/errors"]
 }

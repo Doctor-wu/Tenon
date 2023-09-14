@@ -1,5 +1,5 @@
 import { RuntimeTreeNode } from "../..";
-import { MutationError } from "../../errors";
+import { MutationError } from "../../../errors";
 import { BaseMutation } from "../base";
 import { InsertTreeNodeMutation } from "./insert";
 

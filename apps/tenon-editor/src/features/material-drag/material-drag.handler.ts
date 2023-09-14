@@ -4,7 +4,7 @@ import {
 import { DragType, IDragPayload, IMaterialDragFeature } from "./material-drag.interface";
 import { IContext, TenonEditorContext } from "@/core";
 import { DragNotification, DragStatusChange } from "./notification";
-import { Ref, effect, ref } from "vue";
+import { effect, ref } from "vue";
 import { ModeType } from "../edit-mode/notification";
 import { IEditModeFeature } from "../edit-mode";
 import { Logger } from "@/utils/logger";

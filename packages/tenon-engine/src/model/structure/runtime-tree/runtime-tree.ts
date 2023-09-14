@@ -2,8 +2,9 @@ import { TenonEvent } from "@tenon/materials";
 import { Bridge, Dict } from "@tenon/shared";
 import { Ref, reactive } from "vue";
 import { RuntimeComponentTreeDestroyEvent } from "./interface";
+import { BaseStructure } from "../base";
 
-export class RuntimeTreeNode {
+export class RuntimeTreeNode extends BaseStructure {
   static runTimeId = 0;
   id: number;
   name: string;
@@ -17,9 +18,9 @@ export class RuntimeTreeNode {
   droppable = true;
 
   constructor(name: string) {
+    super();
     this.id = RuntimeTreeNode.runTimeId++;
     this.name = name;
-    // this.initEvents();
   }
 
   clone() {

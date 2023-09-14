@@ -49,14 +49,14 @@ import type { Bridge } from "@tenon/shared";
 import type { IComposeViewFeature } from "../compose-view.interface";
 import type { IMaterialDragFeature } from "@/features/material-drag";
 import type { TenonComposeView } from "../compose-view.material";
-import type { RuntimeTreeNode } from "@/core/model";
+import { ModelImpl, ModelType } from "@tenon/engine";
 
 const props = defineProps<{
   style?: CSSProperties;
   isEmpty: boolean;
   composeViewHandler: IComposeViewFeature;
   bridge: Bridge<Record<TenonEvent<string>, any>>;
-  runtimeTree: RuntimeTreeNode;
+  runtimeTree: ModelImpl[ModelType.Tree];
   __tenon_material_instance__: TenonComposeView;
   __tenon_event_meta__: (IMaterialEventMeta | IMaterialInternalEventMeta)[];
 }>();

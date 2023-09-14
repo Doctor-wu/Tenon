@@ -6,15 +6,10 @@
     "declarationDir": "typings",
     "outDir": "dist",
     "rootDir": ".",
-    "tsBuildInfoFile": "./build-cache/tsconfig.tsbuildinfo",
     "resolveJsonModule": true,
-    "paths": {
-      "@compiler": ["./src/compiler"],
-      "@compiler/*": ["./src/compiler/*"],
-    },
     "noEmit": false
   },
   "include": [
     "src/**/*",
-  ]
+  ],
 }

@@ -18,21 +18,22 @@
 </template>
 <script setup lang="ts">
 import { TenonEditor } from "@/core";
-import { ModelChange, ModelChangeNotification, RuntimeTreeNode } from "@/core/model";
-import { onMounted, Ref, ref } from "vue";
+import { ModelChange, ModelChangeNotification } from "@/core";
+import { ModelImpl, ModelType } from "@tenon/engine";
+import { Ref, ref } from "vue";
 
 const props = defineProps<{
   editor: TenonEditor;
 }>();
 
 const editorView = ref<HTMLElement>();
-const runtimeTree = ref<RuntimeTreeNode | null>(
+const runtimeTree = ref<ModelImpl[ModelType.Tree] | null>(
   props.editor.context.dataEngine.runtimeRoot
-) as Ref<RuntimeTreeNode | null>;
+) as Ref<ModelImpl[ModelType.Tree] | null>;
 
 props.editor.context.on(
   ModelChange,
-  async (noti: ModelChangeNotification<RuntimeTreeNode>) => {
+  async (noti: ModelChangeNotification<ModelImpl[ModelType.Tree]>) => {
     console.log("ModelChange", noti.payload);
     if (noti.payload.id === runtimeTree.value?.id) {
       return;

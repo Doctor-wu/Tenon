@@ -35,12 +35,11 @@ export default {
 </script>
 <script setup lang="ts">
 import { Card, Icon } from "tdesign-vue-next";
-import { BaseMaterial } from "@tenon/materials";
 import { IMaterialFeature } from "../material.interface";
 import { effect, onMounted, onUnmounted, reactive, ref, Ref } from "vue";
-import { RuntimeTreeNode } from "@/core/model";
 import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree";
-import { RendererManager, IRenderer } from "@/core/renderer";
+import { RendererManager } from "@/core/renderer";
+import { IRenderer, ModelImpl, ModelType, RendererType } from "@tenon/engine";
 
 const props = defineProps<{
   renderers: {
@@ -53,15 +52,15 @@ const props = defineProps<{
 
 const materials: Ref<
   {
-    model: RuntimeTreeNode;
+    model: ModelImpl[ModelType.Tree];
     renderer: IRenderer;
   }[]
 > = ref([]);
 
 const rootRefs: {
   el: HTMLElement;
-  renderer: BaseMaterial;
-  runtimeTree: RuntimeTreeNode;
+  renderer: IRenderer<ModelType, RendererType.Vue>;
+  runtimeTree: ModelImpl[ModelType.Tree];
   disposer?: () => void;
 }[] = reactive([]);
 
