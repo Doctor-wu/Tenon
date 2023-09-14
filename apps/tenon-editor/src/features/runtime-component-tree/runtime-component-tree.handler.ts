@@ -9,15 +9,18 @@ import { IAreaIndicatorFeature } from "../area-indicator";
 import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
 import { ModeType } from "../edit-mode/notification";
-import { ElementChangeEvent, RuntimeComponentTreeDestroyEvent, RuntimeTreeCommands, RuntimeTreeNode } from "@/core/model";
 import { Logger } from "@/utils/logger";
 import { IContext, TenonEditorContext } from "@/core";
+import {
+  ModelHost, RuntimeTreeCommands, ModelImpl,
+  ElementChangeEvent, RuntimeComponentTreeDestroyEvent, RuntimeTreeNode,
+} from "@tenon/engine";
 
 @Feature({
   name: IRuntimeComponentTreeFeature,
 })
 export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature {
-  public runtimeTreeMap: Map<number, RuntimeTreeNode> = new Map();
+  public runtimeTreeMap: Map<number, ModelImpl[ModelHost.Tree]> = new Map();
 
   @Loader(IEditModeFeature)
   private editModeFeature!: IDynamicFeature<IEditModeFeature>;
@@ -59,7 +62,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     return this.runtimeTreeMap.get(id);
   }
 
-  async insert(runtimeTree: RuntimeTreeNode, beInsert: string) {
+  async insert(runtimeTree: ModelImpl[ModelHost.Tree], beInsert: string) {
     console.log('insert', runtimeTree, beInsert);
     const childTree = await this.buildRuntimeTree(beInsert);
     this.dataEngine.invoke(
@@ -67,7 +70,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     );
   }
 
-  move(runtimeTree: RuntimeTreeNode, beMove: RuntimeTreeNode) {
+  move(runtimeTree: ModelImpl[ModelHost.Tree], beMove: ModelImpl[ModelHost.Tree]) {
     Logger.log('move', runtimeTree, beMove);
     if (!runtimeTree.children.length) {
       this.dataEngine.invoke(
@@ -83,7 +86,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
   /**
    * Build runtime tree
    * @param name Renderer name
-   * @returns RuntimeTreeNode
+   * @returns ModelImpl[ModelType.Tree]
    */
   @awaitLoad(IMaterialFeature)
   async buildRuntimeTree(name: string) {
@@ -94,7 +97,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
   }
 
   @awaitLoad(IMaterialDragFeature, IAreaIndicatorFeature, IEditModeFeature)
-  public async initRuntimeTree(runtimeTree: RuntimeTreeNode) {
+  public async initRuntimeTree(runtimeTree: ModelImpl[ModelHost.Tree]) {
     runtimeTree.bridge.register(ElementChangeEvent, (elRef: Ref<HTMLElement>) => {
       const disEffect = watch(elRef, (newEl, oldEl) => {
         if (!newEl) return;

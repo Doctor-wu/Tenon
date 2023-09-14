@@ -12,8 +12,8 @@ import materialListVue from "./components/material-list.vue";
 import { IComposeViewFeature } from "../compose-view";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { Logger } from "@/utils/logger";
-import type { IRenderer } from "@/core/renderer";
 import { IContext, TenonEditorContext } from "@/core";
+import type { IRenderer } from "@tenon/engine";
 
 @Feature({
   name: IMaterialFeature,

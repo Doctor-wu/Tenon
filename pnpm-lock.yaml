@@ -49,7 +49,7 @@ importers:
         version: 4.6.2
       vite:
         specifier: ^2.8.6
-        version: 2.8.6
+        version: 2.8.6(less@4.1.3)(sass@1.49.9)
       vue:
         specifier: ^3.2.31
         version: 3.2.31
@@ -81,6 +81,9 @@ importers:
 
   apps/tenon-editor:
     dependencies:
+      '@tenon/engine':
+        specifier: workspace:*
+        version: link:../../packages/tenon-engine
       '@tenon/materials':
         specifier: workspace:*
         version: link:../../packages/tenon-materials
@@ -393,6 +396,24 @@ importers:
         specifier: workspace:*
         version: link:../shared
 
+  packages/tenon-engine:
+    dependencies:
+      '@tenon/materials':
+        specifier: workspace:*
+        version: link:../tenon-materials
+      '@tenon/shared':
+        specifier: workspace:*
+        version: link:../shared
+      '@types/react':
+        specifier: ^16.8.8
+        version: 16.8.8
+      react:
+        specifier: ^16.8.0
+        version: 16.8.0
+      react-dom:
+        specifier: ^16.8.0
+        version: 16.8.0(react@16.8.0)
+
   packages/tenon-flow:
     devDependencies:
       '@tenon/node-framework':
@@ -407,6 +428,9 @@ importers:
       '@tenon/dsl-compiler':
         specifier: workspace:*
         version: link:../tenon-dsl-compiler
+      '@tenon/engine':
+        specifier: workspace:*
+        version: link:../tenon-engine
       '@tenon/flow':
         specifier: workspace:*
         version: link:../tenon-flow
@@ -918,12 +942,23 @@ packages:
   /@types/node@17.0.31:
     resolution: {integrity: sha512-AR0x5HbXGqkEx9CadRH3EBYx/VkiUgZIhP4wvPn/+5KIsgpNoyFaRlVe0Zlx9gRtg8fA06a9tskE2MSN7TcG4Q==}
 
+  /@types/prop-types@15.7.5:
+    resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
+    dev: false
+
   /@types/qs@6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
     dev: false
 
   /@types/range-parser@1.2.4:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
+    dev: false
+
+  /@types/react@16.8.8:
+    resolution: {integrity: sha512-xwEvyet96u7WnB96kqY0yY7qxx/pEpU51QeACkKFtrgjjXITQn0oO1iwPEraXVgh10ZFPix7gs1R4OJXF7P5sg==}
+    dependencies:
+      '@types/prop-types': 15.7.5
+      csstype: 2.6.20
     dev: false
 
   /@types/responselike@1.0.0:
@@ -974,7 +1009,7 @@ packages:
     peerDependencies:
       vite: ^2.5.10
     dependencies:
-      vite: 2.8.6
+      vite: 2.8.6(less@4.1.3)(sass@1.49.9)
     dev: false
 
   /@volar/code-gen@0.27.24:
@@ -3184,6 +3219,13 @@ packages:
       is-unicode-supported: 0.1.0
     dev: false
 
+  /loose-envify@1.4.0:
+    resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
+    hasBin: true
+    dependencies:
+      js-tokens: 4.0.0
+    dev: false
+
   /lowercase-keys@1.0.1:
     resolution: {integrity: sha512-G2Lj61tXDnVFFOi8VZds+SoQjtQC3dgokKdDG2mTm1tx4m50NUHBOZSBwQQHyy0V12A0JTG4icfZQH+xPyh8VA==}
     engines: {node: '>=0.10.0'}
@@ -3674,6 +3716,14 @@ packages:
     dependencies:
       asap: 2.0.6
 
+  /prop-types@15.8.1:
+    resolution: {integrity: sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      react-is: 16.13.1
+    dev: false
+
   /prr@1.0.1:
     resolution: {integrity: sha1-0/wRS6BplaRexok/SEzrHXj19HY=}
     optional: true
@@ -3815,6 +3865,32 @@ packages:
       ini: 1.3.8
       minimist: 1.2.5
       strip-json-comments: 2.0.1
+    dev: false
+
+  /react-dom@16.8.0(react@16.8.0):
+    resolution: {integrity: sha512-dBzoAGYZpW9Yggp+CzBPC7q1HmWSeRc93DWrwbskmG1eHJWznZB/p0l/Sm+69leIGUS91AXPB/qB3WcPnKx8Sw==}
+    peerDependencies:
+      react: ^16.0.0
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      prop-types: 15.8.1
+      react: 16.8.0
+      scheduler: 0.13.6
+    dev: false
+
+  /react-is@16.13.1:
+    resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
+    dev: false
+
+  /react@16.8.0:
+    resolution: {integrity: sha512-g+nikW2D48kqgWSPwNo0NH9tIGG3DsQFlrtrQ1kj6W77z5ahyIHG0w8kPpz4Sdj6gyLnz0lEd/xsjOoGge2MYQ==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      prop-types: 15.8.1
+      scheduler: 0.13.6
     dev: false
 
   /readable-stream@3.6.0:
@@ -4014,6 +4090,13 @@ packages:
   /sax@1.2.4:
     resolution: {integrity: sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==}
     optional: true
+
+  /scheduler@0.13.6:
+    resolution: {integrity: sha512-IWnObHt413ucAYKsD9J1QShUKkbKLQQHdxRyw73sw4FN26iWr3DY/H34xGPe4nmL1DwXyWmSWmMrA9TfQbE/XQ==}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+    dev: false
 
   /schema-utils@3.1.1:
     resolution: {integrity: sha512-Y5PQxS4ITlC+EahLuXaY86TXfR7Dc5lw294alXOq86JAHCihAIZfqv8nNCWvaEJvaC51uN9hbLGeV0cFBdH+Fw==}
@@ -4679,30 +4762,6 @@ packages:
       vite: '>=2.3.0'
     dependencies:
       vite: 2.8.6(less@4.1.3)(sass@1.49.9)
-    dev: false
-
-  /vite@2.8.6:
-    resolution: {integrity: sha512-e4H0QpludOVKkmOsRyqQ7LTcMUDF3mcgyNU4lmi0B5JUbe0ZxeBBl8VoZ8Y6Rfn9eFKYtdXNPcYK97ZwH+K2ug==}
-    engines: {node: '>=12.2.0'}
-    hasBin: true
-    peerDependencies:
-      less: '*'
-      sass: '*'
-      stylus: '*'
-    peerDependenciesMeta:
-      less:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-    dependencies:
-      esbuild: 0.14.27
-      postcss: 8.4.12
-      resolve: 1.22.0
-      rollup: 2.70.1
-    optionalDependencies:
-      fsevents: 2.3.2
     dev: false
 
   /vite@2.8.6(less@4.1.3)(sass@1.49.9):

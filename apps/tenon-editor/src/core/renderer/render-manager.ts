@@ -1,6 +1,6 @@
 import { Service } from "@tenon/workbench";
-import { IRenderer } from "./interface";
 import { IRendererManager } from "../interface";
+import { IRenderer } from "@tenon/engine";
 
 
 @Service({

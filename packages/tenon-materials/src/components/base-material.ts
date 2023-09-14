@@ -1,4 +1,5 @@
 import { Dict } from "@tenon/shared";
+import { RenderResultType, RendererHost } from "@tenon/engine";
 import { VNode, CSSProperties } from "vue";
 import { IMaterialEventMeta, IMaterialInternalEventMeta } from "./events/event-meta";
 
@@ -25,7 +26,7 @@ export enum MaterialType {
 
 
 
-export abstract class BaseMaterial {
+export abstract class BaseMaterial<Render extends RendererHost> {
   public type: MaterialType;
   public abstract name: string;
   public abstract icon: string | (() => VNode);
@@ -33,21 +34,12 @@ export abstract class BaseMaterial {
   public propMeta: Dict<IMaterialPropsMeta>;
   public eventMeta: (IMaterialEventMeta | IMaterialInternalEventMeta)[] = [];
   public nestable = false;
-  public abstract render(model: any, props: unknown): VNode;
+  public abstract render(model: any, props: unknown): RenderResultType[Render];
 
-  protected getInternalProps(this: BaseMaterial) {
+  protected getInternalProps(this: BaseMaterial<Render>) {
     return {
       __tenon_material_instance__: this,
       __tenon_event_meta__: this.eventMeta,
     }
   }
-}
-
-export interface IDryMaterial extends Partial<BaseMaterial> {
-  name: string;
-  children?: IDryMaterial[];
-}
-
-export interface IWetMaterial extends BaseMaterial {
-
 }

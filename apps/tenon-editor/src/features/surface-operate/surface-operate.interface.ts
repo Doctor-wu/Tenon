@@ -1,4 +1,4 @@
-import { bindDynamicLoader, createDynamicFeatureTag, createSyncFeatureTag } from "@tenon/workbench";
+import { bindDynamicLoader, createDynamicFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
 
 export interface ISurfaceOperateFeature {

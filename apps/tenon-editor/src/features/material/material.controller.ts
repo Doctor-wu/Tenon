@@ -6,18 +6,15 @@ import {
   BarService,
   BarServiceCore,
   Controller,
-  DrawerServiceCore,
   IDynamicFeature,
   IToolBarSwitchConfig,
   Inject,
   InjectActionInfoService,
-  InjectDrawerService,
   InternalUIService,
   Loader,
   awaitLoad,
 } from "@tenon/workbench";
 import { IMaterialFeature } from "./material.interface";
-import { h } from "vue";
 import {
   IContext,
   LeftDrawerNotificationType,

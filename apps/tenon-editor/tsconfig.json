@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json", // 继承根目录下通用配置
   "compilerOptions": {
+    "jsx": "preserve",
     "target": "ES2015",
     "composite": true, // 用于帮助 TypeScript 快速确定引用工程的输出文件位置
     "outDir": "dist",
@@ -12,5 +13,6 @@
       "@tenon-features/*": ["./src/features/*"]
     }
   },
-  "include": ["src", "config", "./*.d.ts"]
+  "include": ["src", "config", "./*.d.ts"],
+  "exclude": ["node_modules", "dist"]
 }

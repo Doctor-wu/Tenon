@@ -1,5 +1,5 @@
-import { RuntimeTreeNode } from "../data-structure";
 import { InsertTreeNodeMutation, MoveTreeNodeMutation, RemoveTreeNodeMutation } from "../mutations";
+import { ModelImpl, ModelHost } from "../interface";
 
 /**
  * RuntimeTreeCommands 封装了一系列对 RuntimeTree 的操作
@@ -12,7 +12,7 @@ export const RuntimeTreeCommands = {
    * @param relative 相对于哪个节点插入
    * @returns 返回一个 InsertTreeNodeMutation
    */
-  insertNodeBefore(node: RuntimeTreeNode, relative: RuntimeTreeNode) {
+  insertNodeBefore(node: ModelImpl[ModelHost.Tree], relative: ModelImpl[ModelHost.Tree]) {
     const parent = relative.parent!;
     const index = parent.children.indexOf(relative);
     return new InsertTreeNodeMutation(node, parent, index);
@@ -24,7 +24,7 @@ export const RuntimeTreeCommands = {
    * @param relative 相对于哪个节点插入
    * @returns 返回一个 InsertTreeNodeMutation
    */
-  insertNodeAfter(node: RuntimeTreeNode, relative: RuntimeTreeNode) {
+  insertNodeAfter(node: ModelImpl[ModelHost.Tree], relative: ModelImpl[ModelHost.Tree]) {
     const parent = relative.parent!;
     const index = parent.children.indexOf(relative) + 1;
     return new InsertTreeNodeMutation(node, parent, index);
@@ -36,7 +36,7 @@ export const RuntimeTreeCommands = {
    * @param parent 插入到哪个节点下
    * @returns 返回一个 InsertTreeNodeMutation
    */
-  pushInsertNode(node: RuntimeTreeNode, parent: RuntimeTreeNode) {
+  pushInsertNode(node: ModelImpl[ModelHost.Tree], parent: ModelImpl[ModelHost.Tree]) {
     return new InsertTreeNodeMutation(parent, node, parent.children.length);
   },
 
@@ -46,7 +46,7 @@ export const RuntimeTreeCommands = {
    * @param relative 相对于哪个节点移动
    * @returns 返回一个 MoveTreeNodeMutation
    */
-  moveNodeBefore(node: RuntimeTreeNode, relative: RuntimeTreeNode) {
+  moveNodeBefore(node: ModelImpl[ModelHost.Tree], relative: ModelImpl[ModelHost.Tree]) {
     const parent = relative.parent!;
     const index = parent.children.indexOf(relative);
     return new MoveTreeNodeMutation(parent, node, index);
@@ -58,7 +58,7 @@ export const RuntimeTreeCommands = {
    * @param relative 相对于哪个节点移动
    * @returns 返回一个 MoveTreeNodeMutation
    */
-  moveNodeAfter(node: RuntimeTreeNode, relative: RuntimeTreeNode) {
+  moveNodeAfter(node: ModelImpl[ModelHost.Tree], relative: ModelImpl[ModelHost.Tree]) {
     const parent = relative.parent!;
     const index = parent.children.indexOf(relative) + 1;
     return new MoveTreeNodeMutation(parent, node, index);
@@ -70,7 +70,7 @@ export const RuntimeTreeCommands = {
    * @param parent 移动到哪个节点下
    * @returns 返回一个 MoveTreeNodeMutation
    */
-  moveNodeToEmptyContainer(node: RuntimeTreeNode, parent: RuntimeTreeNode) {
+  moveNodeToEmptyContainer(node: ModelImpl[ModelHost.Tree], parent: ModelImpl[ModelHost.Tree]) {
     return new MoveTreeNodeMutation(parent, node, 0);
   },
 
@@ -79,7 +79,7 @@ export const RuntimeTreeCommands = {
    * @param node 待移除的节点
    * @returns 返回一个 RemoveTreeNodeMutation
    */
-  removeNode(node: RuntimeTreeNode) {
+  removeNode(node: ModelImpl[ModelHost.Tree]) {
     return new RemoveTreeNodeMutation(node.parent!, node);
   }
 }

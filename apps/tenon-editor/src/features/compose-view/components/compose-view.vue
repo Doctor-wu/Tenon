@@ -13,7 +13,7 @@
     @dragenter.prevent.self="handleDragEnter"
     @dragover.prevent="() => {}"
     @dragleave.self="(e) => composeViewHandler?.bridge.run('onDragLeave', e)"
-    @drop.prevent="(e) => composeViewHandler?.bridge.run('onDrop', e)"
+    @drop.prevent="(e: any) => composeViewHandler?.bridge.run('onDrop', e)"
     :[DATA_RUNTIME_TREE_ID]="runtimeTree.id"
   >
     拖入物料以生成组件
@@ -29,13 +29,19 @@
     @dragenter.prevent.self="handleDragEnter"
     @dragover.prevent="() => {}"
     @dragleave.self="(e) => composeViewHandler?.bridge.run('onDragLeave', e)"
-    @drop.prevent="(e) => composeViewHandler?.bridge.run('onDrop', e)"
+    @drop.prevent="(e: any) => composeViewHandler?.bridge.run('onDrop', e)"
     :[DATA_RUNTIME_TREE_ID]="runtimeTree.id"
   >
     <slot></slot>
   </section>
 </template>
 <script setup lang="ts">
+import type { Bridge } from "@tenon/shared";
+import type { IComposeViewFeature } from "../compose-view.interface";
+import type { IMaterialDragFeature } from "@/features/material-drag";
+import type { TenonComposeView } from "../compose-view.material";
+import { DATA_RUNTIME_TREE_ID } from "../compose-view.interface";
+import { CSSProperties, ref, shallowRef } from "vue";
 import {
   createTenonEvent,
   IMaterialEventMeta,
@@ -43,20 +49,14 @@ import {
   TenonEvent,
   useEventMeta,
 } from "@tenon/materials";
-import { DATA_RUNTIME_TREE_ID } from "../compose-view.interface";
-import { CSSProperties, ref, shallowRef } from "vue";
-import type { Bridge } from "@tenon/shared";
-import type { IComposeViewFeature } from "../compose-view.interface";
-import type { IMaterialDragFeature } from "@/features/material-drag";
-import type { TenonComposeView } from "../compose-view.material";
-import type { RuntimeTreeNode } from "@/core/model";
+import { ModelImpl, ModelType } from "@tenon/engine";
 
 const props = defineProps<{
   style?: CSSProperties;
   isEmpty: boolean;
   composeViewHandler: IComposeViewFeature;
   bridge: Bridge<Record<TenonEvent<string>, any>>;
-  runtimeTree: RuntimeTreeNode;
+  runtimeTree: ModelImpl[ModelType.Tree];
   __tenon_material_instance__: TenonComposeView;
   __tenon_event_meta__: (IMaterialEventMeta | IMaterialInternalEventMeta)[];
 }>();

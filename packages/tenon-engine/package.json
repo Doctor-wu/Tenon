@@ -1,0 +1,18 @@
+{
+    "name": "@tenon/engine",
+    "version": "1.0.0",
+    "main": "src/index.ts",
+    "scripts": {},
+    "author": "Doctor wu",
+    "license": "MIT",
+    "dependencies": {
+        "@tenon/materials": "workspace:*",
+        "@tenon/shared": "workspace:*",
+        "@types/react": "^16.8.8"
+    },
+    "peerDependencies": {
+        "react": "^16.8.0",
+        "react-dom": "^16.8.0"
+    },
+    "description": ""
+}

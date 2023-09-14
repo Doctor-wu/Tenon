@@ -1,7 +1,7 @@
 import { bindDynamicLoader, createDynamicFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
-import type { RuntimeTreeNode } from "@/core/model/data-structure/runtime-tree/runtime-tree";
-import { Ref } from "vue";
+import type { Ref } from "vue";
+import type { ModelImpl, ModelHost } from "@tenon/engine";
 
 export enum DragType {
   /** 拖拽组件 */
@@ -11,7 +11,7 @@ export enum DragType {
 }
 
 export interface IDragPayload {
-  [DragType.Component]: RuntimeTreeNode;
+  [DragType.Component]: ModelImpl[ModelHost];
   [DragType.Material]: string;
 }
 

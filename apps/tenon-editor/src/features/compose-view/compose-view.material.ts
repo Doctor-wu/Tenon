@@ -1,14 +1,14 @@
 import {
   BaseMaterial, IMaterialEventMeta, MaterialPropsType,
-  clickTrigger, doubleClickTrigger, internalMeta, TenonEventPrefix,
+  clickTrigger, doubleClickTrigger, internalMeta,
 } from "@tenon/materials";
 import { h } from "vue";
 import composeViewVue from "./components/compose-view.vue";
 import { IComposeViewFeature } from "./compose-view.interface";
-import { Bridge } from "@tenon/shared";
-import { IRuntimeComponentTreeFeature, RuntimeTreeNode } from "../runtime-component-tree";
+import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { Logger } from "@/utils/logger";
-import type { IRenderer, RendererManager } from "@/core/renderer";
+import type { RendererManager } from "@/core/renderer";
+import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
 
 const TenonComposeViewInfo = {
   name: 'ComposeView',
@@ -37,7 +37,7 @@ const TenonComposeViewInfo = {
   ] as IMaterialEventMeta[],
 }
 
-export class TenonComposeView extends BaseMaterial implements IRenderer {
+export class TenonComposeView extends BaseMaterial<RendererHost.Vue> implements IRenderer {
   public name = TenonComposeViewInfo.name;
   public icon = TenonComposeViewInfo.icon;
   public description = TenonComposeViewInfo.description;
@@ -62,10 +62,9 @@ export class TenonComposeView extends BaseMaterial implements IRenderer {
     }
   }
 
-  public render(model: RuntimeTreeNode, props: {
+  public render(model: ModelImpl[ModelHost.Tree], props: {
     [K in keyof TenonComposeView["propMeta"]]: TenonComposeView["propMeta"][K]["type"];
   }) {
-    Logger.log('render compose view', model, props);
     const { children } = model;
     const setProps = {
       key: model.id,
