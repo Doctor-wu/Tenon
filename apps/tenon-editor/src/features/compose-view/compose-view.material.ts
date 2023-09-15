@@ -44,6 +44,7 @@ export class TenonComposeView extends BaseMaterial<RendererHost.Vue> implements 
   public propMeta = TenonComposeViewInfo.props;
   public nestable = true;
   public eventMeta = [...internalMeta, ...TenonComposeViewInfo.eventMeta];
+  public supportRenderHost = [RendererHost.Vue as const];
 
   private composeViewHandler: IComposeViewFeature;
   private rendererManager: RendererManager;
@@ -62,9 +63,12 @@ export class TenonComposeView extends BaseMaterial<RendererHost.Vue> implements 
     }
   }
 
-  public render(model: ModelImpl[ModelHost.Tree], props: {
-    [K in keyof TenonComposeView["propMeta"]]: TenonComposeView["propMeta"][K]["type"];
-  }) {
+  public render(
+    type: RendererHost.Vue,
+    model: ModelImpl[ModelHost.Tree],
+    props: {
+      [K in keyof TenonComposeView["propMeta"]]: TenonComposeView["propMeta"][K]["type"];
+    }) {
     const { children } = model;
     const setProps = {
       key: model.id,
@@ -76,13 +80,12 @@ export class TenonComposeView extends BaseMaterial<RendererHost.Vue> implements 
       isEmpty: children.length === 0,
     };
     // this.runtimeComponentTreeHandler.initRuntimeTree(model);
-    // @ts-ignore
     return h(composeViewVue, setProps, () => {
       // console.log(`render children, host: ${runtimeTree.id}`, children);
       return children.map((child) => {
         // this.runtimeComponentTreeHandler.initRuntimeTree(child);
         const renderer = this.rendererManager.getRenderer(child.name);
-        return renderer.render(child, { key: child.id });
+        return renderer.render(type, child, { key: child.id });
       });
     });
   }

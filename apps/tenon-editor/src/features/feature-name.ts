@@ -10,4 +10,5 @@ export const FeatureName = {
   ComposeView: "compose-view",
   // RuntimeComponentDrag: "runtime-component-drag",
   RuntimeComponentTree: "runtime-component-tree",
+  UndoRedo: "undo-redo",
 };

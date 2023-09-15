@@ -13,6 +13,7 @@ import { IEditModeFeature } from "../edit-mode";
 import { DragType, IMaterialDragFeature } from "../material-drag";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { ModelImpl, ModelHost } from "@tenon/engine";
+import { IUndoRedoFeature } from "../undo-redo";
 
 @Feature({
   name: IComposeViewFeature,
@@ -92,7 +93,7 @@ export class ComposeViewHandler implements IComposeViewFeature {
     });
   }
 
-  @awaitLoad(IMaterialDragFeature, IRuntimeComponentTreeFeature)
+  @awaitLoad(IMaterialDragFeature, IRuntimeComponentTreeFeature, IUndoRedoFeature)
   private async handleDrop(e: DragEvent) {
     this.clearDragDisposer();
     e.stopPropagation();

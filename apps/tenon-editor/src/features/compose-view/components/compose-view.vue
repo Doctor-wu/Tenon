@@ -41,7 +41,7 @@ import type { IComposeViewFeature } from "../compose-view.interface";
 import type { IMaterialDragFeature } from "@/features/material-drag";
 import type { TenonComposeView } from "../compose-view.material";
 import { DATA_RUNTIME_TREE_ID } from "../compose-view.interface";
-import { CSSProperties, ref, shallowRef } from "vue";
+import { CSSProperties, shallowRef } from "vue";
 import {
   createTenonEvent,
   IMaterialEventMeta,
@@ -49,25 +49,25 @@ import {
   TenonEvent,
   useEventMeta,
 } from "@tenon/materials";
-import { ModelImpl, ModelType } from "@tenon/engine";
+import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
 
 const props = defineProps<{
   style?: CSSProperties;
   isEmpty: boolean;
   composeViewHandler: IComposeViewFeature;
   bridge: Bridge<Record<TenonEvent<string>, any>>;
-  runtimeTree: ModelImpl[ModelType.Tree];
+  runtimeTree: ModelImpl[ModelHost.Tree];
   __tenon_material_instance__: TenonComposeView;
   __tenon_event_meta__: (IMaterialEventMeta | IMaterialInternalEventMeta)[];
 }>();
 
-const rootRef = ref<HTMLElement>();
+const rootRef = shallowRef<HTMLElement | null>(null);
 const materialDrag = shallowRef<IMaterialDragFeature | null>(null);
 props.composeViewHandler.getMaterialDrag().then((service) => {
   materialDrag.value = service;
 });
 
-useEventMeta(props.__tenon_event_meta__, rootRef, props.bridge);
+useEventMeta(RendererHost.Vue, props.__tenon_event_meta__, rootRef, props.bridge);
 
 props.bridge.register(createTenonEvent("onClick"), (e) => {
   console.log(props.__tenon_material_instance__.name, createTenonEvent("onClick"), e);

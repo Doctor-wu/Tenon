@@ -12,18 +12,14 @@
   "author": "Doctor wu",
   "license": "MIT",
   "dependencies": {
+    "@tenon/engine": "workspace:*",
+    "@tenon/materials": "workspace:*",
     "@tenon/shared": "workspace:*",
     "@tenon/workbench": "workspace:*",
-    "@tenon/materials": "workspace:*",
-    "@tenon/engine": "workspace:*",
     "cross-env": "^7.0.3",
-    "rxjs": "^7.8.0",
-    "tdesign-vue-next": "^1.0.0",
     "unplugin-auto-import": "^0.12.1",
     "unplugin-vue-components": "^0.22.12",
-    "vite-plugin-ejs": "^1.6.4",
-    "vue": "^3.2.31",
-    "vue-material-design-icons": "^5.1.2"
+    "vite-plugin-ejs": "^1.6.4"
   },
   "description": ""
 }

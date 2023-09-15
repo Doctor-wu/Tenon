@@ -22,8 +22,6 @@
     "tdesign-vue-next": "^1.0.0",
     "unplugin-auto-import": "^0.12.1",
     "unplugin-vue-components": "^0.22.12",
-    "vite": "^2.8.6",
-    "vite-plugin-external": "^1.2.5",
-    "vue": "^3.2.31"
+    "vite-plugin-external": "^1.2.5"
   }
 }

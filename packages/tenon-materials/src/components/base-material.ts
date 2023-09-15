@@ -1,5 +1,5 @@
 import { Dict } from "@tenon/shared";
-import { RenderResultType, RendererHost } from "@tenon/engine";
+import { ModelHost, ModelImpl, RenderResultType, RendererHost } from "@tenon/engine";
 import { VNode, CSSProperties } from "vue";
 import { IMaterialEventMeta, IMaterialInternalEventMeta } from "./events/event-meta";
 
@@ -34,7 +34,8 @@ export abstract class BaseMaterial<Render extends RendererHost> {
   public propMeta: Dict<IMaterialPropsMeta>;
   public eventMeta: (IMaterialEventMeta | IMaterialInternalEventMeta)[] = [];
   public nestable = false;
-  public abstract render(model: any, props: unknown): RenderResultType[Render];
+  public abstract readonly supportRenderHost: Render[];
+  public abstract render(type: Render, model: ModelImpl[ModelHost], props: unknown): RenderResultType[Render];
 
   protected getInternalProps(this: BaseMaterial<Render>) {
     return {

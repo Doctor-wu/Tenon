@@ -4,25 +4,25 @@
       <Card
         v-for="instance in materials"
         :key="instance.model.id"
-        :bordered="true"
         class="material-list-item"
         size="small"
+        :bordered="true"
         :ref="
-          (el) => {
+          (el: any) => {
             if (!el) return;
             rootRefs.push({ el: el.$el, renderer: instance.renderer!, runtimeTree: instance.model });
           }
         "
       >
         <section class="material-list-item__title">
-          <Icon :name="instance.renderer?.icon" style="margin-right: 4px"></Icon>
+          <Icon :name="(instance.renderer?.icon as string)" style="margin-right: 4px"></Icon>
           <span> {{ instance.renderer?.name }}</span>
         </section>
         <section class="material-list-item__desc">
           {{ instance.renderer!.description }}
         </section>
         <section class="material-list-item__preview">
-          <component :is="instance.renderer.render(instance.model, {})"></component>
+          <component :is="instance.renderer.render(RendererHost.Vue, instance.model, {})"></component>
         </section>
       </Card>
     </div>
@@ -38,8 +38,8 @@ import { Card, Icon } from "tdesign-vue-next";
 import { effect, onMounted, onUnmounted, reactive, ref, Ref } from "vue";
 import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree";
 import { RendererManager } from "@/core/renderer";
-import { IRenderer, ModelImpl, ModelType, RendererType } from "@tenon/engine";
-import { IMaterialFeature } from "../material.interface";
+import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
+import type { IMaterialFeature } from "../material.interface";
 
 const props = defineProps<{
   renderers: {
@@ -52,15 +52,15 @@ const props = defineProps<{
 
 const materials: Ref<
   {
-    model: ModelImpl[ModelType.Tree];
+    model: ModelImpl[ModelHost.Tree];
     renderer: IRenderer;
   }[]
 > = ref([]);
 
 const rootRefs: {
   el: HTMLElement;
-  renderer: IRenderer<ModelType, RendererType.Vue>;
-  runtimeTree: ModelImpl[ModelType.Tree];
+  renderer: IRenderer<ModelHost, RendererHost.Vue>;
+  runtimeTree: ModelImpl[ModelHost.Tree];
   disposer?: () => void;
 }[] = reactive([]);
 

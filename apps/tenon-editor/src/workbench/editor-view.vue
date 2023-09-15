@@ -6,7 +6,7 @@
         :is="
           editor.context.rendererManager
             .getRenderer(runtimeTree.name)
-            .render(runtimeTree, {
+            .render(RendererHost.Vue, runtimeTree, {
               style: {
                 minHeight: '680px',
               },
@@ -19,8 +19,8 @@
 <script setup lang="ts">
 import { TenonEditor } from "@/core";
 import { ModelChange, ModelChangeNotification } from "@/core";
-import { ModelImpl, ModelHost } from "@tenon/engine";
-import { Ref, ref, shallowRef } from "vue";
+import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
+import { ref, shallowRef } from "vue";
 
 const props = defineProps<{
   editor: TenonEditor;
@@ -28,7 +28,7 @@ const props = defineProps<{
 
 const editorView = ref<HTMLElement>();
 const runtimeTree = shallowRef<ModelImpl[ModelHost] | null>(
-  props.editor.context.dataEngine.runtimeRoot
+  props.editor.context.dataEngine.root
 );
 
 props.editor.context.on(
@@ -57,5 +57,6 @@ props.editor.context.on(
   margin-bottom: 20px;
   width: 320px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  text-align: left;
 }
 </style>
