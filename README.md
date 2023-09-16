@@ -2,7 +2,7 @@
 
 Tenon is a modern low-code editor for **Cross-Frameworks**, **Cross-Platforms** (will be support in the future).
 
-Tenon extract the logic outside the core editor to ```@tenon/workbench``` , and data model to ```@tenon/engine```, so you can use it to build different data-structure based editor, and multi render based material to ```@tenon/materials```, so you can use it to render in different frameworks.
+Tenon extract the logic outside the core editor to ```@tenon/workbench``` , and data model to ```@tenon/engine```, so you can use it to build different data-structure based editor, and multi-renderer based material to ```@tenon/materials```, so you can use it to render in different frameworks.
 
 You can experience the modern editor by **```pnpm run dev```** in ```apps/tenon-editor``` which is developing.
 
