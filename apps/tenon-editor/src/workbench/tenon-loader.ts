@@ -5,11 +5,13 @@ import { headerBarConfig } from "@/configs/header-bar-config";
 import { toolBarConfig } from "@/configs/tool-bar-config";
 import { controllers, dynamicTags, syncFeatures } from "@/features";
 import { TenonEditor } from "@/core/editor";
-import { App, createApp } from "vue";
+import { App, createApp, watch } from "vue";
 import ReactDom from "react-dom";
 import EditorView from "./editor-view.vue";
 import { EditorViewReact } from "./editor-view.react";
 import { createElement } from "react";
+import { editorRenderType } from "@/features/editor-render-type/reactive";
+import { EditorRenderType } from "@/features/editor-render-type/editor-render-type.interface";
 
 @WorkbenchSettings({
   dynamicTags: dynamicTags,
@@ -21,7 +23,7 @@ import { createElement } from "react";
 })
 export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAdapter {
   public root: HTMLElement;
-  public editorVM: App<Element>;
+  public editorVM?: App<Element>;
 
   constructor(
     public editor: TenonEditor,
@@ -39,10 +41,22 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
     //   editor: this.editor,
     // });
     // editorVM.mount(dom);
-    ReactDom.render(createElement(EditorViewReact, {
-      editor: this.editor,
-    }), dom);
-    // this.editorVM = editorVM;
+    watch(editorRenderType, (type: EditorRenderType) => {
+      if (type === EditorRenderType.React) {
+        this.editorVM?.unmount();
+        ReactDom.render(createElement(EditorViewReact, {
+          editor: this.editor,
+        }), dom);
+      } else {
+        ReactDom.unmountComponentAtNode(dom);
+        this.editorVM = createApp(EditorView, {
+          editor: this.editor,
+        });
+        this.editorVM.mount(dom);
+      }
+    }, {
+      immediate: true,
+    });
     this.editor.root = dom;
   }
 }

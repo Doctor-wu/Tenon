@@ -36,7 +36,5 @@ props.bridge.register(createTenonEvent("onDoubleClick"), (e) => {
 </script>
 
 <style lang="scss" scoped>
-.tenon-material-text {
-  // display: block;
-}
+@import url("./Text.scss");
 </style>

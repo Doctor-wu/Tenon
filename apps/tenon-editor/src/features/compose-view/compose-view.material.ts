@@ -61,7 +61,6 @@ export class TenonComposeView
     super();
     this.composeViewHandler = composeViewHandler;
     this.rendererManager = rendererManager;
-    // this.runtimeComponentTreeHandler = runtimeComponentTreeHandler;
     if (!this.composeViewHandler) {
       Logger.log('composeViewHandler is null', this);
     }
@@ -83,7 +82,6 @@ export class TenonComposeView
       composeViewHandler: this.composeViewHandler,
       isEmpty: children.length === 0,
     };
-    // this.runtimeComponentTreeHandler.initRuntimeTree(model);
     switch (type) {
       case RendererHost.React:
         return createElement(ComposeViewReact, setProps, children.map((child) => {
@@ -92,9 +90,7 @@ export class TenonComposeView
         }));
       case RendererHost.Vue:
         return h(composeViewVue, setProps, () => {
-          // console.log(`render children, host: ${runtimeTree.id}`, children);
           return children.map((child) => {
-            // this.runtimeComponentTreeHandler.initRuntimeTree(child);
             const renderer = this.rendererManager.getRenderer(child.name);
             return renderer.render(type, child, { key: child.id });
           });

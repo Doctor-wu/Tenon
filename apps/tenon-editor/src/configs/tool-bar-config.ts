@@ -1,4 +1,4 @@
-import { IToolBarSwitchConfig, ToolBarConfig, ToolBarFlag } from "@tenon/workbench";
+import { ToolBarConfig, ToolBarFlag } from "@tenon/workbench";
 import FileTree from "vue-material-design-icons/FamilyTree.vue";
 import PaletteSwatch from "vue-material-design-icons/PaletteSwatch.vue";
 import FormatListText from "vue-material-design-icons/FormatListText.vue";
@@ -13,12 +13,17 @@ import CalendarTextOutLine from "vue-material-design-icons/CalendarTextOutLine.v
 import StateMachine from "vue-material-design-icons/StateMachine.vue";
 import VectorCircle from "vue-material-design-icons/VectorCircle.vue";
 import CogSync from "vue-material-design-icons/CogSync.vue";
+import ReactIcon from "vue-material-design-icons/React.vue";
+import VueIcon from "vue-material-design-icons/Vuejs.vue";
 import { h } from "vue";
 
 export enum ToolBarName {
   Undo = 'Undo',
   Redo = 'Redo',
   Mode = 'Mode',
+  RenderType = 'RenderType',
+  RenderInReact = 'RenderInReact',
+  RenderInVue = 'RenderInVue',
   PreviewMode = 'PreviewMode',
   EditMode = 'EditMode',
   RealPreview = 'RealPreview',
@@ -57,6 +62,38 @@ export const toolBarConfig: ToolBarConfig = {
       }
     ],
     [
+      {
+        name: ToolBarName.RenderType,
+        flag: ToolBarFlag.DropDown,
+        dropDownWidth: '100px',
+        text: 'React',
+        width: '80px',
+        icon: {
+          iconRender: () => h(ReactIcon, {
+            size: 16,
+          }),
+        },
+        listTree: [
+          {
+            name: ToolBarName.RenderInReact,
+            text: 'React',
+            icon: {
+              iconRender: () => h(ReactIcon, {
+                size: 16,
+              }),
+            },
+          },
+          {
+            name: ToolBarName.RenderInVue,
+            text: 'Vue',
+            icon: {
+              iconRender: () => h(VueIcon, {
+                size: 16,
+              }),
+            },
+          }
+        ],
+      },
       {
         name: ToolBarName.Mode,
         flag: ToolBarFlag.DropDown,

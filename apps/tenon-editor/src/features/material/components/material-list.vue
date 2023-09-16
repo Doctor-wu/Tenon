@@ -1,12 +1,13 @@
 <template>
   <section class="material-list-container">
     <div class="material-list">
-      <Card
+      <MaterialCard
         v-for="instance in materials"
         :key="instance.model.id"
         class="material-list-item"
         size="small"
-        :bordered="true"
+        :renderer="instance.renderer"
+        :model="instance.model"
         :ref="
           (el: any) => {
             if (!el) return;
@@ -14,22 +15,7 @@
           }
         "
       >
-        <section class="material-list-item__title">
-          <Icon
-            :name="(instance.renderer?.icon as string)"
-            style="margin-right: 4px"
-          ></Icon>
-          <span> {{ instance.renderer?.name }}</span>
-        </section>
-        <section class="material-list-item__desc">
-          {{ instance.renderer!.description }}
-        </section>
-        <section class="material-list-item__preview">
-          <component
-            :is="instance.renderer.render(RendererHost.Vue, instance.model, {})"
-          ></component>
-        </section>
-      </Card>
+      </MaterialCard>
     </div>
   </section>
 </template>
@@ -39,13 +25,13 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { Card, Icon } from "tdesign-vue-next";
 import { effect, onMounted, onUnmounted, reactive, ref, Ref } from "vue";
 import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree";
 import { RendererManager } from "@/core/renderer";
 import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
 import type { IMaterialFeature } from "../material.interface";
 import { Logger } from "@/utils/logger";
+import MaterialCard from "./material-card.vue";
 
 const props = defineProps<{
   renderers: {
@@ -121,55 +107,6 @@ onUnmounted(() => {
     width: 100%;
     height: 100%;
     overflow: auto;
-    .material-list-item {
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      margin: 12px;
-      cursor: pointer;
-      border-bottom: 1px solid #e8e8e8;
-      transition: all 0.3s ease-in-out;
-      &:hover {
-        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
-      }
-      ::v-deep(.t-card__body) {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
-        align-items: flex-start;
-      }
-      .material-list-item__title {
-        height: 25px;
-        display: flex;
-        width: 100%;
-        margin-bottom: 8px;
-        justify-content: flex-start;
-        align-items: center;
-        font-weight: bold;
-        font-size: 16px;
-        color: #333;
-      }
-      .material-list-item__desc {
-        flex: 1;
-        display: flex;
-        width: 100%;
-        justify-content: flex-start;
-        align-items: center;
-        font-size: 13px;
-        color: #999;
-        margin-bottom: 8px;
-      }
-      .material-list-item__preview {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-      }
-    }
   }
 }
 </style>

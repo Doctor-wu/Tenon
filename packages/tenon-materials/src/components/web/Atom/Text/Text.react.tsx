@@ -3,6 +3,7 @@ import { shallowRef } from 'vue';
 import { TextProps } from './interface';
 import { TenonComponentLifeCycle, createTenonEvent, useComponentLifeCycle, useEventMeta } from '../../..';
 import { RendererHost } from '@tenon/engine';
+import "./Text.scss";
 
 export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
   const {
@@ -32,7 +33,7 @@ export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
   });
   return (
     <>
-      <span ref={root} style={style || __tenon_material_instance__.propMeta.style.default}>
+      <span className="tenon-material-text" ref={root} style={style || __tenon_material_instance__.propMeta.style.default}>
         React: {text || __tenon_material_instance__.propMeta.text.default}
       </span>
     </>

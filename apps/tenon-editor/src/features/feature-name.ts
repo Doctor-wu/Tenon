@@ -11,4 +11,5 @@ export const FeatureName = {
   // RuntimeComponentDrag: "runtime-component-drag",
   RuntimeComponentTree: "runtime-component-tree",
   UndoRedo: "undo-redo",
+  EditorRenderType: "editor-render-type",
 };

@@ -1,10 +1,8 @@
 import { Bridge } from "@tenon/shared";
-import { onMounted, onBeforeUnmount, Ref } from "vue";
+import { Ref } from "vue";
 import { TenonEventPrefix, createTenonEvent } from "./constant";
 import { TenonComponentLifeCycle, useComponentLifeCycle } from "./lifecycle";
 import { ElementChangeEvent, RendererHost } from "@tenon/engine";
-import React from "react";
-import { getRefValue } from "./ref";
 
 export interface IMaterialEventMeta {
   trigger: (el: HTMLElement, trigger: (e: Event) => void) => void;
