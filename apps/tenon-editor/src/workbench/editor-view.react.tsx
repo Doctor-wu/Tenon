@@ -12,10 +12,8 @@ export const EditorViewReact: FC<{
   const [runtimeTree, setRuntimeTree] = useState<ModelImpl[ModelHost] | null>(
     props.editor.context.dataEngine.root
   );
-  const [renderTick, setRenderTick] = useState(0);
+  const [, setRenderTick] = useState(0);
 
-  useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.Mount, () => {
-  });
   useEffect(() => {
     const cancel = props.editor.context.on(
       ModelChange,
