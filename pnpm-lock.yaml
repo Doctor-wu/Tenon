@@ -23,6 +23,9 @@ importers:
       '@types/react':
         specifier: ^16.8.8
         version: 16.8.8
+      '@types/react-dom':
+        specifier: ^18.2.7
+        version: 18.2.7
       '@vitejs/plugin-vue':
         specifier: ^1.9.3
         version: 1.10.2(vite@2.8.6)
@@ -961,6 +964,12 @@ packages:
 
   /@types/range-parser@1.2.4:
     resolution: {integrity: sha512-EEhsLsD6UsDM1yFhAvy0Cjr6VwmpMWqFBCb9w07wVugF7w9nfajxLuVmngTIpgS6svCnm6Vaw+MZhoDCKnOfsw==}
+    dev: false
+
+  /@types/react-dom@18.2.7:
+    resolution: {integrity: sha512-GRaAEriuT4zp9N4p1i8BDBYmEyfo+xQ3yHjJU4eiK5NDa1RmUZG+unZABUTK4/Ox/M+GaHwb6Ow8rUITrtjszA==}
+    dependencies:
+      '@types/react': 16.8.8
     dev: false
 
   /@types/react@16.8.8:

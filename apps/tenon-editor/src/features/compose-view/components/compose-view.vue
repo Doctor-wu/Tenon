@@ -85,21 +85,5 @@ const handleDragEnter = (e) => {
 };
 </script>
 <style lang="scss" scoped>
-.empty-view-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #999;
-  border: 1px dashed #999;
-  height: 60px;
-  width: 100%;
-  box-sizing: border-box;
-}
-.view-container {
-  border: 1px dashed #999;
-  // padding: 12px;
-  &.dragging {
-    padding-bottom: 12px;
-  }
-}
+@import url("../style/compose-view.scss");
 </style>

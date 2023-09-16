@@ -83,7 +83,7 @@ export class ComposeViewHandler implements IComposeViewFeature {
 
   @awaitLoad(IAreaIndicatorFeature)
   private async handleDragEnter(e: DragEvent) {
-    e.stopPropagation();
+    // e.stopPropagation();
     this.clearDragDisposer();
     if (e.target === null) return;
     this.hoveringRuntimeTreeId.value = (e.target as HTMLElement).getAttribute(DATA_RUNTIME_TREE_ID) || undefined;
@@ -96,12 +96,10 @@ export class ComposeViewHandler implements IComposeViewFeature {
   @awaitLoad(IMaterialDragFeature, IRuntimeComponentTreeFeature, IUndoRedoFeature)
   private async handleDrop(e: DragEvent) {
     this.clearDragDisposer();
-    e.stopPropagation();
+    // e.stopPropagation();
     const runtimeTreeId = (e.target as HTMLElement).getAttribute(DATA_RUNTIME_TREE_ID);
-    console.log('drop', runtimeTreeId);
     if (!runtimeTreeId) return;
     const runtimeTree = this.runtimeComponentTree.getRuntimeTreeById(Number(runtimeTreeId));
-    console.log('drop', runtimeTreeId, runtimeTree);
     if (!runtimeTree) return;
     if (!runtimeTree.droppable) return e.preventDefault();
     const dragType = e.dataTransfer!.getData('dragType') as DragType;

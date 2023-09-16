@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useRef } from 'react';
+import { shallowRef } from 'vue';
 import { TextProps } from './interface';
-import { createTenonEvent, useEventMeta } from '../../..';
+import { TenonComponentLifeCycle, createTenonEvent, useComponentLifeCycle, useEventMeta } from '../../..';
 import { RendererHost } from '@tenon/engine';
 
 export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
@@ -12,8 +13,12 @@ export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
     __tenon_material_instance__,
   } = props;
   const root = useRef<HTMLSpanElement>(null);
-  useEventMeta(RendererHost.React, __tenon_event_meta__, root, bridge);
+  const reactiveRootRef = shallowRef<HTMLSpanElement | null>(null);
   useEffect(() => {
+    reactiveRootRef.value = root.current;
+  });
+  useEventMeta(RendererHost.React, __tenon_event_meta__, reactiveRootRef, bridge);
+  useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.Mount, () => {
     bridge.register(createTenonEvent("onClick"), (e) => {
       console.log(__tenon_material_instance__.name, createTenonEvent("onClick"), e);
     });
@@ -24,10 +29,12 @@ export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
         e
       );
     });
-  }, []);
+  });
   return (
     <>
-      <span ref={root} style={style}>{text}</span>
+      <span ref={root} style={style || __tenon_material_instance__.propMeta.style.default}>
+        React: {text || __tenon_material_instance__.propMeta.text.default}
+      </span>
     </>
   ) as ReturnType<FC<TextProps<React.CSSProperties>>>;
 }

@@ -20,6 +20,37 @@ export class NotificationManager {
     ) => any
   ) {
     this.eventEmitter.on(type, fn);
+    return () => {
+      this.eventEmitter.cancel(type, fn);
+    };
+  }
+
+  once<
+    Notification extends any = "__base-notification",
+    Type extends string | symbol = string
+  >(
+    type: Type,
+    fn: (
+      notification: Notification extends "__base-notification"
+        ? BaseNotification<Type>
+        : Notification
+    ) => any
+  ) {
+    this.eventEmitter.once(type, fn);
+  }
+
+  cancel<
+    Notification extends any = "__base-notification",
+    Type extends string | symbol = string
+  >(
+    type: Type,
+    fn: (
+      notification: Notification extends "__base-notification"
+        ? BaseNotification<Type>
+        : Notification
+    ) => any
+  ) {
+    this.eventEmitter.cancel(type, fn);
   }
 
   fire<Notification extends BaseNotification<string | symbol>>(notification: Notification, options: IFireOptions = {}) {

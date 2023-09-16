@@ -91,6 +91,8 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
   @awaitLoad(IMaterialFeature)
   async buildRuntimeTree(name: string) {
     const model = new RuntimeTreeNode(name);
+    const renderer = this.context.rendererManager.getRenderer(name);
+    model.droppable = renderer.nestable;
     this.runtimeTreeMap.set(model.id, model);
     await this.initRuntimeTree(model);
     return model;

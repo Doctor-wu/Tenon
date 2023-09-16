@@ -36,10 +36,18 @@ export class TenonDataEngine<Model extends ModelImpl[ModelHost]> {
 
   @awaitLoad(IContext)
   invoke(...mutations: BaseMutation[]) {
+    this.invokeMutations(...mutations);
+    this.context.fire(new InvokeMutationNotification(mutations));
+  }
+
+  invokeInUndoRedo(...mutations: BaseMutation[]) {
+    this.invokeMutations(...mutations);
+  }
+
+  private invokeMutations(...mutations: BaseMutation[]) {
     mutations.forEach(mutation => {
       mutation.handle();
     });
-    this.context.fire(new InvokeMutationNotification(mutations));
     this.context.fire(new ModelChangeNotification(this.root));
   }
 }

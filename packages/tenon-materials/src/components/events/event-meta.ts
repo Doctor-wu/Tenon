@@ -33,7 +33,7 @@ export const internalMeta: IMaterialInternalEventMeta[] = [
 export const useEventMeta = (
   renderer: RendererHost,
   eventMeta: (IMaterialEventMeta | IMaterialInternalEventMeta)[],
-  elRef: Ref<HTMLElement | null> | React.RefObject<HTMLElement | null>,
+  elRef: Ref<HTMLElement | null>,
   bridge: Bridge<Record<string | number | symbol, any>>,
 ) => {
   useComponentLifeCycle(
@@ -42,11 +42,11 @@ export const useEventMeta = (
     () => {
       eventMeta.forEach((meta) => {
         if ("internal" in meta) return;
-        if (!getRefValue(renderer, elRef)) {
+        if (!elRef.value) {
           console.error("elRef is not ready");
           return;
         }
-        meta.trigger(getRefValue(renderer, elRef)!, (e) => {
+        meta.trigger(elRef.value!, (e) => {
           bridge.run(`${TenonEventPrefix}${meta.name}`, e);
         });
       });

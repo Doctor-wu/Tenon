@@ -9,6 +9,8 @@ import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { Logger } from "@/utils/logger";
 import type { RendererManager } from "@/core/renderer";
 import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
+import { createElement } from "react";
+import { ComposeViewReact } from "./components/compose-view.react";
 
 const TenonComposeViewInfo = {
   name: 'ComposeView',
@@ -37,14 +39,16 @@ const TenonComposeViewInfo = {
   ] as IMaterialEventMeta[],
 }
 
-export class TenonComposeView extends BaseMaterial<RendererHost.Vue> implements IRenderer {
+export class TenonComposeView
+  extends BaseMaterial<RendererHost.Vue | RendererHost.React>
+  implements IRenderer<ModelHost, RendererHost.Vue | RendererHost.React> {
   public name = TenonComposeViewInfo.name;
   public icon = TenonComposeViewInfo.icon;
   public description = TenonComposeViewInfo.description;
   public propMeta = TenonComposeViewInfo.props;
   public nestable = true;
   public eventMeta = [...internalMeta, ...TenonComposeViewInfo.eventMeta];
-  public supportRenderHost = [RendererHost.Vue as const];
+  public supportRenderHost = [RendererHost.Vue, RendererHost.React];
 
   private composeViewHandler: IComposeViewFeature;
   private rendererManager: RendererManager;
@@ -64,7 +68,7 @@ export class TenonComposeView extends BaseMaterial<RendererHost.Vue> implements 
   }
 
   public render(
-    type: RendererHost.Vue,
+    type: RendererHost,
     model: ModelImpl[ModelHost.Tree],
     props: {
       [K in keyof TenonComposeView["propMeta"]]: TenonComposeView["propMeta"][K]["type"];
@@ -80,13 +84,21 @@ export class TenonComposeView extends BaseMaterial<RendererHost.Vue> implements 
       isEmpty: children.length === 0,
     };
     // this.runtimeComponentTreeHandler.initRuntimeTree(model);
-    return h(composeViewVue, setProps, () => {
-      // console.log(`render children, host: ${runtimeTree.id}`, children);
-      return children.map((child) => {
-        // this.runtimeComponentTreeHandler.initRuntimeTree(child);
-        const renderer = this.rendererManager.getRenderer(child.name);
-        return renderer.render(type, child, { key: child.id });
-      });
-    });
+    switch (type) {
+      case RendererHost.React:
+        return createElement(ComposeViewReact, setProps, children.map((child) => {
+          const renderer = this.rendererManager.getRenderer(child.name);
+          return renderer.render(type, child, { key: child.id });
+        }));
+      case RendererHost.Vue:
+        return h(composeViewVue, setProps, () => {
+          // console.log(`render children, host: ${runtimeTree.id}`, children);
+          return children.map((child) => {
+            // this.runtimeComponentTreeHandler.initRuntimeTree(child);
+            const renderer = this.rendererManager.getRenderer(child.name);
+            return renderer.render(type, child, { key: child.id });
+          });
+        });
+    }
   }
 }

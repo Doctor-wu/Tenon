@@ -15,14 +15,19 @@
         "
       >
         <section class="material-list-item__title">
-          <Icon :name="(instance.renderer?.icon as string)" style="margin-right: 4px"></Icon>
+          <Icon
+            :name="(instance.renderer?.icon as string)"
+            style="margin-right: 4px"
+          ></Icon>
           <span> {{ instance.renderer?.name }}</span>
         </section>
         <section class="material-list-item__desc">
           {{ instance.renderer!.description }}
         </section>
         <section class="material-list-item__preview">
-          <component :is="instance.renderer.render(RendererHost.Vue, instance.model, {})"></component>
+          <component
+            :is="instance.renderer.render(RendererHost.Vue, instance.model, {})"
+          ></component>
         </section>
       </Card>
     </div>
@@ -40,6 +45,7 @@ import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree"
 import { RendererManager } from "@/core/renderer";
 import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
 import type { IMaterialFeature } from "../material.interface";
+import { Logger } from "@/utils/logger";
 
 const props = defineProps<{
   renderers: {
@@ -53,13 +59,13 @@ const props = defineProps<{
 const materials: Ref<
   {
     model: ModelImpl[ModelHost.Tree];
-    renderer: IRenderer;
+    renderer: IRenderer<ModelHost, RendererHost>;
   }[]
 > = ref([]);
 
 const rootRefs: {
   el: HTMLElement;
-  renderer: IRenderer<ModelHost, RendererHost.Vue>;
+  renderer: IRenderer<ModelHost, RendererHost>;
   runtimeTree: ModelImpl[ModelHost.Tree];
   disposer?: () => void;
 }[] = reactive([]);
@@ -86,6 +92,7 @@ onMounted(() => {
   effect(() => {
     rootRefs.forEach(async (item, index) => {
       if (!item.disposer) {
+        item.disposer = () => undefined;
         const disposer = await props.draggableMaterial(item.el, () => item.renderer.name);
         rootRefs[index].disposer = disposer;
       }

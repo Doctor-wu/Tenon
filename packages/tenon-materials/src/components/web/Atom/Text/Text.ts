@@ -45,7 +45,6 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
   public description = TenonTextInfo.description;
   public propMeta = TenonTextInfo.props;
   public supportRenderHost = [RendererHost.React, RendererHost.Vue];
-
   public eventMeta = [...internalMeta, ...TenonTextInfo.eventMeta];
 
   public render(

@@ -13,7 +13,7 @@ import { IComposeViewFeature } from "../compose-view";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { Logger } from "@/utils/logger";
 import { IContext, TenonEditorContext } from "@/core";
-import type { IRenderer } from "@tenon/engine";
+import type { IRenderer, ModelHost, RendererHost } from "@tenon/engine";
 
 @Feature({
   name: IMaterialFeature,
@@ -21,7 +21,7 @@ import type { IRenderer } from "@tenon/engine";
 export class MaterialHandler implements IMaterialFeature {
   isPanelOpen: boolean;
   private renderers: {
-    [x: string]: IRenderer;
+    [x: string]: IRenderer<ModelHost, RendererHost>;
   } = reactive(Object.keys(TenonAtomComponents).reduce((acc, key) => {
     const renderer = new TenonAtomComponents[key as keyof typeof TenonAtomComponents];
     return {

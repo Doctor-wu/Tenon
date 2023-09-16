@@ -1,15 +1,15 @@
 import { Service } from "@tenon/workbench";
 import { IRendererManager } from "../interface";
-import { IRenderer } from "@tenon/engine";
+import { IRenderer, ModelHost, RendererHost } from "@tenon/engine";
 
 
 @Service({
   name: IRendererManager,
 })
 export class RendererManager {
-  private rendererMap: Map<string, IRenderer> = new Map();
+  private rendererMap: Map<string, IRenderer<ModelHost, RendererHost>> = new Map();
 
-  registerRenderer(name: string, renderer: IRenderer) {
+  registerRenderer(name: string, renderer: IRenderer<ModelHost, RendererHost>) {
     this.rendererMap.set(name, renderer);
   }
 

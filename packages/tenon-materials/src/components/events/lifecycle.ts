@@ -22,7 +22,7 @@ export const RendererHostLifeCycleRequest: {
   },
   [RendererHost.React]: {
     [TenonComponentLifeCycle.Mount]: (fn: any) => {
-      useEffect(fn, []);
+      return useEffect(fn, []);
     },
     [TenonComponentLifeCycle.UnMount]: (fn: any) => {
       useEffect(() => {

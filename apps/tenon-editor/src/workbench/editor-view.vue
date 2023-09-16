@@ -45,18 +45,5 @@ props.editor.context.on(
 );
 </script>
 <style lang="scss" scoped>
-.editor-view-wrapper {
-  padding: 6px;
-  height: 100%;
-  box-sizing: border-box;
-}
-
-#tenon-editor {
-  display: inline-block;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 320px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
-  text-align: left;
-}
+@import url("./style/editor-style.scss");
 </style>

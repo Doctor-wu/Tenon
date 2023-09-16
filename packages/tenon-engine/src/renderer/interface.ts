@@ -17,5 +17,5 @@ export interface IRenderer<
   Model extends ModelHost = ModelHost.Tree,
   Render extends RendererHost = RendererHost.Vue,
 > extends BaseMaterial<Render> {
-  render(type: RendererHost, model: ModelImpl[Model], ...args: unknown[]): RenderResultType[Render];
+  render<RendererInvokeType extends Render>(type: RendererInvokeType, model: ModelImpl[Model], ...args: unknown[]): RenderResultType[RendererInvokeType];
 }

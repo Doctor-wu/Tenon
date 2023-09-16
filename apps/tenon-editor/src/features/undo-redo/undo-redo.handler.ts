@@ -4,8 +4,9 @@ import {
 import { IUndoRedoFeature } from "./undo-redo.interface";
 import { BaseMutation } from "@tenon/engine";
 import { canRedo, canUndo } from "./reactive";
-import { IContext, TenonEditorContext } from "@/core";
+import { IContext, ModelChangeNotification, TenonEditorContext } from "@/core";
 import { InvokeMutationNotification, InvokeMutations } from "@/core/notifications/mutation-notification";
+import { UndoRedoNotification, UndoRedoType } from "./notification";
 
 @Feature({
   name: IUndoRedoFeature,
@@ -25,23 +26,21 @@ export class UndoRedoHandler implements IUndoRedoFeature {
   public undo() {
     if (!canUndo.value) return;
     const mutations = this.undoStack.pop()!;
-    mutations.forEach(m => {
-      m.handle();
-    });
+    this.context.dataEngine.invokeInUndoRedo(...mutations);
     // 逆序 push 到 redoStack
     this.redoStack.push(mutations.map(m => m.reverse()).reverse());
     this.updateState();
+    this.notify(mutations, UndoRedoType.Undo);
   }
 
   public redo() {
     if (!canRedo.value) return;
     const mutations = this.redoStack.pop()!;
-    mutations.forEach(m => {
-      m.handle();
-    });
+    this.context.dataEngine.invokeInUndoRedo(...mutations);
     // 逆序 push 到 undoStack
     this.undoStack.push(mutations.map(m => m.reverse()).reverse());
     this.updateState();
+    this.notify(mutations, UndoRedoType.Redo);
   }
 
   public pushUndo(items: BaseMutation[]) {
@@ -70,5 +69,11 @@ export class UndoRedoHandler implements IUndoRedoFeature {
   private updateState() {
     canUndo.value = this.undoStack.length > 0;
     canRedo.value = this.redoStack.length > 0;
+  }
+
+  private notify(mutations: BaseMutation[], type: UndoRedoType) {
+    this.context.fire(
+      new UndoRedoNotification(type, mutations),
+    );
   }
 }
