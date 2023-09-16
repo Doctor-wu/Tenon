@@ -1,5 +1,9 @@
 import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
-import { TenonEvent, IMaterialEventMeta, IMaterialInternalEventMeta, createTenonEvent, useEventMeta, useComponentLifeCycle, TenonComponentLifeCycle } from "@tenon/materials";
+import {
+  TenonEvent, IMaterialEventMeta, registerCommonHooks,
+  IMaterialInternalEventMeta, createTenonEvent,
+  useComponentLifeCycle, TenonComponentLifeCycle,
+} from "@tenon/materials";
 import { Bridge } from "@tenon/shared";
 import React, { FC, useCallback, useEffect, useRef } from "react";
 import { DATA_RUNTIME_TREE_ID, IComposeViewFeature } from "../compose-view.interface";
@@ -34,23 +38,31 @@ export const ComposeViewReact: FC<{
     reactiveRootRef.value = rootRef.current;
   }, [rootRef]);
 
-  useEventMeta(RendererHost.React, __tenon_event_meta__, reactiveRootRef, bridge);
+  registerCommonHooks(RendererHost.React, __tenon_event_meta__, reactiveRootRef, bridge);
   useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.Mount, () => {
     composeViewHandler.getMaterialDrag().then((service) => {
       materialDrag.current = service;
     });
-
-    bridge.register(createTenonEvent("onClick"), (e) => {
-      console.log(__tenon_material_instance__.name, createTenonEvent("onClick"), e);
-    });
-    bridge.register(createTenonEvent("onDoubleClick"), (e) => {
-      console.log(
-        __tenon_material_instance__.name,
-        createTenonEvent("onDoubleClick"),
-        e
-      );
-    });
   });
+
+  const clickHandler = useCallback((e) => {
+    console.log(__tenon_material_instance__.name, createTenonEvent("onClick"), e);
+  }, []);
+  const doubleClickHandler = useCallback((e) => {
+    console.log(
+      __tenon_material_instance__.name,
+      createTenonEvent("onDoubleClick"),
+      e
+    );
+  }, []);
+  props.bridge.register(createTenonEvent("onClick"), clickHandler);
+  props.bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
+
+  useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.UnMount, () => {
+    props.bridge.unRegister(createTenonEvent("onClick"), clickHandler);
+    props.bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
+  });
+
   const handleDragEnter = useCallback((e) => {
     composeViewHandler?.bridge.run("onDragEnter", e);
   }, []);

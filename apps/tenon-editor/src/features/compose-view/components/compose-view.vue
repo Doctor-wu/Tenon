@@ -46,8 +46,10 @@ import {
   createTenonEvent,
   IMaterialEventMeta,
   IMaterialInternalEventMeta,
+  TenonComponentLifeCycle,
   TenonEvent,
-  useEventMeta,
+  useComponentLifeCycle,
+  registerCommonHooks,
 } from "@tenon/materials";
 import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
 
@@ -67,17 +69,23 @@ props.composeViewHandler.getMaterialDrag().then((service) => {
   materialDrag.value = service;
 });
 
-useEventMeta(RendererHost.Vue, props.__tenon_event_meta__, rootRef, props.bridge);
-
-props.bridge.register(createTenonEvent("onClick"), (e) => {
+registerCommonHooks(RendererHost.Vue, props.__tenon_event_meta__, rootRef, props.bridge);
+const clickHandler = (e) => {
   console.log(props.__tenon_material_instance__.name, createTenonEvent("onClick"), e);
-});
-props.bridge.register(createTenonEvent("onDoubleClick"), (e) => {
+};
+const doubleClickHandler = (e) => {
   console.log(
     props.__tenon_material_instance__.name,
     createTenonEvent("onDoubleClick"),
     e
   );
+};
+props.bridge.register(createTenonEvent("onClick"), clickHandler);
+props.bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
+
+useComponentLifeCycle(RendererHost.Vue, TenonComponentLifeCycle.UnMount, () => {
+  props.bridge.unRegister(createTenonEvent("onClick"), clickHandler);
+  props.bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
 });
 
 const handleDragEnter = (e) => {

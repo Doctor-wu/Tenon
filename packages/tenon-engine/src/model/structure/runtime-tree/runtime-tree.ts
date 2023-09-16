@@ -25,6 +25,11 @@ export class RuntimeTreeNode extends BaseStructure {
     this.name = name;
   }
 
+  clearBridge() {
+    this.bridge.clear();
+    this.children.forEach((child) => child.clearBridge());
+  }
+
   clone() {
     const node = new RuntimeTreeNode(this.name);
     node.bridge = this.bridge.clone();

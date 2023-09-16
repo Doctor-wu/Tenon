@@ -7,6 +7,10 @@ export class Bridge<Actions extends Record<any, any>> {
     this.map.get(name)?.add(handler);
   }
 
+  unRegister<K extends keyof Actions>(name: K, handler: Actions[K]) {
+    this.map.get(name)?.delete(handler);
+  }
+
   run<K extends keyof Actions>(name: K, ...args: Parameters<Actions[K]>) {
     this.map.get(name)?.forEach(handler => {
       handler(...args);

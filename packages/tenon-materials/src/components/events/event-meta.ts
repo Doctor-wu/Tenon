@@ -28,7 +28,7 @@ export const internalMeta: IMaterialInternalEventMeta[] = [
   },
 ];
 
-export const useEventMeta = (
+export const registerCommonHooks = (
   renderer: RendererHost,
   eventMeta: (IMaterialEventMeta | IMaterialInternalEventMeta)[],
   elRef: Ref<HTMLElement | null>,
