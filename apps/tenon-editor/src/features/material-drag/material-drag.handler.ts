@@ -82,7 +82,7 @@ export class MaterialDragHandler implements IMaterialDragFeature {
   }
 
   @awaitLoad(IEditModeFeature)
-  private initEvent () {
+  private initEvent() {
     this.context.on(DragStatusChange, (notification: DragNotification) => {
       this.dragging.value = notification.dragging;
       Logger.log('DragStatusChange', notification.dragging);

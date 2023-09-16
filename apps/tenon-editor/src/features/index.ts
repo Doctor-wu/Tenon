@@ -2,11 +2,13 @@ import { AreaIndicatorHandler } from './area-indicator';
 import { ComponentsTreeController, IComponentsTreeFeature } from './components-tree';
 import { ComposeViewController, IComposeViewFeature } from './compose-view';
 import { EditModeController, IEditModeFeature } from './edit-mode';
+import { EditorRenderTypeController } from './editor-render-type';
 import { FullScreenController, IFullScreenFeature } from './fullscreen';
 import { IMaterialFeature, MaterialController } from './material';
 import { IMaterialDragFeature, MaterialDragController } from './material-drag';
 import { IRuntimeComponentTreeFeature, RuntimeComponentTreeController } from './runtime-component-tree';
 import { TitleController, TitleHandler } from "./title";
+import { IUndoRedoFeature, UndoRedoController } from './undo-redo';
 
 export const syncFeatures = [
   TitleHandler,
@@ -21,6 +23,7 @@ export const dynamicTags = [
   IMaterialDragFeature,
   IComposeViewFeature,
   IRuntimeComponentTreeFeature,
+  IUndoRedoFeature,
 ]
 
 export const controllers = [
@@ -32,4 +35,6 @@ export const controllers = [
   MaterialDragController,
   ComposeViewController,
   RuntimeComponentTreeController,
+  UndoRedoController,
+  EditorRenderTypeController,
 ];

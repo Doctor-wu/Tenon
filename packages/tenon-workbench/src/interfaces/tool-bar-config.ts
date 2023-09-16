@@ -14,6 +14,7 @@ export enum ToolBarFlag {
 export interface IToolBarBaseConfig<Flag extends ToolBarFlag> {
   name: any;
   flag: Flag;
+  width?: string;
   text?: string;
   hidden?: boolean;
   disabled?: boolean;

@@ -41,43 +41,51 @@ import type { IComposeViewFeature } from "../compose-view.interface";
 import type { IMaterialDragFeature } from "@/features/material-drag";
 import type { TenonComposeView } from "../compose-view.material";
 import { DATA_RUNTIME_TREE_ID } from "../compose-view.interface";
-import { CSSProperties, ref, shallowRef } from "vue";
+import { CSSProperties, shallowRef } from "vue";
 import {
   createTenonEvent,
   IMaterialEventMeta,
   IMaterialInternalEventMeta,
+  TenonComponentLifeCycle,
   TenonEvent,
-  useEventMeta,
+  useComponentLifeCycle,
+  registerCommonHooks,
 } from "@tenon/materials";
-import { ModelImpl, ModelType } from "@tenon/engine";
+import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
 
 const props = defineProps<{
   style?: CSSProperties;
   isEmpty: boolean;
   composeViewHandler: IComposeViewFeature;
   bridge: Bridge<Record<TenonEvent<string>, any>>;
-  runtimeTree: ModelImpl[ModelType.Tree];
+  runtimeTree: ModelImpl[ModelHost.Tree];
   __tenon_material_instance__: TenonComposeView;
   __tenon_event_meta__: (IMaterialEventMeta | IMaterialInternalEventMeta)[];
 }>();
 
-const rootRef = ref<HTMLElement>();
+const rootRef = shallowRef<HTMLElement | null>(null);
 const materialDrag = shallowRef<IMaterialDragFeature | null>(null);
 props.composeViewHandler.getMaterialDrag().then((service) => {
   materialDrag.value = service;
 });
 
-useEventMeta(props.__tenon_event_meta__, rootRef, props.bridge);
-
-props.bridge.register(createTenonEvent("onClick"), (e) => {
+registerCommonHooks(RendererHost.Vue, props.__tenon_event_meta__, rootRef, props.bridge);
+const clickHandler = (e) => {
   console.log(props.__tenon_material_instance__.name, createTenonEvent("onClick"), e);
-});
-props.bridge.register(createTenonEvent("onDoubleClick"), (e) => {
+};
+const doubleClickHandler = (e) => {
   console.log(
     props.__tenon_material_instance__.name,
     createTenonEvent("onDoubleClick"),
     e
   );
+};
+props.bridge.register(createTenonEvent("onClick"), clickHandler);
+props.bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
+
+useComponentLifeCycle(RendererHost.Vue, TenonComponentLifeCycle.UnMount, () => {
+  props.bridge.unRegister(createTenonEvent("onClick"), clickHandler);
+  props.bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
 });
 
 const handleDragEnter = (e) => {
@@ -85,21 +93,5 @@ const handleDragEnter = (e) => {
 };
 </script>
 <style lang="scss" scoped>
-.empty-view-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #999;
-  border: 1px dashed #999;
-  height: 60px;
-  width: 100%;
-  box-sizing: border-box;
-}
-.view-container {
-  border: 1px dashed #999;
-  // padding: 12px;
-  &.dragging {
-    padding-bottom: 12px;
-  }
-}
+@import url("../style/compose-view.scss");
 </style>

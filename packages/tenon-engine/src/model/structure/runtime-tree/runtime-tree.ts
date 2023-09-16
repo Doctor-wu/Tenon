@@ -3,10 +3,12 @@ import { Bridge, Dict } from "@tenon/shared";
 import { Ref, reactive } from "vue";
 import { RuntimeComponentTreeDestroyEvent } from "./interface";
 import { BaseStructure } from "../base";
+import { ModelHost } from "../../interface";
 
 export class RuntimeTreeNode extends BaseStructure {
   static runTimeId = 0;
   id: number;
+  type = ModelHost.Tree;
   name: string;
   el?: Ref<HTMLElement>;
   props: Dict<unknown> | null = null;
@@ -21,6 +23,11 @@ export class RuntimeTreeNode extends BaseStructure {
     super();
     this.id = RuntimeTreeNode.runTimeId++;
     this.name = name;
+  }
+
+  clearBridge() {
+    this.bridge.clear();
+    this.children.forEach((child) => child.clearBridge());
   }
 
   clone() {

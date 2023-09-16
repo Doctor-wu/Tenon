@@ -101,7 +101,7 @@ export class TenonComponent implements ComponentTreeNode {
     this.initProps(material.schemas, options.props);
     this.initSlots();
     if (material.config.nestable) this.children = [];
-    const instance = reactive(this);
+    const instance = reactive(this) as TenonComponent;
     return instance;
   }
 
