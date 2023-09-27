@@ -15,5 +15,5 @@ Tenon has a long way to go, and it's still in the early stages of development. I
 > sorry for without Docker support, as I mentioned, it is a legacy version and has an ugly design :(
 
 contact me: [email](mailto wuzhouchun@qq.com)
-contact me: [email](mailto wujiale2015@gmail.com)
+contact me: [email](mailto wuzhouchun23@gmail.com)
 
