@@ -29,12 +29,12 @@ export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
       e
     );
   }, []);
-  props.bridge.register(createTenonEvent("onClick"), clickHandler);
-  props.bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
+  bridge.register(createTenonEvent("onClick"), clickHandler);
+  bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
 
   useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.UnMount, () => {
-    props.bridge.unRegister(createTenonEvent("onClick"), clickHandler);
-    props.bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
+    bridge.unRegister(createTenonEvent("onClick"), clickHandler);
+    bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
   });
   return (
     <>

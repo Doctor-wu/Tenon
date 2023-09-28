@@ -3,7 +3,7 @@ import TextComponent from "./Text.vue";
 import { clickTrigger, doubleClickTrigger } from "../../../events";
 import { IMaterialEventMeta, internalMeta } from "../../../events/event-meta";
 import { MaterialPropsType, BaseMaterial } from "../../../base-material";
-import { ModelHost, ModelImpl, RendererHost } from "@tenon/engine";
+import { ModelHost, ModelImpl, RenderResultType, RendererHost } from "@tenon/engine";
 import { TextReact } from "./Text.react";
 import { createElement } from "react";
 
@@ -47,13 +47,13 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
   public supportRenderHost = [RendererHost.React, RendererHost.Vue];
   public eventMeta = [...internalMeta, ...TenonTextInfo.eventMeta];
 
-  public render(
-    type: RendererHost.React | RendererHost.Vue,
+  public render<R extends RendererHost.React | RendererHost.Vue>(
+    type: R,
     model: ModelImpl[ModelHost],
     props: {
       [K in keyof TenonText["propMeta"]]: TenonText["propMeta"][K]["type"];
     },
-  ) {
+  ): RenderResultType[R] {
     const setProps = {
       ...props,
       ...this.getInternalProps(),
@@ -61,9 +61,11 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
     };
     switch (type) {
       case RendererHost.React:
-        return createElement(TextReact, setProps);
+        return createElement(TextReact, setProps) as RenderResultType[R];
       case RendererHost.Vue:
-        return h(TextComponent, setProps);
+        return h(TextComponent, setProps) as RenderResultType[R];
+      default:
+        return h('span', `unknown renderer type: ${type}`) as RenderResultType[R];
     }
   }
 }

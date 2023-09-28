@@ -8,7 +8,7 @@ import { IComposeViewFeature } from "./compose-view.interface";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { Logger } from "@/utils/logger";
 import type { RendererManager } from "@/core/renderer";
-import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
+import { IRenderer, ModelImpl, ModelHost, RendererHost, RenderResultType } from "@tenon/engine";
 import { createElement } from "react";
 import { ComposeViewReact } from "./components/compose-view.react";
 
@@ -66,12 +66,12 @@ export class TenonComposeView
     }
   }
 
-  public render(
-    type: RendererHost,
+  public render<R extends RendererHost.Vue | RendererHost.React>(
+    type: R,
     model: ModelImpl[ModelHost.Tree],
     props: {
       [K in keyof TenonComposeView["propMeta"]]: TenonComposeView["propMeta"][K]["type"];
-    }) {
+    }): RenderResultType[R] {
     const { children } = model;
     const setProps = {
       key: model.id,
@@ -82,19 +82,29 @@ export class TenonComposeView
       composeViewHandler: this.composeViewHandler,
       isEmpty: children.length === 0,
     };
-    switch (type) {
-      case RendererHost.React:
-        return createElement(ComposeViewReact, setProps, children.map((child) => {
-          const renderer = this.rendererManager.getRenderer(child.name);
-          return renderer.render(type, child, { key: child.id });
-        }));
-      case RendererHost.Vue:
-        return h(composeViewVue, setProps, () => {
-          return children.map((child) => {
+    const renderResult = (() => {
+      switch (type) {
+        case RendererHost.React:
+          return createElement(ComposeViewReact, setProps, children.map((child) => {
             const renderer = this.rendererManager.getRenderer(child.name);
             return renderer.render(type, child, { key: child.id });
-          });
-        });
-    }
+          })) as RenderResultType[R];
+        case RendererHost.Vue:
+          return h(composeViewVue, setProps, () => {
+            return children.map((child) => {
+              const renderer = this.rendererManager.getRenderer(child.name);
+              return renderer.render(type, child, { key: child.id });
+            });
+          }) as RenderResultType[R];
+        default:
+          return h(composeViewVue, setProps, () => {
+            return children.map((child) => {
+              const renderer = this.rendererManager.getRenderer(child.name);
+              return renderer.render(type, child, { key: child.id });
+            });
+          }) as RenderResultType[R];
+      }
+    })();
+    return renderResult;
   }
 }

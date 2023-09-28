@@ -28,8 +28,8 @@ export enum AreaMarkType {
 }
 
 export const AreaMarkStyleMap = {
-  [AreaMarkType.Active]: "2px solid #1890ff",
-  [AreaMarkType.DragHover]: "2px dashed #7940e2",
+  [AreaMarkType.Active]: "2px solid #7940e2",
+  [AreaMarkType.DragHover]: "2px dashed #1890ff",
   [AreaMarkType.DropHovering]: "2px dashed #f5222d",
 };
 

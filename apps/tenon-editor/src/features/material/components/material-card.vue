@@ -27,11 +27,14 @@ defineProps<{
   flex-direction: column;
   align-items: flex-start;
   margin: 12px;
-  cursor: pointer;
+  cursor: grab;
   border-bottom: 1px solid #e8e8e8;
   transition: all 0.3s ease-in-out;
   &:hover {
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
+  }
+  &:active {
+    cursor: grabbing;
   }
   ::v-deep(.t-card__body) {
     width: 100%;

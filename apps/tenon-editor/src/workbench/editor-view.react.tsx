@@ -12,13 +12,13 @@ export const EditorViewReact: FC<{
   const [runtimeTree, setRuntimeTree] = useState<ModelImpl[ModelHost] | null>(
     props.editor.context.dataEngine.root
   );
-  const [, setRenderTick] = useState(0);
+  const [, setRenderTick] = useState(false);
 
   useEffect(() => {
     const cancel = props.editor.context.on(
       ModelChange,
       async (noti: ModelChangeNotification<ModelImpl[ModelHost]>) => {
-        setRenderTick(Date.now());
+        setRenderTick((tick) => !tick);
         if (noti.payload.id === runtimeTree?.id) {
           return;
         }
