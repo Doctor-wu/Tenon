@@ -10,9 +10,8 @@ import ReactDom from "react-dom";
 import EditorView from "./editor-view.vue";
 import { EditorViewReact } from "./editor-view.react";
 import { createElement } from "react";
-import { editorRenderType } from "@/features/editor-render-type/reactive";
-import { EditorRenderType } from "@/features/editor-render-type/editor-render-type.interface";
 import { Logger } from "@/utils/logger";
+import { editorRenderType, EditorRenderType } from "@/features/editor-render-type";
 
 @WorkbenchSettings({
   dynamicTags: dynamicTags,
@@ -38,7 +37,6 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
   }
 
   attachEditor(dom: HTMLElement): void {
-    Logger.log('DI service', this.workbenchDIService);
     watch(editorRenderType, (type: EditorRenderType) => {
       if (type === EditorRenderType.React) {
         this.renderInReact(dom);

@@ -1,9 +1,8 @@
-import { ModelChange, ModelChangeNotification, TenonEditor } from "@/core";
 import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
+import { ModelChange, ModelChangeNotification, TenonEditor } from "@/core";
+import { Logger } from "@/utils/logger";
 import React, { FC, useEffect, useRef, useState } from "react";
 import "./style/editor-style.scss";
-import { Logger } from "@/utils/logger";
-import { TenonComponentLifeCycle, useComponentLifeCycle } from "@tenon/materials";
 
 export const EditorViewReact: FC<{
   editor: TenonEditor;

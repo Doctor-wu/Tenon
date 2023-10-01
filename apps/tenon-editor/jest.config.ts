@@ -13,6 +13,6 @@ export default {
   testMatch: ['<rootDir>/src/**/*.spec.(js|jsx|ts|tsx)'],
   setupFilesAfterEnv: ['<rootDir>/tests/setup.ts'],
   collectCoverage: false,
-  collectCoverageFrom: ['<rootDir>/src/**/*.{ts,vue}', '!<rootDir>/src/index.ts'],
-  coverageReporters: ['html', 'text-summary'],
+  // collectCoverageFrom: ['<rootDir>/src/**/*.{ts,vue}', '!<rootDir>/src/index.ts'],
+  // coverageReporters: ['html', 'text-summary'],
 };

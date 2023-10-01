@@ -9,9 +9,9 @@
         :renderer="instance.renderer"
         :model="instance.model"
         :ref="
-          (comp: any) => {
-            if (!comp) return;
-            rootRefs.push({ el: comp.$el, renderer: comp.renderer!, runtimeTree: comp.model });
+          (el: any) => {
+            if (!el) return;
+            rootRefs.push({ el: el.$el, renderer: instance.renderer!, runtimeTree: instance.model });
           }
         "
       >
@@ -89,7 +89,6 @@ onUnmounted(() => {
   rootRefs.forEach((item) => {
     item.disposer?.();
   });
-  // rootRefs.length = 0;
   materials.value.forEach((m) => {
     m.model.destroy();
   });
