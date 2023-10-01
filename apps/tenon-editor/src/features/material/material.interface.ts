@@ -7,7 +7,7 @@ export interface IMaterialFeature {
   // interface
   isPanelOpen: boolean;
   switchPanel(open: boolean): void;
-  draggableMaterial(el: HTMLElement, payload: () => string): Promise<() => void>;
+  draggableMaterial: (el: HTMLElement, payload: () => string) => Promise<() => void>;
   // getWetMaterial(dryMaterial: IDryMaterial): IWetMaterial | undefined;
 }
 

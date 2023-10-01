@@ -9,9 +9,9 @@
         :renderer="instance.renderer"
         :model="instance.model"
         :ref="
-          (el: any) => {
-            if (!el) return;
-            rootRefs.push({ el: el.$el, renderer: instance.renderer!, runtimeTree: instance.model });
+          (comp: any) => {
+            if (!comp) return;
+            rootRefs.push({ el: comp.$el, renderer: comp.renderer!, runtimeTree: comp.model });
           }
         "
       >
@@ -59,7 +59,7 @@ const rootRefs: {
 onMounted(() => {
   effect(() => {
     Promise.all(
-      // @TODO(Doctorwu) 这里有潜在的性能问题, 只要 props.materials 发生变化, 每次都会重新构建所有的树
+      // @TODO(Doctorwu) 这里有潜在的性能问题, 只要 props.renderers 发生变化, 每次都会重新构建所有的树
       Object.keys(props.renderers).map(
         async (m) => await props.runtimeComponentTree.buildRuntimeTree(m)
       )

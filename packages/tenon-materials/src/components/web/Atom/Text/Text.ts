@@ -5,11 +5,13 @@ import { IMaterialEventMeta, internalMeta } from "../../../events/event-meta";
 import { MaterialPropsType, BaseMaterial } from "../../../base-material";
 import { ModelHost, ModelImpl, RenderResultType, RendererHost } from "@tenon/engine";
 import { TextReact } from "./Text.react";
+import { TextboxIcon } from "tdesign-icons-vue-next";
 import { createElement } from "react";
 
 const TenonTextInfo = {
   name: 'TenonText',
-  icon: 'app',
+  formatName: '文本',
+  icon: () => h(TextboxIcon),
   description: '[原子组件] 提供文本能力',
   props: {
     text: {
@@ -41,6 +43,7 @@ const TenonTextInfo = {
 
 export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vue> {
   public name = TenonTextInfo.name;
+  public formatName = TenonTextInfo.formatName;
   public icon = TenonTextInfo.icon;
   public description = TenonTextInfo.description;
   public propMeta = TenonTextInfo.props;

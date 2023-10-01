@@ -14,6 +14,7 @@ import { ComposeViewReact } from "./components/compose-view.react";
 
 const TenonComposeViewInfo = {
   name: 'ComposeView',
+  formatName: '组合视图',
   icon: 'app',
   description: '[原子组件] 提供组合视图的能力',
   props: {
@@ -43,12 +44,13 @@ export class TenonComposeView
   extends BaseMaterial<RendererHost.Vue | RendererHost.React>
   implements IRenderer<ModelHost, RendererHost.Vue | RendererHost.React> {
   public name = TenonComposeViewInfo.name;
+  public formatName = TenonComposeViewInfo.formatName;
   public icon = TenonComposeViewInfo.icon;
   public description = TenonComposeViewInfo.description;
   public propMeta = TenonComposeViewInfo.props;
   public nestable = true;
   public eventMeta = [...internalMeta, ...TenonComposeViewInfo.eventMeta];
-  public supportRenderHost = [RendererHost.Vue, RendererHost.React];
+  public supportRenderHost = [RendererHost.React, RendererHost.Vue];
 
   private composeViewHandler: IComposeViewFeature;
   private rendererManager: RendererManager;

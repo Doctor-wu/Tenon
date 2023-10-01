@@ -4,14 +4,12 @@
     class="tenon-material-text"
     :style="props.style || props.__tenon_material_instance__.propMeta.style.default"
     ref="root"
-    >{{ props.text || props.__tenon_material_instance__.propMeta.text.default }}</span
+    >{{ props.text || `Vue: ${props.__tenon_material_instance__.propMeta.text.default}` }}</span
   >
 </template>
 
 <script setup lang="ts">
 import { shallowRef } from "vue";
-import {
-} from "../../../events";
 import {
   createTenonEvent, useComponentLifeCycle,
   registerCommonHooks, TenonComponentLifeCycle,

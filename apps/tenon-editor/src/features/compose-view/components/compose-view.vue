@@ -16,7 +16,7 @@
     @drop.prevent="(e: any) => composeViewHandler?.bridge.run('onDrop', e)"
     :[DATA_RUNTIME_TREE_ID]="runtimeTree.id"
   >
-    拖入物料以生成组件
+    Vue: 拖入物料以生成组件
   </section>
   <section
     v-else

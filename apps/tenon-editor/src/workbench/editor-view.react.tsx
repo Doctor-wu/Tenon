@@ -29,6 +29,7 @@ export const EditorViewReact: FC<{
         setRuntimeTree(noti.payload);
       }
     );
+    return cancel;
   }, [runtimeTree]);
   return (
     <section className="editor-view-wrapper">

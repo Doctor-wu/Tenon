@@ -63,7 +63,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
   }
 
   async insert(runtimeTree: ModelImpl[ModelHost.Tree], beInsert: string) {
-    console.log('insert', runtimeTree, beInsert);
+    Logger.log('insert', runtimeTree, beInsert);
     const childTree = await this.buildRuntimeTree(beInsert);
     this.dataEngine.invoke(
       RuntimeTreeCommands.pushInsertNode(childTree, runtimeTree),

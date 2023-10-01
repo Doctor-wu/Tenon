@@ -20,6 +20,7 @@ import {
 } from "./compose-view.interface";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { IUndoRedoFeature } from "../undo-redo";
+import { Logger } from "@/utils/logger";
 
 @Feature({
   name: IComposeViewFeature,
@@ -102,7 +103,7 @@ export class ComposeViewHandler implements IComposeViewFeature {
   @awaitLoad(IMaterialDragFeature, IRuntimeComponentTreeFeature, IUndoRedoFeature)
   private async handleDrop(e: DragEvent) {
     this.clearDragDisposer();
-    // e.stopPropagation();
+    e.stopPropagation();
     const runtimeTreeId = (e.target as HTMLElement).getAttribute(DATA_RUNTIME_TREE_ID);
     if (!runtimeTreeId) return;
     const runtimeTree = this.runtimeComponentTree.getRuntimeTreeById(Number(runtimeTreeId));

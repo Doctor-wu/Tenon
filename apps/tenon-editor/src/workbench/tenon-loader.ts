@@ -12,6 +12,7 @@ import { EditorViewReact } from "./editor-view.react";
 import { createElement } from "react";
 import { editorRenderType } from "@/features/editor-render-type/reactive";
 import { EditorRenderType } from "@/features/editor-render-type/editor-render-type.interface";
+import { Logger } from "@/utils/logger";
 
 @WorkbenchSettings({
   dynamicTags: dynamicTags,
@@ -37,26 +38,33 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
   }
 
   attachEditor(dom: HTMLElement): void {
-    // const editorVM = createApp(EditorView, {
-    //   editor: this.editor,
-    // });
-    // editorVM.mount(dom);
+    Logger.log('DI service', this.workbenchDIService);
     watch(editorRenderType, (type: EditorRenderType) => {
       if (type === EditorRenderType.React) {
-        this.editorVM?.unmount();
-        ReactDom.render(createElement(EditorViewReact, {
-          editor: this.editor,
-        }), dom);
+        this.renderInReact(dom);
       } else {
-        ReactDom.unmountComponentAtNode(dom);
-        this.editorVM = createApp(EditorView, {
-          editor: this.editor,
-        });
-        this.editorVM.mount(dom);
+        this.renderInVue(dom);
       }
     }, {
       immediate: true,
     });
     this.editor.root = dom;
+  }
+
+  renderInReact(dom: HTMLElement): void {
+    this.editorVM?.unmount();
+    Logger.log('unmount vue', dom);
+    ReactDom.render(createElement(EditorViewReact, {
+      editor: this.editor,
+    }), dom);
+  }
+
+  renderInVue(dom: HTMLElement): void {
+    ReactDom.unmountComponentAtNode(dom);
+    Logger.log('unmount react', dom);
+    this.editorVM = createApp(EditorView, {
+      editor: this.editor,
+    });
+    this.editorVM.mount(dom);
   }
 }

@@ -39,7 +39,7 @@ export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
   return (
     <>
       <span className="tenon-material-text" ref={root} style={style || __tenon_material_instance__.propMeta.style.default}>
-        React: {text || __tenon_material_instance__.propMeta.text.default}
+        {text || `React: ${props.__tenon_material_instance__.propMeta.text.default}`}
       </span>
     </>
   ) as ReturnType<FC<TextProps<React.CSSProperties>>>;

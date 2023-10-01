@@ -66,10 +66,10 @@ export const toolBarConfig: ToolBarConfig = {
         name: ToolBarName.RenderType,
         flag: ToolBarFlag.DropDown,
         dropDownWidth: '100px',
-        text: 'React',
+        text: 'Vue',
         width: '80px',
         icon: {
-          iconRender: () => h(ReactIcon, {
+          iconRender: () => h(VueIcon, {
             size: 16,
           }),
         },

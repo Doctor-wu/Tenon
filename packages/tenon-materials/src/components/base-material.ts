@@ -29,6 +29,7 @@ export enum MaterialType {
 export abstract class BaseMaterial<Render extends RendererHost> {
   public type: MaterialType;
   public abstract name: string;
+  public abstract formatName: string;
   public abstract icon: string | (() => VNode);
   public abstract description: string;
   public propMeta: Dict<IMaterialPropsMeta>;
