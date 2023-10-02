@@ -13,7 +13,7 @@ import { shallowRef } from "vue";
 import {
   createTenonEvent, useComponentLifeCycle,
   registerCommonHooks, TenonComponentLifeCycle,
-} from "../../../events";
+} from "../../../../events";
 import { TextProps } from "./interface";
 import { RendererHost } from "@tenon/engine";
 

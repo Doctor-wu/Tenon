@@ -1,7 +1,7 @@
 import { h } from "vue";
 import TextComponent from "./Text.vue";
-import { clickTrigger, doubleClickTrigger } from "../../../events";
-import { IMaterialEventMeta, internalMeta } from "../../../events/event-meta";
+import { clickTrigger, doubleClickTrigger } from "../../../../events";
+import { IMaterialEventMeta, internalMeta } from "../../../../events/event-meta";
 import { MaterialPropsType, BaseMaterial } from "../../../base-material";
 import { ModelHost, ModelImpl, RenderResultType, RendererHost } from "@tenon/engine";
 import { TextReact } from "./Text.react";

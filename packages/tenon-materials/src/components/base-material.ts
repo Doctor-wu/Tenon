@@ -1,7 +1,7 @@
 import { Dict } from "@tenon/shared";
 import { ModelHost, ModelImpl, RenderResultType, RendererHost } from "@tenon/engine";
 import { VNode } from "vue";
-import { IMaterialEventMeta, IMaterialInternalEventMeta } from "./events/event-meta";
+import { IMaterialEventMeta, IMaterialInternalEventMeta } from "../events/event-meta";
 
 export const MaterialPropsType = {
   String: String as unknown as string,
