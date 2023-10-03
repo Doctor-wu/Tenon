@@ -1,7 +1,12 @@
 import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { shallowRef } from 'vue';
 import { TextProps } from './interface';
-import { TenonComponentLifeCycle, createTenonEvent, useComponentLifeCycle, registerCommonHooks } from '../../..';
+import {
+  TenonComponentLifeCycle,
+  createTenonEvent,
+  useComponentLifeCycle,
+  registerCommonHooks
+} from '../../../index';
 import { RendererHost } from '@tenon/engine';
 import "./Text.scss";
 
@@ -15,10 +20,6 @@ export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
   } = props;
   const root = useRef<HTMLSpanElement>(null);
   const reactiveRootRef = shallowRef<HTMLSpanElement | null>(null);
-  useEffect(() => {
-    reactiveRootRef.value = root.current;
-  });
-  registerCommonHooks(RendererHost.React, __tenon_event_meta__, reactiveRootRef, bridge);
   const clickHandler = useCallback((e) => {
     console.log(__tenon_material_instance__.name, createTenonEvent("onClick"), e);
   }, []);
@@ -29,10 +30,17 @@ export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
       e
     );
   }, []);
-  bridge.register(createTenonEvent("onClick"), clickHandler);
-  bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
+
+  useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.Mount, () => {
+    reactiveRootRef.value = root.current;
+    bridge.register(createTenonEvent("onClick"), clickHandler);
+    bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
+  });
+
+  registerCommonHooks(RendererHost.React, __tenon_event_meta__, reactiveRootRef, bridge);
 
   useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.UnMount, () => {
+    reactiveRootRef.value = null;
     bridge.unRegister(createTenonEvent("onClick"), clickHandler);
     bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
   });
