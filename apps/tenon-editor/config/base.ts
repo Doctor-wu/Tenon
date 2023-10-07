@@ -4,4 +4,5 @@ export class BaseConfig {
   appName: 'tenon-editor';
   mode: BuildMode;
   basePath: string = '';
+  assetDir: string = 'assets';
 }

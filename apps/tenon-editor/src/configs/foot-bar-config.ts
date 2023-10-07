@@ -1,6 +1,6 @@
 import { FootBarAlignment, FootBarConfig } from "@tenon/workbench";
 import { h } from "vue";
-import FullScreen from "vue-material-design-icons/FullScreen.vue";
+import FullScreen from "vue-material-design-icons/Fullscreen.vue";
 
 export enum FootBarName {
   FullScreen = 'FullScreen',
