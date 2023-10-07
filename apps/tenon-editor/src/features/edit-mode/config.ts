@@ -1,6 +1,6 @@
 import { IToolBarSwitchConfig } from "@tenon/workbench";
-import EyeOutLine from "vue-material-design-icons/EyeOutLine.vue";
-import PencilOutLine from "vue-material-design-icons/PencilOutLine.vue";
+import EyeOutLine from "vue-material-design-icons/EyeOutline.vue";
+import PencilOutLine from "vue-material-design-icons/PencilOutline.vue";
 import { h } from "vue";
 import { ModeType } from "./notification";
 
