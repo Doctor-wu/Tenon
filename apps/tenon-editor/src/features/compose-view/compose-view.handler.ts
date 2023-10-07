@@ -20,7 +20,6 @@ import {
 } from "./compose-view.interface";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { IUndoRedoFeature } from "../undo-redo";
-import { Logger } from "@/utils/logger";
 
 @Feature({
   name: IComposeViewFeature,
