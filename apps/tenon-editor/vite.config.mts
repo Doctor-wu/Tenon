@@ -28,6 +28,7 @@ export default defineConfig({
   ],
   build: {
     sourcemap: true,
+    assetsDir: config.assetDir,
   },
   resolve: {
     alias: {
