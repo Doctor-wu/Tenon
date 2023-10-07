@@ -30,7 +30,6 @@ import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree"
 import { RendererManager } from "@/core/renderer";
 import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
 import type { IMaterialFeature } from "../material.interface";
-import { Logger } from "@/utils/logger";
 import MaterialCard from "./material-card.vue";
 
 const props = defineProps<{
