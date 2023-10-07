@@ -1,6 +1,6 @@
 import { h } from "vue";
-import FullScreen from "vue-material-design-icons/FullScreen.vue";
-import ExitFullScreen from "vue-material-design-icons/FullScreenExit.vue";
+import FullScreen from "vue-material-design-icons/Fullscreen.vue";
+import ExitFullScreen from "vue-material-design-icons/FullscreenExit.vue";
 import { IFootBarItem } from "@tenon/workbench";
 
 
