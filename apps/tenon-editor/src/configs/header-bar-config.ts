@@ -56,6 +56,28 @@ export const headerBarConfig: HeaderBarConfig = {
       render: () => h(TitlePlaceholder),
     },
     {
+      name: 'repo-star-bandage',
+      type: HeaderBarType.Operator,
+      render: () => h('img', {
+        src: 'https://img.shields.io/github/stars/Doctor-wu/Tenon?logo=github&color=3e6ff5',
+        style: {
+          verticalAlign: 'middle',
+        }
+      }),
+    },
+    {
+      name: 'repo-fork-bandage',
+      type: HeaderBarType.Operator,
+      render: () => h('img', {
+        src: 'https://img.shields.io/github/forks/Doctor-wu/Tenon?logo=github&color=11bb88',
+        style: {
+          verticalAlign: 'middle',
+        }
+      }),
+    },
+    createDividerItem(HeaderBarType.Info),
+    createDividerItem(HeaderBarType.Operator),
+    {
       name: HeaderBarName.GithubIcon,
       type: HeaderBarType.Operator,
       popupText: 'Github',
