@@ -4,7 +4,8 @@
   "description": "personal lowCode platform",
   "scripts": {
     "legacy:dev:mix": "ts-node scripts/legacy-dev-mix.ts",
-    "legacy:build": "node -r ts-node/register --max-old-space-size=4096 scripts/legacy-build.ts"
+    "legacy:build": "node -r ts-node/register --max-old-space-size=4096 scripts/legacy-build.ts",
+    "modern:build": "ts-node scripts/modern-build.ts"
   },
   "keywords": [
     "lowCode",
