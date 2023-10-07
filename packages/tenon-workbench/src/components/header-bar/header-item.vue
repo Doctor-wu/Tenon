@@ -123,7 +123,7 @@ const getPopUpText = (config: IHeaderBarOperatorItem) => {
 </script>
 <style lang="scss" scoped>
 .t-button--variant-text {
-  padding: 0;
+  padding: 16px;
   height: 30px;
   width: 30px;
   cursor: unset;

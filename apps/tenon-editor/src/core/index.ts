@@ -1,5 +1,5 @@
 export * from "./context";
-export * from "./store";
+export * from "../store/store";
 export * from "./model";
 export * from "./renderer";
 export * from "./event-center";

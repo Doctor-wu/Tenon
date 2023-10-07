@@ -12,4 +12,5 @@ export const FeatureName = {
   RuntimeComponentTree: "runtime-component-tree",
   UndoRedo: "undo-redo",
   EditorRenderType: "editor-render-type",
+  GithubHref: "github-href",
 };

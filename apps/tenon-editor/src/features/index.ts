@@ -4,6 +4,7 @@ import { ComposeViewController, IComposeViewFeature } from './compose-view';
 import { EditModeController, IEditModeFeature } from './edit-mode';
 import { EditorRenderTypeController } from './editor-render-type';
 import { FullScreenController, IFullScreenFeature } from './fullscreen';
+import { GithubHrefController, IGithubHrefFeature } from './github-href';
 import { IMaterialFeature, MaterialController } from './material';
 import { IMaterialDragFeature, MaterialDragController } from './material-drag';
 import { IRuntimeComponentTreeFeature, RuntimeComponentTreeController } from './runtime-component-tree';
@@ -24,6 +25,7 @@ export const dynamicTags = [
   IComposeViewFeature,
   IRuntimeComponentTreeFeature,
   IUndoRedoFeature,
+  IGithubHrefFeature,
 ]
 
 export const controllers = [
@@ -37,4 +39,5 @@ export const controllers = [
   RuntimeComponentTreeController,
   UndoRedoController,
   EditorRenderTypeController,
+  GithubHrefController,
 ];

@@ -4,11 +4,10 @@ import {
   Inject,
   Service,
 } from "@tenon/workbench";
-import { IContext, IDataEngine, IRendererManager, IStore } from "./interface";
+import { IContext, IDataEngine, IRendererManager } from "./interface";
 import { NotificationManager } from "./notification-manager";
 import { type RendererManager } from "./renderer";
 import { type TenonDataEngine } from "./model";
-import type { TenonEditorStore } from "./store";
 import { ModelImpl, ModelHost } from "@tenon/engine";
 
 @Service({
@@ -19,7 +18,6 @@ export class TenonEditorContext extends NotificationManager {
     @Inject(EventEmitterService) public eventEmitter: EventEmitterCore,
     @Inject(IDataEngine) public dataEngine: TenonDataEngine<ModelImpl[ModelHost]>,
     @Inject(IRendererManager) public rendererManager: RendererManager,
-    @Inject(IStore) public store: TenonEditorStore,
   ) {
     super(eventEmitter);
   }
