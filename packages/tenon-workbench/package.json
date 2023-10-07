@@ -4,7 +4,8 @@
   "main": "lib/tenon-workbench.umd.js",
   "module": "lib/tenon-workbench.es.js",
   "scripts": {
-    "build": "ts-node scripts/build.ts && tsc"
+    "build": "ts-node scripts/build.ts",
+    "tsc": "tsc"
   },
   "author": "Doctor wu",
   "license": "MIT",
