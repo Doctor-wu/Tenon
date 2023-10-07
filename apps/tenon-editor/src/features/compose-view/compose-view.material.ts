@@ -8,12 +8,13 @@ import { IComposeViewFeature } from "./compose-view.interface";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { Logger } from "@/utils/logger";
 import type { RendererManager } from "@/core/renderer";
-import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
+import { IRenderer, ModelImpl, ModelHost, RendererHost, RenderResultType } from "@tenon/engine";
 import { createElement } from "react";
 import { ComposeViewReact } from "./components/compose-view.react";
 
 const TenonComposeViewInfo = {
   name: 'ComposeView',
+  formatName: '组合视图',
   icon: 'app',
   description: '[原子组件] 提供组合视图的能力',
   props: {
@@ -43,12 +44,13 @@ export class TenonComposeView
   extends BaseMaterial<RendererHost.Vue | RendererHost.React>
   implements IRenderer<ModelHost, RendererHost.Vue | RendererHost.React> {
   public name = TenonComposeViewInfo.name;
+  public formatName = TenonComposeViewInfo.formatName;
   public icon = TenonComposeViewInfo.icon;
   public description = TenonComposeViewInfo.description;
   public propMeta = TenonComposeViewInfo.props;
   public nestable = true;
   public eventMeta = [...internalMeta, ...TenonComposeViewInfo.eventMeta];
-  public supportRenderHost = [RendererHost.Vue, RendererHost.React];
+  public supportRenderHost = [RendererHost.React, RendererHost.Vue];
 
   private composeViewHandler: IComposeViewFeature;
   private rendererManager: RendererManager;
@@ -66,12 +68,12 @@ export class TenonComposeView
     }
   }
 
-  public render(
-    type: RendererHost,
+  public render<R extends RendererHost.Vue | RendererHost.React>(
+    type: R,
     model: ModelImpl[ModelHost.Tree],
     props: {
       [K in keyof TenonComposeView["propMeta"]]: TenonComposeView["propMeta"][K]["type"];
-    }) {
+    }): RenderResultType[R] {
     const { children } = model;
     const setProps = {
       key: model.id,
@@ -82,19 +84,29 @@ export class TenonComposeView
       composeViewHandler: this.composeViewHandler,
       isEmpty: children.length === 0,
     };
-    switch (type) {
-      case RendererHost.React:
-        return createElement(ComposeViewReact, setProps, children.map((child) => {
-          const renderer = this.rendererManager.getRenderer(child.name);
-          return renderer.render(type, child, { key: child.id });
-        }));
-      case RendererHost.Vue:
-        return h(composeViewVue, setProps, () => {
-          return children.map((child) => {
+    const renderResult = (() => {
+      switch (type) {
+        case RendererHost.React:
+          return createElement(ComposeViewReact, setProps, children.map((child) => {
             const renderer = this.rendererManager.getRenderer(child.name);
             return renderer.render(type, child, { key: child.id });
-          });
-        });
-    }
+          })) as RenderResultType[R];
+        case RendererHost.Vue:
+          return h(composeViewVue, setProps, () => {
+            return children.map((child) => {
+              const renderer = this.rendererManager.getRenderer(child.name);
+              return renderer.render(type, child, { key: child.id });
+            });
+          }) as RenderResultType[R];
+        default:
+          return h(composeViewVue, setProps, () => {
+            return children.map((child) => {
+              const renderer = this.rendererManager.getRenderer(child.name);
+              return renderer.render(type, child, { key: child.id });
+            });
+          }) as RenderResultType[R];
+      }
+    })();
+    return renderResult;
   }
 }

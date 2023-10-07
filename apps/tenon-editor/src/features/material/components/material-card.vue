@@ -1,8 +1,23 @@
 <template>
   <Card class="material-list-item" size="small" :bordered="true">
     <section class="material-list-item__title">
-      <Icon :name="(renderer?.icon as string)" style="margin-right: 4px"></Icon>
-      <span> {{ renderer?.name }}</span>
+      <Icon
+        v-if="typeof renderer.icon === 'string'"
+        :name="(renderer?.icon as string)"
+        style="margin-right: 4px"
+      ></Icon>
+      <component v-else :is="renderer.icon" style="margin-right: 4px"></component>
+      <span> {{ renderer?.formatName }}</span>
+      <section class="material-list-item__support-renderer">
+        <Space size="4px">
+          <Tag
+            v-for="tag in renderer.supportRenderHost"
+            :theme="(rendererTagProps[tag] || rendererTagProps.default).theme"
+            :variant="(rendererTagProps[tag] || rendererTagProps.default).variant"
+            >{{ tag }}</Tag
+          >
+        </Space>
+      </section>
     </section>
     <section class="material-list-item__desc">
       {{ renderer!.description }}
@@ -13,12 +28,31 @@
   </Card>
 </template>
 <script setup lang="ts">
-import { Card, Icon } from "tdesign-vue-next";
+import { Card, Icon, Tag, Space } from "tdesign-vue-next";
 import { RuntimeTreeNode, IRenderer, ModelHost, RendererHost } from "@tenon/engine";
 defineProps<{
   model: RuntimeTreeNode;
   renderer: IRenderer<ModelHost, RendererHost>;
 }>();
+
+const rendererTagProps: {
+  [x: string]: {
+    theme: "default" | "success" | "primary" | "warning" | "danger" | undefined;
+    variant?: "light" | "outline" | "dark" | "light-outline" | undefined;
+  };
+} = {
+  vue: {
+    theme: "success",
+    variant: "light",
+  },
+  react: {
+    theme: "primary",
+    variant: "light",
+  },
+  default: {
+    theme: undefined,
+  },
+};
 </script>
 <style lang="scss" scoped>
 .material-list-item {
@@ -27,11 +61,14 @@ defineProps<{
   flex-direction: column;
   align-items: flex-start;
   margin: 12px;
-  cursor: pointer;
+  cursor: grab;
   border-bottom: 1px solid #e8e8e8;
   transition: all 0.3s ease-in-out;
   &:hover {
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
+  }
+  &:active {
+    cursor: grabbing;
   }
   ::v-deep(.t-card__body) {
     width: 100%;
@@ -51,6 +88,14 @@ defineProps<{
     font-weight: bold;
     font-size: 16px;
     color: #333;
+
+    .material-list-item__support-renderer {
+      overflow: hidden;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex: 1;
+    }
   }
   .material-list-item__desc {
     flex: 1;

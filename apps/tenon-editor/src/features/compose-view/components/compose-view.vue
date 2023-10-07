@@ -16,7 +16,7 @@
     @drop.prevent="(e: any) => composeViewHandler?.bridge.run('onDrop', e)"
     :[DATA_RUNTIME_TREE_ID]="runtimeTree.id"
   >
-    拖入物料以生成组件
+    Vue: 拖入物料以生成组件
   </section>
   <section
     v-else
@@ -24,7 +24,7 @@
     :style="style"
     class="view-container"
     :class="{
-      dragging: materialDrag?.computedDragging,
+      dragging: materialDrag?.computedDragging.value,
     }"
     @dragenter.prevent.self="handleDragEnter"
     @dragover.prevent="() => {}"
@@ -37,11 +37,6 @@
 </template>
 <script setup lang="ts">
 import type { Bridge } from "@tenon/shared";
-import type { IComposeViewFeature } from "../compose-view.interface";
-import type { IMaterialDragFeature } from "@/features/material-drag";
-import type { TenonComposeView } from "../compose-view.material";
-import { DATA_RUNTIME_TREE_ID } from "../compose-view.interface";
-import { CSSProperties, shallowRef } from "vue";
 import {
   createTenonEvent,
   IMaterialEventMeta,
@@ -52,6 +47,11 @@ import {
   registerCommonHooks,
 } from "@tenon/materials";
 import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
+import { CSSProperties, shallowRef } from "vue";
+import type { IComposeViewFeature } from "../compose-view.interface";
+import type { TenonComposeView } from "../compose-view.material";
+import type { IMaterialDragFeature } from "@/features/material-drag";
+import { DATA_RUNTIME_TREE_ID } from "../compose-view.interface";
 
 const props = defineProps<{
   style?: CSSProperties;

@@ -1,19 +1,26 @@
 import {
-  Feature, IDynamicFeature, Inject, Loader, awaitLoad
+  Feature, IDynamicFeature,
+  Loader, awaitLoad, Inject,
 } from "@tenon/workbench";
-import { DATA_RUNTIME_TREE_ID, IComposeViewBridge, IComposeViewFeature } from "./compose-view.interface";
 import { TenonComposeView } from './compose-view.material';
-import { Ref, effect, ref } from "vue";
-import { IContext, TenonEditor, TenonEditorContext } from "@/core";
-import { DragNotification, DragStatusChange } from "../material-drag/notification";
-import { Bridge } from "@tenon/shared";
-import { IAreaIndicatorFeature } from "../area-indicator";
-import { SingleMarkType } from "../area-indicator/area-indicator.interface";
-import { IEditModeFeature } from "../edit-mode";
-import { DragType, IMaterialDragFeature } from "../material-drag";
-import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { ModelImpl, ModelHost } from "@tenon/engine";
+import { Ref, ref } from "vue";
+import { IContext, TenonEditor, TenonEditorContext } from "@/core";
+import { Bridge } from "@tenon/shared";
+import { IAreaIndicatorFeature, SingleMarkType } from "../area-indicator";
+import { IEditModeFeature } from "../edit-mode";
+import {
+  DragType, IMaterialDragFeature,
+  DragNotification, DragStatusChange,
+} from "../material-drag";
+import {
+  DATA_RUNTIME_TREE_ID,
+  IComposeViewBridge,
+  IComposeViewFeature,
+} from "./compose-view.interface";
+import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { IUndoRedoFeature } from "../undo-redo";
+import { Logger } from "@/utils/logger";
 
 @Feature({
   name: IComposeViewFeature,
@@ -96,7 +103,7 @@ export class ComposeViewHandler implements IComposeViewFeature {
   @awaitLoad(IMaterialDragFeature, IRuntimeComponentTreeFeature, IUndoRedoFeature)
   private async handleDrop(e: DragEvent) {
     this.clearDragDisposer();
-    // e.stopPropagation();
+    e.stopPropagation();
     const runtimeTreeId = (e.target as HTMLElement).getAttribute(DATA_RUNTIME_TREE_ID);
     if (!runtimeTreeId) return;
     const runtimeTree = this.runtimeComponentTree.getRuntimeTreeById(Number(runtimeTreeId));

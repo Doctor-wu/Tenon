@@ -5,15 +5,16 @@ import {
   useComponentLifeCycle, TenonComponentLifeCycle,
 } from "@tenon/materials";
 import { Bridge } from "@tenon/shared";
+import { IMaterialDragFeature } from "@/features/material-drag";
+import { shallowRef } from "vue";
 import React, { FC, useCallback, useEffect, useRef } from "react";
 import { DATA_RUNTIME_TREE_ID, IComposeViewFeature } from "../compose-view.interface";
 import { TenonComposeView } from "../compose-view.material";
-import { IMaterialDragFeature } from "@/features/material-drag";
 import "../style/compose-view.scss";
-import { shallowRef } from "vue";
 
 export const ComposeViewReact: FC<{
   style?: React.CSSProperties;
+  key?: number;
   isEmpty: boolean;
   composeViewHandler: IComposeViewFeature;
   bridge: Bridge<Record<TenonEvent<string>, any>>;
@@ -55,16 +56,40 @@ export const ComposeViewReact: FC<{
       e
     );
   }, []);
-  props.bridge.register(createTenonEvent("onClick"), clickHandler);
-  props.bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
+  bridge.register(createTenonEvent("onClick"), clickHandler);
+  bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
 
   useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.UnMount, () => {
-    props.bridge.unRegister(createTenonEvent("onClick"), clickHandler);
-    props.bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
+    bridge.unRegister(createTenonEvent("onClick"), clickHandler);
+    bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
   });
 
   const handleDragEnter = useCallback((e) => {
     composeViewHandler?.bridge.run("onDragEnter", e);
+  }, []);
+
+  const onDragEnterHandler = useCallback((e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.persist();
+    if (e.target !== rootRef.current) return;
+    handleDragEnter(e);
+  }, []);
+
+  const onDragOverHandler = useCallback((e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+  }, []);
+
+  const onDragLeaveHandler = useCallback((e: React.DragEvent<HTMLElement>) => {
+    if (e.target !== rootRef.current) return;
+    composeViewHandler?.bridge.run('onDragLeave', e.nativeEvent)
+  }, []);
+
+  const onDropHandler = useCallback((e: React.DragEvent<HTMLElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    e.persist();
+    composeViewHandler?.bridge.run('onDrop', e.nativeEvent)
   }, []);
 
   return (
@@ -78,31 +103,15 @@ export const ComposeViewReact: FC<{
               (composeViewHandler?.hoveringRuntimeTreeId as unknown as string) ===
               rootRef.current?.getAttribute(DATA_RUNTIME_TREE_ID) ? "dragging" : "",
             "empty-view-container",
-          ].join(" ")
+          ].join(" ").trim()
         }
-        onDragEnter={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          e.persist();
-          if (e.target !== rootRef.current) return;
-          handleDragEnter(e);
-        }}
-        onDragOver={(e) => {
-          e.preventDefault();
-        }}
-        onDragLeave={(e) => {
-          if (e.target !== rootRef.current) return;
-          composeViewHandler?.bridge.run('onDragLeave', e.nativeEvent)
-        }}
-        onDrop={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          e.persist();
-          composeViewHandler?.bridge.run('onDrop', e.nativeEvent)
-        }}
+        onDragEnter={onDragEnterHandler}
+        onDragOver={onDragOverHandler}
+        onDragLeave={onDragLeaveHandler}
+        onDrop={onDropHandler}
         data-runtime-tree-id={runtimeTree.id}
       >
-        拖入物料以生成组件
+        React: 拖入物料以生成组件
       </section >
       : <section
         ref={rootRef}
@@ -111,28 +120,12 @@ export const ComposeViewReact: FC<{
           [
             materialDrag.current?.computedDragging ? "dragging" : "",
             "view-container",
-          ].join(" ")
+          ].join(" ").trim()
         }
-        onDragEnter={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          e.persist();
-          if (e.target !== rootRef.current) return;
-          handleDragEnter(e);
-        }}
-        onDragOver={(e) => {
-          e.preventDefault();
-        }}
-        onDragLeave={(e) => {
-          if (e.target !== rootRef.current) return;
-          composeViewHandler?.bridge.run('onDragLeave', e.nativeEvent)
-        }}
-        onDrop={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          e.persist();
-          composeViewHandler?.bridge.run('onDrop', e.nativeEvent)
-        }}
+        onDragEnter={onDragEnterHandler}
+        onDragOver={onDragOverHandler}
+        onDragLeave={onDragLeaveHandler}
+        onDrop={onDropHandler}
         data-runtime-tree-id={runtimeTree.id}
       >
         {children}

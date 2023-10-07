@@ -59,7 +59,7 @@ const rootRefs: {
 onMounted(() => {
   effect(() => {
     Promise.all(
-      // @TODO(Doctorwu) 这里有潜在的性能问题, 只要 props.materials 发生变化, 每次都会重新构建所有的树
+      // @TODO(Doctorwu) 这里有潜在的性能问题, 只要 props.renderers 发生变化, 每次都会重新构建所有的树
       Object.keys(props.renderers).map(
         async (m) => await props.runtimeComponentTree.buildRuntimeTree(m)
       )
@@ -89,7 +89,6 @@ onUnmounted(() => {
   rootRefs.forEach((item) => {
     item.disposer?.();
   });
-  // rootRefs.length = 0;
   materials.value.forEach((m) => {
     m.model.destroy();
   });

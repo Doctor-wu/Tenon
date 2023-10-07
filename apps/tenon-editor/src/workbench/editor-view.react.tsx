@@ -1,9 +1,8 @@
-import { ModelChange, ModelChangeNotification, TenonEditor } from "@/core";
 import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
+import { ModelChange, ModelChangeNotification, TenonEditor } from "@/core";
+import { Logger } from "@/utils/logger";
 import React, { FC, useEffect, useRef, useState } from "react";
 import "./style/editor-style.scss";
-import { Logger } from "@/utils/logger";
-import { TenonComponentLifeCycle, useComponentLifeCycle } from "@tenon/materials";
 
 export const EditorViewReact: FC<{
   editor: TenonEditor;
@@ -12,13 +11,13 @@ export const EditorViewReact: FC<{
   const [runtimeTree, setRuntimeTree] = useState<ModelImpl[ModelHost] | null>(
     props.editor.context.dataEngine.root
   );
-  const [, setRenderTick] = useState(0);
+  const [, setRenderTick] = useState(false);
 
   useEffect(() => {
     const cancel = props.editor.context.on(
       ModelChange,
       async (noti: ModelChangeNotification<ModelImpl[ModelHost]>) => {
-        setRenderTick(Date.now());
+        setRenderTick((tick) => !tick);
         if (noti.payload.id === runtimeTree?.id) {
           return;
         }
@@ -29,6 +28,7 @@ export const EditorViewReact: FC<{
         setRuntimeTree(noti.payload);
       }
     );
+    return cancel;
   }, [runtimeTree]);
   return (
     <section className="editor-view-wrapper">

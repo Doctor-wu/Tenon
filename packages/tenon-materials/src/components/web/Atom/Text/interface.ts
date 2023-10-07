@@ -1,6 +1,6 @@
 import { Bridge } from "@tenon/shared";
 import { CSSProperties } from "vue";
-import { TenonEventPrefix, IMaterialEventMeta, IMaterialInternalEventMeta } from "../../../events";
+import { TenonEventPrefix, IMaterialEventMeta, IMaterialInternalEventMeta } from "../../../../events";
 import { TenonText } from "./Text";
 
 export interface TextProps<CSSType extends CSSProperties | React.CSSProperties = CSSProperties> {
