@@ -11,6 +11,7 @@ import {
 import { editorRenderType } from "./reactive";
 import { EditorRenderType } from "./editor-render-type.interface";
 import { renderTypeConfigMap } from "./config";
+import { Logger } from "@/utils";
 
 @Controller({
   name: Symbol('editor-render-type-controller')
@@ -22,7 +23,7 @@ export class EditorRenderTypeController {
   handleSwitchRenderType(
     @InjectActionInfoService() actionInfo: ActionInfo<ToolBarName.RenderInReact | ToolBarName.RenderInVue>,
   ) {
-    console.log('handleSwitchRenderType', actionInfo, this);
+    Logger.log('handleSwitchRenderType', actionInfo, this);
     switch (actionInfo.name) {
       case ToolBarName.RenderInReact:
         if (editorRenderType.value === EditorRenderType.React) return;
