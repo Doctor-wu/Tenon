@@ -1,19 +1,14 @@
 # Tenon / 榫卯
 
-Tenon is a modern low-code editor for **Cross-Frameworks**, **Cross-Platforms** (will be support in the future).
+Tenon is a modern low-code editor for cross-frameworks and cross-platforms (which will be supported in the future).
 
-Tenon extract the logic outside the core editor to ```@tenon/workbench``` , and data model to ```@tenon/engine```, so you can use it to build different data-structure based editor, and multi-renderer based material to ```@tenon/materials```, so you can use it to render in different frameworks.
+Tenon extracts the logic outside the core editor to @tenon/workbench and the data model to @tenon/engine. This allows you to use it to build different data-structure-based editors and multi-renderer-based materials to @tenon/materials. Thus, you can use it to render in different frameworks.
 
-You can experience the modern editor by **```pnpm run dev```** in ```apps/tenon-editor``` which is developing.
+To experience the modern editor, you can run `pnpm run dev` in `apps/tenon-editor`, where it is currently being developed.
 
-Tenon has a long way to go, and it's still in the early stages of development. If you are interested in this project, please join us.
+Tenon still has a long way to go and is still in the early stages of development. If you are interested in this project, please join us.
 
-> Tenon has a legacy version, which is only support VueJS and has an ugly design. 
-> But it's still available, you can try it by 
-**```pnpm run legacy:dev:mix```**. 
-> required local environment: ```pnpm```, ```mongodb```, ```nodejs``` 
-> sorry for without Docker support, as I mentioned, it is a legacy version and has an ugly design :(
+> There is also a legacy version of Tenon, which only supports VueJS and has an outdated design. However, it is still available for use. You can try it by running `pnpm run legacy:dev:mix`. Please note that the legacy version requires a local environment with pnpm, MongoDB, and Node.js. Unfortunately, Docker support is not available for the legacy version, as mentioned earlier. Apologies for the inconvenience caused by the outdated design :(.
 
 contact me: [email](mailto wuzhouchun@qq.com)
 contact me: [email](mailto wuzhouchun23@gmail.com)
-
