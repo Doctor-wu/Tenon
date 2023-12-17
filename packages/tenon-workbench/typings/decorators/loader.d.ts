@@ -1,6 +1,6 @@
 import { FeatureTag } from "./feature";
 export declare const LoaderTag: unique symbol;
-export declare type IDynamicFeature<T> = {
+export type IDynamicFeature<T> = {
     getInstance: () => Promise<T>;
     instance?: T;
 };

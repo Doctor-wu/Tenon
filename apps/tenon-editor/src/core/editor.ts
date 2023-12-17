@@ -12,6 +12,7 @@ import { TenonEditorContext } from "./context";
 import { plugins } from "../workbench/plugins";
 import { PerformanceMetricsName, TenonPerformanceMeasure } from '../performance/measure';
 import { Logger } from "@/utils/logger";
+import { TenonStore } from ".";
 
 export class TenonEditor {
   @Loader(ITenonEditorLifeCycle)
@@ -26,6 +27,7 @@ export class TenonEditor {
   config: BaseConfig = window.AppConfig;
   root: HTMLElement;
   context: TenonEditorContext;
+  store = TenonStore.getInstance();
 
   constructor() {
     this.setupAdaptor();

@@ -6,8 +6,8 @@ export declare enum InternalUIService {
     FootBar = "FootBar",
     Drawer = "Drawer"
 }
-export declare type CustomActionFrom = string;
-export declare type ActionFrom = InternalUIService | CustomActionFrom;
+export type CustomActionFrom = string;
+export type ActionFrom = InternalUIService | CustomActionFrom;
 export interface ActionInfo<Name = string, Action = ActionType, From = ActionFrom> {
     name: Name;
     action: Action;

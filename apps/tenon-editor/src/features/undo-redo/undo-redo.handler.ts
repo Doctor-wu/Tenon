@@ -3,10 +3,10 @@ import {
 } from "@tenon/workbench";
 import { IUndoRedoFeature } from "./undo-redo.interface";
 import { BaseMutation } from "@tenon/engine";
-import { canRedo, canUndo } from "./reactive";
-import { IContext, ModelChangeNotification, TenonEditorContext } from "@/core";
+import { IContext, TenonEditorContext, getStoreValue, setStoreValue } from "@/core";
 import { InvokeMutationNotification, InvokeMutations } from "@/core/notifications/mutation-notification";
 import { UndoRedoNotification, UndoRedoType } from "./notification";
+import { StoreKey } from "@/store";
 
 @Feature({
   name: IUndoRedoFeature,
@@ -24,7 +24,7 @@ export class UndoRedoHandler implements IUndoRedoFeature {
   }
 
   public undo() {
-    if (!canUndo.value) return;
+    if (!this.canUndo) return;
     const mutations = this.undoStack.pop()!;
     this.context.dataEngine.invokeInUndoRedo(...mutations);
     // 逆序 push 到 redoStack
@@ -34,7 +34,7 @@ export class UndoRedoHandler implements IUndoRedoFeature {
   }
 
   public redo() {
-    if (!canRedo.value) return;
+    if (!this.canRedo) return;
     const mutations = this.redoStack.pop()!;
     this.context.dataEngine.invokeInUndoRedo(...mutations);
     // 逆序 push 到 undoStack
@@ -53,8 +53,8 @@ export class UndoRedoHandler implements IUndoRedoFeature {
     this.clearUndo();
     this.clearRedo();
     this.updateState();
-    canUndo.value = false;
-    canRedo.value = false;
+    this.canUndo = false;
+    this.canRedo = false;
   }
   private clearUndo() {
     this.undoStack.forEach(ms => ms.forEach(m => m.dispose()));
@@ -67,13 +67,29 @@ export class UndoRedoHandler implements IUndoRedoFeature {
   }
 
   private updateState() {
-    canUndo.value = this.undoStack.length > 0;
-    canRedo.value = this.redoStack.length > 0;
+    this.canUndo = this.undoStack.length > 0;
+    this.canRedo = this.redoStack.length > 0;
   }
 
   private notify(mutations: BaseMutation[], type: UndoRedoType) {
     this.context.fire(
       new UndoRedoNotification(type, mutations),
     );
+  }
+
+  private get canUndo() {
+    return getStoreValue(StoreKey.CanUndo).value;
+  }
+
+  private get canRedo() {
+    return getStoreValue(StoreKey.CanRedo).value;
+  }
+
+  private set canUndo(value: boolean) {
+    setStoreValue(StoreKey.CanUndo, value);
+  }
+
+  private set canRedo(value: boolean) {
+    setStoreValue(StoreKey.CanRedo, value);
   }
 }

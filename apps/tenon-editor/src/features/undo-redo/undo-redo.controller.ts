@@ -6,8 +6,9 @@ import {
   Controller, IDynamicFeature, InjectActionInfoService,
   Loader, ToolBarController, ToolBarControllerResult, awaitLoad,
 } from "@tenon/workbench";
-import { canUndo, canRedo } from "./reactive";
 import { IUndoRedoFeature } from "./undo-redo.interface";
+import { getStoreValue } from "@/core";
+import { StoreKey } from "@/store";
 
 @Controller({
   name: Symbol('undo-redo-controller')
@@ -21,17 +22,17 @@ export class UndoRedoController {
     return this.undoRedoLoader.instance!;
   }
 
-  @ToolBarController(ToolBarName.Undo, [canUndo])
+  @ToolBarController(ToolBarName.Undo, [getStoreValue(StoreKey.CanUndo)])
   async canUndo(): Promise<ToolBarControllerResult> {
     return {
-      disabled: !canUndo.value,
+      disabled: !getStoreValue(StoreKey.CanUndo).value,
     }
   }
 
-  @ToolBarController(ToolBarName.Redo, [canRedo])
+  @ToolBarController(ToolBarName.Redo, [getStoreValue(StoreKey.CanRedo)])
   async canRedo(): Promise<ToolBarControllerResult> {
     return {
-      disabled: !canRedo.value,
+      disabled: !getStoreValue(StoreKey.CanRedo).value,
     }
   }
 

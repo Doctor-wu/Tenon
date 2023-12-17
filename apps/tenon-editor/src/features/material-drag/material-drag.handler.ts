@@ -5,9 +5,9 @@ import { DragType, IDragPayload, IMaterialDragFeature } from "./material-drag.in
 import { IContext, TenonEditorContext } from "@/core";
 import { DragNotification, DragStatusChange } from "./notification";
 import { effect, ref } from "vue";
-import { ModeType } from "../edit-mode/notification";
 import { IEditModeFeature } from "../edit-mode";
 import { Logger } from "@/utils/logger";
+import { EditModeType } from "../edit-mode/edit-mode.interface";
 
 @Feature({
   name: IMaterialDragFeature,
@@ -38,7 +38,7 @@ export class MaterialDragHandler implements IMaterialDragFeature {
     const abort = new AbortController();
     el.draggable = true;
     el.addEventListener('dragstart', (e) => {
-      if (this.editMode.mode.value !== ModeType.Edit) return e.preventDefault();
+      if (this.editMode.mode !== EditModeType.Edit) return e.preventDefault();
       e.stopPropagation();
       e.dataTransfer!.effectAllowed = 'move';
       e.dataTransfer!.dropEffect = 'move';
@@ -89,7 +89,7 @@ export class MaterialDragHandler implements IMaterialDragFeature {
     });
     effect(() => {
       const value = this.dragging.value
-        && this.editMode.mode.value === ModeType.Edit;
+        && this.editMode.mode === EditModeType.Edit;
       this.computedDragging.value = value;
     });
   }

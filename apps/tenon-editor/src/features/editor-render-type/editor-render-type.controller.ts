@@ -8,7 +8,7 @@ import {
   ToolBarController,
   ToolBarControllerResult,
 } from "@tenon/workbench";
-import { editorRenderType } from "./reactive";
+import { StoreKey, getStoreValue, setStoreValue } from "@/store";
 import { EditorRenderType } from "./editor-render-type.interface";
 import { renderTypeConfigMap } from "./config";
 
@@ -22,21 +22,23 @@ export class EditorRenderTypeController {
   handleSwitchRenderType(
     @InjectActionInfoService() actionInfo: ActionInfo<ToolBarName.RenderInReact | ToolBarName.RenderInVue>,
   ) {
+    const currentRenderType = getStoreValue(StoreKey.EditorRenderType).value;
     console.log('handleSwitchRenderType', actionInfo, this);
     switch (actionInfo.name) {
       case ToolBarName.RenderInReact:
-        if (editorRenderType.value === EditorRenderType.React) return;
-        editorRenderType.value = EditorRenderType.React;
+        if (currentRenderType === EditorRenderType.React) return;
+        setStoreValue(StoreKey.EditorRenderType, EditorRenderType.React);
         break;
       case ToolBarName.RenderInVue:
-        if (editorRenderType.value === EditorRenderType.Vue) return;
-        editorRenderType.value = EditorRenderType.Vue;
+        if (currentRenderType === EditorRenderType.Vue) return;
+        setStoreValue(StoreKey.EditorRenderType, EditorRenderType.Vue);
         break;
     }
   }
 
-  @ToolBarController(ToolBarName.RenderType, [editorRenderType])
+  @ToolBarController(ToolBarName.RenderType, [getStoreValue(StoreKey.EditorRenderType)])
   async getModeConfig(): Promise<ToolBarControllerResult> {
-    return renderTypeConfigMap.get(editorRenderType.value)!;
+    const currentRenderType = getStoreValue(StoreKey.EditorRenderType).value;
+    return renderTypeConfigMap.get(currentRenderType)!;
   }
 }

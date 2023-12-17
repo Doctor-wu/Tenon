@@ -14,7 +14,7 @@ export interface IFootBarItem {
     disabled?: boolean;
     render?: () => VNode;
 }
-export declare type FootBarItemType = IFootBarItem;
-export declare type FootBarConfig = {
+export type FootBarItemType = IFootBarItem;
+export type FootBarConfig = {
     config: FootBarItemType[];
 };

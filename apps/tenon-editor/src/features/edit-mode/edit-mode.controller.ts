@@ -13,13 +13,13 @@ import {
   ToolBarControllerResult,
   awaitLoad,
 } from "@tenon/workbench";
-import { IEditModeFeature } from "./edit-mode.interface";
+import { IEditModeFeature, EditModeType } from "./edit-mode.interface";
 import { ToolBarName } from "@/configs/tool-bar-config";
 import { configModeMap } from "./config";
 import { MessagePlugin } from "tdesign-vue-next";
 import { sleep } from "@tenon/shared";
-import { ModeType } from "./notification";
-import { EditorMode } from "./reactive";
+import { getStoreValue } from "@/core";
+import { StoreKey } from "@/store";
 
 @Controller({
   name: Symbol("edit-mode-controller"),
@@ -38,9 +38,9 @@ export class EditModeController {
   @ActionController(ToolBarName.EditMode, ActionType.onClick)
   @awaitLoad(IEditModeFeature)
   async handleModeSwitch(
-    @InjectActionInfoService() actionInfo: ActionInfo<ModeType>
+    @InjectActionInfoService() actionInfo: ActionInfo<EditModeType>
   ) {
-    if (actionInfo.name === this.editModeFeature!.mode.value) return;
+    if (actionInfo.name === this.editModeFeature!.mode) return;
     this.barService.setToolBarItemLoading(ToolBarName.Mode, true);
     await sleep(500); // process business
     this.editModeFeature!.switchMode(actionInfo.name);
@@ -51,9 +51,9 @@ export class EditModeController {
     );
   }
 
-  @ToolBarController(ToolBarName.Mode, [EditorMode])
+  @ToolBarController(ToolBarName.Mode, [getStoreValue(StoreKey.EditMode)])
   @awaitLoad(IEditModeFeature)
   async getModeConfig(): Promise<ToolBarControllerResult> {
-    return configModeMap.get(EditorMode.value)!;
+    return configModeMap.get(getStoreValue(StoreKey.EditMode).value)!;
   }
 }

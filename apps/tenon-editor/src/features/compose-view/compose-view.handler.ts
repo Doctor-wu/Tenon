@@ -20,6 +20,7 @@ import {
 } from "./compose-view.interface";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
 import { IUndoRedoFeature } from "../undo-redo";
+import { MessagePlugin } from "tdesign-vue-next";
 
 @Feature({
   name: IComposeViewFeature,
@@ -113,7 +114,11 @@ export class ComposeViewHandler implements IComposeViewFeature {
     if (dragType === DragType.Material) {
       await this.runtimeComponentTree.insert(runtimeTree, payload as string);
     } else if (dragType === DragType.Component) {
-      this.runtimeComponentTree.move(runtimeTree, payload as ModelImpl[ModelHost.Tree]);
+      try {
+        this.runtimeComponentTree.move(runtimeTree, payload as ModelImpl[ModelHost.Tree]);
+      } catch (e: any) {
+        MessagePlugin.error(e.message);
+      }
     }
   }
 

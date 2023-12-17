@@ -75,7 +75,6 @@ export const headerBarConfig: HeaderBarConfig = {
         }
       }),
     },
-    createDividerItem(HeaderBarType.Info),
     createDividerItem(HeaderBarType.Operator),
     {
       name: HeaderBarName.GithubIcon,

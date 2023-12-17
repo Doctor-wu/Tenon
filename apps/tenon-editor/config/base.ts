@@ -5,4 +5,16 @@ export class BaseConfig {
   mode: BuildMode;
   basePath: string = '';
   assetDir: string = 'assets';
+
+  get isDev() {
+    return this.mode === 'dev';
+  }
+
+  get isProd() {
+    return this.mode === 'prod';
+  }
+
+  get isLocal() {
+    return this.mode === 'local';
+  }
 }

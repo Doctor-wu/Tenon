@@ -35,8 +35,8 @@ export interface IToolBarDropDownConfig extends IToolBarBaseConfig<ToolBarFlag.D
     dropDownRender?: () => VNode;
     dropDownWidth?: string;
 }
-export declare type ToolBarItemType = IToolBarButtonConfig | IToolBarSwitchConfig | IToolBarDropDownConfig;
-export declare type ToolBarConfig = {
+export type ToolBarItemType = IToolBarButtonConfig | IToolBarSwitchConfig | IToolBarDropDownConfig;
+export type ToolBarConfig = {
     config: ToolBarItemType[][];
     alignment: 'left' | 'center' | 'right';
 };

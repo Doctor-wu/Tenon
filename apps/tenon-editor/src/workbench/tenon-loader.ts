@@ -11,7 +11,9 @@ import EditorView from "./editor-view.vue";
 import { EditorViewReact } from "./editor-view.react";
 import { createElement } from "react";
 import { Logger } from "@/utils/logger";
-import { editorRenderType, EditorRenderType } from "@/features/editor-render-type";
+import { TenonStore, getStoreValue } from "@/core";
+import { StoreKey } from "@/store";
+import { EditorRenderType } from "@/features/editor-render-type";
 
 @WorkbenchSettings({
   dynamicTags: dynamicTags,
@@ -23,7 +25,8 @@ import { editorRenderType, EditorRenderType } from "@/features/editor-render-typ
 })
 export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAdapter {
   public root: HTMLElement;
-  public editorVM?: App<Element>;
+  public vueApp?: App<Element>;
+  private currentRenderType?: EditorRenderType;
 
   constructor(
     public editor: TenonEditor,
@@ -37,7 +40,7 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
   }
 
   attachEditor(dom: HTMLElement): void {
-    watch(editorRenderType, (type: EditorRenderType) => {
+    watch(getStoreValue(StoreKey.EditorRenderType), (type: EditorRenderType) => {
       if (type === EditorRenderType.React) {
         this.renderInReact(dom);
       } else {
@@ -50,19 +53,24 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
   }
 
   renderInReact(dom: HTMLElement): void {
-    this.editorVM?.unmount();
-    Logger.log('unmount vue', dom);
+    if (this.currentRenderType === EditorRenderType.Vue) {
+      this.vueApp?.unmount();
+      this.vueApp = undefined;
+      Logger.log('unmount vue', dom);
+    }
     ReactDom.render(createElement(EditorViewReact, {
       editor: this.editor,
     }), dom);
   }
 
   renderInVue(dom: HTMLElement): void {
-    ReactDom.unmountComponentAtNode(dom);
-    Logger.log('unmount react', dom);
-    this.editorVM = createApp(EditorView, {
+    if (this.currentRenderType === EditorRenderType.React) {
+      ReactDom.unmountComponentAtNode(dom);
+      Logger.log('unmount react', dom);
+    }
+    this.vueApp = createApp(EditorView, {
       editor: this.editor,
     });
-    this.editorVM.mount(dom);
+    this.vueApp.mount(dom);
   }
 }

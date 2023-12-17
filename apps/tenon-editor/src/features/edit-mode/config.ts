@@ -2,7 +2,7 @@ import { IToolBarSwitchConfig } from "@tenon/workbench";
 import EyeOutLine from "vue-material-design-icons/EyeOutline.vue";
 import PencilOutLine from "vue-material-design-icons/PencilOutline.vue";
 import { h } from "vue";
-import { ModeType } from "./notification";
+import { EditModeType } from "./edit-mode.interface";
 
 export const previewModeConfig: Partial<IToolBarSwitchConfig> = {
   text: '预览模式',
@@ -22,7 +22,7 @@ export const editModeConfig: Partial<IToolBarSwitchConfig> = {
   },
 };
 
-export const configModeMap: Map<ModeType, Partial<IToolBarSwitchConfig>> = new Map([
-  [ModeType.Edit, editModeConfig],
-  [ModeType.Preview, previewModeConfig],
+export const configModeMap: Map<EditModeType, Partial<IToolBarSwitchConfig>> = new Map([
+  [EditModeType.Edit, editModeConfig],
+  [EditModeType.Preview, previewModeConfig],
 ]);

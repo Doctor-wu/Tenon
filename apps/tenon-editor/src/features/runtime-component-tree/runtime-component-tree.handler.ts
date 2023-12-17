@@ -8,13 +8,13 @@ import { Ref, watch } from "vue";
 import { IAreaIndicatorFeature } from "../area-indicator";
 import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
-import { ModeType } from "../edit-mode/notification";
 import { Logger } from "@/utils/logger";
 import { IContext, TenonEditorContext } from "@/core";
 import {
   ModelHost, RuntimeTreeCommands, ModelImpl,
   ElementChangeEvent, RuntimeComponentTreeDestroyEvent, RuntimeTreeNode,
 } from "@tenon/engine";
+import { EditModeType } from "../edit-mode/edit-mode.interface";
 
 @Feature({
   name: IRuntimeComponentTreeFeature,
@@ -70,15 +70,22 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
     );
   }
 
-  move(runtimeTree: ModelImpl[ModelHost.Tree], beMove: ModelImpl[ModelHost.Tree]) {
-    Logger.log('move', runtimeTree, beMove);
-    if (!runtimeTree.children.length) {
+  move(beMovedIn: ModelImpl[ModelHost.Tree], beMove: ModelImpl[ModelHost.Tree]) {
+    // prevent move to self or child
+    if (beMovedIn.id === beMove.id) throw new Error('Can not move component to itself');
+    let parent = beMovedIn.parent;
+    while (parent) {
+      if (parent.id === beMove.id) throw new Error('can not move component to it\'s children');
+      parent = parent.parent;
+    }
+    Logger.log('move', beMovedIn, beMove);
+    if (!beMovedIn.children.length) {
       this.dataEngine.invoke(
-        RuntimeTreeCommands.moveNodeToEmptyContainer(beMove, runtimeTree),
+        RuntimeTreeCommands.moveNodeToEmptyContainer(beMove, beMovedIn),
       );
     } else {
       this.dataEngine.invoke(
-        RuntimeTreeCommands.moveNodeAfter(beMove, runtimeTree.children.at(-1)!),
+        RuntimeTreeCommands.moveNodeAfter(beMove, beMovedIn.children.at(-1)!),
       );
     }
   }
@@ -110,7 +117,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
         if (runtimeTree.draggable) {
           (newEl as any).elDragDisposer = this.areaIndicator
             .useSingletonHoverMark(SingleMarkType.DragHover, newEl,
-              () => this.editMode.mode.value !== ModeType.Edit,
+              () => this.editMode.mode !== EditModeType.Edit,
             );
           (newEl as any).elDropDisposer = this.materialDrag
             .draggableElement(newEl, DragType.Component, () => runtimeTree);

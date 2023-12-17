@@ -5,7 +5,7 @@ import {
 } from "../interfaces";
 import { WorkbenchType } from "../core";
 import { ProvideService } from "../services";
-import { Ref, watch, watchEffect } from "vue";
+import { Ref, WatchSource, watch, watchEffect } from "vue";
 
 export type HeaderBarControllerResult = Promise<Partial<HeaderBarItemType>>;
 
@@ -43,7 +43,7 @@ export const HeaderBarController = (name: any, deps: Ref[] = []) => {
   };
 };
 
-export const ToolBarController = (name: any, deps: Ref[] = []) => {
+export const ToolBarController = (name: any, deps: WatchSource[] = []) => {
   return (
     target,
     propertyKey,

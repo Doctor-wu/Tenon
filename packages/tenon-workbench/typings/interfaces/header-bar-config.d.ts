@@ -21,7 +21,7 @@ export interface IHeaderBarOperatorItem extends IHeaderBarBaseItem<HeaderBarType
     listTree?: IListTree[];
     render?: () => VNode;
 }
-export declare type HeaderBarItemType = IHeaderBarInfoItem | IHeaderBarOperatorItem;
-export declare type HeaderBarConfig = {
+export type HeaderBarItemType = IHeaderBarInfoItem | IHeaderBarOperatorItem;
+export type HeaderBarConfig = {
     config: HeaderBarItemType[];
 };
