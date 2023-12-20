@@ -7,6 +7,7 @@ import { FullScreenController, IFullScreenFeature } from './fullscreen';
 import { GithubHrefController, IGithubHrefFeature } from './github-href';
 import { IMaterialFeature, MaterialController } from './material';
 import { IMaterialDragFeature, MaterialDragController } from './material-drag';
+import { IPwaFeature, PwaController } from './pwa';
 import { IRuntimeComponentTreeFeature, RuntimeComponentTreeController } from './runtime-component-tree';
 import { TitleController, TitleHandler } from "./title";
 import { IUndoRedoFeature, UndoRedoController } from './undo-redo';
@@ -26,6 +27,7 @@ export const dynamicTags = [
   IRuntimeComponentTreeFeature,
   IUndoRedoFeature,
   IGithubHrefFeature,
+  IPwaFeature,
 ]
 
 export const controllers = [
@@ -40,4 +42,5 @@ export const controllers = [
   UndoRedoController,
   EditorRenderTypeController,
   GithubHrefController,
+  PwaController,
 ];

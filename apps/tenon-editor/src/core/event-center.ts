@@ -15,7 +15,7 @@ import {
   RightDrawerNotificationType,
 } from "./notifications";
 import { fromEvent, throttleTime } from "rxjs";
-import { WindowResizeNotification } from "./notifications/common-notification";
+import { WindowDisposeNotification, WindowResizeNotification } from "./notifications/common-notification";
 
 @Service({
   name: IEventCenter,
@@ -39,6 +39,11 @@ export class TenonEditorEventCenter {
       .subscribe(() => {
         this.context.fire(new WindowResizeNotification());
       });
+
+    fromEvent(window, 'onbeforeunload')
+      .subscribe(() => {
+        this.context.fire(new WindowDisposeNotification());
+      })
   }
 
   wrapDrawerEvent() {

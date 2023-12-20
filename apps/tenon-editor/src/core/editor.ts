@@ -68,6 +68,7 @@ export class TenonEditor {
       TenonEditorLifeCycleStage.LaunchWorkbench,
       () => {
         performance.mark(PerformanceMetricsName.EditorInitd);
+        this.initInstantiations();
         this.launchWorkbench();
       }
     );
@@ -84,7 +85,6 @@ export class TenonEditor {
       TenonEditorLifeCycleStage.EditorAdapterReady,
       () => {
         performance.mark(PerformanceMetricsName.DataEngineInitd);
-        this.initInstantiations();
         this.setupPlugin();
         this.lifecycle!.emitStageFinish(
           TenonEditorLifeCycleStage.EditorAdapterReady

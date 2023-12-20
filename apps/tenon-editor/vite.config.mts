@@ -14,7 +14,11 @@ export default defineConfig({
     vue(),
     ViteEjsPlugin({
       env: config.mode,
-      config,
+      config: Object.assign({}, config, {
+        isDev: config.isDev,
+        isProd: config.isProd,
+        isLocal: config.isLocal,
+      }),
     }),
     AutoImport({
       resolvers: [TDesignResolver({

@@ -66,7 +66,6 @@ export const setupMaterials = async (store: Store<IRootState>) => {
     let executeEvent = args[0] === '__tenon-event__';
     try {
       const pageInfo = (store.state as any).page.pageInfo;
-      // debugger;
       const handler = executeEvent
         ? new Function('injectMeta', `
         const {$comp, $pageStates, $redirect, $args, $request, $message, $store, _editMode} = injectMeta;
@@ -146,7 +145,6 @@ export const setupMaterials = async (store: Store<IRootState>) => {
         instance.runtimeBinding[instance.propsBinding.makeKey(fieldName, propsKey)] = cancel;
       } catch (e) {
         console.error(e);
-        // debugger;
       }
     };
     if (instance.mounted) {

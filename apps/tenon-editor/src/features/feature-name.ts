@@ -13,4 +13,5 @@ export const FeatureName = {
   UndoRedo: "undo-redo",
   EditorRenderType: "editor-render-type",
   GithubHref: "github-href",
+  Pwa: "pwa",
 };
