@@ -26,7 +26,7 @@ export class UndoRedoHandler implements IUndoRedoFeature {
   public undo() {
     if (!this.canUndo) return;
     const mutations = this.undoStack.pop()!;
-    this.context.dataEngine.invokeInUndoRedo(...mutations);
+    this.context.dataEngine.invokeWithoutNotification(...mutations);
     // 逆序 push 到 redoStack
     this.redoStack.push(mutations.map(m => m.reverse()).reverse());
     this.updateState();
@@ -36,7 +36,7 @@ export class UndoRedoHandler implements IUndoRedoFeature {
   public redo() {
     if (!this.canRedo) return;
     const mutations = this.redoStack.pop()!;
-    this.context.dataEngine.invokeInUndoRedo(...mutations);
+    this.context.dataEngine.invokeWithoutNotification(...mutations);
     // 逆序 push 到 undoStack
     this.undoStack.push(mutations.map(m => m.reverse()).reverse());
     this.updateState();

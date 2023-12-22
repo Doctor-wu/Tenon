@@ -7,7 +7,6 @@ import { Logger } from '@/utils/logger';
 import { BaseMutation, ModelImpl, ModelHost } from '@tenon/engine';
 import { InvokeMutationNotification } from '../notifications/mutation-notification';
 
-
 @Service({
   name: IDataEngine,
 })
@@ -40,7 +39,13 @@ export class TenonDataEngine<Model extends ModelImpl[ModelHost]> {
     this.context.fire(new InvokeMutationNotification(mutations));
   }
 
-  invokeInUndoRedo(...mutations: BaseMutation[]) {
+  /**
+   * 不触发通知的 invoke
+   * 目前仅用于 undo/redo
+   * 因为 undo/redo 内部通过监听 InvokeMutations 通知来更新状态
+   * 如果在 undo/redo 时触发通知，会导致 undo/redo 无法正常工作
+   */
+  invokeWithoutNotification(...mutations: BaseMutation[]) {
     this.invokeMutations(...mutations);
   }
 

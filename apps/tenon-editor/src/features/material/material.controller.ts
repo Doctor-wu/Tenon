@@ -37,11 +37,7 @@ export class MaterialController {
     @Inject(IContext) private context: TenonEditorContext,
     @Inject(BarService) private barService: BarServiceCore
   ) {
-    if (this.barService.getSwitchActive(ToolBarName.MaterialSwitch)) {
-      this.materialLoader.getInstance().then(instance => {
-        instance.switchPanel(true);
-      });
-    }
+    this.initMaterial();
     this.listenDrawer();
   }
 
@@ -56,6 +52,9 @@ export class MaterialController {
       actionInfo.action === ActionType.onActive
     );
   }
+
+  @awaitLoad(IMaterialFeature)
+  private initMaterial() {}
 
   private listenDrawer() {
     this.context.on(LeftDrawerNotificationType.ClOSE_FROM_INTERNAL, () => {
