@@ -66,10 +66,12 @@ const isLastNonEmptyGroup = (group: ToolBarItemType[]) => {
 .toolbar-container {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
 }
 
 .toolbar-group {
   margin: 6px 0;
+  white-space: nowrap;
 }
 
 .toolbar-item {
