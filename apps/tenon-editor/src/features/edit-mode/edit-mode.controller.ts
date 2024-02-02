@@ -25,7 +25,9 @@ import { StoreKey } from "@/store";
   name: Symbol("edit-mode-controller"),
 })
 export class EditModeController {
-  constructor(@Inject(BarService) private barService: BarServiceCore) {}
+  constructor(@Inject(BarService) private barService: BarServiceCore) {
+    console.log(getStoreValue(StoreKey.EditMode));
+  }
 
   @Loader(IEditModeFeature)
   editModeLoader: IDynamicFeature<IEditModeFeature>;
@@ -51,9 +53,10 @@ export class EditModeController {
     );
   }
 
-  @ToolBarController(ToolBarName.Mode, [getStoreValue(StoreKey.EditMode)])
+  @ToolBarController(ToolBarName.Mode, [() => getStoreValue(StoreKey.EditMode)])
   @awaitLoad(IEditModeFeature)
   async getModeConfig(): Promise<ToolBarControllerResult> {
-    return configModeMap.get(getStoreValue(StoreKey.EditMode).value)!;
+    console.log("getModeConfig", getStoreValue(StoreKey.EditMode));
+    return configModeMap.get(getStoreValue(StoreKey.EditMode))!;
   }
 }

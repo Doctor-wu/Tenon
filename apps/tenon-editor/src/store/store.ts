@@ -1,4 +1,4 @@
-import { WatchSource, computed, reactive, ref } from "vue";
+import { computed, reactive, ref } from "vue";
 import { IStoreState, initialState } from "./state";
 
 
@@ -10,14 +10,14 @@ export class TenonStore {
     }
     return TenonStore.instance;
   }
-  private store = ref(initialState);
+  private store = reactive(initialState);
 
   getValue = <T extends keyof IStoreState>(key: T) => {
-    return computed(() => this.store.value[key]);
+    return this.store[key];
   }
 
   setValue = <T extends unknown>(key: string, value: T) => {
-    this.store.value[key] = value;
+    this.store[key] = value;
   }
 }
 

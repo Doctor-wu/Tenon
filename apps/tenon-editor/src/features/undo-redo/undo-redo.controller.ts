@@ -22,17 +22,17 @@ export class UndoRedoController {
     return this.undoRedoLoader.instance!;
   }
 
-  @ToolBarController(ToolBarName.Undo, [getStoreValue(StoreKey.CanUndo)])
+  @ToolBarController(ToolBarName.Undo, [() => getStoreValue(StoreKey.CanUndo)])
   async canUndo(): Promise<ToolBarControllerResult> {
     return {
-      disabled: !getStoreValue(StoreKey.CanUndo).value,
+      disabled: !getStoreValue(StoreKey.CanUndo),
     }
   }
 
-  @ToolBarController(ToolBarName.Redo, [getStoreValue(StoreKey.CanRedo)])
+  @ToolBarController(ToolBarName.Redo, [() => getStoreValue(StoreKey.CanRedo)])
   async canRedo(): Promise<ToolBarControllerResult> {
     return {
-      disabled: !getStoreValue(StoreKey.CanRedo).value,
+      disabled: !getStoreValue(StoreKey.CanRedo),
     }
   }
 

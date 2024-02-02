@@ -22,7 +22,7 @@ export class EditorRenderTypeController {
   handleSwitchRenderType(
     @InjectActionInfoService() actionInfo: ActionInfo<ToolBarName.RenderInReact | ToolBarName.RenderInVue>,
   ) {
-    const currentRenderType = getStoreValue(StoreKey.EditorRenderType).value;
+    const currentRenderType = getStoreValue(StoreKey.EditorRenderType);
     console.log('handleSwitchRenderType', actionInfo, this);
     switch (actionInfo.name) {
       case ToolBarName.RenderInReact:
@@ -36,9 +36,9 @@ export class EditorRenderTypeController {
     }
   }
 
-  @ToolBarController(ToolBarName.RenderType, [getStoreValue(StoreKey.EditorRenderType)])
+  @ToolBarController(ToolBarName.RenderType, [() => getStoreValue(StoreKey.EditorRenderType)])
   async getModeConfig(): Promise<ToolBarControllerResult> {
-    const currentRenderType = getStoreValue(StoreKey.EditorRenderType).value;
+    const currentRenderType = getStoreValue(StoreKey.EditorRenderType);
     return renderTypeConfigMap.get(currentRenderType)!;
   }
 }

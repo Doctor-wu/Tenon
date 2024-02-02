@@ -40,7 +40,7 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
   }
 
   attachEditor(dom: HTMLElement): void {
-    watch(getStoreValue(StoreKey.EditorRenderType), (type: EditorRenderType) => {
+    watch(() => getStoreValue(StoreKey.EditorRenderType), (type: EditorRenderType) => {
       if (type === EditorRenderType.React) {
         this.renderInReact(dom);
       } else {

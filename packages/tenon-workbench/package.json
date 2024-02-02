@@ -4,7 +4,7 @@
   "main": "lib/tenon-workbench.umd.js",
   "module": "lib/tenon-workbench.es.js",
   "scripts": {
-    "build": "ts-node scripts/build.ts",
+    "build": "ts-node scripts/build.ts && pnpm run tsc",
     "tsc": "tsc"
   },
   "author": "Doctor wu",

@@ -5,7 +5,7 @@ import {
 } from "../interfaces";
 import { WorkbenchType } from "../core";
 import { ProvideService } from "../services";
-import { Ref, WatchSource, watch, watchEffect } from "vue";
+import { MaybeRefOrGetter, Ref, watch } from "vue";
 
 export type HeaderBarControllerResult = Promise<Partial<HeaderBarItemType>>;
 
@@ -43,7 +43,7 @@ export const HeaderBarController = (name: any, deps: Ref[] = []) => {
   };
 };
 
-export const ToolBarController = (name: any, deps: WatchSource[] = []) => {
+export const ToolBarController = (name: any, deps?: MaybeRefOrGetter[]) => {
   return (
     target,
     propertyKey,
@@ -55,16 +55,18 @@ export const ToolBarController = (name: any, deps: WatchSource[] = []) => {
     const cb = desc.value!;
     target[UIControllerKey] = target[UIControllerKey] || {};
     target[UIControllerKey][name] = async function (workbench: WorkbenchType) {
-      const config = await cb.call(target);
-      workbench.barConfig.updateToolBarConfig(name, config);
-      if (deps.length) {
+      const update = async () => {
+        const config = await cb.call(target);
+        workbench.barConfig.updateToolBarConfig(name, config);
+      }
+      if (deps?.length) {
+        debugger
         watch(
           deps,
           async () => {
-            const config = await cb.call(target);
-            workbench.barConfig.updateToolBarConfig(name, config);
+            update()
           },
-          { immediate: false }
+          { immediate: true, deep: true }
         );
       }
     };

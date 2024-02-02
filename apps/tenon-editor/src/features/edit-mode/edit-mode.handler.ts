@@ -5,13 +5,13 @@ import { Ref } from "vue";
 import { IContext, TenonEditorContext, getStoreValue } from "@/core";
 import { IAreaIndicatorFeature } from "../area-indicator";
 import { Logger } from "@/utils/logger";
-import { StoreKey } from "@/store";
+import { StoreKey, setStoreValue } from "@/store";
 
 @Feature({
   name: IEditModeFeature,
 })
 export class EditModeHandler implements IEditModeFeature {
-  public mode = getStoreValue(StoreKey.EditMode).value;
+  public mode = getStoreValue(StoreKey.EditMode);
 
   @Loader(IAreaIndicatorFeature)
   private areaIndicator: IDynamicFeature<IAreaIndicatorFeature>;
@@ -28,6 +28,7 @@ export class EditModeHandler implements IEditModeFeature {
       } else if (noti.mode === EditModeType.Preview) {
         this.changeAreaIndicatorVisible(false);
       }
+      setStoreValue(StoreKey.EditMode, noti.mode);
     });
   }
 
