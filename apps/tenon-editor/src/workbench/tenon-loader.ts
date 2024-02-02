@@ -2,7 +2,7 @@ import { IWorkbenchAdapter, WorkbenchLoader, WorkbenchSettings } from "@tenon/wo
 import "@tenon/workbench/lib/style.css";
 import { footBarConfig } from "@/configs/foot-bar-config";
 import { headerBarConfig } from "@/configs/header-bar-config";
-import { toolBarConfig } from "@/configs/tool-bar-config";
+import { ToolBarName, toolBarConfig } from "@/configs/tool-bar-config";
 import { controllers, dynamicTags, syncFeatures } from "@/features";
 import { TenonEditor } from "@/core/editor";
 import { App, createApp, watch } from "vue";
@@ -14,6 +14,7 @@ import { Logger } from "@/utils/logger";
 import { TenonStore, getStoreValue } from "@/core";
 import { StoreKey } from "@/store";
 import { EditorRenderType } from "@/features/editor-render-type";
+import { sleep } from "@tenon/shared";
 
 @WorkbenchSettings({
   dynamicTags: dynamicTags,
@@ -46,6 +47,10 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
       } else {
         this.renderInVue(dom);
       }
+      this.barConfig.setToolBarItemLoading(ToolBarName.RenderType, true);
+      sleep(200).then(() => {
+        this.barConfig.setToolBarItemLoading(ToolBarName.RenderType, false);
+      })
     }, {
       immediate: true,
     });
@@ -61,6 +66,7 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
     ReactDom.render(createElement(EditorViewReact, {
       editor: this.editor,
     }), dom);
+    this.currentRenderType = EditorRenderType.React;
   }
 
   renderInVue(dom: HTMLElement): void {
@@ -72,5 +78,6 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
       editor: this.editor,
     });
     this.vueApp.mount(dom);
+    this.currentRenderType = EditorRenderType.Vue;
   }
 }
