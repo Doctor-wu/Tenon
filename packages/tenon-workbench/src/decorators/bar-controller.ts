@@ -60,7 +60,6 @@ export const ToolBarController = (name: any, deps?: MaybeRefOrGetter[]) => {
         workbench.barConfig.updateToolBarConfig(name, config);
       }
       if (deps?.length) {
-        debugger
         watch(
           deps,
           async () => {
