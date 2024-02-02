@@ -61,6 +61,7 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
     ReactDom.render(createElement(EditorViewReact, {
       editor: this.editor,
     }), dom);
+    this.currentRenderType = EditorRenderType.React;
   }
 
   renderInVue(dom: HTMLElement): void {
@@ -72,5 +73,6 @@ export class TenonEditorAdapter extends WorkbenchLoader implements IWorkbenchAda
       editor: this.editor,
     });
     this.vueApp.mount(dom);
+    this.currentRenderType = EditorRenderType.Vue;
   }
 }
