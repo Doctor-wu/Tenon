@@ -7,14 +7,18 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { TDesignResolver } from 'unplugin-vue-components/resolvers';
 import config from "./config";
-console.log(config.toObject());
+console.log(config);
 
 export default defineConfig({
   plugins: [
     vue(),
     ViteEjsPlugin({
       env: config.mode,
-      config: config.toObject(),
+      config: Object.assign({}, config, {
+        isDev: config.isDev,
+        isProd: config.isProd,
+        isLocal: config.isLocal,
+      }),
     }),
     AutoImport({
       resolvers: [TDesignResolver({

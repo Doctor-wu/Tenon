@@ -78,11 +78,11 @@ export class UndoRedoHandler implements IUndoRedoFeature {
   }
 
   private get canUndo() {
-    return getStoreValue(StoreKey.CanUndo);
+    return getStoreValue(StoreKey.CanUndo).value;
   }
 
   private get canRedo() {
-    return getStoreValue(StoreKey.CanRedo);
+    return getStoreValue(StoreKey.CanRedo).value;
   }
 
   private set canUndo(value: boolean) {
