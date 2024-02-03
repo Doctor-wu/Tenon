@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.json", // 继承根目录下通用配置
   "compilerOptions": {
+    "experimentalDecorators": true,
     "jsx": "preserve",
     "target": "ES2015",
     "composite": true, // 用于帮助 TypeScript 快速确定引用工程的输出文件位置

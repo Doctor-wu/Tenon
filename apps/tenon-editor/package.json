@@ -25,15 +25,18 @@
     "jest-environment-jsdom": "^29.7.0",
     "lodash-es": "^4.17.21",
     "ts-jest": "^29.1.1",
+    "unocss": "^0.58.4",
     "unplugin-auto-import": "^0.12.1",
     "unplugin-vue-components": "^0.22.12",
-    "vite": "^4.4.9",
+    "vite": "^5.0.12",
     "vite-plugin-ejs": "^1.6.4",
     "vue-material-design-icons": "^5.1.2",
     "vue3-jest": "27.0.0-alpha.1"
   },
   "description": "",
   "devDependencies": {
+    "@iconify/json": "^2.2.178",
+    "@unocss/preset-icons": "^0.58.4",
     "@vue/test-utils": "^2.4.1",
     "vite-plugin-pwa": "^0.17.4",
     "workbox-window": "^7.0.0"

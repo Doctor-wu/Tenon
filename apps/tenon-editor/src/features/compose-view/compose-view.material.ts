@@ -50,7 +50,7 @@ export class TenonComposeView
   public propMeta = TenonComposeViewInfo.props;
   public nestable = true;
   public eventMeta = [...internalMeta, ...TenonComposeViewInfo.eventMeta];
-  public supportRenderHost = [RendererHost.React, RendererHost.Vue];
+  public supportRenderHost = [RendererHost.Vue, RendererHost.React];
 
   private composeViewHandler: IComposeViewFeature;
   private rendererManager: RendererManager;

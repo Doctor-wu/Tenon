@@ -69,8 +69,7 @@ export const toolBarConfig: ToolBarConfig = {
         text: 'Vue',
         width: '80px',
         icon: {
-          iconRender: () => h(VueIcon, {
-            size: 16,
+          iconRender: () => h('div', {
           }),
         },
         listTree: [
@@ -78,8 +77,8 @@ export const toolBarConfig: ToolBarConfig = {
             name: ToolBarName.RenderInReact,
             text: 'React',
             icon: {
-              iconRender: () => h(ReactIcon, {
-                size: 16,
+              iconRender: () => h('div', {
+                class: 'i-logos:react'
               }),
             },
           },
@@ -87,8 +86,8 @@ export const toolBarConfig: ToolBarConfig = {
             name: ToolBarName.RenderInVue,
             text: 'Vue',
             icon: {
-              iconRender: () => h(VueIcon, {
-                size: 16,
+              iconRender: () => h('div', {
+                class: 'i-logos:vue'
               }),
             },
           }

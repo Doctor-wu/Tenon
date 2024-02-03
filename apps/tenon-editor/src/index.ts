@@ -1,3 +1,4 @@
+import 'virtual:uno.css'
 import NotificationPlugin from "tdesign-vue-next/es/notification/plugin";
 NotificationPlugin.name;
 

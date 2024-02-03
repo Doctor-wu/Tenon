@@ -117,13 +117,11 @@ export class TenonEditor {
 
   @awaitLoad(ITenonEditorLifeCycle)
   private launchWorkbench() {
-    window.addEventListener("DOMContentLoaded", () => {
-      const root = document.getElementById("workbench-root")!;
-      this.workbenchAdaptor.load(root);
-      this.lifecycle!.emitStageFinish(
-        TenonEditorLifeCycleStage.LaunchWorkbench
-      );
-    });
+    const root = document.getElementById("workbench-root")!;
+    this.workbenchAdaptor.load(root);
+    this.lifecycle!.emitStageFinish(
+      TenonEditorLifeCycleStage.LaunchWorkbench
+    );
   }
 
   private logInfo() {

@@ -1,6 +1,5 @@
 import { bindDynamicLoader, createDynamicFeatureTag } from "@tenon/workbench";
 import { FeatureName } from "../feature-name";
-import { Ref } from "vue";
 import { ToolBarName } from "@/configs/tool-bar-config";
 
 export interface IEditModeFeature {

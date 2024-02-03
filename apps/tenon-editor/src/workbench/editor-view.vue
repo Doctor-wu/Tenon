@@ -1,5 +1,6 @@
 <template>
   <section class="editor-view-wrapper">
+    <UnoPreset />
     <div id="tenon-editor" ref="editorView">
       <component
         v-if="runtimeTree"
@@ -17,6 +18,7 @@
   </section>
 </template>
 <script setup lang="ts">
+import UnoPreset from "@/components/UnoPreset.vue";
 import { TenonEditor } from "@/core";
 import { ModelChange, ModelChangeNotification } from "@/core";
 import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";

@@ -7,6 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { TDesignResolver } from 'unplugin-vue-components/resolvers';
 import config from "./config";
+import UnoCSS from 'unocss/vite';
 console.log(config);
 
 export default defineConfig({
@@ -31,6 +32,7 @@ export default defineConfig({
       })],
     }),
     (config.isProd || config.isLocal) ? VitePWA() : null,
+    UnoCSS(),
   ],
   build: {
     sourcemap: true,
@@ -43,4 +45,11 @@ export default defineConfig({
     },
   },
   base: config.basePath,
+  esbuild: {
+    tsconfigRaw: {
+      compilerOptions: {
+        experimentalDecorators: true,
+      },
+    },
+  },
 });

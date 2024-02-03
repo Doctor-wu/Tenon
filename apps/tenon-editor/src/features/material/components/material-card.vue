@@ -10,12 +10,10 @@
       <span> {{ renderer?.formatName }}</span>
       <section class="material-list-item__support-renderer">
         <Space size="4px">
-          <Tag
-            v-for="tag in renderer.supportRenderHost"
-            :theme="(rendererTagProps[tag] || rendererTagProps.default).theme"
-            :variant="(rendererTagProps[tag] || rendererTagProps.default).variant"
-            >{{ tag }}</Tag
-          >
+          <section
+            v-for="host in renderer.supportRenderHost"
+            :class="rendererTagProps[host].class"
+          ></section>
         </Space>
       </section>
     </section>
@@ -35,22 +33,15 @@ defineProps<{
   renderer: IRenderer<ModelHost, RendererHost>;
 }>();
 
-const rendererTagProps: {
-  [x: string]: {
-    theme: "default" | "success" | "primary" | "warning" | "danger" | undefined;
-    variant?: "light" | "outline" | "dark" | "light-outline" | undefined;
-  };
-} = {
+const rendererTagProps = {
   vue: {
-    theme: "success",
-    variant: "light",
+    class: "i-logos:vue",
   },
   react: {
-    theme: "primary",
-    variant: "light",
+    class: "i-logos:react",
   },
   default: {
-    theme: undefined,
+    class: "i-logos:tenon",
   },
 };
 </script>
