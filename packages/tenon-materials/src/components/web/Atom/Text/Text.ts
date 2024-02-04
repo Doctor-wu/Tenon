@@ -1,12 +1,10 @@
-import { h } from "vue";
-import TextComponent from "./Text.vue";
+import { defineAsyncComponent, h } from "vue";
 import { clickTrigger, doubleClickTrigger } from "../../../../events";
 import { IMaterialEventMeta, internalMeta } from "../../../../events/event-meta";
 import { MaterialPropsType, BaseMaterial } from "../../../base-material";
 import { ModelHost, ModelImpl, RenderResultType, RendererHost } from "@tenon/engine";
-import { TextReact } from "./Text.react";
 import { TextboxIcon } from "tdesign-icons-vue-next";
-import { createElement } from "react";
+import React, { Fragment, Suspense as ReactSuspense, createElement } from "react";
 
 const TenonTextInfo = {
   name: 'TenonText',
@@ -49,6 +47,8 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
   public propMeta = TenonTextInfo.props;
   public supportRenderHost = [RendererHost.Vue, RendererHost.React];
   public eventMeta = [...internalMeta, ...TenonTextInfo.eventMeta];
+  private AsyncComponentVue;
+  private AsyncComponentReact;
 
   public render<R extends RendererHost.React | RendererHost.Vue>(
     type: R,
@@ -56,7 +56,7 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
     props: {
       [K in keyof TenonText["propMeta"]]: TenonText["propMeta"][K]["type"];
     },
-  ): RenderResultType[R] {
+  ) {
     const setProps = {
       ...props,
       ...this.getInternalProps(),
@@ -64,11 +64,51 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
     };
     switch (type) {
       case RendererHost.React:
-        return createElement(TextReact, setProps) as RenderResultType[R];
+        return this.renderInReact(model, setProps);
       case RendererHost.Vue:
-        return h(TextComponent, setProps) as RenderResultType[R];
+        return this.renderInVue(model, setProps);
       default:
-        return h('span', `unknown renderer type: ${type}`) as RenderResultType[R];
+        return `unknown renderer type: ${type}`;
     }
+  }
+
+  private renderInVue(model: ModelImpl[ModelHost], props: {
+    [K in keyof TenonText["propMeta"]]: TenonText["propMeta"][K]["type"];
+  }): RenderResultType[RendererHost.Vue] {
+    this.AsyncComponentVue = this.AsyncComponentVue || defineAsyncComponent({
+      loader: () => import("./Text.vue"),
+      loadingComponent: {
+        render: this.renderLoadingVue,
+      },
+      errorComponent: {
+        render: this.renderErrorVue,
+      },
+    });
+    return h(this.AsyncComponentVue, {
+      ...props,
+      ...this.getInternalProps(),
+      bridge: model.bridge,
+    });
+  }
+
+  private renderInReact(model: ModelImpl[ModelHost], props: {
+    [K in keyof TenonText["propMeta"]]: TenonText["propMeta"][K]["type"];
+  }): RenderResultType[RendererHost.React] {
+    this.AsyncComponentReact = this.AsyncComponentReact || React.lazy(() => import("./Text.react")
+      .then(({ TextReact }) => {
+        return {
+          default: TextReact,
+        }
+      }));
+    return createElement(
+      ReactSuspense,
+      {
+        fallback: this.renderLoadingReact(),
+      }, [createElement(this.AsyncComponentReact, {
+        ...props,
+        ...this.getInternalProps(),
+        bridge: model.bridge,
+      })]
+    );
   }
 }

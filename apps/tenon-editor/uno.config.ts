@@ -19,7 +19,9 @@ export default defineConfig({
     }
   },
   presets: [
-    presetUno(),
+    presetUno({
+      variablePrefix: 't-',
+    }),
     presetAttributify(),
     presetIcons({
       extraProperties: {
@@ -37,4 +39,9 @@ export default defineConfig({
     transformerDirectives(),
     transformerVariantGroup(),
   ],
+  content: {
+    pipeline: {
+      include: [/\.(vue|svelte|[jt]sx|ts|mdx?|astro|elm|php|phtml|html)($|\?)/]
+    },
+  },
 })

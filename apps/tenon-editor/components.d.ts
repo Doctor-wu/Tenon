@@ -11,6 +11,5 @@ declare module '@vue/runtime-core' {
     RouterView: typeof import('vue-router')['RouterView']
     TButton: typeof import('tdesign-vue-next')['Button']
     TSkeleton: typeof import('tdesign-vue-next')['Skeleton']
-    UnoPreset: typeof import('./src/components/UnoPreset.vue')['default']
   }
 }

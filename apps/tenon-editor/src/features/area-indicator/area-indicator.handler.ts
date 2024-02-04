@@ -8,7 +8,7 @@ import {
   IAreaIndicatorFeature, SingleMarkType,
 } from "./area-indicator.interface";
 import { ISurfaceOperateFeature } from "../surface-operate";
-import { IContext, LeftDrawerNotificationType, RightDrawerNotificationType, TenonEditor, TenonEditorContext } from "@/core";
+import { IContext, IEditor, LeftDrawerNotificationType, RightDrawerNotificationType, TenonEditor, TenonEditorContext } from "@/core";
 import { CommonNotificationType } from "@/core/notifications/common-notification";
 import { FullScreenType } from "../fullscreen/fullscreen.interface";
 
@@ -21,7 +21,6 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
 
   @Loader(ISurfaceOperateFeature)
   private surfaceOperate: IDynamicFeature<ISurfaceOperateFeature>;
-  private editor: TenonEditor | undefined;
 
   private get ISurfaceOperateFeature(): ISurfaceOperateFeature {
     return this.surfaceOperate.instance!;
@@ -34,15 +33,13 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
   }> = new Map();
 
   constructor(
+    @Inject(IEditor) private editor: TenonEditor,
     @Inject(IContext) private context: TenonEditorContext,
-  ) { }
-
-  $onEditorOpen(editor: TenonEditor) {
-    this.initEvent(editor);
+  ) {
+    this.initEvent();
   }
 
-  private initEvent(editor: TenonEditor) {
-    this.editor = editor;
+  private initEvent() {
     this.context.on(DrawerDisplayType.Float, this.update.bind(this));
     this.context.on(DrawerDisplayType.Flow, this.update.bind(this));
     this.context.on(CommonNotificationType.WINDOW_RESIZE, () => {

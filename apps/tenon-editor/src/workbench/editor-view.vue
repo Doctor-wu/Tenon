@@ -1,24 +1,17 @@
 <template>
   <section class="editor-view-wrapper">
-    <UnoPreset />
     <div id="tenon-editor" ref="editorView">
-      <component
-        v-if="runtimeTree"
-        :is="
-          editor.context.rendererManager
-            .getRenderer(runtimeTree.name)
-            .render(RendererHost.Vue, runtimeTree, {
-              style: {
-                minHeight: '680px',
-              },
-            })
-        "
-      ></component>
+      <component v-if="runtimeTree" :is="editor.context.rendererManager
+        .getRenderer(runtimeTree.name)
+        .render(RendererHost.Vue, runtimeTree, {
+          style: {
+            minHeight: '680px',
+          },
+        })"></component>
     </div>
   </section>
 </template>
 <script setup lang="ts">
-import UnoPreset from "@/components/UnoPreset.vue";
 import { TenonEditor } from "@/core";
 import { ModelChange, ModelChangeNotification } from "@/core";
 import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";

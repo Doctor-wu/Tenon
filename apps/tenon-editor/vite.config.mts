@@ -8,18 +8,14 @@ import Components from 'unplugin-vue-components/vite';
 import { TDesignResolver } from 'unplugin-vue-components/resolvers';
 import config from "./config";
 import UnoCSS from 'unocss/vite';
-console.log(config);
+console.log(config.toObject());
 
 export default defineConfig({
   plugins: [
     vue(),
     ViteEjsPlugin({
       env: config.mode,
-      config: Object.assign({}, config, {
-        isDev: config.isDev,
-        isProd: config.isProd,
-        isLocal: config.isLocal,
-      }),
+      config: config.toObject(),
     }),
     AutoImport({
       resolvers: [TDesignResolver({
