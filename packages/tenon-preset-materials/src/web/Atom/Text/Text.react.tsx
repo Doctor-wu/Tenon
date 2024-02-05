@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useRef } from 'react';
+import React, { FC, useCallback, useRef } from 'react';
 import { shallowRef } from 'vue';
 import { TextProps } from './interface';
 import {
@@ -6,7 +6,7 @@ import {
   createTenonEvent,
   useComponentLifeCycle,
   registerCommonHooks
-} from '../../../index';
+} from '@tenon/material-foundation';
 import { RendererHost } from '@tenon/engine';
 import "./Text.scss";
 

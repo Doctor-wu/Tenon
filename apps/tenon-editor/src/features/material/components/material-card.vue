@@ -26,7 +26,7 @@
   </Card>
 </template>
 <script setup lang="ts">
-import { Card, Icon, Tag, Space } from "tdesign-vue-next";
+import { Card, Icon, Space } from "tdesign-vue-next";
 import { RuntimeTreeNode, IRenderer, ModelHost, RendererHost } from "@tenon/engine";
 defineProps<{
   model: RuntimeTreeNode;

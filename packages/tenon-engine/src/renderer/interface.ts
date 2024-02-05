@@ -1,4 +1,4 @@
-import { BaseMaterial } from "@tenon/materials";
+import { BaseMaterial } from "@tenon/material-foundation";
 import { VNode } from "vue";
 import { FC } from "react";
 import { ModelImpl, ModelHost } from "../model";

@@ -108,9 +108,12 @@ importers:
       '@tenon/engine':
         specifier: workspace:*
         version: link:../../packages/tenon-engine
-      '@tenon/materials':
+      '@tenon/material-foundation':
         specifier: workspace:*
         version: link:../../packages/tenon-materials
+      '@tenon/preset-materials':
+        specifier: workspace:*
+        version: link:../../packages/tenon-preset-materials
       '@tenon/shared':
         specifier: workspace:*
         version: link:../../packages/shared
@@ -459,7 +462,7 @@ importers:
 
   packages/tenon-engine:
     dependencies:
-      '@tenon/materials':
+      '@tenon/material-foundation':
         specifier: workspace:*
         version: link:../tenon-materials
       '@tenon/shared':
@@ -547,6 +550,18 @@ importers:
         specifier: ^6.2.0
         version: 6.2.6
     devDependencies:
+      '@tenon/shared':
+        specifier: workspace:*
+        version: link:../shared
+
+  packages/tenon-preset-materials:
+    dependencies:
+      '@tenon/engine':
+        specifier: workspace:*
+        version: link:../tenon-engine
+      '@tenon/material-foundation':
+        specifier: workspace:*
+        version: link:../tenon-materials
       '@tenon/shared':
         specifier: workspace:*
         version: link:../shared

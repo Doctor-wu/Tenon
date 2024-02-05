@@ -13,7 +13,7 @@ import { shallowRef } from "vue";
 import {
   createTenonEvent, useComponentLifeCycle,
   registerCommonHooks, TenonComponentLifeCycle,
-} from "../../../../events";
+} from "@tenon/material-foundation";
 import { TextProps } from "./interface";
 import { RendererHost } from "@tenon/engine";
 
@@ -45,3 +45,4 @@ useComponentLifeCycle(RendererHost.Vue, TenonComponentLifeCycle.UnMount, () => {
 <style lang="scss" scoped>
 @import url("./Text.scss");
 </style>
+../../../../../tenon-materials/src/events

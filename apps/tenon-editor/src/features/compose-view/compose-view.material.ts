@@ -1,7 +1,7 @@
 import {
   BaseMaterial, IMaterialEventMeta, MaterialPropsType,
   clickTrigger, doubleClickTrigger, internalMeta,
-} from "@tenon/materials";
+} from "@tenon/material-foundation";
 import { h } from "vue";
 import composeViewVue from "./components/compose-view.vue";
 import { IComposeViewFeature } from "./compose-view.interface";

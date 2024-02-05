@@ -1,5 +1,5 @@
 {
-    "name": "@tenon/materials",
+    "name": "@tenon/material-foundation",
     "version": "1.0.0",
     "main": "src/index.ts",
     "scripts": {

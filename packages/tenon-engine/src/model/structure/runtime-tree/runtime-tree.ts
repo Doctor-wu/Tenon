@@ -1,4 +1,4 @@
-import { TenonEvent } from "@tenon/materials";
+import { TenonEvent } from "@tenon/material-foundation";
 import { Bridge, Dict } from "@tenon/shared";
 import { Ref, reactive } from "vue";
 import { RuntimeComponentTreeDestroyEvent } from "./interface";

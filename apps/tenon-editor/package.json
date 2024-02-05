@@ -14,7 +14,8 @@
   "license": "MIT",
   "dependencies": {
     "@tenon/engine": "workspace:*",
-    "@tenon/materials": "workspace:*",
+    "@tenon/material-foundation": "workspace:*",
+    "@tenon/preset-materials": "workspace:*",
     "@tenon/shared": "workspace:*",
     "@tenon/workbench": "workspace:*",
     "@testing-library/react": "^14.0.0",

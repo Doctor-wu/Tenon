@@ -37,6 +37,7 @@ export const EditorViewReact: FC<{
           runtimeTree && props.editor.context.rendererManager
             .getRenderer(runtimeTree.name)
             .render(RendererHost.React, runtimeTree, {
+              key: runtimeTree.id,
               style: {
                 minHeight: '680px',
               },

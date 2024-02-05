@@ -1,6 +1,7 @@
 import { Service } from "@tenon/workbench";
 import { IRendererManager } from "../interface";
 import { IRenderer, ModelHost, RendererHost } from "@tenon/engine";
+import { toRaw, toValue } from "vue";
 
 
 @Service({
@@ -15,6 +16,6 @@ export class RendererManager {
 
   getRenderer(name: string) {
     if (!this.rendererMap.has(name)) throw new Error(`Renderer ${name} not found`);
-    return this.rendererMap.get(name)!;
+    return toRaw(this.rendererMap.get(name))!;
   }
 }

@@ -45,13 +45,14 @@ import {
   TenonEvent,
   useComponentLifeCycle,
   registerCommonHooks,
-} from "@tenon/materials";
+} from "@tenon/material-foundation";
 import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
 import { CSSProperties, shallowRef } from "vue";
 import type { IComposeViewFeature } from "../compose-view.interface";
 import type { TenonComposeView } from "../compose-view.material";
 import type { IMaterialDragFeature } from "@/features/material-drag";
 import { DATA_RUNTIME_TREE_ID } from "../compose-view.interface";
+import { Logger } from "@/utils/logger";
 
 const props = defineProps<{
   style?: CSSProperties;
@@ -71,10 +72,10 @@ props.composeViewHandler.getMaterialDrag().then((service) => {
 
 registerCommonHooks(RendererHost.Vue, props.__tenon_event_meta__, rootRef, props.bridge);
 const clickHandler = (e) => {
-  console.log(props.__tenon_material_instance__.name, createTenonEvent("onClick"), e);
+  Logger.log(props.__tenon_material_instance__.name, createTenonEvent("onClick"), e);
 };
 const doubleClickHandler = (e) => {
-  console.log(
+  Logger.log(
     props.__tenon_material_instance__.name,
     createTenonEvent("onDoubleClick"),
     e

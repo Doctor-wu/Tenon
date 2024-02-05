@@ -1,10 +1,15 @@
 import { defineAsyncComponent, h } from "vue";
-import { clickTrigger, doubleClickTrigger } from "../../../../events";
-import { IMaterialEventMeta, internalMeta } from "../../../../events/event-meta";
-import { MaterialPropsType, BaseMaterial } from "../../../base-material";
-import { ModelHost, ModelImpl, RenderResultType, RendererHost } from "@tenon/engine";
+import React, { Suspense as ReactSuspense, createElement } from "react";
+import {
+  BaseMaterial, IMaterialEventMeta,
+  MaterialPropsType, clickTrigger,
+  doubleClickTrigger, internalMeta,
+} from "@tenon/material-foundation";
+import {
+  ModelHost, ModelImpl,
+  RenderResultType, RendererHost,
+} from "@tenon/engine";
 import { TextboxIcon } from "tdesign-icons-vue-next";
-import React, { Fragment, Suspense as ReactSuspense, createElement } from "react";
 
 const TenonTextInfo = {
   name: 'TenonText',

@@ -6,7 +6,7 @@
     "author": "Doctor wu",
     "license": "MIT",
     "dependencies": {
-        "@tenon/materials": "workspace:*",
+        "@tenon/material-foundation": "workspace:*",
         "@tenon/shared": "workspace:*",
         "@types/react": "^16.8.8"
     },
