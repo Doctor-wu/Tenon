@@ -33,6 +33,11 @@ export enum MaterialType {
   Compose = "compose",
 }
 
+export interface IMaterialRenderOptions {
+  materialEditable?: boolean;
+  renderInMaterialList?: boolean;
+}
+
 export abstract class BaseMaterial<Render extends RendererHost> {
   public type: MaterialType;
   public abstract name: string;
@@ -46,13 +51,15 @@ export abstract class BaseMaterial<Render extends RendererHost> {
   public abstract render<InvokeRenderType extends Render>(
     type: InvokeRenderType,
     model: ModelImpl[ModelHost],
-    props: unknown
+    props: unknown,
+    options: IMaterialRenderOptions,
   ): RenderResultType[InvokeRenderType];
 
-  protected getInternalProps<This extends BaseMaterial<Render>>(this: This) {
+  protected getInternalProps<This extends BaseMaterial<Render>>(this: This, options: IMaterialRenderOptions) {
     return {
       __tenon_material_instance__: this,
       __tenon_event_meta__: this.eventMeta,
+      ...options,
     };
   }
 
