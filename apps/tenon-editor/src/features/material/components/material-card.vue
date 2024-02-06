@@ -1,19 +1,12 @@
 <template>
   <Card class="material-list-item" size="small" :bordered="true">
     <section class="material-list-item__title">
-      <Icon
-        v-if="typeof renderer.icon === 'string'"
-        :name="(renderer?.icon as string)"
-        style="margin-right: 4px"
-      ></Icon>
+      <Icon v-if="typeof renderer.icon === 'string'" :name="(renderer?.icon as string)" style="margin-right: 4px"></Icon>
       <component v-else :is="renderer.icon" style="margin-right: 4px"></component>
       <span> {{ renderer?.formatName }}</span>
       <section class="material-list-item__support-renderer">
         <Space size="4px">
-          <section
-            v-for="host in renderer.supportRenderHost"
-            :class="rendererTagProps[host].class"
-          ></section>
+          <section v-for="host in renderer.supportRenderHost" :class="rendererTagProps[host].class"></section>
         </Space>
       </section>
     </section>
@@ -21,7 +14,10 @@
       {{ renderer!.description }}
     </section>
     <section class="material-list-item__preview">
-      <component :is="renderer.render(RendererHost.Vue, model, {})"></component>
+      <component style="width: 100%" :is="renderer.render(RendererHost.Vue, model, {}, {
+        materialEditable: true,
+        renderInMaterialList: true,
+      })"></component>
     </section>
   </Card>
 </template>
@@ -55,12 +51,15 @@ const rendererTagProps = {
   cursor: grab;
   border-bottom: 1px solid #e8e8e8;
   transition: all 0.3s ease-in-out;
+
   &:hover {
     box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.16);
   }
+
   &:active {
     cursor: grabbing;
   }
+
   ::v-deep(.t-card__body) {
     width: 100%;
     height: 100%;
@@ -69,6 +68,7 @@ const rendererTagProps = {
     box-sizing: border-box;
     align-items: flex-start;
   }
+
   .material-list-item__title {
     height: 25px;
     display: flex;
@@ -88,6 +88,7 @@ const rendererTagProps = {
       flex: 1;
     }
   }
+
   .material-list-item__desc {
     flex: 1;
     display: flex;
@@ -98,11 +99,12 @@ const rendererTagProps = {
     color: #999;
     margin-bottom: 8px;
   }
+
   .material-list-item__preview {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
   }
 }

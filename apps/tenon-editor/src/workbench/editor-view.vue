@@ -7,6 +7,8 @@
           style: {
             minHeight: '680px',
           },
+        }, {
+          materialEditable: editor.store.getValue(StoreKey.EditMode).value === EditModeType.Edit
         })"></component>
     </div>
   </section>
@@ -14,6 +16,8 @@
 <script setup lang="ts">
 import { TenonEditor } from "@/core";
 import { ModelChange, ModelChangeNotification } from "@/core";
+import { EditModeType } from "@/features/edit-mode/edit-mode.interface";
+import { StoreKey } from "@/store";
 import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
 import { ref, shallowRef } from "vue";
 

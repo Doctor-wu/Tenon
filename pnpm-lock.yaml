@@ -110,7 +110,7 @@ importers:
         version: link:../../packages/tenon-engine
       '@tenon/material-foundation':
         specifier: workspace:*
-        version: link:../../packages/tenon-materials
+        version: link:../../packages/tenon-material-foundation
       '@tenon/preset-materials':
         specifier: workspace:*
         version: link:../../packages/tenon-preset-materials
@@ -464,7 +464,7 @@ importers:
     dependencies:
       '@tenon/material-foundation':
         specifier: workspace:*
-        version: link:../tenon-materials
+        version: link:../tenon-material-foundation
       '@tenon/shared':
         specifier: workspace:*
         version: link:../shared
@@ -481,7 +481,7 @@ importers:
         specifier: workspace:*
         version: link:../shared
 
-  packages/tenon-materials:
+  packages/tenon-material-foundation:
     dependencies:
       '@tenon/dsl-compiler':
         specifier: workspace:*
@@ -561,7 +561,7 @@ importers:
         version: link:../tenon-engine
       '@tenon/material-foundation':
         specifier: workspace:*
-        version: link:../tenon-materials
+        version: link:../tenon-material-foundation
       '@tenon/shared':
         specifier: workspace:*
         version: link:../shared

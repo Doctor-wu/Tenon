@@ -1,6 +1,10 @@
 <template>
   <span v-bind="$attrs" class="tenon-material-text"
-    :style="props.style || props.__tenon_material_instance__.propMeta.style.default" ref="root">{{ props.text || `Vue:
+    :class="{
+      editable: !!materialEditable,
+      materialListView: !!renderInMaterialList,
+    }"
+    :style="props.setStyle || props.__tenon_material_instance__.propMeta.setStyle.default" ref="root">{{ props.text || `Vue:
     ${props.__tenon_material_instance__.propMeta.text.default} ${_id}` }}</span>
 </template>
 
@@ -41,4 +45,3 @@ useComponentLifeCycle(RendererHost.Vue, TenonComponentLifeCycle.UnMount, () => {
 <style lang="scss" scoped>
 @import url("./Text.scss");
 </style>
-../../../../../tenon-materials/src/events
