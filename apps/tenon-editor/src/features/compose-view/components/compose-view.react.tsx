@@ -14,22 +14,24 @@ import "../style/compose-view.scss";
 import { Logger } from "@/utils/logger";
 
 export const ComposeViewReact: FC<{
-  style?: React.CSSProperties;
+  setStyle?: React.CSSProperties;
   key?: number;
   isEmpty: boolean;
   composeViewHandler: IComposeViewFeature;
-  bridge: Bridge<Record<TenonEvent<string>, any>>;
+  materialEditable?: boolean;
+  _bridge: Bridge<Record<TenonEvent<string>, any>>;
   runtimeTree: ModelImpl[ModelHost.Tree];
   __tenon_material_instance__: TenonComposeView;
   __tenon_event_meta__: (IMaterialEventMeta | IMaterialInternalEventMeta)[];
 }> = (props) => {
   const {
-    style,
-    bridge,
+    setStyle,
+    _bridge,
     isEmpty,
     runtimeTree,
     composeViewHandler,
     children,
+    materialEditable,
     __tenon_event_meta__,
     __tenon_material_instance__,
   } = props;
@@ -40,7 +42,7 @@ export const ComposeViewReact: FC<{
     reactiveRootRef.value = rootRef.current;
   }, [rootRef]);
 
-  registerCommonHooks(RendererHost.React, __tenon_event_meta__, reactiveRootRef, bridge);
+  registerCommonHooks(RendererHost.React, __tenon_event_meta__, reactiveRootRef, _bridge);
   useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.Mount, () => {
     composeViewHandler.getMaterialDrag().then((service) => {
       materialDrag.current = service;
@@ -57,12 +59,12 @@ export const ComposeViewReact: FC<{
       e
     );
   }, []);
-  bridge.register(createTenonEvent("onClick"), clickHandler);
-  bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
+  _bridge.register(createTenonEvent("onClick"), clickHandler);
+  _bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
 
   useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.UnMount, () => {
-    bridge.unRegister(createTenonEvent("onClick"), clickHandler);
-    bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
+    _bridge.unRegister(createTenonEvent("onClick"), clickHandler);
+    _bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
   });
 
   const handleDragEnter = useCallback((e) => {
@@ -97,12 +99,10 @@ export const ComposeViewReact: FC<{
     isEmpty
       ? <section
         ref={rootRef}
-        style={style}
+        style={setStyle}
         className={
           [
-            materialDrag.current?.computedDragging &&
-              (composeViewHandler?.hoveringRuntimeTreeId as unknown as string) ===
-              rootRef.current?.getAttribute(DATA_RUNTIME_TREE_ID) ? "dragging" : "",
+            !!materialEditable ? "editable" : "",
             "empty-view-container",
           ].join(" ").trim()
         }
@@ -116,10 +116,10 @@ export const ComposeViewReact: FC<{
       </section >
       : <section
         ref={rootRef}
-        style={style}
+        style={setStyle}
         className={
           [
-            materialDrag.current?.computedDragging ? "dragging" : "",
+            !!materialEditable ? "editable" : "",
             "view-container",
           ].join(" ").trim()
         }

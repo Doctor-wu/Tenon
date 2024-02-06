@@ -12,8 +12,9 @@ import "./Text.scss";
 
 export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
   const {
-    style,
+    setStyle: style,
     text,
+    materialEditable,
     _id,
     _bridge,
     __tenon_event_meta__,
@@ -65,9 +66,9 @@ export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
   return (
     <>
       <span
-        className="tenon-material-text"
+        className={`tenon-material-text${materialEditable ? " editable" : ""}`}
         ref={root}
-        style={style || __tenon_material_instance__.propMeta.style.default}
+        style={style || __tenon_material_instance__.propMeta.setStyle.default}
       >
         {text ||
           `React: ${props.__tenon_material_instance__.propMeta.text.default} ${_id}`}

@@ -3,6 +3,9 @@ import { ModelChange, ModelChangeNotification, TenonEditor } from "@/core";
 import { Logger } from "@/utils/logger";
 import React, { FC, useEffect, useRef, useState } from "react";
 import "./style/editor-style.scss";
+import { EditModeType } from "@/features/edit-mode/edit-mode.interface";
+import { StoreKey } from "@/store";
+import { watch } from "vue";
 
 export const EditorViewReact: FC<{
   editor: TenonEditor;
@@ -30,20 +33,31 @@ export const EditorViewReact: FC<{
     );
     return cancel;
   }, [runtimeTree]);
+  watch(props.editor.store.getValue(StoreKey.EditMode), () => {
+    setRenderTick((tick) => !tick);
+  });
   return (
     <section className="editor-view-wrapper">
       <div id="tenon-editor" ref={editorView}>
-        {
-          runtimeTree && props.editor.context.rendererManager
+        {runtimeTree &&
+          props.editor.context.rendererManager
             .getRenderer(runtimeTree.name)
-            .render(RendererHost.React, runtimeTree, {
-              key: runtimeTree.id,
-              style: {
-                minHeight: '680px',
+            .render(
+              RendererHost.React,
+              runtimeTree,
+              {
+                key: runtimeTree.id,
+                setStyle: {
+                  minHeight: "680px",
+                },
               },
-            })
-        }
+              {
+                materialEditable:
+                  props.editor.store.getValue(StoreKey.EditMode).value ===
+                  EditModeType.Edit,
+              }
+            )}
       </div>
     </section>
   ) as ReturnType<FC<{ editor: TenonEditor }>>;
-}
+};
