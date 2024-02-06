@@ -1,8 +1,8 @@
+import { h } from "vue";
 import {
   BaseMaterial, IMaterialEventMeta, MaterialPropsType,
   clickTrigger, doubleClickTrigger, internalMeta,
 } from "@tenon/material-foundation";
-import { h } from "vue";
 import composeViewVue from "./components/compose-view.vue";
 import { IComposeViewFeature } from "./compose-view.interface";
 import { IRuntimeComponentTreeFeature } from "../runtime-component-tree";
@@ -15,7 +15,11 @@ import { ComposeViewReact } from "./components/compose-view.react";
 const TenonComposeViewInfo = {
   name: 'ComposeView',
   formatName: '组合视图',
-  icon: 'app',
+  icon: () => {
+    return h('div', {
+      class: 'i-material-symbols:view-in-ar-outline-sharp',
+    })
+  },
   description: '[原子组件] 提供组合视图的能力',
   props: {
     style: {

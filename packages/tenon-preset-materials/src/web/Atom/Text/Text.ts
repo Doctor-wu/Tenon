@@ -1,5 +1,5 @@
 import { defineAsyncComponent, h } from "vue";
-import React, { Suspense as ReactSuspense, createElement } from "react";
+import React, { Fragment, Suspense as ReactSuspense, createElement as createReactElement } from "react";
 import {
   BaseMaterial, IMaterialEventMeta,
   MaterialPropsType, clickTrigger,
@@ -9,12 +9,13 @@ import {
   ModelHost, ModelImpl,
   RenderResultType, RendererHost,
 } from "@tenon/engine";
-import { TextboxIcon } from "tdesign-icons-vue-next";
 
 const TenonTextInfo = {
   name: 'TenonText',
   formatName: '文本',
-  icon: () => h(TextboxIcon),
+  icon: () => h('div', {
+    class: 'i-mdi:text-recognition'
+  }),
   description: '[原子组件] 提供文本能力',
   props: {
     text: {
@@ -65,7 +66,8 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
     const setProps = {
       ...props,
       ...this.getInternalProps(),
-      bridge: model.bridge,
+      _bridge: model.bridge,
+      _id: model.id,
     };
     switch (type) {
       case RendererHost.React:
@@ -92,7 +94,7 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
     return h(this.AsyncComponentVue, {
       ...props,
       ...this.getInternalProps(),
-      bridge: model.bridge,
+      _bridge: model.bridge,
     });
   }
 
@@ -105,13 +107,19 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
           default: TextReact,
         }
       }));
-    return createElement(
+    return createReactElement(
       ReactSuspense,
       {
-        fallback: this.renderLoadingReact(),
-      }, [createElement(this.AsyncComponentReact, {
+        fallback: createReactElement(Fragment, {
+          key: Math.random(),
+        }, [
+          this.renderLoadingReact(),
+        ]),
+        key: Math.random(),
+      }, [createReactElement(this.AsyncComponentReact, {
         ...props,
         ...this.getInternalProps(),
+        key: Math.random(),
         bridge: model.bridge,
       })]
     );

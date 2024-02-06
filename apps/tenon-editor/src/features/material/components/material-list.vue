@@ -17,7 +17,7 @@ export default {
 };
 </script>
 <script setup lang="ts">
-import { effect, onMounted, onUnmounted, reactive, ref, Ref } from "vue";
+import { effect, onBeforeUnmount, onMounted, onUnmounted, reactive } from "vue";
 import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree";
 import { RendererManager } from "@/core/renderer";
 import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
@@ -36,12 +36,7 @@ const props = defineProps<{
   rendererManager: RendererManager;
 }>();
 
-const materials: Ref<
-  {
-    model: ModelImpl[ModelHost.Tree];
-    renderer: IRenderer<ModelHost, RendererHost>;
-  }[]
-> = computedAsync(async () => {
+const materials = computedAsync(async () => {
   return Promise.all(
     // @TODO(Doctorwu) 这里有潜在的性能问题, 只要 props.renderers 发生变化, 每次都会重新构建所有的树
     Object.keys(props.renderers).map(
@@ -79,14 +74,11 @@ onMounted(() => {
     });
   });
 });
-onUnmounted(() => {
+onBeforeUnmount(() => {
   rootRefs.forEach((item) => {
     item.disposer?.();
+    item.runtimeTree.destroy();
   });
-  materials.value.forEach((m) => {
-    m.model.destroy();
-  });
-  materials.value.length = 0;
 });
 </script>
 <style lang="scss" scoped>

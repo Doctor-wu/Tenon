@@ -39,7 +39,7 @@ export abstract class BaseMaterial<Render extends RendererHost> {
   public abstract formatName: string;
   public abstract icon: string | (() => VNode);
   public abstract description: string;
-  public propMeta: Dict<IMaterialPropsMeta>;
+  public propMeta: Dict<IMaterialPropsMeta> = {};
   public eventMeta: (IMaterialEventMeta | IMaterialInternalEventMeta)[] = [];
   public nestable = false;
   public abstract readonly supportRenderHost: Render[];
@@ -74,11 +74,15 @@ export abstract class BaseMaterial<Render extends RendererHost> {
   protected renderLoadingReact() {
     return createReactElement('div', {
       className: 't-w-full t-text-blue t-flex t-items-center t-justify-center t-gap-2',
+      key: Math.random(),
     }, [
       createReactElement('div', {
-        className: 'i-line-md:loading-loop'
+        className: 'i-line-md:loading-loop',
+        key: Math.random(),
       }),
-      createReactElement('span', null, 'loading renderer'),
+      createReactElement('span', {
+        key: Math.random(),
+      }, 'loading renderer'),
     ]);
   }
 

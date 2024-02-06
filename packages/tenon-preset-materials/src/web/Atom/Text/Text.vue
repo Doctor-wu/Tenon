@@ -1,11 +1,7 @@
 <template>
-  <span
-    v-bind="$attrs"
-    class="tenon-material-text"
-    :style="props.style || props.__tenon_material_instance__.propMeta.style.default"
-    ref="root"
-    >{{ props.text || `Vue: ${props.__tenon_material_instance__.propMeta.text.default}` }}</span
-  >
+  <span v-bind="$attrs" class="tenon-material-text"
+    :style="props.style || props.__tenon_material_instance__.propMeta.style.default" ref="root">{{ props.text || `Vue:
+    ${props.__tenon_material_instance__.propMeta.text.default} ${_id}` }}</span>
 </template>
 
 <script setup lang="ts">
@@ -22,7 +18,7 @@ const props = defineProps<TextProps>();
 const root = shallowRef<HTMLElement | null>(null);
 const eventMeta = props.__tenon_event_meta__;
 
-registerCommonHooks(RendererHost.Vue, eventMeta, root, props.bridge);
+registerCommonHooks(RendererHost.Vue, eventMeta, root, props._bridge);
 const clickHandler = (e) => {
   console.log(props.__tenon_material_instance__.name, createTenonEvent("onClick"), e);
 };
@@ -33,12 +29,12 @@ const doubleClickHandler = (e) => {
     e
   );
 };
-props.bridge.register(createTenonEvent("onClick"), clickHandler);
-props.bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
+props._bridge.register(createTenonEvent("onClick"), clickHandler);
+props._bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
 
 useComponentLifeCycle(RendererHost.Vue, TenonComponentLifeCycle.UnMount, () => {
-  props.bridge.unRegister(createTenonEvent("onClick"), clickHandler);
-  props.bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
+  props._bridge.unRegister(createTenonEvent("onClick"), clickHandler);
+  props._bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
 });
 </script>
 
