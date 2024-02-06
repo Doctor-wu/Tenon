@@ -2,7 +2,6 @@ import { defineAsyncComponent, h } from "vue";
 import React, { Fragment, Suspense as ReactSuspense, createElement as createReactElement } from "react";
 import {
   BaseMaterial, IMaterialEventMeta,
-  IMaterialRenderOptions,
   MaterialPropsType, clickTrigger,
   doubleClickTrigger, internalMeta,
 } from "@tenon/material-foundation";
@@ -24,7 +23,7 @@ const TenonTextInfo = {
       default: '占位文字(生产环境不会渲染)',
       name: '文本',
     },
-    setStyle: {
+    style: {
       type: MaterialPropsType.StyleSheet,
       default: {
         color: '#777',
@@ -63,25 +62,24 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
     props: {
       [K in keyof TenonText["propMeta"]]: TenonText["propMeta"][K]["type"];
     },
-    options: IMaterialRenderOptions,
   ) {
     const setProps = {
       ...props,
-      ...this.getInternalProps(options),
+      ...this.getInternalProps(),
       _bridge: model.bridge,
       _id: model.id,
     };
     switch (type) {
       case RendererHost.React:
-        return this.renderInReact(setProps);
+        return this.renderInReact(model, setProps);
       case RendererHost.Vue:
-        return this.renderInVue(setProps);
+        return this.renderInVue(model, setProps);
       default:
         return `unknown renderer type: ${type}`;
     }
   }
 
-  private renderInVue(props: {
+  private renderInVue(model: ModelImpl[ModelHost], props: {
     [K in keyof TenonText["propMeta"]]: TenonText["propMeta"][K]["type"];
   }): RenderResultType[RendererHost.Vue] {
     this.AsyncComponentVue = this.AsyncComponentVue || defineAsyncComponent({
@@ -93,10 +91,14 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
         render: this.renderErrorVue,
       },
     });
-    return h(this.AsyncComponentVue, props);
+    return h(this.AsyncComponentVue, {
+      ...props,
+      ...this.getInternalProps(),
+      _bridge: model.bridge,
+    });
   }
 
-  private renderInReact(props: {
+  private renderInReact(model: ModelImpl[ModelHost], props: {
     [K in keyof TenonText["propMeta"]]: TenonText["propMeta"][K]["type"];
   }): RenderResultType[RendererHost.React] {
     this.AsyncComponentReact = this.AsyncComponentReact || React.lazy(() => import("./Text.react")
@@ -114,7 +116,12 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
           this.renderLoadingReact(),
         ]),
         key: Math.random(),
-      }, [createReactElement(this.AsyncComponentReact, props)]
+      }, [createReactElement(this.AsyncComponentReact, {
+        ...props,
+        ...this.getInternalProps(),
+        key: Math.random(),
+        bridge: model.bridge,
+      })]
     );
   }
 }

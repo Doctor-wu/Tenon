@@ -11,8 +11,13 @@
     </div>
   </section>
 </template>
+<script lang="ts">
+export default {
+  name: "MaterialList",
+};
+</script>
 <script setup lang="ts">
-import { effect, onBeforeUnmount, onMounted, reactive } from "vue";
+import { effect, onBeforeUnmount, onMounted, onUnmounted, reactive } from "vue";
 import { IRuntimeComponentTreeFeature } from "@/features/runtime-component-tree";
 import { RendererManager } from "@/core/renderer";
 import { IRenderer, ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
@@ -21,10 +26,6 @@ import {
 } from "@vueuse/core"
 import type { IMaterialFeature } from "../material.interface";
 import MaterialCard from "./material-card.vue";
-
-defineOptions({
-  __name: "MaterialList",
-})
 
 const props = defineProps<{
   renderers: {
