@@ -235,7 +235,7 @@ export const toolBarConfig: ToolBarConfig = {
             size: 16,
           }),
         },
-        active: false,
+        active: window.AppConfig.isDev,
         activeStyle: {
           fontWeight: 'bold'
         },

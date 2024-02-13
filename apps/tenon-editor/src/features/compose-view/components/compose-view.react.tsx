@@ -110,9 +110,13 @@ export const ComposeViewReact: FC<{
         onDragOver={onDragOverHandler}
         onDragLeave={onDragLeaveHandler}
         onDrop={onDropHandler}
-        data-runtime-tree-id={runtimeTree.id}
+        {
+          ...{
+            [DATA_RUNTIME_TREE_ID]: runtimeTree.id,
+          }
+        }
       >
-        React: 拖入物料以生成组件
+        { materialEditable && 'React: 拖入物料以生成组件' }
       </section >
       : <section
         ref={rootRef}
@@ -127,7 +131,11 @@ export const ComposeViewReact: FC<{
         onDragOver={onDragOverHandler}
         onDragLeave={onDragLeaveHandler}
         onDrop={onDropHandler}
-        data-runtime-tree-id={runtimeTree.id}
+        {
+          ...{
+            [DATA_RUNTIME_TREE_ID]: runtimeTree.id,
+          }
+        }
       >
         {children}
       </section >

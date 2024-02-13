@@ -13,8 +13,8 @@ export enum EditModeType {
   Edit = ToolBarName.EditMode,
 };
 
-
 export const IEditModeFeature = createDynamicFeatureTag(FeatureName.EditMode);
+
 bindDynamicLoader(IEditModeFeature, {
   load: async () => {
     const {

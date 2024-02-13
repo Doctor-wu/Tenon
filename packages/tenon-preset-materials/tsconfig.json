@@ -13,8 +13,5 @@
       "@compiler/*": ["./src/compiler/*"],
     },
     "noEmit": false
-  },
-  "include": [
-    "src/**/*", "../tenon-preset-materials/src/web",
-  ]
+  }
 }

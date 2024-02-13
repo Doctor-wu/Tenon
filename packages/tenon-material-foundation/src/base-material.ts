@@ -55,11 +55,14 @@ export abstract class BaseMaterial<Render extends RendererHost> {
     options: IMaterialRenderOptions,
   ): RenderResultType[InvokeRenderType];
 
-  protected getInternalProps<This extends BaseMaterial<Render>>(this: This, options: IMaterialRenderOptions) {
+  protected getInternalProps<This extends BaseMaterial<Render>>(this: This, options: IMaterialRenderOptions = {}) {
     return {
       __tenon_material_instance__: this,
       __tenon_event_meta__: this.eventMeta,
-      ...options,
+      ...Object.assign({
+        materialEditable: false,
+        renderInMaterialList: false,
+      } satisfies IMaterialRenderOptions, options),
     };
   }
 

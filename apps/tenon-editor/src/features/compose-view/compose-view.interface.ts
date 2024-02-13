@@ -5,7 +5,7 @@ import { Bridge } from "@tenon/shared";
 import { Ref } from "vue";
 import { IMaterialDragFeature } from "../material-drag";
 
-export const DATA_RUNTIME_TREE_ID = 'data-runtime-tree-id';
+export const DATA_RUNTIME_TREE_ID = '__data-runtime-tree-id';
 
 export interface IComposeViewBridge {
     onDragEnter: (e: DragEvent) => void;

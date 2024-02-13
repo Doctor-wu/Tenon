@@ -57,9 +57,9 @@ export class TenonText extends BaseMaterial<RendererHost.React | RendererHost.Vu
   private AsyncComponentVue;
   private AsyncComponentReact;
 
-  public render<R extends RendererHost.React | RendererHost.Vue>(
+  public render<R extends RendererHost.React | RendererHost.Vue, M extends ModelImpl[ModelHost]>(
     type: R,
-    model: ModelImpl[ModelHost],
+    model: M,
     props: {
       [K in keyof TenonText["propMeta"]]: TenonText["propMeta"][K]["type"];
     },

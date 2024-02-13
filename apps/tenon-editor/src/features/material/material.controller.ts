@@ -54,7 +54,11 @@ export class MaterialController {
   }
 
   @awaitLoad(IMaterialFeature)
-  private initMaterial() {}
+  private initMaterial() {
+    if (this.barService.getSwitchActive(ToolBarName.MaterialSwitch)) {
+      this.materialFeature!.switchPanel(true);
+    }
+  }
 
   private listenDrawer() {
     this.context.on(LeftDrawerNotificationType.ClOSE_FROM_INTERNAL, () => {

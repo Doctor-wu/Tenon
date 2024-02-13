@@ -3,14 +3,16 @@
     editable: materialEditable,
   }" @dragenter.prevent.self="handleDragEnter" @dragover.prevent="() => { }"
     @dragleave.self="(e) => composeViewHandler?.bridge.run('onDragLeave', e)"
-    @drop.prevent="(e: any) => composeViewHandler?.bridge.run('onDrop', e)" :[DATA_RUNTIME_TREE_ID]="runtimeTree.id">
-    Vue: 拖入物料以生成组件
+    @drop.prevent="(e: any) => composeViewHandler?.bridge.run('onDrop', e)"
+    v-bind="{ [DATA_RUNTIME_TREE_ID]: runtimeTree.id }">
+    {{ materialEditable ? "Vue: 拖入物料以生成组件" : "" }}
   </section>
   <section v-else ref="rootRef" :style="setStyle" class="view-container" :class="{
     editable: materialEditable,
   }" @dragenter.prevent.self="handleDragEnter" @dragover.prevent="() => { }"
     @dragleave.self="(e) => composeViewHandler?.bridge.run('onDragLeave', e)"
-    @drop.prevent="(e: any) => composeViewHandler?.bridge.run('onDrop', e)" :[DATA_RUNTIME_TREE_ID]="runtimeTree.id">
+    @drop.prevent="(e: any) => composeViewHandler?.bridge.run('onDrop', e)"
+    v-bind="{ [DATA_RUNTIME_TREE_ID]: runtimeTree.id }">
     <slot></slot>
   </section>
 </template>
