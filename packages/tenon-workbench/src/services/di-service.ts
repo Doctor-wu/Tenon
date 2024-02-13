@@ -24,10 +24,12 @@ export class WorkbenchDIServiceCore extends DIState {
         this.pendingMap.set(serviceName, p);
         const instance = await p;
         this.regisService(serviceName, () => instance);
+        this.pendingMap.delete(serviceName);
         return this.initService(this.services.get(serviceName)!, ...args);
       } else {
         p = this.pendingMap.get(serviceName)!;
         await p;
+        this.pendingMap.delete(serviceName);
         return this.getServiceInstance(serviceName, ...args);
       }
     } else {
