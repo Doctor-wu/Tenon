@@ -68,7 +68,14 @@ export abstract class BaseMaterial<Render extends RendererHost> {
 
   protected renderLoadingVue() {
     return h('div', {
-      class: 't-w-full t-text-blue t-flex t-items-center t-justify-center t-gap-2',
+      style: {
+        width: '100%',
+        color: '#3e6ff5',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '2px',
+      }
     }, [
       h('div', {
         class: 'i-line-md:loading-loop'
@@ -83,7 +90,14 @@ export abstract class BaseMaterial<Render extends RendererHost> {
 
   protected renderLoadingReact() {
     return createReactElement('div', {
-      className: 't-w-full t-text-blue t-flex t-items-center t-justify-center t-gap-2',
+      style: {
+        width: '100%',
+        color: '#3e6ff5',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '2px',
+      },
       key: Math.random(),
     }, [
       createReactElement('div', {

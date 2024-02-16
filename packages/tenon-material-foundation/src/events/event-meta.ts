@@ -33,7 +33,7 @@ export const registerCommonHooks = (
   eventMeta: (IMaterialEventMeta | IMaterialInternalEventMeta)[],
   bridge: Bridge<Record<string | number | symbol, any>>,
 ) => {
-  bridge.register(ElementChangeEvent, (elRef?: HTMLElement) => {
+  const onElementChange = (elRef?: HTMLElement) => {
     eventMeta.forEach((meta) => {
       if ("internal" in meta) return;
       if (!elRef) {
@@ -44,7 +44,9 @@ export const registerCommonHooks = (
         bridge.run(`${TenonEventPrefix}${meta.name}`, e);
       });
     });
-  })
+  };
+  bridge.register(ElementChangeEvent, onElementChange);
+
   useComponentLifeCycle(
     renderer,
     TenonComponentLifeCycle.Mount,
@@ -62,6 +64,7 @@ export const registerCommonHooks = (
       bridge.run(
         createTenonEvent(TenonComponentLifeCycle.UnMount)
       );
+      bridge.unRegister(ElementChangeEvent, onElementChange);
     },
   );
 }
