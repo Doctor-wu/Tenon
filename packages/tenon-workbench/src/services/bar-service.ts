@@ -7,8 +7,6 @@ import { IListTree } from "../interfaces/list-tree";
 import { WorkbenchEvents } from "../core";
 import { ActionFrom } from './action-info-service';
 import { FootBarConfig, FootBarItemType, IToolBarBaseConfig } from '../interfaces';
-import { Icon } from 'tdesign-vue-next/esm';
-import { h } from 'vue';
 
 export const BarService = createServiceTag('BarService');
 

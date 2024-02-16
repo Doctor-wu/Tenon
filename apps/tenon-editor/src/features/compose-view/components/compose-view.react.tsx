@@ -1,4 +1,4 @@
-import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
+import { ModelImpl, ModelHost, RendererHost, RuntimeComponentTreeDestroyEvent, ElementChangeEvent } from "@tenon/engine";
 import {
   TenonEvent, IMaterialEventMeta, registerCommonHooks,
   IMaterialInternalEventMeta, createTenonEvent,
@@ -6,12 +6,11 @@ import {
 } from "@tenon/material-foundation";
 import { Bridge } from "@tenon/shared";
 import { IMaterialDragFeature } from "@/features/material-drag";
-import { shallowRef } from "vue";
 import React, { FC, useCallback, useEffect, useRef } from "react";
 import { DATA_RUNTIME_TREE_ID, IComposeViewFeature } from "../compose-view.interface";
 import { TenonComposeView } from "../compose-view.material";
-import "../style/compose-view.scss";
 import { Logger } from "@/utils/logger";
+import "../style/compose-view.scss";
 
 export const ComposeViewReact: FC<{
   setStyle?: React.CSSProperties;
@@ -19,7 +18,7 @@ export const ComposeViewReact: FC<{
   isEmpty: boolean;
   composeViewHandler: IComposeViewFeature;
   materialEditable?: boolean;
-  _bridge: Bridge<Record<TenonEvent<string>, any>>;
+  _bridge: Bridge<Record<string, any>>;
   runtimeTree: ModelImpl[ModelHost.Tree];
   __tenon_material_instance__: TenonComposeView;
   __tenon_event_meta__: (IMaterialEventMeta | IMaterialInternalEventMeta)[];
@@ -37,12 +36,11 @@ export const ComposeViewReact: FC<{
   } = props;
   const rootRef = useRef<HTMLElement | null>(null);
   const materialDrag = useRef<IMaterialDragFeature | null>(null);
-  const reactiveRootRef = shallowRef<HTMLElement | null>(null);
   useEffect(() => {
-    reactiveRootRef.value = rootRef.current;
+    rootRef.current && _bridge.run(ElementChangeEvent, rootRef.current)
   }, [rootRef]);
 
-  registerCommonHooks(RendererHost.React, __tenon_event_meta__, reactiveRootRef, _bridge);
+  registerCommonHooks(RendererHost.React, __tenon_event_meta__, _bridge);
   useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.Mount, () => {
     composeViewHandler.getMaterialDrag().then((service) => {
       materialDrag.current = service;
@@ -65,6 +63,7 @@ export const ComposeViewReact: FC<{
   useComponentLifeCycle(RendererHost.React, TenonComponentLifeCycle.UnMount, () => {
     _bridge.unRegister(createTenonEvent("onClick"), clickHandler);
     _bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
+    _bridge.run(RuntimeComponentTreeDestroyEvent);
   });
 
   const handleDragEnter = useCallback((e) => {

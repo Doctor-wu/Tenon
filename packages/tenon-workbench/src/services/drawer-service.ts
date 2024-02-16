@@ -6,8 +6,8 @@ import { EventEmitterCore, EventEmitterService } from "./event-emitter";
 import { createServiceTag } from "./tag";
 
 export enum DrawerDisplayType {
-  Float = 'float',
-  Flow = 'flow',
+  Float = '[WB display-type]:float',
+  Flow = '[WB display-type]:flow',
 }
 
 class DrawerServiceBase {

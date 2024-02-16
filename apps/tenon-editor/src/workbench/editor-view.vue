@@ -40,6 +40,8 @@ props.editor.context.on(
     runtimeTree.value = noti.payload;
     // 根节点不可拖拽
     runtimeTree.value.draggable = false;
+    // 根节点不可选中
+    runtimeTree.value.selectable = false;
   }
 );
 </script>

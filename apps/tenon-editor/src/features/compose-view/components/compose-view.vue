@@ -27,8 +27,8 @@ import {
   useComponentLifeCycle,
   registerCommonHooks,
 } from "@tenon/material-foundation";
-import { ModelImpl, ModelHost, RendererHost } from "@tenon/engine";
-import { CSSProperties, shallowRef } from "vue";
+import { ModelImpl, ModelHost, RendererHost, RuntimeComponentTreeDestroyEvent, ElementChangeEvent } from "@tenon/engine";
+import { CSSProperties, ref, watch } from "vue";
 import type { IComposeViewFeature } from "../compose-view.interface";
 import type { TenonComposeView } from "../compose-view.material";
 import { DATA_RUNTIME_TREE_ID } from "../compose-view.interface";
@@ -38,16 +38,19 @@ const props = defineProps<{
   setStyle?: CSSProperties;
   isEmpty: boolean;
   composeViewHandler: IComposeViewFeature;
-  _bridge: Bridge<Record<TenonEvent<string>, any>>;
+  _bridge: Bridge<Record<string, any>>;
   runtimeTree: ModelImpl[ModelHost.Tree];
   materialEditable?: boolean;
   __tenon_material_instance__: TenonComposeView;
   __tenon_event_meta__: (IMaterialEventMeta | IMaterialInternalEventMeta)[];
 }>();
 
-const rootRef = shallowRef<HTMLElement | null>(null);
+const rootRef = ref<HTMLElement | null>(null);
 
-registerCommonHooks(RendererHost.Vue, props.__tenon_event_meta__, rootRef, props._bridge);
+registerCommonHooks(RendererHost.Vue, props.__tenon_event_meta__, props._bridge);
+watch(rootRef, (newEl) => {
+  newEl && props._bridge.run(ElementChangeEvent, newEl);
+})
 const clickHandler = (e) => {
   Logger.log(props.__tenon_material_instance__.name, createTenonEvent("onClick"), e);
 };
@@ -64,6 +67,7 @@ props._bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
 useComponentLifeCycle(RendererHost.Vue, TenonComponentLifeCycle.UnMount, () => {
   props._bridge.unRegister(createTenonEvent("onClick"), clickHandler);
   props._bridge.unRegister(createTenonEvent("onDoubleClick"), doubleClickHandler);
+  props._bridge.run(RuntimeComponentTreeDestroyEvent);
 });
 
 const handleDragEnter = (e) => {

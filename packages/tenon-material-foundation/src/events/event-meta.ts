@@ -1,11 +1,11 @@
-import { Bridge } from "@tenon/shared";
+import { Bridge, Disposer } from "@tenon/shared";
 import { Ref } from "vue";
 import { TenonEventPrefix, createTenonEvent } from "./constant";
 import { TenonComponentLifeCycle, useComponentLifeCycle } from "./lifecycle";
 import { ElementChangeEvent, RendererHost } from "@tenon/engine";
 
 export interface IMaterialEventMeta {
-  trigger: (el: HTMLElement, trigger: (e: Event) => void) => void;
+  trigger: (el: HTMLElement, trigger: (e: Event) => void) => Disposer;
   desc: string;
   name: string;
 }
@@ -31,27 +31,27 @@ export const internalMeta: IMaterialInternalEventMeta[] = [
 export const registerCommonHooks = (
   renderer: RendererHost,
   eventMeta: (IMaterialEventMeta | IMaterialInternalEventMeta)[],
-  elRef: Ref<HTMLElement | null>,
   bridge: Bridge<Record<string | number | symbol, any>>,
 ) => {
+  bridge.register(ElementChangeEvent, (elRef?: HTMLElement) => {
+    eventMeta.forEach((meta) => {
+      if ("internal" in meta) return;
+      if (!elRef) {
+        console.error("elRef is not ready");
+        return;
+      }
+      meta.trigger(elRef!, (e) => {
+        bridge.run(`${TenonEventPrefix}${meta.name}`, e);
+      });
+    });
+  })
   useComponentLifeCycle(
     renderer,
     TenonComponentLifeCycle.Mount,
     () => {
-      eventMeta.forEach((meta) => {
-        if ("internal" in meta) return;
-        if (!elRef.value) {
-          console.error("elRef is not ready");
-          return;
-        }
-        meta.trigger(elRef.value!, (e) => {
-          bridge.run(`${TenonEventPrefix}${meta.name}`, e);
-        });
-      });
       bridge.run(
-        createTenonEvent(TenonComponentLifeCycle.Mount), elRef
+        createTenonEvent(TenonComponentLifeCycle.Mount)
       );
-      bridge.run(ElementChangeEvent, elRef);
     },
   );
 

@@ -7,7 +7,7 @@ import {
   useComponentLifeCycle,
   registerCommonHooks,
 } from "@tenon/material-foundation";
-import { RendererHost } from "@tenon/engine";
+import { ElementChangeEvent, RendererHost } from "@tenon/engine";
 import "./Text.scss";
 
 export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
@@ -41,7 +41,7 @@ export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
     RendererHost.React,
     TenonComponentLifeCycle.Mount,
     () => {
-      reactiveRootRef.value = root.current;
+      _bridge.run(ElementChangeEvent, root.current)
       _bridge.register(createTenonEvent("onClick"), clickHandler);
       _bridge.register(createTenonEvent("onDoubleClick"), doubleClickHandler);
     }
@@ -50,7 +50,6 @@ export const TextReact: FC<TextProps<React.CSSProperties>> = (props) => {
   registerCommonHooks(
     RendererHost.React,
     __tenon_event_meta__,
-    reactiveRootRef,
     _bridge
   );
 

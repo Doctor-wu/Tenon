@@ -73,26 +73,37 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     return abortController;
   }
 
-  async useSingletonMark(
+  useSingletonMark(
     type: SingleMarkType,
     element: HTMLElement,
+    outsideDisposer?: () => void,
   ) {
+    if (
+      this.singletonHoverMarkDisposerMap.get(type)?.element
+      && element.isSameNode(this.singletonHoverMarkDisposerMap.get(type)!.element)
+    ) return () => { };
     if (this.singletonHoverMarkDisposerMap.get(type)) {
       this.singletonHoverMarkDisposerMap.get(type)!.disposer();
       this.singletonHoverMarkDisposerMap.delete(type);
     }
-    const closureDispose = await this.markElement(element, AreaMarkType[type]);
-    this.singletonHoverMarkDisposerMap.set(type, {
-      element,
-      disposer: closureDispose,
+    const p = this.markElement(element, AreaMarkType[type]).then((disposer) => {
+      this.singletonHoverMarkDisposerMap.set(type, {
+        element,
+        disposer,
+      });
+      return disposer;
     });
+    let disposed = false;
     return () => {
-      closureDispose?.();
+      if (disposed) return;
+      disposed = true;
+      outsideDisposer?.();
+      p.then(disposer => disposer());
       this.singletonHoverMarkDisposerMap.delete(type);
     };
   }
 
-  async useSingletonHoverMark(
+  useSingletonHoverMark(
     type: SingleMarkType.DragHover | SingleMarkType.DropHovering,
     element: HTMLElement,
     shouldHide?: () => boolean,
@@ -159,8 +170,13 @@ export class AreaIndicatorHandler implements IAreaIndicatorFeature {
     });
     (dom as any).__tenon_indicator_update__ = updater;
     dom.style.visibility = this.visible ? 'visible' : 'hidden';
+    const editorScrollController = new AbortController();
+    this.editor.root.addEventListener('scroll', updater, {
+      signal: editorScrollController.signal,
+    });
     return () => {
       ob.disconnect();
+      editorScrollController.abort();
       (dom as any).__tenon_indicator_update__ = undefined;
       this.ISurfaceOperateFeature.removeDom(dom.id);
     }

@@ -9,12 +9,13 @@ import { IAreaIndicatorFeature } from "../area-indicator";
 import { SingleMarkType } from "../area-indicator/area-indicator.interface";
 import { IEditModeFeature } from "../edit-mode";
 import { Logger } from "@/utils/logger";
-import { IContext, TenonEditorContext } from "@/core";
+import { IContext, IEditor, TenonEditor, TenonEditorContext } from "@/core";
 import {
   ModelHost, RuntimeTreeCommands, ModelImpl,
   ElementChangeEvent, RuntimeComponentTreeDestroyEvent, RuntimeTreeNode,
 } from "@tenon/engine";
 import { EditModeType } from "../edit-mode/edit-mode.interface";
+import { Disposer } from "@tenon/shared";
 
 @Feature({
   name: IRuntimeComponentTreeFeature,
@@ -55,6 +56,7 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
   }
 
   constructor(
+    @Inject(IEditor) private editor: TenonEditor,
     @Inject(IContext) private context: TenonEditorContext,
   ) { }
 
@@ -107,42 +109,73 @@ export class RuntimeComponentTreeHandler implements IRuntimeComponentTreeFeature
 
   @awaitLoad(IMaterialDragFeature, IAreaIndicatorFeature, IEditModeFeature)
   public async initRuntimeTree(runtimeTree: ModelImpl[ModelHost.Tree]) {
-    runtimeTree.bridge.register(ElementChangeEvent, (elRef: Ref<HTMLElement>) => {
-      const disEffect = watch(elRef, (newEl, oldEl) => {
-        if (!newEl) return;
-        if (oldEl && newEl.isEqualNode(oldEl)) return;
-        if (oldEl) {
-          this.disposeElement(oldEl);
-        }
-        if (runtimeTree.draggable) {
-          (newEl as any).elDragDisposer = this.areaIndicator
-            .useSingletonHoverMark(SingleMarkType.DragHover, newEl,
-              () => this.editMode.mode !== EditModeType.Edit,
-            );
-          (newEl as any).elDropDisposer = this.materialDrag
-            .draggableElement(newEl, DragType.Component, () => runtimeTree);
-        }
-        if (runtimeTree.droppable) {
-        }
-      }, {
-        immediate: true,
-      });
-      runtimeTree.bridge.register(RuntimeComponentTreeDestroyEvent, () => {
-        disEffect();
-        runtimeTree.el?.value && this.disposeElement(runtimeTree.el?.value);
-        runtimeTree.el = undefined;
-      });
+    let stashEl: HTMLElement | null = null;
+    runtimeTree.bridge.register(ElementChangeEvent, (newEl: HTMLElement) => {
+      if (!newEl) {
+        Logger.error('element cannot change to falsy');
+        return;
+      }
+      runtimeTree.el = newEl;
+      const oldEl = stashEl;
+      stashEl = newEl;
+      if (oldEl && newEl && newEl.isEqualNode(oldEl)) return;
+      if (oldEl) {
+        this.disposeElement(oldEl);
+      }
+      const disposers: Disposer[] = [];
+      if (runtimeTree.draggable) {
+        disposers.push(
+          this.areaIndicator
+            .useSingletonHoverMark(SingleMarkType.DragHover, newEl, () => this.editMode.mode !== EditModeType.Edit),
+          this.materialDrag
+            .draggableElement(newEl, DragType.Component, () => runtimeTree),
+        );
+      }
+      if (runtimeTree.droppable) {
+      }
+      if (runtimeTree.selectable) {
+        // if (stashSelected) {
+        //   debugger
+        //   this.areaIndicator.useSingletonMark(
+        //     SingleMarkType.Active,
+        //     newEl,
+        //     () => {
+        //       stashSelected = false;
+        //     }
+        //   )
+        //   stashSelected = true;
+        // }
+        // const controller = new AbortController();
+        // newEl.addEventListener('click', () => {
+        //   if (this.editMode.mode === EditModeType.Edit && !stashSelected) {
+        //     this.areaIndicator.useSingletonMark(
+        //       SingleMarkType.Active,
+        //       newEl,
+        //       () => {
+        //         stashSelected = false;
+        //       }
+        //     )
+        //     stashSelected = true;
+        //   }
+        // }, { signal: controller.signal });
+        // disposers.push(() => {
+        //   controller.abort();
+        // });
+      }
+      (newEl as any).disposers = (newEl as any).disposers || disposers;
+    });
+    runtimeTree.bridge.register(RuntimeComponentTreeDestroyEvent, () => {
+      stashEl = null;
+      runtimeTree.el && this.disposeElement(runtimeTree.el);
+      runtimeTree.el = undefined;
     });
   }
 
   private disposeElement(el: HTMLElement) {
     Logger.log('dispose element', el);
     setTimeout(() => {
-      if ((el as any).elDropDisposer) {
-        (el as any).elDropDisposer();
-      }
-      if ((el as any).elDragDisposer) {
-        (el as any).elDragDisposer.then(disposer => disposer());
+      if ((el as any).disposers && (el as any).disposers.length) {
+        (el as any).disposers.forEach((disposer: () => void) => disposer());
       }
     });
   }

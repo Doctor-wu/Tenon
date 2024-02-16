@@ -10,14 +10,15 @@ export class RuntimeTreeNode extends BaseStructure {
   id: number;
   type = ModelHost.Tree;
   name: string;
-  el?: Ref<HTMLElement>;
+  el?: HTMLElement;
   props: Dict<unknown> | null = null;
-  bridge: Bridge<Record<TenonEvent<string>, any>> = new Bridge();
+  bridge: Bridge<Record<string, any>> = new Bridge();
   eventBindings: Record<TenonEvent<string>, (...args: unknown[]) => unknown> | null = null;
   parent: RuntimeTreeNode | null = null;
   children = reactive<RuntimeTreeNode[]>([]) as RuntimeTreeNode[];
   draggable = true;
   droppable = true;
+  selectable = true;
 
   constructor(name: string) {
     super();

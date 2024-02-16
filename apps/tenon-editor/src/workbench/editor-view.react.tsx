@@ -27,6 +27,8 @@ export const EditorViewReact: FC<{
         Logger.log("ModelChange", noti.payload);
         // 根节点不可拖拽
         noti.payload.draggable = false;
+        // 根节点不可选中
+        noti.payload.selectable = false;
         cancel();
         setRuntimeTree(noti.payload);
       }
